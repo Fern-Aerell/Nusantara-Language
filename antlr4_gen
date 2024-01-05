@@ -1,0 +1,2 @@
+java -Xmx500M -cp "$HOME/antlr4/antlr-4.13.1-complete.jar:$CLASSPATH" org.antlr.v4.Tool -Dlanguage=Dart $HOME/nusantara/grammar/NusantaraLanguageLexer.g4 -o lib/nusantara_antlr4 -visitor -listener
+java -Xmx500M -cp "$HOME/antlr4/antlr-4.13.1-complete.jar:$CLASSPATH" org.antlr.v4.Tool -Dlanguage=Dart $HOME/nusantara/grammar/NusantaraLanguageParser.g4 -o lib/nusantara_antlr4 -visitor -listener
