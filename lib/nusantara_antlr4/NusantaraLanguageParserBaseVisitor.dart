@@ -15,5 +15,61 @@ class NusantaraLanguageParserBaseVisitor<T> extends ParseTreeVisitor<T> implemen
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override
-  T? visitAwal(AwalContext ctx) => visitChildren(ctx);
+  T? visitNusantara(NusantaraContext ctx) => visitChildren(ctx);
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
+  T? visitPernyataan(PernyataanContext ctx) => visitChildren(ctx);
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
+  T? visitKomentar(KomentarContext ctx) => visitChildren(ctx);
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
+  T? visitMuat_file(Muat_fileContext ctx) => visitChildren(ctx);
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
+  T? visitBlok_kode(Blok_kodeContext ctx) => visitChildren(ctx);
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
+  T? visitParameter_fungsi_kosong(Parameter_fungsi_kosongContext ctx) => visitChildren(ctx);
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
+  T? visitParameter_buat_fungsi(Parameter_buat_fungsiContext ctx) => visitChildren(ctx);
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
+  T? visitBuat_fungsi(Buat_fungsiContext ctx) => visitChildren(ctx);
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
+  T? visitParameter_panggil_fungsi(Parameter_panggil_fungsiContext ctx) => visitChildren(ctx);
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
+  T? visitPanggil_fungsi(Panggil_fungsiContext ctx) => visitChildren(ctx);
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
+  T? visitTipe_data_variable(Tipe_data_variableContext ctx) => visitChildren(ctx);
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
+  T? visitBuat_variable(Buat_variableContext ctx) => visitChildren(ctx);
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
+  T? visitNilai_variable(Nilai_variableContext ctx) => visitChildren(ctx);
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
+  T? visitNgisi_variable(Ngisi_variableContext ctx) => visitChildren(ctx);
+  /// The default implementation returns the result of calling
+  /// [visitChildren] on [ctx].
+  @override
+  T? visitBuat_dan_ngisi_variable(Buat_dan_ngisi_variableContext ctx) => visitChildren(ctx);
 }

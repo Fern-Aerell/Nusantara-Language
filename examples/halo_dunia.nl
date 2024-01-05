@@ -1,0 +1,3 @@
+awal() {
+    munculkan("Halo Dunia!");
+}
