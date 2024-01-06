@@ -1,3 +1,3 @@
-## 1.0.0-indev
+# 1.0.0-indev
 
-- Initial version.
+Initial version

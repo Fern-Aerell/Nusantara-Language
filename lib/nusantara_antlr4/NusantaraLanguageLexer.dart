@@ -1,4 +1,4 @@
-// Generated from /home/aerell/nusantara/grammar/NusantaraLanguageLexer.g4 by ANTLR 4.13.1
+// Generated from C:/Aerell/AerellDev/Programing Language Project/Nusantara-Language/grammar/NusantaraLanguageLexer.g4 by ANTLR 4.13.1
 // ignore_for_file: unused_import, unused_local_variable, prefer_single_quotes
 import 'package:antlr4/antlr4.dart';
 

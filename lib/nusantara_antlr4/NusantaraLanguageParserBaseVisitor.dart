@@ -1,4 +1,4 @@
-// Generated from /home/aerell/nusantara/grammar/NusantaraLanguageParser.g4 by ANTLR 4.13.1
+// Generated from C:/Aerell/AerellDev/Programing Language Project/Nusantara-Language/grammar/NusantaraLanguageParser.g4 by ANTLR 4.13.1
 // ignore_for_file: unused_import, unused_local_variable, prefer_single_quotes
 import 'package:antlr4/antlr4.dart';
 
@@ -20,10 +20,6 @@ class NusantaraLanguageParserBaseVisitor<T> extends ParseTreeVisitor<T> implemen
   /// [visitChildren] on [ctx].
   @override
   T? visitPernyataan(PernyataanContext ctx) => visitChildren(ctx);
-  /// The default implementation returns the result of calling
-  /// [visitChildren] on [ctx].
-  @override
-  T? visitKomentar(KomentarContext ctx) => visitChildren(ctx);
   /// The default implementation returns the result of calling
   /// [visitChildren] on [ctx].
   @override

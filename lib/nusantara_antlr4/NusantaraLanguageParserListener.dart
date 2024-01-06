@@ -1,4 +1,4 @@
-// Generated from /home/aerell/nusantara/grammar/NusantaraLanguageParser.g4 by ANTLR 4.13.1
+// Generated from C:/Aerell/AerellDev/Programing Language Project/Nusantara-Language/grammar/NusantaraLanguageParser.g4 by ANTLR 4.13.1
 // ignore_for_file: unused_import, unused_local_variable, prefer_single_quotes
 import 'package:antlr4/antlr4.dart';
 
@@ -20,13 +20,6 @@ abstract class NusantaraLanguageParserListener extends ParseTreeListener {
   /// Exit a parse tree produced by [NusantaraLanguageParser.pernyataan].
   /// [ctx] the parse tree
   void exitPernyataan(PernyataanContext ctx);
-
-  /// Enter a parse tree produced by [NusantaraLanguageParser.komentar].
-  /// [ctx] the parse tree
-  void enterKomentar(KomentarContext ctx);
-  /// Exit a parse tree produced by [NusantaraLanguageParser.komentar].
-  /// [ctx] the parse tree
-  void exitKomentar(KomentarContext ctx);
 
   /// Enter a parse tree produced by [NusantaraLanguageParser.muat_file].
   /// [ctx] the parse tree

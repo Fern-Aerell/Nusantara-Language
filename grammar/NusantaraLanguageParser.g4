@@ -2,24 +2,17 @@ parser grammar NusantaraLanguageParser;
 options { tokenVocab=NusantaraLanguageLexer; }
 
 nusantara
-    : pernyataan* 
-    | EOF
+    : pernyataan* EOF
     ;
 
 pernyataan
-    : komentar
-    | blok_kode
+    : blok_kode
     | buat_fungsi
     | muat_file TITIK_KOMA
     | panggil_fungsi TITIK_KOMA
     | buat_variable TITIK_KOMA
     | ngisi_variable TITIK_KOMA
     | buat_dan_ngisi_variable TITIK_KOMA
-    ;
-
-komentar
-    : KOMENTAR_SATU_BARIS
-    | KOMENTAR_BANYAK_BARIS
     ;
     
 muat_file
