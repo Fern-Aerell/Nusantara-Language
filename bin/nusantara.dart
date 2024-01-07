@@ -1,3 +1,4 @@
+import "package:antlr4/antlr4.dart";
 import "package:nusantara/nusantara_cli/features/argument_empty_callback.dart";
 import "package:nusantara/nusantara_cli/features/argument_invalid_callback.dart";
 import "package:nusantara/nusantara_cli/features/cli_feature.dart";
@@ -6,15 +7,15 @@ import "package:nusantara/nusantara_cli/features/opsi_globals.dart";
 import "package:nusantara/nusantara_cli/nusantara_cli.dart";
 import 'package:nusantara/nusantara_cli/features/opsi_global.dart';
 import "package:nusantara/nusantara_config/config.dart";
-import "package:nusantara/nusantara_intepreter/intepreter.dart";
+import "package:nusantara/nusantara_interpreter/interpreter.dart";
 
 void main(List<String> arguments) {
 
   // Cli feature
   List<CliFeature> features = [
-    InputFile(nusantaraLanguageFileExtension, (file) async {
+    InputFile(nusantaraLanguageFileExtension, (file) {
       if(file.existsSync()) {
-        Intepreter(file);
+        Interpreter(InputStream.fromString(file.readAsStringSync()));
       }else{
         print("File \"${file.path}\" tidak ada.");
       }

@@ -1,3 +1,3 @@
 awal() {
-    munculkan("Halo Dunia!");
+  munculkan("Halo Dunia!");
 }
