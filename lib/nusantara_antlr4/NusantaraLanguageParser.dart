@@ -6,11 +6,7 @@ import 'NusantaraLanguageParserListener.dart';
 import 'NusantaraLanguageParserBaseListener.dart';
 import 'NusantaraLanguageParserVisitor.dart';
 import 'NusantaraLanguageParserBaseVisitor.dart';
-const int RULE_nusantara = 0, RULE_pernyataan = 1, RULE_muat_file = 2, RULE_blok_kode = 3, 
-          RULE_parameter_fungsi_kosong = 4, RULE_parameter_buat_fungsi = 5, 
-          RULE_buat_fungsi = 6, RULE_parameter_panggil_fungsi = 7, RULE_panggil_fungsi = 8, 
-          RULE_tipe_data_variable = 9, RULE_buat_variable = 10, RULE_nilai_variable = 11, 
-          RULE_ngisi_variable = 12, RULE_buat_dan_ngisi_variable = 13;
+const int RULE_nusantara = 0, RULE_pernyataan = 1, RULE_buat_dan_ngisi_variable = 2;
 class NusantaraLanguageParser extends Parser {
   static final checkVersion = () => RuntimeMetaData.checkVersion('4.13.1', RuntimeMetaData.VERSION);
   static const int TOKEN_EOF = IntStream.EOF;
@@ -37,10 +33,7 @@ class NusantaraLanguageParser extends Parser {
 
   @override
   final List<String> ruleNames = [
-    'nusantara', 'pernyataan', 'muat_file', 'blok_kode', 'parameter_fungsi_kosong', 
-    'parameter_buat_fungsi', 'buat_fungsi', 'parameter_panggil_fungsi', 
-    'panggil_fungsi', 'tipe_data_variable', 'buat_variable', 'nilai_variable', 
-    'ngisi_variable', 'buat_dan_ngisi_variable'
+    'nusantara', 'pernyataan', 'buat_dan_ngisi_variable'
   ];
 
   static final List<String?> _LITERAL_NAMES = [
@@ -89,28 +82,19 @@ class NusantaraLanguageParser extends Parser {
     enterRule(_localctx, 0, RULE_nusantara);
     int _la;
     try {
-      state = 35;
+      enterOuterAlt(_localctx, 1);
+      state = 9;
       errorHandler.sync(this);
-      switch (interpreter!.adaptivePredict(tokenStream, 1, context)) {
-      case 1:
-        enterOuterAlt(_localctx, 1);
-        state = 31;
+      _la = tokenStream.LA(1)!;
+      while ((((_la) & ~0x3f) == 0 && ((1 << _la) & 124) != 0)) {
+        state = 6;
+        pernyataan();
+        state = 11;
         errorHandler.sync(this);
         _la = tokenStream.LA(1)!;
-        while ((((_la) & ~0x3f) == 0 && ((1 << _la) & 17301630) != 0)) {
-          state = 28;
-          pernyataan();
-          state = 33;
-          errorHandler.sync(this);
-          _la = tokenStream.LA(1)!;
-        }
-        break;
-      case 2:
-        enterOuterAlt(_localctx, 2);
-        state = 34;
-        match(TOKEN_EOF);
-        break;
       }
+      state = 12;
+      match(TOKEN_EOF);
     } on RecognitionException catch (re) {
       _localctx.exception = re;
       errorHandler.reportError(this, re);
@@ -125,376 +109,12 @@ class NusantaraLanguageParser extends Parser {
     dynamic _localctx = PernyataanContext(context, state);
     enterRule(_localctx, 2, RULE_pernyataan);
     try {
-      state = 54;
-      errorHandler.sync(this);
-      switch (interpreter!.adaptivePredict(tokenStream, 2, context)) {
-      case 1:
-        enterOuterAlt(_localctx, 1);
-        state = 37;
-        blok_kode();
-        break;
-      case 2:
-        enterOuterAlt(_localctx, 2);
-        state = 38;
-        buat_fungsi();
-        break;
-      case 3:
-        enterOuterAlt(_localctx, 3);
-        state = 39;
-        muat_file();
-        state = 40;
-        match(TOKEN_TITIK_KOMA);
-        break;
-      case 4:
-        enterOuterAlt(_localctx, 4);
-        state = 42;
-        panggil_fungsi();
-        state = 43;
-        match(TOKEN_TITIK_KOMA);
-        break;
-      case 5:
-        enterOuterAlt(_localctx, 5);
-        state = 45;
-        buat_variable();
-        state = 46;
-        match(TOKEN_TITIK_KOMA);
-        break;
-      case 6:
-        enterOuterAlt(_localctx, 6);
-        state = 48;
-        ngisi_variable();
-        state = 49;
-        match(TOKEN_TITIK_KOMA);
-        break;
-      case 7:
-        enterOuterAlt(_localctx, 7);
-        state = 51;
-        buat_dan_ngisi_variable();
-        state = 52;
-        match(TOKEN_TITIK_KOMA);
-        break;
-      }
-    } on RecognitionException catch (re) {
-      _localctx.exception = re;
-      errorHandler.reportError(this, re);
-      errorHandler.recover(this, re);
-    } finally {
-      exitRule();
-    }
-    return _localctx;
-  }
-
-  Muat_fileContext muat_file() {
-    dynamic _localctx = Muat_fileContext(context, state);
-    enterRule(_localctx, 4, RULE_muat_file);
-    try {
+      _localctx = PernyataanBuatDanNgisiVariableContext(_localctx);
       enterOuterAlt(_localctx, 1);
-      state = 56;
-      match(TOKEN_MUAT);
-      state = 57;
-      match(TOKEN_NILAI_KALIMAT);
-    } on RecognitionException catch (re) {
-      _localctx.exception = re;
-      errorHandler.reportError(this, re);
-      errorHandler.recover(this, re);
-    } finally {
-      exitRule();
-    }
-    return _localctx;
-  }
-
-  Blok_kodeContext blok_kode() {
-    dynamic _localctx = Blok_kodeContext(context, state);
-    enterRule(_localctx, 6, RULE_blok_kode);
-    int _la;
-    try {
-      enterOuterAlt(_localctx, 1);
-      state = 59;
-      match(TOKEN_KURUNG_KURAWAL_BUKA);
-      state = 63;
-      errorHandler.sync(this);
-      _la = tokenStream.LA(1)!;
-      while ((((_la) & ~0x3f) == 0 && ((1 << _la) & 17301630) != 0)) {
-        state = 60;
-        pernyataan();
-        state = 65;
-        errorHandler.sync(this);
-        _la = tokenStream.LA(1)!;
-      }
-      state = 66;
-      match(TOKEN_KURUNG_KURAWAL_TUTUP);
-    } on RecognitionException catch (re) {
-      _localctx.exception = re;
-      errorHandler.reportError(this, re);
-      errorHandler.recover(this, re);
-    } finally {
-      exitRule();
-    }
-    return _localctx;
-  }
-
-  Parameter_fungsi_kosongContext parameter_fungsi_kosong() {
-    dynamic _localctx = Parameter_fungsi_kosongContext(context, state);
-    enterRule(_localctx, 8, RULE_parameter_fungsi_kosong);
-    try {
-      enterOuterAlt(_localctx, 1);
-      state = 68;
-      match(TOKEN_KURUNG_BUKA);
-      state = 69;
-      match(TOKEN_KURUNG_TUTUP);
-    } on RecognitionException catch (re) {
-      _localctx.exception = re;
-      errorHandler.reportError(this, re);
-      errorHandler.recover(this, re);
-    } finally {
-      exitRule();
-    }
-    return _localctx;
-  }
-
-  Parameter_buat_fungsiContext parameter_buat_fungsi() {
-    dynamic _localctx = Parameter_buat_fungsiContext(context, state);
-    enterRule(_localctx, 10, RULE_parameter_buat_fungsi);
-    int _la;
-    try {
-      state = 89;
-      errorHandler.sync(this);
-      switch (interpreter!.adaptivePredict(tokenStream, 8, context)) {
-      case 1:
-        enterOuterAlt(_localctx, 1);
-        state = 71;
-        parameter_fungsi_kosong();
-        break;
-      case 2:
-        enterOuterAlt(_localctx, 2);
-        state = 72;
-        match(TOKEN_KURUNG_BUKA);
-        state = 75;
-        errorHandler.sync(this);
-        switch (interpreter!.adaptivePredict(tokenStream, 4, context)) {
-        case 1:
-          state = 73;
-          buat_variable();
-          break;
-        case 2:
-          state = 74;
-          buat_dan_ngisi_variable();
-          break;
-        }
-        state = 85;
-        errorHandler.sync(this);
-        _la = tokenStream.LA(1)!;
-        if (_la == TOKEN_KOMA) {
-          state = 77;
-          match(TOKEN_KOMA);
-          state = 82;
-          errorHandler.sync(this);
-          _la = tokenStream.LA(1)!;
-          while ((((_la) & ~0x3f) == 0 && ((1 << _la) & 124) != 0)) {
-            state = 80;
-            errorHandler.sync(this);
-            switch (interpreter!.adaptivePredict(tokenStream, 5, context)) {
-            case 1:
-              state = 78;
-              buat_variable();
-              break;
-            case 2:
-              state = 79;
-              buat_dan_ngisi_variable();
-              break;
-            }
-            state = 84;
-            errorHandler.sync(this);
-            _la = tokenStream.LA(1)!;
-          }
-        }
-
-        state = 87;
-        match(TOKEN_KURUNG_TUTUP);
-        break;
-      }
-    } on RecognitionException catch (re) {
-      _localctx.exception = re;
-      errorHandler.reportError(this, re);
-      errorHandler.recover(this, re);
-    } finally {
-      exitRule();
-    }
-    return _localctx;
-  }
-
-  Buat_fungsiContext buat_fungsi() {
-    dynamic _localctx = Buat_fungsiContext(context, state);
-    enterRule(_localctx, 12, RULE_buat_fungsi);
-    try {
-      enterOuterAlt(_localctx, 1);
-      state = 91;
-      match(TOKEN_IDENTIFIKASI);
-      state = 92;
-      parameter_buat_fungsi();
-      state = 93;
-      blok_kode();
-    } on RecognitionException catch (re) {
-      _localctx.exception = re;
-      errorHandler.reportError(this, re);
-      errorHandler.recover(this, re);
-    } finally {
-      exitRule();
-    }
-    return _localctx;
-  }
-
-  Parameter_panggil_fungsiContext parameter_panggil_fungsi() {
-    dynamic _localctx = Parameter_panggil_fungsiContext(context, state);
-    enterRule(_localctx, 14, RULE_parameter_panggil_fungsi);
-    int _la;
-    try {
-      state = 109;
-      errorHandler.sync(this);
-      switch (interpreter!.adaptivePredict(tokenStream, 11, context)) {
-      case 1:
-        enterOuterAlt(_localctx, 1);
-        state = 95;
-        parameter_fungsi_kosong();
-        break;
-      case 2:
-        enterOuterAlt(_localctx, 2);
-        state = 96;
-        match(TOKEN_KURUNG_BUKA);
-
-        state = 97;
-        nilai_variable();
-        state = 105;
-        errorHandler.sync(this);
-        _la = tokenStream.LA(1)!;
-        if (_la == TOKEN_KOMA) {
-          state = 98;
-          match(TOKEN_KOMA);
-          state = 102;
-          errorHandler.sync(this);
-          _la = tokenStream.LA(1)!;
-          while ((((_la) & ~0x3f) == 0 && ((1 << _la) & 3968) != 0)) {
-            state = 99;
-            nilai_variable();
-            state = 104;
-            errorHandler.sync(this);
-            _la = tokenStream.LA(1)!;
-          }
-        }
-
-        state = 107;
-        match(TOKEN_KURUNG_TUTUP);
-        break;
-      }
-    } on RecognitionException catch (re) {
-      _localctx.exception = re;
-      errorHandler.reportError(this, re);
-      errorHandler.recover(this, re);
-    } finally {
-      exitRule();
-    }
-    return _localctx;
-  }
-
-  Panggil_fungsiContext panggil_fungsi() {
-    dynamic _localctx = Panggil_fungsiContext(context, state);
-    enterRule(_localctx, 16, RULE_panggil_fungsi);
-    try {
-      enterOuterAlt(_localctx, 1);
-      state = 111;
-      match(TOKEN_IDENTIFIKASI);
-      state = 112;
-      parameter_panggil_fungsi();
-    } on RecognitionException catch (re) {
-      _localctx.exception = re;
-      errorHandler.reportError(this, re);
-      errorHandler.recover(this, re);
-    } finally {
-      exitRule();
-    }
-    return _localctx;
-  }
-
-  Tipe_data_variableContext tipe_data_variable() {
-    dynamic _localctx = Tipe_data_variableContext(context, state);
-    enterRule(_localctx, 18, RULE_tipe_data_variable);
-    int _la;
-    try {
-      enterOuterAlt(_localctx, 1);
-      state = 114;
-      _la = tokenStream.LA(1)!;
-      if (!((((_la) & ~0x3f) == 0 && ((1 << _la) & 124) != 0))) {
-      errorHandler.recoverInline(this);
-      } else {
-        if ( tokenStream.LA(1)! == IntStream.EOF ) matchedEOF = true;
-        errorHandler.reportMatch(this);
-        consume();
-      }
-    } on RecognitionException catch (re) {
-      _localctx.exception = re;
-      errorHandler.reportError(this, re);
-      errorHandler.recover(this, re);
-    } finally {
-      exitRule();
-    }
-    return _localctx;
-  }
-
-  Buat_variableContext buat_variable() {
-    dynamic _localctx = Buat_variableContext(context, state);
-    enterRule(_localctx, 20, RULE_buat_variable);
-    try {
-      enterOuterAlt(_localctx, 1);
-      state = 116;
-      tipe_data_variable();
-      state = 117;
-      match(TOKEN_IDENTIFIKASI);
-    } on RecognitionException catch (re) {
-      _localctx.exception = re;
-      errorHandler.reportError(this, re);
-      errorHandler.recover(this, re);
-    } finally {
-      exitRule();
-    }
-    return _localctx;
-  }
-
-  Nilai_variableContext nilai_variable() {
-    dynamic _localctx = Nilai_variableContext(context, state);
-    enterRule(_localctx, 22, RULE_nilai_variable);
-    int _la;
-    try {
-      enterOuterAlt(_localctx, 1);
-      state = 119;
-      _la = tokenStream.LA(1)!;
-      if (!((((_la) & ~0x3f) == 0 && ((1 << _la) & 3968) != 0))) {
-      errorHandler.recoverInline(this);
-      } else {
-        if ( tokenStream.LA(1)! == IntStream.EOF ) matchedEOF = true;
-        errorHandler.reportMatch(this);
-        consume();
-      }
-    } on RecognitionException catch (re) {
-      _localctx.exception = re;
-      errorHandler.reportError(this, re);
-      errorHandler.recover(this, re);
-    } finally {
-      exitRule();
-    }
-    return _localctx;
-  }
-
-  Ngisi_variableContext ngisi_variable() {
-    dynamic _localctx = Ngisi_variableContext(context, state);
-    enterRule(_localctx, 24, RULE_ngisi_variable);
-    try {
-      enterOuterAlt(_localctx, 1);
-      state = 121;
-      match(TOKEN_IDENTIFIKASI);
-      state = 122;
-      match(TOKEN_SAMA_DENGAN);
-      state = 123;
-      nilai_variable();
+      state = 14;
+      buat_dan_ngisi_variable();
+      state = 15;
+      match(TOKEN_TITIK_KOMA);
     } on RecognitionException catch (re) {
       _localctx.exception = re;
       errorHandler.reportError(this, re);
@@ -507,64 +127,69 @@ class NusantaraLanguageParser extends Parser {
 
   Buat_dan_ngisi_variableContext buat_dan_ngisi_variable() {
     dynamic _localctx = Buat_dan_ngisi_variableContext(context, state);
-    enterRule(_localctx, 26, RULE_buat_dan_ngisi_variable);
+    enterRule(_localctx, 4, RULE_buat_dan_ngisi_variable);
     try {
-      state = 145;
+      state = 37;
       errorHandler.sync(this);
       switch (tokenStream.LA(1)!) {
       case TOKEN_TIPE_DATA_BILANGAN_BULAT:
+        _localctx = BuatDanNgisiVariableBilanganBulatContext(_localctx);
         enterOuterAlt(_localctx, 1);
-        state = 125;
+        state = 17;
         match(TOKEN_TIPE_DATA_BILANGAN_BULAT);
-        state = 126;
+        state = 18;
         match(TOKEN_IDENTIFIKASI);
-        state = 127;
+        state = 19;
         match(TOKEN_SAMA_DENGAN);
-        state = 128;
+        state = 20;
         match(TOKEN_NILAI_BILANGAN_BULAT);
         break;
       case TOKEN_TIPE_DATA_BILANGAN_DESIMAL:
+        _localctx = BuatDanNgisiVariableBilanganDesimalContext(_localctx);
         enterOuterAlt(_localctx, 2);
-        state = 129;
+        state = 21;
         match(TOKEN_TIPE_DATA_BILANGAN_DESIMAL);
-        state = 130;
+        state = 22;
         match(TOKEN_IDENTIFIKASI);
-        state = 131;
+        state = 23;
         match(TOKEN_SAMA_DENGAN);
-        state = 132;
+        state = 24;
         match(TOKEN_NILAI_BILANGAN_DESIMAL);
         break;
       case TOKEN_TIPE_DATA_KARAKTER:
+        _localctx = BuatDanNgisiVariableKarakterContext(_localctx);
         enterOuterAlt(_localctx, 3);
-        state = 133;
+        state = 25;
         match(TOKEN_TIPE_DATA_KARAKTER);
-        state = 134;
+        state = 26;
         match(TOKEN_IDENTIFIKASI);
-        state = 135;
+        state = 27;
         match(TOKEN_SAMA_DENGAN);
-        state = 136;
+        state = 28;
         match(TOKEN_NILAI_KARAKTER);
         break;
       case TOKEN_TIPE_DATA_KALIMAT:
+        _localctx = BuatDanNgisiVariableKalimatContext(_localctx);
         enterOuterAlt(_localctx, 4);
-        state = 137;
+        state = 29;
         match(TOKEN_TIPE_DATA_KALIMAT);
-        state = 138;
+        state = 30;
         match(TOKEN_IDENTIFIKASI);
-        state = 139;
+        state = 31;
         match(TOKEN_SAMA_DENGAN);
-        state = 140;
+        state = 32;
         match(TOKEN_NILAI_KALIMAT);
         break;
       case TOKEN_TIPE_DATA_BOOLEAN:
+        _localctx = BuatDanNgisiVariableBooleanContext(_localctx);
         enterOuterAlt(_localctx, 5);
-        state = 141;
+        state = 33;
         match(TOKEN_TIPE_DATA_BOOLEAN);
-        state = 142;
+        state = 34;
         match(TOKEN_IDENTIFIKASI);
-        state = 143;
+        state = 35;
         match(TOKEN_SAMA_DENGAN);
-        state = 144;
+        state = 36;
         match(TOKEN_NILAI_BOOLEAN);
         break;
       default:
@@ -581,62 +206,27 @@ class NusantaraLanguageParser extends Parser {
   }
 
   static const List<int> _serializedATN = [
-      4,1,39,148,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,
-      2,7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,1,
-      0,5,0,30,8,0,10,0,12,0,33,9,0,1,0,3,0,36,8,0,1,1,1,1,1,1,1,1,1,1,1,
-      1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,1,55,8,1,1,2,1,2,1,
-      2,1,3,1,3,5,3,62,8,3,10,3,12,3,65,9,3,1,3,1,3,1,4,1,4,1,4,1,5,1,5,
-      1,5,1,5,3,5,76,8,5,1,5,1,5,1,5,5,5,81,8,5,10,5,12,5,84,9,5,3,5,86,
-      8,5,1,5,1,5,3,5,90,8,5,1,6,1,6,1,6,1,6,1,7,1,7,1,7,1,7,1,7,5,7,101,
-      8,7,10,7,12,7,104,9,7,3,7,106,8,7,1,7,1,7,3,7,110,8,7,1,8,1,8,1,8,
-      1,9,1,9,1,10,1,10,1,10,1,11,1,11,1,12,1,12,1,12,1,12,1,13,1,13,1,13,
-      1,13,1,13,1,13,1,13,1,13,1,13,1,13,1,13,1,13,1,13,1,13,1,13,1,13,1,
-      13,1,13,1,13,1,13,3,13,146,8,13,1,13,0,0,14,0,2,4,6,8,10,12,14,16,
-      18,20,22,24,26,0,2,1,0,2,6,1,0,7,11,154,0,35,1,0,0,0,2,54,1,0,0,0,
-      4,56,1,0,0,0,6,59,1,0,0,0,8,68,1,0,0,0,10,89,1,0,0,0,12,91,1,0,0,0,
-      14,109,1,0,0,0,16,111,1,0,0,0,18,114,1,0,0,0,20,116,1,0,0,0,22,119,
-      1,0,0,0,24,121,1,0,0,0,26,145,1,0,0,0,28,30,3,2,1,0,29,28,1,0,0,0,
-      30,33,1,0,0,0,31,29,1,0,0,0,31,32,1,0,0,0,32,36,1,0,0,0,33,31,1,0,
-      0,0,34,36,5,0,0,1,35,31,1,0,0,0,35,34,1,0,0,0,36,1,1,0,0,0,37,55,3,
-      6,3,0,38,55,3,12,6,0,39,40,3,4,2,0,40,41,5,21,0,0,41,55,1,0,0,0,42,
-      43,3,16,8,0,43,44,5,21,0,0,44,55,1,0,0,0,45,46,3,20,10,0,46,47,5,21,
-      0,0,47,55,1,0,0,0,48,49,3,24,12,0,49,50,5,21,0,0,50,55,1,0,0,0,51,
-      52,3,26,13,0,52,53,5,21,0,0,53,55,1,0,0,0,54,37,1,0,0,0,54,38,1,0,
-      0,0,54,39,1,0,0,0,54,42,1,0,0,0,54,45,1,0,0,0,54,48,1,0,0,0,54,51,
-      1,0,0,0,55,3,1,0,0,0,56,57,5,1,0,0,57,58,5,10,0,0,58,5,1,0,0,0,59,
-      63,5,24,0,0,60,62,3,2,1,0,61,60,1,0,0,0,62,65,1,0,0,0,63,61,1,0,0,
-      0,63,64,1,0,0,0,64,66,1,0,0,0,65,63,1,0,0,0,66,67,5,25,0,0,67,7,1,
-      0,0,0,68,69,5,22,0,0,69,70,5,23,0,0,70,9,1,0,0,0,71,90,3,8,4,0,72,
-      75,5,22,0,0,73,76,3,20,10,0,74,76,3,26,13,0,75,73,1,0,0,0,75,74,1,
-      0,0,0,76,85,1,0,0,0,77,82,5,34,0,0,78,81,3,20,10,0,79,81,3,26,13,0,
-      80,78,1,0,0,0,80,79,1,0,0,0,81,84,1,0,0,0,82,80,1,0,0,0,82,83,1,0,
-      0,0,83,86,1,0,0,0,84,82,1,0,0,0,85,77,1,0,0,0,85,86,1,0,0,0,86,87,
-      1,0,0,0,87,88,5,23,0,0,88,90,1,0,0,0,89,71,1,0,0,0,89,72,1,0,0,0,90,
-      11,1,0,0,0,91,92,5,19,0,0,92,93,3,10,5,0,93,94,3,6,3,0,94,13,1,0,0,
-      0,95,110,3,8,4,0,96,97,5,22,0,0,97,105,3,22,11,0,98,102,5,34,0,0,99,
-      101,3,22,11,0,100,99,1,0,0,0,101,104,1,0,0,0,102,100,1,0,0,0,102,103,
-      1,0,0,0,103,106,1,0,0,0,104,102,1,0,0,0,105,98,1,0,0,0,105,106,1,0,
-      0,0,106,107,1,0,0,0,107,108,5,23,0,0,108,110,1,0,0,0,109,95,1,0,0,
-      0,109,96,1,0,0,0,110,15,1,0,0,0,111,112,5,19,0,0,112,113,3,14,7,0,
-      113,17,1,0,0,0,114,115,7,0,0,0,115,19,1,0,0,0,116,117,3,18,9,0,117,
-      118,5,19,0,0,118,21,1,0,0,0,119,120,7,1,0,0,120,23,1,0,0,0,121,122,
-      5,19,0,0,122,123,5,20,0,0,123,124,3,22,11,0,124,25,1,0,0,0,125,126,
-      5,2,0,0,126,127,5,19,0,0,127,128,5,20,0,0,128,146,5,7,0,0,129,130,
-      5,3,0,0,130,131,5,19,0,0,131,132,5,20,0,0,132,146,5,8,0,0,133,134,
-      5,4,0,0,134,135,5,19,0,0,135,136,5,20,0,0,136,146,5,9,0,0,137,138,
-      5,5,0,0,138,139,5,19,0,0,139,140,5,20,0,0,140,146,5,10,0,0,141,142,
-      5,6,0,0,142,143,5,19,0,0,143,144,5,20,0,0,144,146,5,11,0,0,145,125,
-      1,0,0,0,145,129,1,0,0,0,145,133,1,0,0,0,145,137,1,0,0,0,145,141,1,
-      0,0,0,146,27,1,0,0,0,13,31,35,54,63,75,80,82,85,89,102,105,109,145
+      4,1,39,40,2,0,7,0,2,1,7,1,2,2,7,2,1,0,5,0,8,8,0,10,0,12,0,11,9,0,1,
+      0,1,0,1,1,1,1,1,1,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,
+      1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,3,2,38,8,2,1,2,0,0,3,0,2,4,0,0,41,
+      0,9,1,0,0,0,2,14,1,0,0,0,4,37,1,0,0,0,6,8,3,2,1,0,7,6,1,0,0,0,8,11,
+      1,0,0,0,9,7,1,0,0,0,9,10,1,0,0,0,10,12,1,0,0,0,11,9,1,0,0,0,12,13,
+      5,0,0,1,13,1,1,0,0,0,14,15,3,4,2,0,15,16,5,21,0,0,16,3,1,0,0,0,17,
+      18,5,2,0,0,18,19,5,19,0,0,19,20,5,20,0,0,20,38,5,7,0,0,21,22,5,3,0,
+      0,22,23,5,19,0,0,23,24,5,20,0,0,24,38,5,8,0,0,25,26,5,4,0,0,26,27,
+      5,19,0,0,27,28,5,20,0,0,28,38,5,9,0,0,29,30,5,5,0,0,30,31,5,19,0,0,
+      31,32,5,20,0,0,32,38,5,10,0,0,33,34,5,6,0,0,34,35,5,19,0,0,35,36,5,
+      20,0,0,36,38,5,11,0,0,37,17,1,0,0,0,37,21,1,0,0,0,37,25,1,0,0,0,37,
+      29,1,0,0,0,37,33,1,0,0,0,38,5,1,0,0,0,2,9,37
   ];
 
   static final ATN _ATN =
       ATNDeserializer().deserialize(_serializedATN);
 }
 class NusantaraContext extends ParserRuleContext {
+  TerminalNode? EOF() => getToken(NusantaraLanguageParser.TOKEN_EOF, 0);
   List<PernyataanContext> pernyataans() => getRuleContexts<PernyataanContext>();
   PernyataanContext? pernyataan(int i) => getRuleContext<PernyataanContext>(i);
-  TerminalNode? EOF() => getToken(NusantaraLanguageParser.TOKEN_EOF, 0);
   NusantaraContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
   @override
   int get ruleIndex => RULE_nusantara;
@@ -659,350 +249,163 @@ class NusantaraContext extends ParserRuleContext {
 }
 
 class PernyataanContext extends ParserRuleContext {
-  Blok_kodeContext? blok_kode() => getRuleContext<Blok_kodeContext>(0);
-  Buat_fungsiContext? buat_fungsi() => getRuleContext<Buat_fungsiContext>(0);
-  Muat_fileContext? muat_file() => getRuleContext<Muat_fileContext>(0);
-  TerminalNode? TITIK_KOMA() => getToken(NusantaraLanguageParser.TOKEN_TITIK_KOMA, 0);
-  Panggil_fungsiContext? panggil_fungsi() => getRuleContext<Panggil_fungsiContext>(0);
-  Buat_variableContext? buat_variable() => getRuleContext<Buat_variableContext>(0);
-  Ngisi_variableContext? ngisi_variable() => getRuleContext<Ngisi_variableContext>(0);
-  Buat_dan_ngisi_variableContext? buat_dan_ngisi_variable() => getRuleContext<Buat_dan_ngisi_variableContext>(0);
   PernyataanContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
   @override
   int get ruleIndex => RULE_pernyataan;
+ 
   @override
-  void enterRule(ParseTreeListener listener) {
-    if (listener is NusantaraLanguageParserListener) listener.enterPernyataan(this);
-  }
-  @override
-  void exitRule(ParseTreeListener listener) {
-    if (listener is NusantaraLanguageParserListener) listener.exitPernyataan(this);
-  }
-  @override
-  T? accept<T>(ParseTreeVisitor<T> visitor) {
-    if (visitor is NusantaraLanguageParserVisitor<T>) {
-     return visitor.visitPernyataan(this);
-    } else {
-    	return visitor.visitChildren(this);
-    }
-  }
-}
-
-class Muat_fileContext extends ParserRuleContext {
-  TerminalNode? MUAT() => getToken(NusantaraLanguageParser.TOKEN_MUAT, 0);
-  TerminalNode? NILAI_KALIMAT() => getToken(NusantaraLanguageParser.TOKEN_NILAI_KALIMAT, 0);
-  Muat_fileContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
-  @override
-  int get ruleIndex => RULE_muat_file;
-  @override
-  void enterRule(ParseTreeListener listener) {
-    if (listener is NusantaraLanguageParserListener) listener.enterMuat_file(this);
-  }
-  @override
-  void exitRule(ParseTreeListener listener) {
-    if (listener is NusantaraLanguageParserListener) listener.exitMuat_file(this);
-  }
-  @override
-  T? accept<T>(ParseTreeVisitor<T> visitor) {
-    if (visitor is NusantaraLanguageParserVisitor<T>) {
-     return visitor.visitMuat_file(this);
-    } else {
-    	return visitor.visitChildren(this);
-    }
-  }
-}
-
-class Blok_kodeContext extends ParserRuleContext {
-  TerminalNode? KURUNG_KURAWAL_BUKA() => getToken(NusantaraLanguageParser.TOKEN_KURUNG_KURAWAL_BUKA, 0);
-  TerminalNode? KURUNG_KURAWAL_TUTUP() => getToken(NusantaraLanguageParser.TOKEN_KURUNG_KURAWAL_TUTUP, 0);
-  List<PernyataanContext> pernyataans() => getRuleContexts<PernyataanContext>();
-  PernyataanContext? pernyataan(int i) => getRuleContext<PernyataanContext>(i);
-  Blok_kodeContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
-  @override
-  int get ruleIndex => RULE_blok_kode;
-  @override
-  void enterRule(ParseTreeListener listener) {
-    if (listener is NusantaraLanguageParserListener) listener.enterBlok_kode(this);
-  }
-  @override
-  void exitRule(ParseTreeListener listener) {
-    if (listener is NusantaraLanguageParserListener) listener.exitBlok_kode(this);
-  }
-  @override
-  T? accept<T>(ParseTreeVisitor<T> visitor) {
-    if (visitor is NusantaraLanguageParserVisitor<T>) {
-     return visitor.visitBlok_kode(this);
-    } else {
-    	return visitor.visitChildren(this);
-    }
-  }
-}
-
-class Parameter_fungsi_kosongContext extends ParserRuleContext {
-  TerminalNode? KURUNG_BUKA() => getToken(NusantaraLanguageParser.TOKEN_KURUNG_BUKA, 0);
-  TerminalNode? KURUNG_TUTUP() => getToken(NusantaraLanguageParser.TOKEN_KURUNG_TUTUP, 0);
-  Parameter_fungsi_kosongContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
-  @override
-  int get ruleIndex => RULE_parameter_fungsi_kosong;
-  @override
-  void enterRule(ParseTreeListener listener) {
-    if (listener is NusantaraLanguageParserListener) listener.enterParameter_fungsi_kosong(this);
-  }
-  @override
-  void exitRule(ParseTreeListener listener) {
-    if (listener is NusantaraLanguageParserListener) listener.exitParameter_fungsi_kosong(this);
-  }
-  @override
-  T? accept<T>(ParseTreeVisitor<T> visitor) {
-    if (visitor is NusantaraLanguageParserVisitor<T>) {
-     return visitor.visitParameter_fungsi_kosong(this);
-    } else {
-    	return visitor.visitChildren(this);
-    }
-  }
-}
-
-class Parameter_buat_fungsiContext extends ParserRuleContext {
-  Parameter_fungsi_kosongContext? parameter_fungsi_kosong() => getRuleContext<Parameter_fungsi_kosongContext>(0);
-  TerminalNode? KURUNG_BUKA() => getToken(NusantaraLanguageParser.TOKEN_KURUNG_BUKA, 0);
-  TerminalNode? KURUNG_TUTUP() => getToken(NusantaraLanguageParser.TOKEN_KURUNG_TUTUP, 0);
-  List<Buat_variableContext> buat_variables() => getRuleContexts<Buat_variableContext>();
-  Buat_variableContext? buat_variable(int i) => getRuleContext<Buat_variableContext>(i);
-  List<Buat_dan_ngisi_variableContext> buat_dan_ngisi_variables() => getRuleContexts<Buat_dan_ngisi_variableContext>();
-  Buat_dan_ngisi_variableContext? buat_dan_ngisi_variable(int i) => getRuleContext<Buat_dan_ngisi_variableContext>(i);
-  TerminalNode? KOMA() => getToken(NusantaraLanguageParser.TOKEN_KOMA, 0);
-  Parameter_buat_fungsiContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
-  @override
-  int get ruleIndex => RULE_parameter_buat_fungsi;
-  @override
-  void enterRule(ParseTreeListener listener) {
-    if (listener is NusantaraLanguageParserListener) listener.enterParameter_buat_fungsi(this);
-  }
-  @override
-  void exitRule(ParseTreeListener listener) {
-    if (listener is NusantaraLanguageParserListener) listener.exitParameter_buat_fungsi(this);
-  }
-  @override
-  T? accept<T>(ParseTreeVisitor<T> visitor) {
-    if (visitor is NusantaraLanguageParserVisitor<T>) {
-     return visitor.visitParameter_buat_fungsi(this);
-    } else {
-    	return visitor.visitChildren(this);
-    }
-  }
-}
-
-class Buat_fungsiContext extends ParserRuleContext {
-  TerminalNode? IDENTIFIKASI() => getToken(NusantaraLanguageParser.TOKEN_IDENTIFIKASI, 0);
-  Parameter_buat_fungsiContext? parameter_buat_fungsi() => getRuleContext<Parameter_buat_fungsiContext>(0);
-  Blok_kodeContext? blok_kode() => getRuleContext<Blok_kodeContext>(0);
-  Buat_fungsiContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
-  @override
-  int get ruleIndex => RULE_buat_fungsi;
-  @override
-  void enterRule(ParseTreeListener listener) {
-    if (listener is NusantaraLanguageParserListener) listener.enterBuat_fungsi(this);
-  }
-  @override
-  void exitRule(ParseTreeListener listener) {
-    if (listener is NusantaraLanguageParserListener) listener.exitBuat_fungsi(this);
-  }
-  @override
-  T? accept<T>(ParseTreeVisitor<T> visitor) {
-    if (visitor is NusantaraLanguageParserVisitor<T>) {
-     return visitor.visitBuat_fungsi(this);
-    } else {
-    	return visitor.visitChildren(this);
-    }
-  }
-}
-
-class Parameter_panggil_fungsiContext extends ParserRuleContext {
-  Parameter_fungsi_kosongContext? parameter_fungsi_kosong() => getRuleContext<Parameter_fungsi_kosongContext>(0);
-  TerminalNode? KURUNG_BUKA() => getToken(NusantaraLanguageParser.TOKEN_KURUNG_BUKA, 0);
-  TerminalNode? KURUNG_TUTUP() => getToken(NusantaraLanguageParser.TOKEN_KURUNG_TUTUP, 0);
-  List<Nilai_variableContext> nilai_variables() => getRuleContexts<Nilai_variableContext>();
-  Nilai_variableContext? nilai_variable(int i) => getRuleContext<Nilai_variableContext>(i);
-  TerminalNode? KOMA() => getToken(NusantaraLanguageParser.TOKEN_KOMA, 0);
-  Parameter_panggil_fungsiContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
-  @override
-  int get ruleIndex => RULE_parameter_panggil_fungsi;
-  @override
-  void enterRule(ParseTreeListener listener) {
-    if (listener is NusantaraLanguageParserListener) listener.enterParameter_panggil_fungsi(this);
-  }
-  @override
-  void exitRule(ParseTreeListener listener) {
-    if (listener is NusantaraLanguageParserListener) listener.exitParameter_panggil_fungsi(this);
-  }
-  @override
-  T? accept<T>(ParseTreeVisitor<T> visitor) {
-    if (visitor is NusantaraLanguageParserVisitor<T>) {
-     return visitor.visitParameter_panggil_fungsi(this);
-    } else {
-    	return visitor.visitChildren(this);
-    }
-  }
-}
-
-class Panggil_fungsiContext extends ParserRuleContext {
-  TerminalNode? IDENTIFIKASI() => getToken(NusantaraLanguageParser.TOKEN_IDENTIFIKASI, 0);
-  Parameter_panggil_fungsiContext? parameter_panggil_fungsi() => getRuleContext<Parameter_panggil_fungsiContext>(0);
-  Panggil_fungsiContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
-  @override
-  int get ruleIndex => RULE_panggil_fungsi;
-  @override
-  void enterRule(ParseTreeListener listener) {
-    if (listener is NusantaraLanguageParserListener) listener.enterPanggil_fungsi(this);
-  }
-  @override
-  void exitRule(ParseTreeListener listener) {
-    if (listener is NusantaraLanguageParserListener) listener.exitPanggil_fungsi(this);
-  }
-  @override
-  T? accept<T>(ParseTreeVisitor<T> visitor) {
-    if (visitor is NusantaraLanguageParserVisitor<T>) {
-     return visitor.visitPanggil_fungsi(this);
-    } else {
-    	return visitor.visitChildren(this);
-    }
-  }
-}
-
-class Tipe_data_variableContext extends ParserRuleContext {
-  TerminalNode? TIPE_DATA_BILANGAN_BULAT() => getToken(NusantaraLanguageParser.TOKEN_TIPE_DATA_BILANGAN_BULAT, 0);
-  TerminalNode? TIPE_DATA_BILANGAN_DESIMAL() => getToken(NusantaraLanguageParser.TOKEN_TIPE_DATA_BILANGAN_DESIMAL, 0);
-  TerminalNode? TIPE_DATA_KARAKTER() => getToken(NusantaraLanguageParser.TOKEN_TIPE_DATA_KARAKTER, 0);
-  TerminalNode? TIPE_DATA_KALIMAT() => getToken(NusantaraLanguageParser.TOKEN_TIPE_DATA_KALIMAT, 0);
-  TerminalNode? TIPE_DATA_BOOLEAN() => getToken(NusantaraLanguageParser.TOKEN_TIPE_DATA_BOOLEAN, 0);
-  Tipe_data_variableContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
-  @override
-  int get ruleIndex => RULE_tipe_data_variable;
-  @override
-  void enterRule(ParseTreeListener listener) {
-    if (listener is NusantaraLanguageParserListener) listener.enterTipe_data_variable(this);
-  }
-  @override
-  void exitRule(ParseTreeListener listener) {
-    if (listener is NusantaraLanguageParserListener) listener.exitTipe_data_variable(this);
-  }
-  @override
-  T? accept<T>(ParseTreeVisitor<T> visitor) {
-    if (visitor is NusantaraLanguageParserVisitor<T>) {
-     return visitor.visitTipe_data_variable(this);
-    } else {
-    	return visitor.visitChildren(this);
-    }
-  }
-}
-
-class Buat_variableContext extends ParserRuleContext {
-  Tipe_data_variableContext? tipe_data_variable() => getRuleContext<Tipe_data_variableContext>(0);
-  TerminalNode? IDENTIFIKASI() => getToken(NusantaraLanguageParser.TOKEN_IDENTIFIKASI, 0);
-  Buat_variableContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
-  @override
-  int get ruleIndex => RULE_buat_variable;
-  @override
-  void enterRule(ParseTreeListener listener) {
-    if (listener is NusantaraLanguageParserListener) listener.enterBuat_variable(this);
-  }
-  @override
-  void exitRule(ParseTreeListener listener) {
-    if (listener is NusantaraLanguageParserListener) listener.exitBuat_variable(this);
-  }
-  @override
-  T? accept<T>(ParseTreeVisitor<T> visitor) {
-    if (visitor is NusantaraLanguageParserVisitor<T>) {
-     return visitor.visitBuat_variable(this);
-    } else {
-    	return visitor.visitChildren(this);
-    }
-  }
-}
-
-class Nilai_variableContext extends ParserRuleContext {
-  TerminalNode? NILAI_BILANGAN_BULAT() => getToken(NusantaraLanguageParser.TOKEN_NILAI_BILANGAN_BULAT, 0);
-  TerminalNode? NILAI_BILANGAN_DESIMAL() => getToken(NusantaraLanguageParser.TOKEN_NILAI_BILANGAN_DESIMAL, 0);
-  TerminalNode? NILAI_KARAKTER() => getToken(NusantaraLanguageParser.TOKEN_NILAI_KARAKTER, 0);
-  TerminalNode? NILAI_KALIMAT() => getToken(NusantaraLanguageParser.TOKEN_NILAI_KALIMAT, 0);
-  TerminalNode? NILAI_BOOLEAN() => getToken(NusantaraLanguageParser.TOKEN_NILAI_BOOLEAN, 0);
-  Nilai_variableContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
-  @override
-  int get ruleIndex => RULE_nilai_variable;
-  @override
-  void enterRule(ParseTreeListener listener) {
-    if (listener is NusantaraLanguageParserListener) listener.enterNilai_variable(this);
-  }
-  @override
-  void exitRule(ParseTreeListener listener) {
-    if (listener is NusantaraLanguageParserListener) listener.exitNilai_variable(this);
-  }
-  @override
-  T? accept<T>(ParseTreeVisitor<T> visitor) {
-    if (visitor is NusantaraLanguageParserVisitor<T>) {
-     return visitor.visitNilai_variable(this);
-    } else {
-    	return visitor.visitChildren(this);
-    }
-  }
-}
-
-class Ngisi_variableContext extends ParserRuleContext {
-  TerminalNode? IDENTIFIKASI() => getToken(NusantaraLanguageParser.TOKEN_IDENTIFIKASI, 0);
-  TerminalNode? SAMA_DENGAN() => getToken(NusantaraLanguageParser.TOKEN_SAMA_DENGAN, 0);
-  Nilai_variableContext? nilai_variable() => getRuleContext<Nilai_variableContext>(0);
-  Ngisi_variableContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
-  @override
-  int get ruleIndex => RULE_ngisi_variable;
-  @override
-  void enterRule(ParseTreeListener listener) {
-    if (listener is NusantaraLanguageParserListener) listener.enterNgisi_variable(this);
-  }
-  @override
-  void exitRule(ParseTreeListener listener) {
-    if (listener is NusantaraLanguageParserListener) listener.exitNgisi_variable(this);
-  }
-  @override
-  T? accept<T>(ParseTreeVisitor<T> visitor) {
-    if (visitor is NusantaraLanguageParserVisitor<T>) {
-     return visitor.visitNgisi_variable(this);
-    } else {
-    	return visitor.visitChildren(this);
-    }
+  void copyFrom(ParserRuleContext ctx) {
+    super.copyFrom(ctx);
   }
 }
 
 class Buat_dan_ngisi_variableContext extends ParserRuleContext {
-  TerminalNode? TIPE_DATA_BILANGAN_BULAT() => getToken(NusantaraLanguageParser.TOKEN_TIPE_DATA_BILANGAN_BULAT, 0);
-  TerminalNode? IDENTIFIKASI() => getToken(NusantaraLanguageParser.TOKEN_IDENTIFIKASI, 0);
-  TerminalNode? SAMA_DENGAN() => getToken(NusantaraLanguageParser.TOKEN_SAMA_DENGAN, 0);
-  TerminalNode? NILAI_BILANGAN_BULAT() => getToken(NusantaraLanguageParser.TOKEN_NILAI_BILANGAN_BULAT, 0);
-  TerminalNode? TIPE_DATA_BILANGAN_DESIMAL() => getToken(NusantaraLanguageParser.TOKEN_TIPE_DATA_BILANGAN_DESIMAL, 0);
-  TerminalNode? NILAI_BILANGAN_DESIMAL() => getToken(NusantaraLanguageParser.TOKEN_NILAI_BILANGAN_DESIMAL, 0);
-  TerminalNode? TIPE_DATA_KARAKTER() => getToken(NusantaraLanguageParser.TOKEN_TIPE_DATA_KARAKTER, 0);
-  TerminalNode? NILAI_KARAKTER() => getToken(NusantaraLanguageParser.TOKEN_NILAI_KARAKTER, 0);
-  TerminalNode? TIPE_DATA_KALIMAT() => getToken(NusantaraLanguageParser.TOKEN_TIPE_DATA_KALIMAT, 0);
-  TerminalNode? NILAI_KALIMAT() => getToken(NusantaraLanguageParser.TOKEN_NILAI_KALIMAT, 0);
-  TerminalNode? TIPE_DATA_BOOLEAN() => getToken(NusantaraLanguageParser.TOKEN_TIPE_DATA_BOOLEAN, 0);
-  TerminalNode? NILAI_BOOLEAN() => getToken(NusantaraLanguageParser.TOKEN_NILAI_BOOLEAN, 0);
   Buat_dan_ngisi_variableContext([ParserRuleContext? parent, int? invokingState]) : super(parent, invokingState);
   @override
   int get ruleIndex => RULE_buat_dan_ngisi_variable;
+ 
+  @override
+  void copyFrom(ParserRuleContext ctx) {
+    super.copyFrom(ctx);
+  }
+}
+
+class PernyataanBuatDanNgisiVariableContext extends PernyataanContext {
+  Buat_dan_ngisi_variableContext? buat_dan_ngisi_variable() => getRuleContext<Buat_dan_ngisi_variableContext>(0);
+  TerminalNode? TITIK_KOMA() => getToken(NusantaraLanguageParser.TOKEN_TITIK_KOMA, 0);
+  PernyataanBuatDanNgisiVariableContext(PernyataanContext ctx) { copyFrom(ctx); }
   @override
   void enterRule(ParseTreeListener listener) {
-    if (listener is NusantaraLanguageParserListener) listener.enterBuat_dan_ngisi_variable(this);
+    if (listener is NusantaraLanguageParserListener) listener.enterPernyataanBuatDanNgisiVariable(this);
   }
   @override
   void exitRule(ParseTreeListener listener) {
-    if (listener is NusantaraLanguageParserListener) listener.exitBuat_dan_ngisi_variable(this);
+    if (listener is NusantaraLanguageParserListener) listener.exitPernyataanBuatDanNgisiVariable(this);
   }
   @override
   T? accept<T>(ParseTreeVisitor<T> visitor) {
     if (visitor is NusantaraLanguageParserVisitor<T>) {
-     return visitor.visitBuat_dan_ngisi_variable(this);
+     return visitor.visitPernyataanBuatDanNgisiVariable(this);
+    } else {
+    	return visitor.visitChildren(this);
+    }
+  }
+}class BuatDanNgisiVariableBilanganBulatContext extends Buat_dan_ngisi_variableContext {
+  TerminalNode? TIPE_DATA_BILANGAN_BULAT() => getToken(NusantaraLanguageParser.TOKEN_TIPE_DATA_BILANGAN_BULAT, 0);
+  TerminalNode? IDENTIFIKASI() => getToken(NusantaraLanguageParser.TOKEN_IDENTIFIKASI, 0);
+  TerminalNode? SAMA_DENGAN() => getToken(NusantaraLanguageParser.TOKEN_SAMA_DENGAN, 0);
+  TerminalNode? NILAI_BILANGAN_BULAT() => getToken(NusantaraLanguageParser.TOKEN_NILAI_BILANGAN_BULAT, 0);
+  BuatDanNgisiVariableBilanganBulatContext(Buat_dan_ngisi_variableContext ctx) { copyFrom(ctx); }
+  @override
+  void enterRule(ParseTreeListener listener) {
+    if (listener is NusantaraLanguageParserListener) listener.enterBuatDanNgisiVariableBilanganBulat(this);
+  }
+  @override
+  void exitRule(ParseTreeListener listener) {
+    if (listener is NusantaraLanguageParserListener) listener.exitBuatDanNgisiVariableBilanganBulat(this);
+  }
+  @override
+  T? accept<T>(ParseTreeVisitor<T> visitor) {
+    if (visitor is NusantaraLanguageParserVisitor<T>) {
+     return visitor.visitBuatDanNgisiVariableBilanganBulat(this);
     } else {
     	return visitor.visitChildren(this);
     }
   }
 }
 
+class BuatDanNgisiVariableKalimatContext extends Buat_dan_ngisi_variableContext {
+  TerminalNode? TIPE_DATA_KALIMAT() => getToken(NusantaraLanguageParser.TOKEN_TIPE_DATA_KALIMAT, 0);
+  TerminalNode? IDENTIFIKASI() => getToken(NusantaraLanguageParser.TOKEN_IDENTIFIKASI, 0);
+  TerminalNode? SAMA_DENGAN() => getToken(NusantaraLanguageParser.TOKEN_SAMA_DENGAN, 0);
+  TerminalNode? NILAI_KALIMAT() => getToken(NusantaraLanguageParser.TOKEN_NILAI_KALIMAT, 0);
+  BuatDanNgisiVariableKalimatContext(Buat_dan_ngisi_variableContext ctx) { copyFrom(ctx); }
+  @override
+  void enterRule(ParseTreeListener listener) {
+    if (listener is NusantaraLanguageParserListener) listener.enterBuatDanNgisiVariableKalimat(this);
+  }
+  @override
+  void exitRule(ParseTreeListener listener) {
+    if (listener is NusantaraLanguageParserListener) listener.exitBuatDanNgisiVariableKalimat(this);
+  }
+  @override
+  T? accept<T>(ParseTreeVisitor<T> visitor) {
+    if (visitor is NusantaraLanguageParserVisitor<T>) {
+     return visitor.visitBuatDanNgisiVariableKalimat(this);
+    } else {
+    	return visitor.visitChildren(this);
+    }
+  }
+}
+
+class BuatDanNgisiVariableBooleanContext extends Buat_dan_ngisi_variableContext {
+  TerminalNode? TIPE_DATA_BOOLEAN() => getToken(NusantaraLanguageParser.TOKEN_TIPE_DATA_BOOLEAN, 0);
+  TerminalNode? IDENTIFIKASI() => getToken(NusantaraLanguageParser.TOKEN_IDENTIFIKASI, 0);
+  TerminalNode? SAMA_DENGAN() => getToken(NusantaraLanguageParser.TOKEN_SAMA_DENGAN, 0);
+  TerminalNode? NILAI_BOOLEAN() => getToken(NusantaraLanguageParser.TOKEN_NILAI_BOOLEAN, 0);
+  BuatDanNgisiVariableBooleanContext(Buat_dan_ngisi_variableContext ctx) { copyFrom(ctx); }
+  @override
+  void enterRule(ParseTreeListener listener) {
+    if (listener is NusantaraLanguageParserListener) listener.enterBuatDanNgisiVariableBoolean(this);
+  }
+  @override
+  void exitRule(ParseTreeListener listener) {
+    if (listener is NusantaraLanguageParserListener) listener.exitBuatDanNgisiVariableBoolean(this);
+  }
+  @override
+  T? accept<T>(ParseTreeVisitor<T> visitor) {
+    if (visitor is NusantaraLanguageParserVisitor<T>) {
+     return visitor.visitBuatDanNgisiVariableBoolean(this);
+    } else {
+    	return visitor.visitChildren(this);
+    }
+  }
+}
+
+class BuatDanNgisiVariableBilanganDesimalContext extends Buat_dan_ngisi_variableContext {
+  TerminalNode? TIPE_DATA_BILANGAN_DESIMAL() => getToken(NusantaraLanguageParser.TOKEN_TIPE_DATA_BILANGAN_DESIMAL, 0);
+  TerminalNode? IDENTIFIKASI() => getToken(NusantaraLanguageParser.TOKEN_IDENTIFIKASI, 0);
+  TerminalNode? SAMA_DENGAN() => getToken(NusantaraLanguageParser.TOKEN_SAMA_DENGAN, 0);
+  TerminalNode? NILAI_BILANGAN_DESIMAL() => getToken(NusantaraLanguageParser.TOKEN_NILAI_BILANGAN_DESIMAL, 0);
+  BuatDanNgisiVariableBilanganDesimalContext(Buat_dan_ngisi_variableContext ctx) { copyFrom(ctx); }
+  @override
+  void enterRule(ParseTreeListener listener) {
+    if (listener is NusantaraLanguageParserListener) listener.enterBuatDanNgisiVariableBilanganDesimal(this);
+  }
+  @override
+  void exitRule(ParseTreeListener listener) {
+    if (listener is NusantaraLanguageParserListener) listener.exitBuatDanNgisiVariableBilanganDesimal(this);
+  }
+  @override
+  T? accept<T>(ParseTreeVisitor<T> visitor) {
+    if (visitor is NusantaraLanguageParserVisitor<T>) {
+     return visitor.visitBuatDanNgisiVariableBilanganDesimal(this);
+    } else {
+    	return visitor.visitChildren(this);
+    }
+  }
+}
+
+class BuatDanNgisiVariableKarakterContext extends Buat_dan_ngisi_variableContext {
+  TerminalNode? TIPE_DATA_KARAKTER() => getToken(NusantaraLanguageParser.TOKEN_TIPE_DATA_KARAKTER, 0);
+  TerminalNode? IDENTIFIKASI() => getToken(NusantaraLanguageParser.TOKEN_IDENTIFIKASI, 0);
+  TerminalNode? SAMA_DENGAN() => getToken(NusantaraLanguageParser.TOKEN_SAMA_DENGAN, 0);
+  TerminalNode? NILAI_KARAKTER() => getToken(NusantaraLanguageParser.TOKEN_NILAI_KARAKTER, 0);
+  BuatDanNgisiVariableKarakterContext(Buat_dan_ngisi_variableContext ctx) { copyFrom(ctx); }
+  @override
+  void enterRule(ParseTreeListener listener) {
+    if (listener is NusantaraLanguageParserListener) listener.enterBuatDanNgisiVariableKarakter(this);
+  }
+  @override
+  void exitRule(ParseTreeListener listener) {
+    if (listener is NusantaraLanguageParserListener) listener.exitBuatDanNgisiVariableKarakter(this);
+  }
+  @override
+  T? accept<T>(ParseTreeVisitor<T> visitor) {
+    if (visitor is NusantaraLanguageParserVisitor<T>) {
+     return visitor.visitBuatDanNgisiVariableKarakter(this);
+    } else {
+    	return visitor.visitChildren(this);
+    }
+  }
+}

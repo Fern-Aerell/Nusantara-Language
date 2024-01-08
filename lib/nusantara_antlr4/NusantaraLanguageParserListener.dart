@@ -14,94 +14,57 @@ abstract class NusantaraLanguageParserListener extends ParseTreeListener {
   /// [ctx] the parse tree
   void exitNusantara(NusantaraContext ctx);
 
-  /// Enter a parse tree produced by [NusantaraLanguageParser.pernyataan].
+  /// Enter a parse tree produced by the [pernyataanBuatDanNgisiVariable]
+  /// labeled alternative in [file.parserName>.pernyataan].
   /// [ctx] the parse tree
-  void enterPernyataan(PernyataanContext ctx);
-  /// Exit a parse tree produced by [NusantaraLanguageParser.pernyataan].
+  void enterPernyataanBuatDanNgisiVariable(PernyataanBuatDanNgisiVariableContext ctx);
+  /// Exit a parse tree produced by the [pernyataanBuatDanNgisiVariable]
+  /// labeled alternative in [NusantaraLanguageParser.pernyataan].
   /// [ctx] the parse tree
-  void exitPernyataan(PernyataanContext ctx);
+  void exitPernyataanBuatDanNgisiVariable(PernyataanBuatDanNgisiVariableContext ctx);
 
-  /// Enter a parse tree produced by [NusantaraLanguageParser.muat_file].
+  /// Enter a parse tree produced by the [buatDanNgisiVariableBilanganBulat]
+  /// labeled alternative in [file.parserName>.buat_dan_ngisi_variable].
   /// [ctx] the parse tree
-  void enterMuat_file(Muat_fileContext ctx);
-  /// Exit a parse tree produced by [NusantaraLanguageParser.muat_file].
+  void enterBuatDanNgisiVariableBilanganBulat(BuatDanNgisiVariableBilanganBulatContext ctx);
+  /// Exit a parse tree produced by the [buatDanNgisiVariableBilanganBulat]
+  /// labeled alternative in [NusantaraLanguageParser.buat_dan_ngisi_variable].
   /// [ctx] the parse tree
-  void exitMuat_file(Muat_fileContext ctx);
+  void exitBuatDanNgisiVariableBilanganBulat(BuatDanNgisiVariableBilanganBulatContext ctx);
 
-  /// Enter a parse tree produced by [NusantaraLanguageParser.blok_kode].
+  /// Enter a parse tree produced by the [buatDanNgisiVariableBilanganDesimal]
+  /// labeled alternative in [file.parserName>.buat_dan_ngisi_variable].
   /// [ctx] the parse tree
-  void enterBlok_kode(Blok_kodeContext ctx);
-  /// Exit a parse tree produced by [NusantaraLanguageParser.blok_kode].
+  void enterBuatDanNgisiVariableBilanganDesimal(BuatDanNgisiVariableBilanganDesimalContext ctx);
+  /// Exit a parse tree produced by the [buatDanNgisiVariableBilanganDesimal]
+  /// labeled alternative in [NusantaraLanguageParser.buat_dan_ngisi_variable].
   /// [ctx] the parse tree
-  void exitBlok_kode(Blok_kodeContext ctx);
+  void exitBuatDanNgisiVariableBilanganDesimal(BuatDanNgisiVariableBilanganDesimalContext ctx);
 
-  /// Enter a parse tree produced by [NusantaraLanguageParser.parameter_fungsi_kosong].
+  /// Enter a parse tree produced by the [buatDanNgisiVariableKarakter]
+  /// labeled alternative in [file.parserName>.buat_dan_ngisi_variable].
   /// [ctx] the parse tree
-  void enterParameter_fungsi_kosong(Parameter_fungsi_kosongContext ctx);
-  /// Exit a parse tree produced by [NusantaraLanguageParser.parameter_fungsi_kosong].
+  void enterBuatDanNgisiVariableKarakter(BuatDanNgisiVariableKarakterContext ctx);
+  /// Exit a parse tree produced by the [buatDanNgisiVariableKarakter]
+  /// labeled alternative in [NusantaraLanguageParser.buat_dan_ngisi_variable].
   /// [ctx] the parse tree
-  void exitParameter_fungsi_kosong(Parameter_fungsi_kosongContext ctx);
+  void exitBuatDanNgisiVariableKarakter(BuatDanNgisiVariableKarakterContext ctx);
 
-  /// Enter a parse tree produced by [NusantaraLanguageParser.parameter_buat_fungsi].
+  /// Enter a parse tree produced by the [buatDanNgisiVariableKalimat]
+  /// labeled alternative in [file.parserName>.buat_dan_ngisi_variable].
   /// [ctx] the parse tree
-  void enterParameter_buat_fungsi(Parameter_buat_fungsiContext ctx);
-  /// Exit a parse tree produced by [NusantaraLanguageParser.parameter_buat_fungsi].
+  void enterBuatDanNgisiVariableKalimat(BuatDanNgisiVariableKalimatContext ctx);
+  /// Exit a parse tree produced by the [buatDanNgisiVariableKalimat]
+  /// labeled alternative in [NusantaraLanguageParser.buat_dan_ngisi_variable].
   /// [ctx] the parse tree
-  void exitParameter_buat_fungsi(Parameter_buat_fungsiContext ctx);
+  void exitBuatDanNgisiVariableKalimat(BuatDanNgisiVariableKalimatContext ctx);
 
-  /// Enter a parse tree produced by [NusantaraLanguageParser.buat_fungsi].
+  /// Enter a parse tree produced by the [buatDanNgisiVariableBoolean]
+  /// labeled alternative in [file.parserName>.buat_dan_ngisi_variable].
   /// [ctx] the parse tree
-  void enterBuat_fungsi(Buat_fungsiContext ctx);
-  /// Exit a parse tree produced by [NusantaraLanguageParser.buat_fungsi].
+  void enterBuatDanNgisiVariableBoolean(BuatDanNgisiVariableBooleanContext ctx);
+  /// Exit a parse tree produced by the [buatDanNgisiVariableBoolean]
+  /// labeled alternative in [NusantaraLanguageParser.buat_dan_ngisi_variable].
   /// [ctx] the parse tree
-  void exitBuat_fungsi(Buat_fungsiContext ctx);
-
-  /// Enter a parse tree produced by [NusantaraLanguageParser.parameter_panggil_fungsi].
-  /// [ctx] the parse tree
-  void enterParameter_panggil_fungsi(Parameter_panggil_fungsiContext ctx);
-  /// Exit a parse tree produced by [NusantaraLanguageParser.parameter_panggil_fungsi].
-  /// [ctx] the parse tree
-  void exitParameter_panggil_fungsi(Parameter_panggil_fungsiContext ctx);
-
-  /// Enter a parse tree produced by [NusantaraLanguageParser.panggil_fungsi].
-  /// [ctx] the parse tree
-  void enterPanggil_fungsi(Panggil_fungsiContext ctx);
-  /// Exit a parse tree produced by [NusantaraLanguageParser.panggil_fungsi].
-  /// [ctx] the parse tree
-  void exitPanggil_fungsi(Panggil_fungsiContext ctx);
-
-  /// Enter a parse tree produced by [NusantaraLanguageParser.tipe_data_variable].
-  /// [ctx] the parse tree
-  void enterTipe_data_variable(Tipe_data_variableContext ctx);
-  /// Exit a parse tree produced by [NusantaraLanguageParser.tipe_data_variable].
-  /// [ctx] the parse tree
-  void exitTipe_data_variable(Tipe_data_variableContext ctx);
-
-  /// Enter a parse tree produced by [NusantaraLanguageParser.buat_variable].
-  /// [ctx] the parse tree
-  void enterBuat_variable(Buat_variableContext ctx);
-  /// Exit a parse tree produced by [NusantaraLanguageParser.buat_variable].
-  /// [ctx] the parse tree
-  void exitBuat_variable(Buat_variableContext ctx);
-
-  /// Enter a parse tree produced by [NusantaraLanguageParser.nilai_variable].
-  /// [ctx] the parse tree
-  void enterNilai_variable(Nilai_variableContext ctx);
-  /// Exit a parse tree produced by [NusantaraLanguageParser.nilai_variable].
-  /// [ctx] the parse tree
-  void exitNilai_variable(Nilai_variableContext ctx);
-
-  /// Enter a parse tree produced by [NusantaraLanguageParser.ngisi_variable].
-  /// [ctx] the parse tree
-  void enterNgisi_variable(Ngisi_variableContext ctx);
-  /// Exit a parse tree produced by [NusantaraLanguageParser.ngisi_variable].
-  /// [ctx] the parse tree
-  void exitNgisi_variable(Ngisi_variableContext ctx);
-
-  /// Enter a parse tree produced by [NusantaraLanguageParser.buat_dan_ngisi_variable].
-  /// [ctx] the parse tree
-  void enterBuat_dan_ngisi_variable(Buat_dan_ngisi_variableContext ctx);
-  /// Exit a parse tree produced by [NusantaraLanguageParser.buat_dan_ngisi_variable].
-  /// [ctx] the parse tree
-  void exitBuat_dan_ngisi_variable(Buat_dan_ngisi_variableContext ctx);
+  void exitBuatDanNgisiVariableBoolean(BuatDanNgisiVariableBooleanContext ctx);
 }
