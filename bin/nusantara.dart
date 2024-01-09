@@ -1,24 +1,52 @@
-import "package:nusantara/nusantara_antlr4/NusantaraLanguageInputStream.dart";
-import "package:nusantara/nusantara_cli/features/argument_empty_callback.dart";
-import "package:nusantara/nusantara_cli/features/argument_invalid_callback.dart";
-import "package:nusantara/nusantara_cli/features/cli_feature.dart";
-import "package:nusantara/nusantara_cli/features/input_file.dart";
-import "package:nusantara/nusantara_cli/features/opsi_globals.dart";
-import "package:nusantara/nusantara_cli/nusantara_cli.dart";
-import 'package:nusantara/nusantara_cli/features/opsi_global.dart';
-import "package:nusantara/nusantara_config/config.dart";
-import "package:nusantara/nusantara_interpreter/interpreter.dart";
+import 'package:nusantara/cli/cli.dart';
+import 'package:nusantara/cli/features/argument_empty_callback.dart';
+import 'package:nusantara/cli/features/argument_invalid_callback.dart';
+import 'package:nusantara/cli/features/cli_feature.dart';
+import 'package:nusantara/cli/features/input_file.dart';
+import 'package:nusantara/cli/features/opsi_global.dart';
+import 'package:nusantara/cli/features/opsi_globals.dart';
+import 'package:nusantara/interpreter/interpreter.dart';
+import 'package:nusantara/lexer/lexer.dart';
+import 'package:nusantara/lexer/token.dart';
+import 'package:nusantara/lexer/token_type_data.dart';
+import 'package:nusantara/parser/parse_rule.dart';
+import 'package:nusantara/parser/parser.dart';
+
+import 'config/config.dart';
+import 'token/tokens.dart';
+
+List<ParseRule> parseRule = [
+  ParseRule(
+      name: "nusantara",
+      children: [
+        ParseRule<TokenTypeData>(
+            name: "bikin variable bilangan bulat",
+            children: [
+              enumToTokenTypeData(TokenType.TIPE_DATA_BILANGAN_BULAT),
+              enumToTokenTypeData(TokenType.IDENTIFIKASI),
+              enumToTokenTypeData(TokenType.SAMA_DENGAN),
+              enumToTokenTypeData(TokenType.NILAI_BILANGAN_BULAT),
+              enumToTokenTypeData(TokenType.TITIK_KOMA),
+            ]
+        )
+      ]
+  )
+];
 
 void main(List<String> arguments) {
   try {
     // Cli feature
     List<CliFeature> features = [
       InputFile(nusantaraLanguageFileExtension, (file) {
-        if(file.existsSync()) {
-          Interpreter(NusantaraLanguageInputStream.fromPath(file.path));
-        }else{
-          print("File \"${file.path}\" tidak ada.");
-        }
+        Interpreter();
+        Lexer lexer = Lexer(tokenTypeData: tokenTypeData);
+        List<Token> tokens = lexer.tokenizerFromPath(file.path);
+        // Debug tokens
+        // for(Token token in tokens) {
+        //   print(token);
+        // }
+        Parser parser = Parser(rules: parseRule);
+        parser.parse(tokens);
       }),
       OpsiGlobals(
           [
@@ -52,10 +80,10 @@ void main(List<String> arguments) {
       },)
     ];
     // Intialize cli
-    NusantaraCli cli = NusantaraCli(arguments, features);
+    Cli cli = Cli(arguments, features);
     // Eksekusi perintah cli
     cli.execute();
-  }catch(error, s) {
+  }catch(error) {
     print(error);
   }
 }

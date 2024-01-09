@@ -7,8 +7,6 @@ environment:
   sdk: ^3.2.4
 
 # Add regular dependencies here.
-dependencies:
-  antlr4: ^4.13.1
   # path: ^1.8.0
 
 dev_dependencies:
