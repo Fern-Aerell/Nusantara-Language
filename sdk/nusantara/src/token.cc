@@ -1,16 +1,21 @@
 #include <token.h>
 
-Token::Token(std::string source, const TokenType &type, const int &charIndex,
-             std::string value, const int &line)
+Token::Token(
+  std::string source, 
+  const TokenType &type, 
+  std::string value, 
+  const int &line,
+  const int &charIndex
+  )
     : source(std::move(source)), type(type), value(std::move(value)),
       line(line), charIndex(charIndex)
 {}
 
-const std::string &Token::getSource() { return this->source; }
+std::string Token::getSource() const { return this->source; }
 
-TokenType Token::getType() { return this->type; }
+TokenType Token::getType() const { return this->type; }
 
-const std::string &Token::getValue() { return this->value; }
+std::string Token::getValue() const { return this->value; }
 
 int Token::getLine() const { return this->line; }
 

@@ -8,9 +8,9 @@ class TokenTypeData
 {
 public:
   TokenTypeData(std::string name, const TokenType &type, std::string pattern);
-  const std::string &getName();
-  const TokenType &getType();
-  const std::string &getPattern();
+  [[nodiscard]] std::string getName() const;
+  [[nodiscard]] TokenType getType() const;
+  [[nodiscard]] std::string getPattern() const;
 
 private:
   std::string name;

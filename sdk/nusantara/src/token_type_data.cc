@@ -7,8 +7,8 @@ TokenTypeData::TokenTypeData(std::string name, const TokenType &type,
     : name(std::move(name)), type(type), pattern(std::move(pattern))
 {}
 
-const std::string &TokenTypeData::getName() { return this->name; }
+std::string TokenTypeData::getName() const { return this->name; }
 
-const TokenType &TokenTypeData::getType() { return this->type; }
+TokenType TokenTypeData::getType() const { return this->type; }
 
-const std::string &TokenTypeData::getPattern() { return this->pattern; }
+std::string TokenTypeData::getPattern() const { return this->pattern; }
