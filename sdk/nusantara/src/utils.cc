@@ -31,17 +31,19 @@ namespace utils {
         file.seekg(0, std::ios::end); // Pindahkan posisi ke akhir file
         std::streampos fileSize = file.tellg(); // Dapatkan ukuran file
         file.seekg(0, std::ios::beg);  // Kembalikan posisi ke awal file
+        // Jika file size 0 atau lebih kecil dari 0, maka return string kosong
+        if(fileSize <= 0) { return "";}
         // Menggunakan vector untuk buffer
         std::vector<char> buffer(fileSize);
         // String untuk menyimpan isi file
         std::stringstream content;
         // Loop membaca file hingga EOF
         while (file.read(buffer.data(), static_cast<long long>(buffer.size()))) {
-            // Tambahkan data dari buffer ke dalam string
-            content.write(buffer.data(), file.gcount());
+            if(file.gcount() > 0) {
+                // Tambahkan data dari buffer ke dalam string
+                content.write(buffer.data(), file.gcount());
+            }
         }
-        // Tutup file
-        file.close();
         // Kembalikan string yang berisi isi file
         return content.str();
     }

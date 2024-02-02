@@ -19,6 +19,7 @@ public:
   [[nodiscard]] std::string getValue() const;
   [[nodiscard]] int getLine() const;
   [[nodiscard]] int getCharIndex() const;
+  [[nodiscard]] std::string toString() const;
 private:
   std::string source;
   TokenType type;

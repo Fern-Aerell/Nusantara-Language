@@ -1,3 +1,5 @@
+#include "token_type.h"
+#include <format>
 #include <token.h>
 
 Token::Token(
@@ -20,3 +22,7 @@ std::string Token::getValue() const { return this->value; }
 int Token::getLine() const { return this->line; }
 
 int Token::getCharIndex() const { return this->charIndex; }
+
+std::string Token::toString() const {
+  return std::format("{}:{}:{} {} {}", this->getSource(), this->getLine(), this->getCharIndex(), ::toString(this->getType()), this->getValue());
+}

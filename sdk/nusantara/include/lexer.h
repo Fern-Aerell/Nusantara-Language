@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include <token.h>
 #include "token_type.h"
 #include <token_type_data.h>
@@ -7,14 +8,12 @@
 
 class Lexer {
   public:
-    std::string toString(const TokenType& type);
-    std::string toString(const Token& token);
-    std::string toString(const std::vector<Token>& tokens);
-    std::vector<Token> inputFromFile(const std::string& filepath);
-    std::vector<Token> inputFromString(const std::string& source, std::string& content);
+    Lexer(std::string source, std::string content);
+    Token getNextToken();
   private:
+    std::string source;
+    std::string content;
     std::vector<TokenTypeData> tokenTypes = {
-      {"AKHIR_DARI_FILE", TokenType::AKHIR_DARI_FILE, "\\0"},
       {"WHITESPACE", TokenType::WHITESPACE, "[ \n\t\r\f]+"},
       {"KOMENTAR_SATU_BARIS", TokenType::KOMENTAR_SATU_BARIS,
                     "//[^\n]*"},
@@ -54,9 +53,12 @@ class Lexer {
                     TokenType::LEBIH_KECIL_SAMA_DENGAN, "<="},
       // Operator Logika
       {"DAN", TokenType::DAN, "&&"},
-      {"ATAU", TokenType::ATAU, "||"},
+      {"ATAU", TokenType::ATAU, "\\|\\|"},
       {"TIDAK", TokenType::TIDAK, "!"}
     };
-    static bool match(std::string& content, const std::string& pattern, std::string& match, int& line, int& realCharIndex, int& charIndex);
-    static void createToken(std::vector<Token>& tokens, const std::string& source, const TokenType& type, std::string& match, int& line, int& charIndex);
+    int line = 0; 
+    int realCharIndex = 0;
+    int charIndex = 0;
+    bool match(const std::string& pattern, std::string& match);
+    Token createToken(const TokenType& type, const std::string& value);
 };
