@@ -22,7 +22,7 @@ bool Lexer::match(const std::string& pattern, std::string& match) {
       this->realCharIndex++;
       if(character == '\n') {
         this->line++;
-        this->charIndex = 0;
+        this->realCharIndex = 0;
       }
     }
     this->content.replace(0, match.length(), "");

@@ -54,7 +54,11 @@ class Lexer {
       // Operator Logika
       {"DAN", TokenType::DAN, "&&"},
       {"ATAU", TokenType::ATAU, "\\|\\|"},
-      {"TIDAK", TokenType::TIDAK, "!"}
+      {"TIDAK", TokenType::TIDAK, "!"},
+      // Pemisah
+      {"TITIK_KOMA", TokenType::TITIK_KOMA, ";"},
+      {"KURUNG_BUKA", TokenType::KURUNG_BUKA, "\\("},
+      {"KURUNG_TUTUP", TokenType::KURUNG_TUTUP, "\\)"}
     };
     int line = 0; 
     int realCharIndex = 0;

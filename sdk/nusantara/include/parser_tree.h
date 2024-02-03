@@ -1,5 +1,6 @@
 #pragma once
 
+#include "parser_rule.h"
 #include "token.h"
 #include <memory>
 #include <string>
@@ -13,25 +14,28 @@ class ParserTree {
         ParserTree& operator=(const ParserTree&) = default;     // copy assignment
         ParserTree(ParserTree&&) noexcept = default;            // move constructor
         ParserTree& operator=(ParserTree&&) noexcept = default; // move assignment
-        virtual std::string toString() = 0;
-        void printTree(const int& indent);
+        [[nodiscard]] virtual std::string toString() const = 0;
+        void printTree(const int& indent) const;
         void addChild(std::unique_ptr<ParserTree> child);
+        [[nodiscard]] const std::vector<std::unique_ptr<ParserTree>>& getChildren() const;
     private:
         std::vector<std::unique_ptr<ParserTree>> children;
 };
 
 class ParserRuleTree: public ParserTree {
     public:
-        explicit ParserRuleTree(std::string name);
-        std::string toString() override;
+        explicit ParserRuleTree(const ParserRule& rule);
+        [[nodiscard]] std::string toString() const override;
+        [[nodiscard]] ParserRule getRule() const;
     private:
-        std::string name;
+        ParserRule rule;
 };
 
 class ParserTokenTree: public ParserTree {
     public:
         explicit ParserTokenTree(Token token);
-        std::string toString() override;
+        [[nodiscard]] std::string toString() const override;
+        [[nodiscard]] Token getToken() const;
     private:
         Token token;
 };

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <stdexcept>
 #include <string>
+
 enum class TokenType : int
 {
   TIDAK_DIKENALI = -2,
@@ -41,7 +41,11 @@ enum class TokenType : int
   // Operator Logika
   DAN = 28,
   ATAU = 29,
-  TIDAK = 30
+  TIDAK = 30,
+  // Pemisah
+  TITIK_KOMA = 31,
+  KURUNG_BUKA = 32,
+  KURUNG_TUTUP = 33
 };
 
 inline std::string toString(const TokenType& type) {
@@ -112,5 +116,11 @@ inline std::string toString(const TokenType& type) {
       return "ATAU";
     case TokenType::TIDAK: 
       return "TIDAK";
-  }
+    case TokenType::TITIK_KOMA:
+      return "TITIK_KOMA";
+    case TokenType::KURUNG_BUKA:
+      return "KURUNG_BUKA";
+    case TokenType::KURUNG_TUTUP: 
+      return "KURUNG_TUTUP";
+    }
 }

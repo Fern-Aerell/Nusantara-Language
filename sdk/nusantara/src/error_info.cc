@@ -22,7 +22,7 @@ std::string ErrorInfo::inLine(
     stringStream << std::format("{}:{}:{}", this->source, line + 1, charIndex + 1) + "\n\n";
     std::string prefix = std::format("{}| ", line + 1);
     stringStream << std::format("{}{}", prefix, this->contentPerLine[line]) + "\n";
-    stringStream << std::string(prefix.length() + charIndex, ' ') + std::string(content.length(), '^') + "\n";
-    stringStream << std::string(prefix.length() + charIndex + ((content.length() / 2) - msg.length() / 2), ' ') + msg + "\n";
+    stringStream << std::string(prefix.length() + charIndex + ((content.length() > 0) ? 0 : 1), ' ') + std::string((content.length() > 0) ? content.length() : 1, '^') + "\n";
+    stringStream << msg;
     return stringStream.str();
 }
