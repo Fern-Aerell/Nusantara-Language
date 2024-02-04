@@ -18,6 +18,15 @@ file(
 	"src/*.c"
 	"src/*.cc"
 	"src/*.cpp"
+	"src/**/*.c"
+	"src/**/*.cc"
+	"src/**/*.cpp"
+	"src/**/**/*.c"
+	"src/**/**/*.cc"
+	"src/**/**/*.cpp"
+	"src/**/**/**/*.c"
+	"src/**/**/**/*.cc"
+	"src/**/**/**/*.cpp"
 )
 
 add_executable(

@@ -1,13 +1,16 @@
-#include "error_info.h"
-#include "lexer.h"
-#include "parser.h"
+#include "nusantara/lexer/token.h"
 #include <exception>
-#include <iostream>
 #include <string>
-#include <utils.h>
+#include <iostream>
+#include <nusantara/utils/utils.h>
+#include <nusantara/core/error_info.h>
+#include <nusantara/lexer/lexer.h>
+#include <nusantara/parser/parser.h>
 
 int main(int argc, char *argv[])
 {
+  --argc; 
+  --argv;
   try {
     std::string source = "examples/halo_dunia.nl";
     std::string input = utils::readFile(source);
@@ -21,7 +24,7 @@ int main(int argc, char *argv[])
     Parser parser(errorInfo, lexer);
     std::unique_ptr<ParserTree> tree = parser.parse();
     tree->printTree(0);
-  } catch (const std::exception& error) {
+  }catch(const std::exception& error) {
     std::cout << error.what() << "\n";
   }
   return 0;
