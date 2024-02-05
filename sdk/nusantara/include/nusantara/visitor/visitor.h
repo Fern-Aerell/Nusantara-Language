@@ -1,7 +1,6 @@
 #pragma once
 
 #include "nusantara/parser/parser_rule.h"
-#include "nusantara/visitor/context/nusantara_context.h"
 #include <memory>
 #include <nusantara/parser/parser_tree.h>
 
@@ -18,62 +17,62 @@ class Visitor {
             if(auto* rule = dynamic_cast<ParserRuleTree*>(tree.get())) {
                 switch (rule->getRule()) {
                   case ParserRule::nusantara:
-                    return this->visitNusantara(generateNusantaraContext(rule->getChildren()));
+                    return this->visitNusantara(rule->getChildren());
                   case ParserRule::operator_penugasan:
-                    return this->visitOperatorPenugasan(generateOperatorPenugasanContext(rule->getChildren()));
+                    return this->visitOperatorPenugasan(rule->getChildren());
                   case ParserRule::operasi_penugasan:
-                    return this->visitOperasiPenugasan(generateOperasiPenugasanContext(rule->getChildren()));
+                    return this->visitOperasiPenugasan(rule->getChildren());
                   case ParserRule::operator_penugasan_penjumlahan:
-                    return this->visitOperatorPenugasanPenjumlahan(generateOperatorPenugasanPenjumlahanContext(rule->getChildren()));
+                    return this->visitOperatorPenugasanPenjumlahan(rule->getChildren());
                   case ParserRule::operasi_penugasan_penjumlahan:
-                    return this->visitOperasiPenugasanPenjumlahan(generateOperasiPenugasanPenjumlahanContext(rule->getChildren()));
+                    return this->visitOperasiPenugasanPenjumlahan(rule->getChildren());
                   case ParserRule::operator_penugasan_perkalian:
-                    return this->visitOperatorPenugasanPerkalian(generateOperatorPenugasanPerkalianContext(rule->getChildren()));
+                    return this->visitOperatorPenugasanPerkalian(rule->getChildren());
                   case ParserRule::operasi_penugasan_perkalian:
-                    return this->visitOperasiPenugasanPerkalian(generateOperasiPenugasanPerkalianContext(rule->getChildren()));
+                    return this->visitOperasiPenugasanPerkalian(rule->getChildren());
                   case ParserRule::operator_logika:
-                    return this->visitOperatorLogika(generateOperatorLogikaContext(rule->getChildren()));
+                    return this->visitOperatorLogika(rule->getChildren());
                   case ParserRule::operasi_logika:
-                    return this->visitOperasiLogika(generateOperasiLogikaContext(rule->getChildren()));
+                    return this->visitOperasiLogika(rule->getChildren());
                   case ParserRule::operator_perbandingan:
-                    return this->visitOperatorPerbandingan(generateOperatorPerbandinganContext(rule->getChildren()));
+                    return this->visitOperatorPerbandingan(rule->getChildren());
                   case ParserRule::operasi_perbandingan:
-                    return this->visitOperasiPerbandingan(generateOperasiPerbandinganContext(rule->getChildren()));
+                    return this->visitOperasiPerbandingan(rule->getChildren());
                   case ParserRule::operator_pre_post:
-                    return this->visitOperatorPrePost(generateOperatorPrePostContext(rule->getChildren()));
+                    return this->visitOperatorPrePost(rule->getChildren());
                   case ParserRule::operasi_pre_post:
-                    return this->visitOperasiPrePost(generateOperasiPrePostContext(rule->getChildren()));
+                    return this->visitOperasiPrePost(rule->getChildren());
                   case ParserRule::operator_penjumlahan:
-                    return this->visitOperatorPenjumlahan(generateOperatorPenjumlahanContext(rule->getChildren()));
+                    return this->visitOperatorPenjumlahan(rule->getChildren());
                   case ParserRule::operasi_penjumlahan:
-                    return this->visitOperasiPenjumlahan(generateOperasiPenjumlahanContext(rule->getChildren()));
+                    return this->visitOperasiPenjumlahan(rule->getChildren());
                   case ParserRule::operator_perkalian:
-                    return this->visitOperatorPerkalian(generateOperatorPerkalianContext(rule->getChildren()));
+                    return this->visitOperatorPerkalian(rule->getChildren());
                   case ParserRule::operasi_perkalian:
-                    return this->visitOperasiPerkalian(generateOperasiPerkalianContext(rule->getChildren()));
+                    return this->visitOperasiPerkalian(rule->getChildren());
                   case ParserRule::nilai:
-                    return this->visitNilai(generateNilaiContext(rule->getChildren()));
+                    return this->visitNilai(rule->getChildren());
                 }
             }
             return T{};
         }
-        virtual T visitNusantara(const NusantaraContext& ctx) = 0;
-        virtual T visitOperatorPenugasan(const OperatorPenugasanContext& ctx) = 0;
-        virtual T visitOperasiPenugasan(const OperasiPenugasanContext& ctx) = 0;
-        virtual T visitOperatorPenugasanPenjumlahan(const OperatorPenugasanPenjumlahanContext& ctx) = 0;
-        virtual T visitOperasiPenugasanPenjumlahan(const OperasiPenugasanPenjumlahanContext& ctx) = 0;
-        virtual T visitOperatorPenugasanPerkalian(const OperatorPenugasanPerkalianContext& ctx) = 0;
-        virtual T visitOperasiPenugasanPerkalian(const OperasiPenugasanPerkalianContext& ctx) = 0;
-        virtual T visitOperatorLogika(const OperatorLogikaContext& ctx) = 0;
-        virtual T visitOperasiLogika(const OperasiLogikaContext& ctx) = 0;
-        virtual T visitOperatorPerbandingan(const OperatorPerbandinganContext& ctx) = 0;
-        virtual T visitOperasiPerbandingan(const OperasiPerbandinganContext& ctx) = 0;
-        virtual T visitOperatorPenjumlahan(const OperatorPenjumlahanContext& ctx) = 0;
-        virtual T visitOperasiPenjumlahan(const OperasiPenjumlahanContext& ctx) = 0;
-        virtual T visitOperatorPrePost(const OperatorPrePostContext& ctx) = 0;
-        virtual T visitOperasiPrePost(const OperasiPrePostContext& ctx) = 0;
-        virtual T visitOperatorPerkalian(const OperatorPerkalianContext& ctx) = 0;
-        virtual T visitOperasiPerkalian(const OperasiPerkalianContext& ctx) = 0;
-        virtual T visitNilai(const NilaiContext& ctx) = 0;
+        virtual T visitNusantara(const std::vector<std::unique_ptr<ParserTree>>& children) = 0;
+        virtual T visitOperatorPenugasan(const std::vector<std::unique_ptr<ParserTree>>& children) = 0;
+        virtual T visitOperasiPenugasan(const std::vector<std::unique_ptr<ParserTree>>& children) = 0;
+        virtual T visitOperatorPenugasanPenjumlahan(const std::vector<std::unique_ptr<ParserTree>>& children) = 0;
+        virtual T visitOperasiPenugasanPenjumlahan(const std::vector<std::unique_ptr<ParserTree>>& children) = 0;
+        virtual T visitOperatorPenugasanPerkalian(const std::vector<std::unique_ptr<ParserTree>>& children) = 0;
+        virtual T visitOperasiPenugasanPerkalian(const std::vector<std::unique_ptr<ParserTree>>& children) = 0;
+        virtual T visitOperatorLogika(const std::vector<std::unique_ptr<ParserTree>>& children) = 0;
+        virtual T visitOperasiLogika(const std::vector<std::unique_ptr<ParserTree>>& children) = 0;
+        virtual T visitOperatorPerbandingan(const std::vector<std::unique_ptr<ParserTree>>& children) = 0;
+        virtual T visitOperasiPerbandingan(const std::vector<std::unique_ptr<ParserTree>>& children) = 0;
+        virtual T visitOperatorPenjumlahan(const std::vector<std::unique_ptr<ParserTree>>& children) = 0;
+        virtual T visitOperasiPenjumlahan(const std::vector<std::unique_ptr<ParserTree>>& children) = 0;
+        virtual T visitOperatorPrePost(const std::vector<std::unique_ptr<ParserTree>>& children) = 0;
+        virtual T visitOperasiPrePost(const std::vector<std::unique_ptr<ParserTree>>& children) = 0;
+        virtual T visitOperatorPerkalian(const std::vector<std::unique_ptr<ParserTree>>& children) = 0;
+        virtual T visitOperasiPerkalian(const std::vector<std::unique_ptr<ParserTree>>& children) = 0;
+        virtual T visitNilai(const std::vector<std::unique_ptr<ParserTree>>& children) = 0;
     private:
 };
