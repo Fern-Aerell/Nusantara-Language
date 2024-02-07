@@ -1,11 +1,15 @@
 #pragma once
 
+#include <algorithm>
 #include <any>
 #include <map>
 #include <optional>
 #include <stdexcept>
 #include <string>
 #include <vector>
+
+#define benar true
+#define salah false
 
 namespace nstd {
 
@@ -28,6 +32,9 @@ namespace nstd {
 
     // Kalimat
     using kalimat = std::string;
+
+    // BenarSalah
+    using benarsalah = bool;
 
     // Daftar
     template<class Value>
@@ -84,6 +91,13 @@ namespace nstd {
         return false;
     }
 
+    inline bool isBenarSalah(const dinamis& dynamic) {
+        if(!isKosong(dynamic)) {
+            return dynamic.value().type() == typeid(benarsalah);
+        }
+        return false;
+    }
+
     template<class Value>
     inline bool isDaftar(const dinamis& dynamic) {
         if(!isKosong(dynamic)) {
@@ -100,7 +114,7 @@ namespace nstd {
         return false;
     }
 
-    inline bulat getBulat(const dinamis& dynamic) {
+    inline bulat asBulat(const dinamis& dynamic) {
         if(!isKosong(dynamic)) {
             if(isBulat(dynamic)) {
                 return std::any_cast<bulat>(dynamic.value());
@@ -109,7 +123,7 @@ namespace nstd {
         throw std::runtime_error("dynamic bukan bilangan bulat.");
     }
 
-    inline desimal getDesimal(const dinamis& dynamic) {
+    inline desimal asDesimal(const dinamis& dynamic) {
         if(!isKosong(dynamic)) {
             if(isDesimal(dynamic)) {
                 return std::any_cast<desimal>(dynamic.value());
@@ -118,7 +132,7 @@ namespace nstd {
         throw std::runtime_error("dynamic bukan bilangan desimal.");
     }
 
-    inline karakter getKarakter(const dinamis& dynamic) {
+    inline karakter asKarakter(const dinamis& dynamic) {
         if(!isKosong(dynamic)) {
             if(isKarakter(dynamic)) {
                 return std::any_cast<karakter>(dynamic.value());
@@ -127,7 +141,7 @@ namespace nstd {
         throw std::runtime_error("dynamic bukan karakter.");
     }
 
-    inline kalimat getKalimat(const dinamis& dynamic) {
+    inline kalimat asKalimat(const dinamis& dynamic) {
         if(!isKosong(dynamic)) {
             if(isKalimat(dynamic)) {
                 return std::any_cast<kalimat>(dynamic.value());
@@ -136,8 +150,17 @@ namespace nstd {
         throw std::runtime_error("dynamic bukan kalimat.");
     }
 
+    inline benarsalah asBenarSalah(const dinamis& dynamic) {
+        if(!isKosong(dynamic)) {
+            if(isBenarSalah(dynamic)) {
+                return std::any_cast<benarsalah>(dynamic.value());
+            }
+        }
+        throw std::runtime_error("dynamic bukan benar atau salah.");
+    }
+
     template<class Value>
-    inline daftar<Value> getDaftar(const dinamis& dynamic) {
+    inline daftar<Value> asDaftar(const dinamis& dynamic) {
         if(!isKosong(dynamic)) {
             if(isDaftar<Value>(dynamic)) {
                 return std::any_cast<daftar<Value>>(dynamic.value());
@@ -147,13 +170,18 @@ namespace nstd {
     }
 
     template<class Key, class Value>
-    inline peta<Key, Value> getPeta(const dinamis& dynamic) {
+    inline peta<Key, Value> asPeta(const dinamis& dynamic) {
         if(!isKosong(dynamic)) {
             if(isPeta<Key, Value>(dynamic)) {
                 return std::any_cast<peta<Key, Value>>(dynamic.value());
             }
         }
         throw std::runtime_error("dynamic bukan peta atau bukan peta dengan key atau value yang di tentukan.");
+    }
+
+    template<class Value>
+    inline bool contains(konst<daftar<Value>>& daftar, konst<Value>& nilai) {
+        return std::find(daftar.begin(), daftar.end(), nilai) != daftar.end();
     }
     
 }
