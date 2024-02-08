@@ -8,13 +8,13 @@
 class OperasiPenugasanContext: public Context {
   public:
     OperasiPenugasanContext(
-      nstd::bisa_kosong<nstd::daftar<Context>> kumpulanNilaiContext,
-      nstd::bisa_kosong<nstd::daftar<Context>> kumpulanOperatorPenugasanContext
+      nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>> kumpulanOperasiPenugasanPenjumlahanContext,
+      nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>> kumpulanOperatorPenugasanContext
     );
     static OperasiPenugasanContext generate(const std::vector<std::unique_ptr<ParserTree>>& children);
-    [[nodiscard]] nstd::bisa_kosong<nstd::daftar<Context>> getKumpulanNilaiContext() const;
-    [[nodiscard]] nstd::bisa_kosong<nstd::daftar<Context>> getKumpulanOperatorPenugasanContext() const;
+    [[nodiscard]] nstd::konst<nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>>& getKumpulanOperasiPenugasanPenjumlahanContext() const;
+    [[nodiscard]] nstd::konst<nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>>& getKumpulanOperatorPenugasanContext() const;
   private:
-    nstd::bisa_kosong<nstd::daftar<Context>> kumpulanNilaiContext;
-    nstd::bisa_kosong<nstd::daftar<Context>> kumpulanOperatorPenugasanContext;
+    nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>> kumpulanOperasiPenugasanPenjumlahanContext;
+    nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>> kumpulanOperatorPenugasanContext;
 };

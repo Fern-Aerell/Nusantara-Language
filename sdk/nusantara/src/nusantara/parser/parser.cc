@@ -140,8 +140,7 @@ std::unique_ptr<ParserTree> Parser::parseOperasiPenugasanPerkalian() {
 std::unique_ptr<ParserTree> Parser::parseOperatorLogika() {
     std::vector<TokenType> types = {
     TokenType::DAN,
-    TokenType::ATAU,
-    TokenType::TIDAK
+    TokenType::ATAU
     };
     return this->fragmentTokenTypeGroup(types, ParserRule::operator_logika);
 }
@@ -150,7 +149,7 @@ std::unique_ptr<ParserTree> Parser::parseOperasiLogika() {
     std::unique_ptr<ParserTree> operasiLogika = std::make_unique<ParserRuleTree>(ParserRule::operasi_logika);
     std::unique_ptr<ParserTree> left = this->parseOperasiPerbandingan();
     operasiLogika->addChild(std::move(left));
-    while (this->matchOr({TokenType::DAN, TokenType::ATAU, TokenType::TIDAK})) {
+    while (this->matchOr({TokenType::DAN, TokenType::ATAU})) {
         std::unique_ptr<ParserTree> operatorLogika = this->parseOperatorLogika();
         operasiLogika->addChild(std::move(operatorLogika));
         std::unique_ptr<ParserTree> right = this->parseOperasiPerbandingan();

@@ -7,8 +7,8 @@ OperatorPenugasanContext OperatorPenugasanContext::generate(const std::vector<st
     const Token token = ptchild0->getToken();
     const TokenType type = token.getType();
     if(type == TokenType::SAMA_DENGAN) {
-    nstd::bisa_kosong<Token> simbolOpPenugasan = token;
-    return OperatorPenugasanContext(std::move(simbolOpPenugasan));
+        nstd::bisa_kosong<Token> simbolOpPenugasan = token;
+        return OperatorPenugasanContext(std::move(simbolOpPenugasan));
     }
     throw std::runtime_error("Operator penugasan tidak valid");
 }

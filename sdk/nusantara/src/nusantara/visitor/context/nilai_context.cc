@@ -1,3 +1,7 @@
+#include "nusantara/core/core.h"
+#include "nusantara/parser/parser_tree.h"
+#include "nusantara/visitor/context/context.h"
+#include <memory>
 #include <nusantara/visitor/context/nilai_context.h>
 
 #include <nusantara/visitor/context/operasi_penugasan_context.h>
@@ -5,7 +9,7 @@
 NilaiContext::NilaiContext(
     nstd::bisa_kosong<Token> nilai,
     nstd::bisa_kosong<Token> kurungBuka,
-    nstd::bisa_kosong<Context> operasiPenugasanContext,
+    nstd::bisa_kosong<std::unique_ptr<Context>> operasiPenugasanContext,
     nstd::bisa_kosong<Token> kurungTutup
 ): 
 nilai(std::move(nilai)),
@@ -32,7 +36,7 @@ NilaiContext NilaiContext::generate(const std::vector<std::unique_ptr<ParserTree
   }else if(type == TokenType::KURUNG_BUKA) {
     nstd::bisa_kosong<Token> kurungBuka = token;
     auto* ptchild1 = dynamic_cast<ParserRuleTree*>(children[1].get());
-    nstd::bisa_kosong<OperasiPenugasanContext> operasiPenugasanContext = OperasiPenugasanContext::generate(ptchild1->getChildren());
+    nstd::bisa_kosong<std::unique_ptr<Context>> operasiPenugasanContext = std::make_unique<OperasiPenugasanContext>(OperasiPenugasanContext::generate(ptchild1->getChildren()));
     auto* ptchild2 = dynamic_cast<ParserTokenTree*>(children[2].get());
     nstd::konst<Token> token2 = ptchild2->getToken();
     nstd::bisa_kosong<Token> kurungTutup = token2;
@@ -49,7 +53,7 @@ nstd::bisa_kosong<Token> NilaiContext::getKurungBuka() const {
   return this->kurungBuka;
 }
 
-nstd::bisa_kosong<Context> NilaiContext::getOperasiPenugasanContext() const {
+nstd::konst<nstd::bisa_kosong<std::unique_ptr<Context>>>& NilaiContext::getOperasiPenugasanContext() const {
   return this->operasiPenugasanContext;
 }
 
