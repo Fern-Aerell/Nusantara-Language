@@ -106,7 +106,7 @@ std::unique_ptr<ParserTree> Parser::parseOperasiPenugasanPenjumlahan() {
     std::unique_ptr<ParserTree> operasiPenugasanPenjumlahan = std::make_unique<ParserRuleTree>(ParserRule::operasi_penugasan_penjumlahan);
     std::unique_ptr<ParserTree> left = this->parseOperasiPenugasanPerkalian();
     operasiPenugasanPenjumlahan->addChild(std::move(left));
-    while (this->matchOr({TokenType::TAMBAH_SAMA_DENGAN, TokenType::KURANG_SAMA_DENGAN})) {
+    while(this->matchOr({TokenType::TAMBAH_SAMA_DENGAN, TokenType::KURANG_SAMA_DENGAN})) {
         std::unique_ptr<ParserTree> operatorPenugasanPenjumlahan = this->parseOperatorPenugasanPenjumlahan();
         operasiPenugasanPenjumlahan->addChild(std::move(operatorPenugasanPenjumlahan));
         std::unique_ptr<ParserTree> right = this->parseOperasiPenugasanPerkalian();
@@ -128,7 +128,7 @@ std::unique_ptr<ParserTree> Parser::parseOperasiPenugasanPerkalian() {
     std::unique_ptr<ParserTree> operasiPenugasanPerkalian = std::make_unique<ParserRuleTree>(ParserRule::operasi_penugasan_perkalian);
     std::unique_ptr<ParserTree> left = this->parseOperasiLogika();
     operasiPenugasanPerkalian->addChild(std::move(left));
-    while (this->matchOr({TokenType::KALI_SAMA_DENGAN, TokenType::BAGI_SAMA_DENGAN, TokenType::SISA_BAGI_SAMA_DENGAN})) {
+    while(this->matchOr({TokenType::KALI_SAMA_DENGAN, TokenType::BAGI_SAMA_DENGAN, TokenType::SISA_BAGI_SAMA_DENGAN})) {
         std::unique_ptr<ParserTree> operatorPenugasanPerkalian = this->parseOperatorPenugasanPerkalian();
         operasiPenugasanPerkalian->addChild(std::move(operatorPenugasanPerkalian));
         std::unique_ptr<ParserTree> right = this->parseOperasiLogika();

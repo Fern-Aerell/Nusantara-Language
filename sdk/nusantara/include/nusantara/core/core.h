@@ -1,9 +1,9 @@
 #pragma once
 
-#include <algorithm>
 #include <any>
 #include <map>
 #include <optional>
+#include <sstream>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -47,141 +47,150 @@ namespace nstd {
     // Dinamis
     using dinamis = bisa_kosong<std::any>;
 
-    template<class Tipe>
-    inline bool isKosong(const bisa_kosong<Tipe>& tipe) {
+    template <class Tipe>
+    benarsalah isKosong(const bisa_kosong<Tipe> &tipe)
+    {
         return !tipe.has_value();
     }
 
-    inline bool isKosong(const dinamis& dinamis) {
-        return !dinamis.has_value();
-    }
+    benarsalah isKosong(const dinamis& dinamis);
 
-    inline bool isTidakAda(const dinamis& dinamis) {
-        if(!isKosong(dinamis)) {
-            return !dinamis.value().has_value();
-        }
-        return false;
-    }
+    benarsalah isTidakAda(const dinamis& dinamis);
 
-    inline bool isBulat(const dinamis& dinamis) {
-        if(!isKosong(dinamis)) {
-            return dinamis.value().type() == typeid(bulat);
-        }
-        return false;
-    }
+    benarsalah isBulat(const dinamis& dinamis);
 
-    inline bool isDesimal(const dinamis& dinamis) {
-        if(!isKosong(dinamis)) {
-            return dinamis.value().type() == typeid(desimal);
-        }
-        return false;
-    }
+    benarsalah isDesimal(const dinamis& dinamis);
 
-    inline bool isKarakter(const dinamis& dinamis) {
-        if(!isKosong(dinamis)) {
-            return dinamis.value().type() == typeid(karakter);
-        }
-        return false;
-    }
+    benarsalah isKarakter(const dinamis& dinamis);
 
-    inline bool isKalimat(const dinamis& dinamis) {
-        if(!isKosong(dinamis)) {
-            return dinamis.value().type() == typeid(kalimat);
-        }
-        return false;
-    }
+    benarsalah isKalimat(const dinamis& dinamis);
 
-    inline bool isBenarSalah(const dinamis& dinamis) {
-        if(!isKosong(dinamis)) {
-            return dinamis.value().type() == typeid(benarsalah);
-        }
-        return false;
-    }
+    benarsalah isBenarSalah(const dinamis& dinamis);
 
-    template<class Value>
-    inline bool isDaftar(const dinamis& dinamis) {
-        if(!isKosong(dinamis)) {
+    template <class Value> benarsalah isDaftar(const dinamis &dinamis)
+    {
+        if(!isKosong(dinamis))
+        {
             return dinamis.value().type() == typeid(daftar<Value>);
         }
         return false;
     }
 
-    template<class Key, class Value>
-    inline bool isPeta(const dinamis& dinamis) {
-        if(!isKosong(dinamis)) {
+    template <class Key, class Value>
+    benarsalah isPeta(const dinamis &dinamis)
+    {
+        if(!isKosong(dinamis))
+        {
             return dinamis.value().type() == typeid(peta<Key, Value>);
         }
         return false;
     }
 
-    inline bulat asBulat(const dinamis& dinamis) {
-        if(!isKosong(dinamis)) {
-            if(isBulat(dinamis)) {
-                return std::any_cast<bulat>(dinamis.value());
-            }
-        }
-        throw std::runtime_error("dinamis bukan bilangan bulat.");
-    }
+    bulat asBulat(const dinamis& dinamis);
 
-    inline desimal asDesimal(const dinamis& dinamis) {
-        if(!isKosong(dinamis)) {
-            if(isDesimal(dinamis)) {
-                return std::any_cast<desimal>(dinamis.value());
-            }
-        }
-        throw std::runtime_error("dinamis bukan bilangan desimal.");
-    }
+    desimal asDesimal(const dinamis& dinamis);
 
-    inline karakter asKarakter(const dinamis& dinamis) {
-        if(!isKosong(dinamis)) {
-            if(isKarakter(dinamis)) {
-                return std::any_cast<karakter>(dinamis.value());
-            }
-        }
-        throw std::runtime_error("dinamis bukan karakter.");
-    }
+    karakter asKarakter(const dinamis& dinamis);
 
-    inline kalimat asKalimat(const dinamis& dinamis) {
-        if(!isKosong(dinamis)) {
-            if(isKalimat(dinamis)) {
-                return std::any_cast<kalimat>(dinamis.value());
-            }
-        }
-        throw std::runtime_error("dinamis bukan kalimat.");
-    }
+    kalimat asKalimat(const dinamis& dinamis);
 
-    inline benarsalah asBenarSalah(const dinamis& dinamis) {
-        if(!isKosong(dinamis)) {
-            if(isBenarSalah(dinamis)) {
-                return std::any_cast<benarsalah>(dinamis.value());
-            }
-        }
-        throw std::runtime_error("dinamis bukan benar atau salah.");
-    }
+    benarsalah asBenarSalah(const dinamis& dinamis);
 
-    template<class Value>
-    inline daftar<Value> asDaftar(const dinamis& dinamis) {
-        if(!isKosong(dinamis)) {
-            if(isDaftar<Value>(dinamis)) {
+    template <class Value>
+    daftar<Value> asDaftar(const dinamis &dinamis)
+    {
+        if(!isKosong(dinamis))
+        {
+            if(isDaftar<Value>(dinamis))
+            {
                 return std::any_cast<daftar<Value>>(dinamis.value());
             }
         }
-        throw std::runtime_error("dinamis bukan daftar atau bukan daftar dengan value yang di tentukan.");
+        throw std::runtime_error(
+        "dinamis bukan daftar atau bukan daftar dengan value yang di tentukan.");
     }
 
-    template<class Key, class Value>
-    inline peta<Key, Value> asPeta(const dinamis& dinamis) {
-        if(!isKosong(dinamis)) {
-            if(isPeta<Key, Value>(dinamis)) {
+    template <class Key, class Value>
+    peta<Key, Value> asPeta(const dinamis &dinamis)
+    {
+        if(!isKosong(dinamis))
+        {
+            if(isPeta<Key, Value>(dinamis))
+            {
                 return std::any_cast<peta<Key, Value>>(dinamis.value());
             }
         }
-        throw std::runtime_error("dinamis bukan peta atau bukan peta dengan key atau value yang di tentukan.");
+        throw std::runtime_error("dinamis bukan peta atau bukan peta dengan key "
+                                "atau value yang di tentukan.");
     }
 
-    template<class Value>
-    inline bool contains(konst<daftar<Value>>& daftar, konst<Value>& nilai) {
+    template <class Value>
+    benarsalah contains(konst<daftar<Value>> &daftar, konst<Value> &nilai)
+    {
         return std::find(daftar.begin(), daftar.end(), nilai) != daftar.end();
     }
-    
+
+    kalimat ubahKeKalimat(konst<bulat>& bulat);
+
+    kalimat ubahKeKalimat(konst<desimal>& desimal);
+
+    kalimat ubahKeKalimat(konst<karakter>& karakter);
+
+    kalimat ubahKeKalimat(konst<benarsalah>& benarsalah);
+
+    template <class Value>
+    kalimat ubahKeKalimat(konst<daftar<Value>> &daftar)
+    {
+        std::ostringstream stream;
+        int index = 0;
+        for(konst<Value> &child : daftar)
+        {
+            if(index == 0)
+            {
+                stream << "["
+                    << "\n";
+            }
+            stream << " [" << index << "]=" << child;
+            if(index < (daftar.size() - 1))
+            {
+                stream << ","
+                    << "\n";
+            }
+            else
+            {
+                stream << "\n"
+                    << "]";
+            }
+            ++index;
+        }
+        return stream.str();
+    }
+
+    template <class Key, class Value>
+    kalimat ubahKeKalimat(konst<peta<Key, Value>> &peta)
+    {
+        std::ostringstream stream;
+        int index = 0;
+        for(const auto& pair : peta)
+        {
+            if(index == 0)
+            {
+                stream << "["
+                    << "\n";
+            }
+            stream << " [" << pair.first << "]=" << pair.second ;
+            if(index < (peta.size() - 1))
+            {
+                stream << ","
+                    << "\n";
+            }
+            else
+            {
+                stream << "\n"
+                    << "]";
+            }
+            ++index;
+        }
+        return stream.str();
+    }
 }

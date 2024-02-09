@@ -1,10 +1,7 @@
 #include "nusantara/core/core.h"
-#include "nusantara/parser/parser_tree.h"
-#include "nusantara/visitor/context/context.h"
-#include <memory>
+#include "nusantara/visitor/context/operasi_penugasan_context.h"
 #include <nusantara/visitor/context/nilai_context.h>
-
-#include <nusantara/visitor/context/operasi_penugasan_context.h>
+#include <stdexcept>
 
 NilaiContext::NilaiContext(
     nstd::bisa_kosong<Token> nilai,
@@ -20,27 +17,34 @@ kurungTutup(std::move(kurungTutup))
 
 NilaiContext NilaiContext::generate(const std::vector<std::unique_ptr<ParserTree>>& children)  {
   auto* ptchild0 = dynamic_cast<ParserTokenTree*>(children[0].get());
-  nstd::konst<Token> token = ptchild0->getToken();
-  nstd::konst<TokenType> type = token.getType();
-  nstd::konst<nstd::daftar<TokenType>> nilaiTokenType = {
-    TokenType::BULAT,
-    TokenType::DESIMAL,
-    TokenType::KARAKTER,
-    TokenType::KALIMAT,
-    TokenType::BENAR,
-    TokenType::SALAH
-  };
-  if(nstd::contains<TokenType>(nilaiTokenType, type)) {
-    nstd::bisa_kosong<Token> nilai = token;
-    return NilaiContext(std::move(nilai), {}, {}, {});
-  }else if(type == TokenType::KURUNG_BUKA) {
-    nstd::bisa_kosong<Token> kurungBuka = token;
-    auto* ptchild1 = dynamic_cast<ParserRuleTree*>(children[1].get());
-    nstd::bisa_kosong<std::unique_ptr<Context>> operasiPenugasanContext = std::make_unique<OperasiPenugasanContext>(OperasiPenugasanContext::generate(ptchild1->getChildren()));
-    auto* ptchild2 = dynamic_cast<ParserTokenTree*>(children[2].get());
-    nstd::konst<Token> token2 = ptchild2->getToken();
-    nstd::bisa_kosong<Token> kurungTutup = token2;
-    return NilaiContext({}, std::move(kurungBuka), std::move(operasiPenugasanContext), std::move(kurungTutup));
+  if(ptchild0 != nullptr) {
+    nstd::konst<Token> token = ptchild0->getToken();
+    nstd::konst<TokenType> type = token.getType();
+    nstd::konst<nstd::daftar<TokenType>> nilaiTokenType = {
+      TokenType::BULAT,
+      TokenType::DESIMAL,
+      TokenType::KARAKTER,
+      TokenType::KALIMAT,
+      TokenType::BENAR,
+      TokenType::SALAH
+    };
+    if(nstd::contains<TokenType>(nilaiTokenType, type)) {
+      nstd::bisa_kosong<Token> nilai = token;
+      return NilaiContext(std::move(nilai), {}, {}, {});
+    }else if(type == TokenType::KURUNG_BUKA) {
+      nstd::bisa_kosong<Token> kurungBuka = token;
+      nstd::bisa_kosong<std::unique_ptr<Context>> operasiPenugasanContext;
+      nstd::bisa_kosong<Token> kurungTutup;
+      auto* ptchild1 = dynamic_cast<ParserRuleTree*>(children[1].get());
+      if(nstd::isKosong(operasiPenugasanContext)) {
+        operasiPenugasanContext = std::make_unique<OperasiPenugasanContext>(OperasiPenugasanContext::generate(ptchild1->getChildren()));
+      }
+      auto* ptchild2 = dynamic_cast<ParserTokenTree*>(children[2].get());
+      if(ptchild2 != nullptr) {
+        kurungTutup = ptchild2->getToken();
+      }
+      return NilaiContext({}, std::move(kurungBuka), std::move(operasiPenugasanContext), std::move(kurungTutup));
+    }
   }
   throw std::runtime_error("Nilai Context Tidak Valid");
 }

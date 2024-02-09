@@ -1,5 +1,5 @@
-#include "nusantara/visitor/context/operasi_logika_context.h"
 #include "nusantara/core/core.h"
+#include "nusantara/visitor/context/operasi_logika_context.h"
 #include "nusantara/visitor/context/context.h"
 #include "nusantara/visitor/context/operasi_perbandingan_context.h"
 #include "nusantara/visitor/context/operator_logika_context.h"

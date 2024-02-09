@@ -20,7 +20,6 @@
 #include "nusantara/visitor/context/operator_perbandingan_context.h"
 #include "nusantara/visitor/context/operator_perkalian_context.h"
 #include "nusantara/visitor/context/operator_pre_post_context.h"
-#include <iostream>
 #include <memory>
 #include <nusantara/parser/parser_tree.h>
 #include <stdexcept>

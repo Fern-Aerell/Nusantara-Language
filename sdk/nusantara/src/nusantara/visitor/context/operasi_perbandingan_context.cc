@@ -1,3 +1,4 @@
+#include "nusantara/core/core.h"
 #include "nusantara/visitor/context/context.h"
 #include "nusantara/visitor/context/operasi_perbandingan_context.h"
 #include "nusantara/visitor/context/operasi_pre_post_context.h"
@@ -19,13 +20,13 @@ OperasiPerbandinganContext OperasiPerbandinganContext::generate(const std::vecto
     auto* ptchild = dynamic_cast<ParserRuleTree*>(child.get());
     const ParserRule rule = ptchild->getRule();
     if(rule == ParserRule::operasi_pre_post) {
-      if(kumpulanOperasiPrePostContext) {
+      if(nstd::isKosong(kumpulanOperasiPrePostContext)) {
         kumpulanOperasiPrePostContext = nstd::daftar<std::unique_ptr<Context>>();
       }
       std::unique_ptr<Context> context = std::make_unique<OperasiPrePostContext>(OperasiPrePostContext::generate(ptchild->getChildren()));
       kumpulanOperasiPrePostContext.value().push_back(std::move(context));
     }else if(rule == ParserRule::operator_perbandingan) {
-      if(kumpulanOperatorPerbandinganContext) {
+      if(nstd::isKosong(kumpulanOperatorPerbandinganContext)) {
         kumpulanOperatorPerbandinganContext = nstd::daftar<std::unique_ptr<Context>>();
       }
       std::unique_ptr<Context> context = std::make_unique<OperatorPerbandinganContext>(OperatorPerbandinganContext::generate(ptchild->getChildren()));

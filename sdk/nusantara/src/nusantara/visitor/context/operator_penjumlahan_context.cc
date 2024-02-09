@@ -1,6 +1,7 @@
 #include "nusantara/core/core.h"
 #include "nusantara/lexer/token_type.h"
 #include <nusantara/visitor/context/operator_penjumlahan_context.h>
+#include <stdexcept>
 
 OperatorPenjumlahanContext::OperatorPenjumlahanContext(nstd::bisa_kosong<Token> simbolOp): simbolOp(std::move(simbolOp)) {}
 

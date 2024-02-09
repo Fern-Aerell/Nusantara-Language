@@ -1,9 +1,10 @@
 #pragma once
 
 #include "nusantara/core/core.h"
+#include "nusantara/lexer/token.h"
 #include "nusantara/visitor/visitor.h"
 
-class VisitorDinamis: public Visitor<nstd::dinamis> {
+class Interpreter: public Visitor<nstd::dinamis> {
     public:
         nstd::dinamis visitNusantara(nstd::konst<NusantaraContext>& ctx) override;
         nstd::dinamis visitOperatorPenugasan(nstd::konst<OperatorPenugasanContext>& ctx) override;
@@ -24,4 +25,20 @@ class VisitorDinamis: public Visitor<nstd::dinamis> {
         nstd::dinamis visitOperasiPerkalian(nstd::konst<OperasiPerkalianContext>& ctx) override;
         nstd::dinamis visitNilai(nstd::konst<NilaiContext>& ctx) override;
     private:
+        static nstd::dinamis fragmentVisitOperator(nstd::konst<nstd::bisa_kosong<Token>>& simbolOp, nstd::konst<nstd::kalimat>& opName);
+
+        static nstd::dinamis operasiAritmatika(nstd::konst<nstd::dinamis>& left, nstd::konst<nstd::kalimat>& simbolOp, nstd::konst<nstd::dinamis>& right);
+        static nstd::dinamis operasiPenjumlahan(nstd::konst<nstd::dinamis>& left, nstd::konst<nstd::dinamis>& right);
+        static nstd::dinamis operasiPengurangan(nstd::konst<nstd::dinamis>& left, nstd::konst<nstd::dinamis>& right);
+        static nstd::dinamis operasiPerkalian(nstd::konst<nstd::dinamis>& left, nstd::konst<nstd::dinamis>& right);
+        static nstd::dinamis operasiPembagian(nstd::konst<nstd::dinamis>& left, nstd::konst<nstd::dinamis>& right);
+        static nstd::dinamis operasiSisaPembagian(nstd::konst<nstd::dinamis>& left, nstd::konst<nstd::dinamis>& right);
+        
+        static nstd::dinamis operasiPerbandingan(nstd::konst<nstd::dinamis>& left, nstd::konst<nstd::kalimat>& simbolOp, nstd::konst<nstd::dinamis>& right);
+        static nstd::dinamis operasiSama(nstd::konst<nstd::dinamis>& left, nstd::konst<nstd::dinamis>& right);
+        static nstd::dinamis operasiTidakSama(nstd::konst<nstd::dinamis>& left, nstd::konst<nstd::dinamis>& right);
+        static nstd::dinamis operasiLebihBesar(nstd::konst<nstd::dinamis>& left, nstd::konst<nstd::dinamis>& right);
+        static nstd::dinamis operasiLebihKecil(nstd::konst<nstd::dinamis>& left, nstd::konst<nstd::dinamis>& right);
+        static nstd::dinamis operasiLebihBesarSamaDengan(nstd::konst<nstd::dinamis>& left, nstd::konst<nstd::dinamis>& right);
+        static nstd::dinamis operasiLebihKecilSamaDengan(nstd::konst<nstd::dinamis>& left, nstd::konst<nstd::dinamis>& right);
 };

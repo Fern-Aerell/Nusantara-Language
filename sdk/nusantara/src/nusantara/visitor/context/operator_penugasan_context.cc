@@ -1,4 +1,5 @@
 #include <nusantara/visitor/context/operator_penugasan_context.h>
+#include <stdexcept>
 
 OperatorPenugasanContext::OperatorPenugasanContext(nstd::bisa_kosong<Token> simbolOp): simbolOp(std::move(simbolOp)) {}
 

@@ -1,13 +1,5 @@
-#include "nusantara/core/core.h"
-#include "nusantara/lexer/token.h"
-#include "nusantara/lexer/token_type.h"
-#include "nusantara/parser/parser_rule.h"
+#include "nusantara/interpreter/interpreter.h"
 #include "nusantara/parser/parser_tree.h"
-#include "nusantara/visitor/context/context.h"
-#include "nusantara/visitor/context/nilai_context.h"
-#include "nusantara/visitor/context/operasi_perkalian_context.h"
-#include "nusantara/visitor/visitor.h"
-#include "nusantara/visitor/visitor_dinamis.h"
 #include <exception>
 #include <memory>
 #include <string>
@@ -23,7 +15,7 @@ int main(int argc, char *argv[])
   --argv;
   try {
     std::string source = "examples/halo_dunia.nl";
-    std::string input = "10;";
+    std::string input = utils::readFile(source);
     ErrorInfo errorInfo(source, input);
     Lexer lexer(source, input);
     // while (true) {
@@ -33,9 +25,9 @@ int main(int argc, char *argv[])
     // }
     Parser parser(errorInfo, lexer);
     std::unique_ptr<ParserTree> tree = parser.parse();
-    tree->printTree(0);
-    VisitorDinamis visitor;
-    visitor.visit(tree);
+    // tree->printTree(0);
+    Interpreter interpreter;
+    interpreter.visit(tree);
   }catch(const std::exception& error) {
     std::cout << error.what() << "\n";
   }
