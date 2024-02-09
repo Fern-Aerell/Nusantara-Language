@@ -1,5 +1,5 @@
 #include "nusantara/core/core.h"
-#include "nusantara/core/konsol.h"
+#include "nusantara/core/error_info.h"
 #include "nusantara/lexer/token_type.h"
 #include "nusantara/visitor/context/context.h"
 #include "nusantara/visitor/context/nilai_context.h"
@@ -25,6 +25,8 @@
 #include <nusantara/interpreter/interpreter.h>
 #include <stdexcept>
 #include <string>
+
+Interpreter::Interpreter(ErrorInfo errorInfo): errorInfo(std::move(errorInfo)) {}
 
 nstd::dinamis Interpreter::operasiAritmatika(nstd::konst<nstd::dinamis>& left, nstd::konst<nstd::kalimat>& simbolOp, nstd::konst<nstd::dinamis>& right) {
     if(simbolOp == "+") {

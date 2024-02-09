@@ -1,3 +1,4 @@
+#include "nusantara/core/core.h"
 #include <nusantara/lexer/lexer.h>
 #include <nusantara/lexer/token.h>
 #include <nusantara/lexer/token_type.h>
@@ -56,10 +57,14 @@ Token Lexer::getNextToken() {
 }
 
 Token Lexer::createToken(const TokenType& type, const std::string& value) {
+  nstd::kalimat nilai = value;
+  if(type == TokenType::KARAKTER || type == TokenType::KALIMAT) {
+    nilai = nilai.substr(1, nilai.size() - 2);
+  }
   return {
     this->source,
     type,
-    value,
+    nilai,
     this->line,
     this->charIndex
   };

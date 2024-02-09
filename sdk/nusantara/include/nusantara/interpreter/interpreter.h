@@ -1,11 +1,14 @@
 #pragma once
 
 #include "nusantara/core/core.h"
+#include "nusantara/core/error_info.h"
 #include "nusantara/lexer/token.h"
 #include "nusantara/visitor/visitor.h"
 
 class Interpreter: public Visitor<nstd::dinamis> {
     public:
+        explicit Interpreter(ErrorInfo errorInfo);
+
         nstd::dinamis visitNusantara(nstd::konst<NusantaraContext>& ctx) override;
         nstd::dinamis visitOperatorPenugasan(nstd::konst<OperatorPenugasanContext>& ctx) override;
         nstd::dinamis visitOperasiPenugasan(nstd::konst<OperasiPenugasanContext>& ctx) override;
@@ -25,6 +28,8 @@ class Interpreter: public Visitor<nstd::dinamis> {
         nstd::dinamis visitOperasiPerkalian(nstd::konst<OperasiPerkalianContext>& ctx) override;
         nstd::dinamis visitNilai(nstd::konst<NilaiContext>& ctx) override;
     private:
+        ErrorInfo errorInfo;
+
         static nstd::dinamis fragmentVisitOperator(nstd::konst<nstd::bisa_kosong<Token>>& simbolOp, nstd::konst<nstd::kalimat>& opName);
 
         static nstd::dinamis operasiAritmatika(nstd::konst<nstd::dinamis>& left, nstd::konst<nstd::kalimat>& simbolOp, nstd::konst<nstd::dinamis>& right);
