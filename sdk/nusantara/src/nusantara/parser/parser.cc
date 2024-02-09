@@ -22,6 +22,14 @@ currentToken(this->lexer.getNextToken())
 void Parser::eat(const TokenType& type) {
     if(this->currentToken.getType() == type) {
         this->currentToken = this->lexer.getNextToken();
+        if(this->currentToken.getType() == TokenType::TIDAK_DIKENALI) {
+            throw std::runtime_error(this->errorInfo.inLine(
+                this->currentToken.getLine(), 
+                this->currentToken.getCharIndex(), 
+                this->currentToken.getValue(), 
+                "Karakter tidak di kenali."
+            ));
+        }
     }else{
         throw std::runtime_error(this->errorInfo.inLine(
             this->currentToken.getLine(), 
