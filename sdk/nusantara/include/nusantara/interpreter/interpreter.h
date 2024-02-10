@@ -46,8 +46,9 @@ class Interpreter : public Visitor<nstd::dinamis> {
 
  private:
   ErrorInfo errorInfo;
+  nstd::daftar<Token> tokens;
 
-  static nstd::dinamis fragmentVisitOperator(
+  nstd::dinamis fragmentVisitOperator(
       nstd::konst<nstd::bisa_kosong<Token>> &simbolOp,
       nstd::konst<nstd::kalimat> &opName);
 

@@ -1,6 +1,7 @@
 #include <nusantara/interpreter/interpreter.h>
 
 #include <cstddef>
+#include <exception>
 #include <format>
 #include <iostream>
 #include <memory>
@@ -8,6 +9,7 @@
 
 #include "nusantara/core/core.h"
 #include "nusantara/core/error_info.h"
+#include "nusantara/core/konsol.h"
 #include "nusantara/lexer/token_type.h"
 #include "nusantara/visitor/context/context.h"
 #include "nusantara/visitor/context/nilai_context.h"
@@ -272,6 +274,7 @@ nstd::dinamis Interpreter::fragmentVisitOperator(
     nstd::konst<nstd::bisa_kosong<Token>> &simbolOp,
     nstd::konst<nstd::kalimat> &opName) {
   if (!nstd::isKosong(simbolOp)) {
+    this->tokens.push_back(simbolOp.value());
     return simbolOp.value().getValue();
   }
   throw std::runtime_error(std::format("Operator {} tidak valid.", opName));
@@ -312,6 +315,7 @@ nstd::dinamis Interpreter::visitNusantara(nstd::konst<NusantaraContext> &ctx) {
                     << "\n";
         }
       }
+      this->tokens.clear();
     }
   }
   return {};
@@ -319,7 +323,7 @@ nstd::dinamis Interpreter::visitNusantara(nstd::konst<NusantaraContext> &ctx) {
 
 nstd::dinamis Interpreter::visitOperatorPenugasan(
     nstd::konst<OperatorPenugasanContext> &ctx) {
-  return Interpreter::fragmentVisitOperator(ctx.getSimbolOp(), "penugasan");
+  return this->fragmentVisitOperator(ctx.getSimbolOp(), "penugasan");
 }
 
 nstd::dinamis Interpreter::visitOperasiPenugasan(
@@ -360,8 +364,8 @@ nstd::dinamis Interpreter::visitOperasiPenugasan(
 
 nstd::dinamis Interpreter::visitOperatorPenugasanPenjumlahan(
     nstd::konst<OperatorPenugasanPenjumlahanContext> &ctx) {
-  return Interpreter::fragmentVisitOperator(ctx.getSimbolOp(),
-                                            "penugasan penjumlahan");
+  return this->fragmentVisitOperator(ctx.getSimbolOp(),
+                                     "penugasan penjumlahan");
 }
 
 nstd::dinamis Interpreter::visitOperasiPenugasanPenjumlahan(
@@ -404,8 +408,7 @@ nstd::dinamis Interpreter::visitOperasiPenugasanPenjumlahan(
 
 nstd::dinamis Interpreter::visitOperatorPenugasanPerkalian(
     nstd::konst<OperatorPenugasanPerkalianContext> &ctx) {
-  return Interpreter::fragmentVisitOperator(ctx.getSimbolOp(),
-                                            "penugasan perkalian");
+  return this->fragmentVisitOperator(ctx.getSimbolOp(), "penugasan perkalian");
 }
 
 nstd::dinamis Interpreter::visitOperasiPenugasanPerkalian(
@@ -445,7 +448,7 @@ nstd::dinamis Interpreter::visitOperasiPenugasanPerkalian(
 
 nstd::dinamis Interpreter::visitOperatorLogika(
     nstd::konst<OperatorLogikaContext> &ctx) {
-  return Interpreter::fragmentVisitOperator(ctx.getSimbolOp(), "logika");
+  return this->fragmentVisitOperator(ctx.getSimbolOp(), "logika");
 }
 
 nstd::dinamis Interpreter::visitOperasiLogika(
@@ -490,7 +493,7 @@ nstd::dinamis Interpreter::visitOperasiLogika(
 
 nstd::dinamis Interpreter::visitOperatorPerbandingan(
     nstd::konst<OperatorPerbandinganContext> &ctx) {
-  return Interpreter::fragmentVisitOperator(ctx.getSimbolOp(), "perbandingan");
+  return this->fragmentVisitOperator(ctx.getSimbolOp(), "perbandingan");
 }
 
 nstd::dinamis Interpreter::visitOperasiPerbandingan(
@@ -530,7 +533,7 @@ nstd::dinamis Interpreter::visitOperasiPerbandingan(
 
 nstd::dinamis Interpreter::visitOperatorPrePost(
     nstd::konst<OperatorPrePostContext> &ctx) {
-  return Interpreter::fragmentVisitOperator(ctx.getSimbolOp(), "pre post");
+  return this->fragmentVisitOperator(ctx.getSimbolOp(), "pre post");
 }
 
 nstd::dinamis Interpreter::visitOperasiPrePost(
@@ -567,7 +570,7 @@ nstd::dinamis Interpreter::visitOperasiPrePost(
 
 nstd::dinamis Interpreter::visitOperatorPenjumlahan(
     nstd::konst<OperatorPenjumlahanContext> &ctx) {
-  return Interpreter::fragmentVisitOperator(ctx.getSimbolOp(), "penjumlahan");
+  return this->fragmentVisitOperator(ctx.getSimbolOp(), "penjumlahan");
 }
 
 nstd::dinamis Interpreter::visitOperasiPenjumlahan(
@@ -607,7 +610,7 @@ nstd::dinamis Interpreter::visitOperasiPenjumlahan(
 
 nstd::dinamis Interpreter::visitOperatorPerkalian(
     nstd::konst<OperatorPerkalianContext> &ctx) {
-  return Interpreter::fragmentVisitOperator(ctx.getSimbolOp(), "perkalian");
+  return this->fragmentVisitOperator(ctx.getSimbolOp(), "perkalian");
 }
 
 nstd::dinamis Interpreter::visitOperasiPerkalian(
@@ -639,7 +642,11 @@ nstd::dinamis Interpreter::visitOperasiPerkalian(
     nstd::konst<nstd::kalimat> simbolOp =
         nstd::asKalimat(this->visitOperatorPerkalian(*simbolOpPtr));
     nstd::konst<nstd::dinamis> right = this->visitNilai(*rightPtr);
-    left = Interpreter::operasiAritmatika(left, simbolOp, right);
+    try {
+      left = Interpreter::operasiAritmatika(left, simbolOp, right);
+    } catch (const std::exception &error) {
+      throw std::runtime_error(this->errorInfo.inLine(tokens, error.what()));
+    }
   }
   return left;
 }
@@ -647,6 +654,7 @@ nstd::dinamis Interpreter::visitOperasiPerkalian(
 nstd::dinamis Interpreter::visitNilai(nstd::konst<NilaiContext> &ctx) {
   if (!nstd::isKosong(ctx.getNilai())) {
     nstd::konst<Token> token = ctx.getNilai().value();
+    this->tokens.push_back(token);
     nstd::konst<TokenType> &type = token.getType();
     nstd::kalimat nilai = token.getValue();
     if (type == TokenType::BULAT) {
