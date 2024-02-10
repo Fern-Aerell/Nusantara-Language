@@ -13,20 +13,9 @@ project(
 include_directories(include)
 
 file(
-	GLOB
-	SRC_FILES
-	"src/*.c"
+	GLOB_RECURSE 
+	SRC_FILES 
 	"src/*.cc"
-	"src/*.cpp"
-	"src/**/*.c"
-	"src/**/*.cc"
-	"src/**/*.cpp"
-	"src/**/**/*.c"
-	"src/**/**/*.cc"
-	"src/**/**/*.cpp"
-	"src/**/**/**/*.c"
-	"src/**/**/**/*.cc"
-	"src/**/**/**/*.cpp"
 )
 
 add_executable(

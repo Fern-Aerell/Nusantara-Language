@@ -2,8 +2,7 @@
 
 #include <string>
 
-enum class ParserRule : int
-{
+enum class ParserRule : int {
   nusantara = 0,
   operator_penugasan = 1,
   operasi_penugasan = 2,
@@ -24,13 +23,14 @@ enum class ParserRule : int
   nilai = 17
 };
 
-inline std::string toString(const ParserRule &rule)
-{
-  switch(rule)
-    {
-    case ParserRule::nusantara: return "nusantara";
-    case ParserRule::operator_penugasan: return "operator_penugasan";
-    case ParserRule::operasi_penugasan: return "operasi_penugasan";
+inline std::string toString(const ParserRule &rule) {
+  switch (rule) {
+    case ParserRule::nusantara:
+      return "nusantara";
+    case ParserRule::operator_penugasan:
+      return "operator_penugasan";
+    case ParserRule::operasi_penugasan:
+      return "operasi_penugasan";
     case ParserRule::operator_penugasan_penjumlahan:
       return "operator_penugasan_penjumlahan";
     case ParserRule::operasi_penugasan_penjumlahan:
@@ -39,16 +39,27 @@ inline std::string toString(const ParserRule &rule)
       return "operator_penugasan_perkalian";
     case ParserRule::operasi_penugasan_perkalian:
       return "operasi_penugasan_perkalian";
-    case ParserRule::operator_logika: return "operator_logika";
-    case ParserRule::operasi_logika: return "operasi_logika";
-    case ParserRule::operator_perbandingan: return "operator_perbandingan";
-    case ParserRule::operasi_perbandingan: return "operasi_perbandingan";
-    case ParserRule::operator_penjumlahan: return "operator_penjumlahan";
-    case ParserRule::operasi_penjumlahan: return "operasi_penjumlahan";
-    case ParserRule::operator_pre_post: return "operator_pre_post";
-    case ParserRule::operasi_pre_post: return "operasi_pre_post";
-    case ParserRule::operator_perkalian: return "operator_perkalian";
-    case ParserRule::operasi_perkalian: return "operasi_perkalian";
-    case ParserRule::nilai: return "nilai";
-    }
+    case ParserRule::operator_logika:
+      return "operator_logika";
+    case ParserRule::operasi_logika:
+      return "operasi_logika";
+    case ParserRule::operator_perbandingan:
+      return "operator_perbandingan";
+    case ParserRule::operasi_perbandingan:
+      return "operasi_perbandingan";
+    case ParserRule::operator_penjumlahan:
+      return "operator_penjumlahan";
+    case ParserRule::operasi_penjumlahan:
+      return "operasi_penjumlahan";
+    case ParserRule::operator_pre_post:
+      return "operator_pre_post";
+    case ParserRule::operasi_pre_post:
+      return "operasi_pre_post";
+    case ParserRule::operator_perkalian:
+      return "operator_perkalian";
+    case ParserRule::operasi_perkalian:
+      return "operasi_perkalian";
+    case ParserRule::nilai:
+      return "nilai";
+  }
 }

@@ -1,30 +1,31 @@
 #pragma once
 
-#include "nusantara/visitor/context/context.h"
 #include <nusantara/core/core.h>
 #include <nusantara/parser/parser_tree.h>
+
 #include <memory>
 
-class OperasiPenugasanPenjumlahanContext : public Context
-{
-public:
+#include "nusantara/visitor/context/context.h"
+
+class OperasiPenugasanPenjumlahanContext : public Context {
+ public:
   OperasiPenugasanPenjumlahanContext(
-    nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>
-      kumpulanOperasiPenugasanPerkalianContext,
-    nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>
-      kumpulanOperatorPenugasanPenjumlahanContext);
-  static OperasiPenugasanPenjumlahanContext
-  generate(const std::vector<std::unique_ptr<ParserTree>> &children);
+      nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>
+          kumpulanOperasiPenugasanPerkalianContext,
+      nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>
+          kumpulanOperatorPenugasanPenjumlahanContext);
+  static OperasiPenugasanPenjumlahanContext generate(
+      const std::vector<std::unique_ptr<ParserTree>> &children);
   [[nodiscard]] nstd::konst<
-    nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>> &
+      nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>> &
   getKumpulanOperasiPenugasanPerkalianContext() const;
   [[nodiscard]] nstd::konst<
-    nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>> &
+      nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>> &
   getKumpulanOperatorPenugasanPenjumlahanContext() const;
 
-private:
+ private:
   nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>
-    kumpulanOperasiPenugasanPerkalianContext;
+      kumpulanOperasiPenugasanPerkalianContext;
   nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>
-    kumpulanOperatorPenugasanPenjumlahanContext;
+      kumpulanOperatorPenugasanPenjumlahanContext;
 };

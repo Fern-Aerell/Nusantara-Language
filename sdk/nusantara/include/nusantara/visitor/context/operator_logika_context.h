@@ -1,19 +1,20 @@
 #pragma once
 
-#include "nusantara/visitor/context/context.h"
-#include <memory>
 #include <nusantara/core/core.h>
 #include <nusantara/lexer/token.h>
 #include <nusantara/parser/parser_tree.h>
 
-class OperatorLogikaContext : public Context
-{
-public:
+#include <memory>
+
+#include "nusantara/visitor/context/context.h"
+
+class OperatorLogikaContext : public Context {
+ public:
   explicit OperatorLogikaContext(nstd::bisa_kosong<Token> simbolOp);
-  static OperatorLogikaContext
-  generate(const std::vector<std::unique_ptr<ParserTree>> &children);
+  static OperatorLogikaContext generate(
+      const std::vector<std::unique_ptr<ParserTree>> &children);
   [[nodiscard]] nstd::bisa_kosong<Token> getSimbolOp() const;
 
-private:
+ private:
   nstd::bisa_kosong<Token> simbolOp;
 };

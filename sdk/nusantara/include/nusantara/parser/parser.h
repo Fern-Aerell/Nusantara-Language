@@ -2,19 +2,19 @@
 
 #include <nusantara/core/error_info.h>
 #include <nusantara/lexer/lexer.h>
-#include <nusantara/parser/parser_tree.h>
 #include <nusantara/lexer/token.h>
 #include <nusantara/lexer/token_type.h>
+#include <nusantara/parser/parser_tree.h>
+
 #include <memory>
 #include <vector>
 
-class Parser
-{
-public:
+class Parser {
+ public:
   Parser(ErrorInfo errorInfo, Lexer lexer);
   std::unique_ptr<ParserTree> parse();
 
-private:
+ private:
   ErrorInfo errorInfo;
   Lexer lexer;
   Token currentToken;
@@ -22,9 +22,8 @@ private:
   bool match(const TokenType &type);
   bool matchOr(const std::vector<TokenType> &types);
   // fragment
-  std::unique_ptr<ParserTree>
-  fragmentTokenTypeGroup(const std::vector<TokenType> &tokenTypes,
-                         const ParserRule &rule);
+  std::unique_ptr<ParserTree> fragmentTokenTypeGroup(
+      const std::vector<TokenType> &tokenTypes, const ParserRule &rule);
   // parse
   std::unique_ptr<ParserTree> parseNusantara();
   std::unique_ptr<ParserTree> parseOperatorPenugasan();

@@ -1,11 +1,11 @@
-# /bin/bash
+#!/bin/bash
 
 ARG1="$1"
 
 if [[ $ARG1 = "release" ]] || [[ $ARG1 = "debug" ]]
 then 	
 	echo Formating...
-	find src include -iname *.h -o -iname *.cpp -o -iname *.cc | xargs clang-format -i
+	./clang-format-all.sh src/ include/
 	echo Configuration...
 	cmake --preset $ARG1
 	echo Building...

@@ -1,12 +1,11 @@
 #pragma once
 
-#include <string>
-
 #include <nusantara/lexer/token_type.h>
 
-class Token
-{
-public:
+#include <string>
+
+class Token {
+ public:
   Token(std::string source, const TokenType &type, std::string value,
         const int &line, const int &charIndex);
   [[nodiscard]] std::string getSource() const;
@@ -16,7 +15,7 @@ public:
   [[nodiscard]] int getCharIndex() const;
   [[nodiscard]] std::string toString() const;
 
-private:
+ private:
   std::string source;
   TokenType type;
   std::string value;
