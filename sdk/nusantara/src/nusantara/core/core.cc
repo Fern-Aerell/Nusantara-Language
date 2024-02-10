@@ -7,10 +7,7 @@
 namespace nstd
 {
 
-  benarsalah isKosong(const dinamis &dinamis)
-  {
-    return !dinamis.has_value();
-  }
+  benarsalah isKosong(const dinamis &dinamis) { return !dinamis.has_value(); }
 
   benarsalah isTidakAda(const dinamis &dinamis)
   {
@@ -126,33 +123,29 @@ namespace nstd
     throw std::runtime_error("dinamis bukan benar atau salah.");
   }
 
-  kalimat ubahKeKalimat(konst<bulat> &bulat)
-  {
-    return std::to_string(bulat);
-  }
+  kalimat ubahKeKalimat(konst<bulat> &bulat) { return std::to_string(bulat); }
 
-  kalimat
-  ubahKeKalimat(konst<desimal> &desimal)
+  kalimat ubahKeKalimat(konst<desimal> &desimal)
   {
     kalimat klmt = std::to_string(desimal);
     size_t pos = klmt.find('.');
-    if(pos != kalimat::npos) {
-      size_t end = klmt.find_last_not_of('0');
-      if(end != kalimat::npos && end > pos) {
-        klmt.erase(end + 1);
+    if(pos != kalimat::npos)
+      {
+        size_t end = klmt.find_last_not_of('0');
+        if(end != kalimat::npos && end > pos)
+          {
+            klmt.erase(end + 1);
+          }
+        if(klmt.back() == '.')
+          {
+            klmt.pop_back();
+          }
       }
-      if(klmt.back() == '.') {
-        klmt.pop_back();
-      }
-    }
     klmt.replace(klmt.find('.'), 1, ",");
     return klmt;
   }
 
-  kalimat ubahKeKalimat(konst<karakter> &karakter)
-  {
-    return {1, karakter};
-  }
+  kalimat ubahKeKalimat(konst<karakter> &karakter) { return {1, karakter}; }
 
   kalimat ubahKeKalimat(konst<benarsalah> &benarsalah)
   {
