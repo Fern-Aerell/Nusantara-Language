@@ -172,4 +172,7 @@ kalimat ubahKeKalimat(konst<peta<Key, Value>> &peta) {
   }
   return stream.str();
 }
+
+kalimat ubahKeKalimat(konst<dinamis> &dinamis);
+
 }  // namespace nstd

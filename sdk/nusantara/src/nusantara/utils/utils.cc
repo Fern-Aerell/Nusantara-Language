@@ -49,4 +49,5 @@ std::string readFile(const std::string &path) {
   // Kembalikan string yang berisi isi file
   return content.str();
 }
+
 }  // namespace utils

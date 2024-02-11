@@ -3,70 +3,69 @@
 
 #include <cstddef>
 #include <format>
+#include <iostream>
 #include <sstream>
+#include <stdexcept>
 #include <string>
 
 #include "nusantara/core/core.h"
+#include "nusantara/core/konsol.h"
 #include "nusantara/lexer/token.h"
+#include "nusantara/lexer/token_type.h"
 
 ErrorInfo::ErrorInfo(std::string source, const std::string &content)
     : source(std::move(source)), contentPerLine(utils::split(content, '\n')) {}
 
-std::string ErrorInfo::inLine(const int &line, const int &charIndex,
-                              const std::string &content,
-                              const std::string &msg) {
-  std::ostringstream stringStream;
-  stringStream << std::format("{}:{}:{}", this->source, line + 1,
-                              charIndex + 1) +
-                      "\n\n";
-  std::string prefix = std::format("{}| ", line + 1);
-  stringStream << std::format("{}{}", prefix, this->contentPerLine[line]) +
-                      "\n";
-  stringStream << std::string(prefix.length() + charIndex +
-                                  ((content.length() > 0) ? 0 : 1),
-                              ' ') +
-                      std::string((content.length() > 0) ? content.length() : 1,
-                                  '^') +
-                      "\n";
-  stringStream << msg;
-  return stringStream.str();
+nstd::kalimat ErrorInfo::inLine(nstd::konst<Token> &token,
+                                nstd::konst<nstd::kalimat> &msg) {
+  std::ostringstream stream;
+  nstd::kalimat realSource = token.getSource();
+  TokenType realType = token.getType();
+  nstd::kalimat realValue = token.getValue();
+  int realLine = token.getLine();
+  int realStartCharIndex = token.getStartCharIndex();
+  int realEndCharIndex = token.getEndCharIndex();
+
+  int line = realLine + 1;
+  int startCharIndex = realStartCharIndex + 1;
+  int endCharIndex = realEndCharIndex + 1;
+
+  nstd::kalimat prefix = std::format("{}| ", line);
+  stream << std::format("{}[Baris {}, Karakter {} sampai {}]:\n\n", realSource,
+                        line, startCharIndex, endCharIndex);
+  nstd::Konsol::cetak(std::format("contentPerLine size {}, realLine {}",
+                                  this->contentPerLine.size(), realLine));
+  stream << std::format(
+      "{}{}\n", prefix,
+      this->contentPerLine[realLine >= this->contentPerLine.size()
+                               ? realLine - 1
+                               : realLine]);
+  int arrowCount = (realEndCharIndex - realStartCharIndex);
+  stream << nstd::kalimat(prefix.length() + realStartCharIndex, ' ');
+  stream << nstd::kalimat((arrowCount > 0) ? arrowCount : 1, '^') + "\n";
+  stream << msg;
+  return stream.str();
 }
 
 nstd::kalimat ErrorInfo::inLine(nstd::konst<nstd::daftar<Token>> &tokens,
                                 nstd::konst<nstd::kalimat> &msg) {
+  if (tokens.empty()) {
+    throw std::runtime_error("Daftar tidak boleh kosong.");
+  }
   std::ostringstream stream;
-  //   nstd::benarsalah awal = benar;
-  //   nstd::kalimat sourceReal;
-  //   nstd::kalimat valueReal;
-  //   size_t lineReal = 0;
-  //   size_t charIndexReal = 0;
-  //   size_t line = 0;
-  //   size_t charIndex = 0;
-  //   size_t startIndex = 0;
-  //   size_t endIndex = 0;
-  //   nstd::kalimat codePrefix;
-  //   for (nstd::konst<Token> &token : tokens) {
-  //     if (!awal && token.getLine() != lineReal) {
-  //       codePrefix = std::format("{}| ", line);
-  //       stream << std::format("{}:{}:{}\n\n", sourceReal, line, charIndex);
-  //       stream << std::format("{}{}\n", codePrefix,
-  //                             this->contentPerLine[lineReal]);
-  //       stream << nstd::kalimat(codePrefix.length() + charIndexReal +
-  //                                   ((valueReal.length() > 0) ? 0 : 1),
-  //                               ' ');
-  //       stream << nstd::kalimat((valueReal.length() > 0) ? valueReal.length()
-  //       : 1,
-  //                               '^')
-  //              << "\n";
-  //     }
-  //     lineReal = token.getLine();
-  //     sourceReal = token.getSource();
-  //     valueReal = token.getValue();
-  //     charIndexReal = token.getCharIndex();
-  //     line = lineReal + 1;
-  //     charIndex = charIndexReal + 1;
-  //     awal = salah;
-  //   }
-  stream << msg << "\n";
+  Token token1 = tokens[0];
+  if (tokens.size() > 1) {
+    for (size_t index = 1; index < tokens.size(); ++index) {
+      if (token1.getSource() == tokens[index].getSource() &&
+          token1.getLine() == tokens[index].getLine()) {
+        token1 = combineToken(token1, tokens[index]);
+      } else {
+        stream << this->inLine(token1, "") << "\n";
+        token1 = tokens[index];
+      }
+    }
+  }
+  stream << this->inLine(token1, "") << "\n";
+  stream << msg;
   return stream.str();
 }

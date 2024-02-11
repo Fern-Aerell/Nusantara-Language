@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <format>
+#include <iostream>
 #include <stdexcept>
 #include <string>
 
@@ -101,22 +102,51 @@ kalimat ubahKeKalimat(konst<bulat> &bulat) { return std::to_string(bulat); }
 kalimat ubahKeKalimat(konst<desimal> &desimal) {
   kalimat klmt = std::to_string(desimal);
   size_t pos = klmt.find('.');
+
+  // Jika ada koma
   if (pos != kalimat::npos) {
+    // Hapus angka-angka nol dari belakang desimal
     size_t end = klmt.find_last_not_of('0');
-    if (end != kalimat::npos && end > pos) {
+
+    // Jika tidak ada digit nol setelah koma
+    if (end == pos) {
+      klmt.erase(pos);  // Hapus koma
+    } else if (end != kalimat::npos && end > pos) {
       klmt.erase(end + 1);
     }
-    if (klmt.back() == '.') {
-      klmt.pop_back();
-    }
   }
-  klmt.replace(klmt.find('.'), 1, ",");
+
+  // Ganti titik dengan koma
+  std::replace(klmt.begin(), klmt.end(), '.', ',');
   return klmt;
 }
 
-kalimat ubahKeKalimat(konst<karakter> &karakter) { return {1, karakter}; }
+kalimat ubahKeKalimat(konst<karakter> &karakter) { return {0, karakter}; }
 
 kalimat ubahKeKalimat(konst<benarsalah> &benarsalah) {
   return (benarsalah) ? "benar" : "salah";
 }
+
+kalimat ubahKeKalimat(konst<dinamis> &dinamis) {
+  if (dinamis->has_value()) {
+    if (isBulat(dinamis)) {
+      return ubahKeKalimat(asBulat(dinamis));
+    } else if (isDesimal(dinamis)) {
+      return ubahKeKalimat(asDesimal(dinamis));
+    } else if (isKarakter(dinamis)) {
+      return ubahKeKalimat(asKarakter(dinamis));
+    } else if (isKalimat(dinamis)) {
+      return ubahKeKalimat(asKalimat(dinamis));
+    } else if (isBenarSalah(dinamis)) {
+      return ubahKeKalimat(asBenarSalah(dinamis));
+    } else {
+      throw std::runtime_error(
+          std::format("Tipe {} tidak bisa untuk di ubah ke kalimat.\n",
+                      dinamis.value().type().name()));
+    }
+  } else {
+    return "kosong";
+  }
+}
+
 }  // namespace nstd

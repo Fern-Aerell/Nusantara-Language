@@ -1,7 +1,6 @@
 #include <nusantara/interpreter/interpreter.h>
 
 #include <cstddef>
-#include <exception>
 #include <format>
 #include <iostream>
 #include <memory>
@@ -50,7 +49,8 @@ nstd::dinamis Interpreter::operasiAritmatika(
   if (simbolOp == "%") {
     return Interpreter::operasiSisaPembagian(left, right);
   }
-  throw std::runtime_error("Operator aritmatika tidak valid.");
+  throw std::runtime_error(
+      this->errorInfo.inLine(this->tokens, "Operator aritmatika tidak valid."));
 }
 
 nstd::dinamis Interpreter::operasiPenjumlahan(
@@ -67,7 +67,20 @@ nstd::dinamis Interpreter::operasiPenjumlahan(
   if (nstd::isDesimal(left) && nstd::isBulat(right)) {
     return nstd::asDesimal(left) + nstd::asBulat(right);
   }
-  throw std::runtime_error("Operasi penjumlahan tidak valid.");
+  if (nstd::isKalimat(left) && nstd::isKalimat(right)) {
+    return nstd::asKalimat(left) + nstd::asKalimat(right);
+  }
+  if (nstd::isKarakter(left) && nstd::isKarakter(right)) {
+    return nstd::kalimat(1, nstd::asKarakter(left)) + nstd::asKarakter(right);
+  }
+  if (nstd::isKalimat(left) && nstd::isKarakter(right)) {
+    return nstd::asKalimat(left) + nstd::asKarakter(right);
+  }
+  if (nstd::isKarakter(left) && nstd::isKalimat(right)) {
+    return nstd::asKarakter(left) + nstd::asKalimat(right);
+  }
+  throw std::runtime_error(
+      this->errorInfo.inLine(this->tokens, "Operasi penjumlahan tidak valid."));
 }
 
 nstd::dinamis Interpreter::operasiPengurangan(
@@ -84,7 +97,8 @@ nstd::dinamis Interpreter::operasiPengurangan(
   if (nstd::isDesimal(left) && nstd::isBulat(right)) {
     return nstd::asDesimal(left) - nstd::asBulat(right);
   }
-  throw std::runtime_error("Operasi pengurangan tidak valid.");
+  throw std::runtime_error(
+      this->errorInfo.inLine(this->tokens, "Operasi pengurangan tidak valid."));
 }
 
 nstd::dinamis Interpreter::operasiPerkalian(nstd::konst<nstd::dinamis> &left,
@@ -101,13 +115,14 @@ nstd::dinamis Interpreter::operasiPerkalian(nstd::konst<nstd::dinamis> &left,
   if (nstd::isDesimal(left) && nstd::isBulat(right)) {
     return nstd::asDesimal(left) * nstd::asBulat(right);
   }
-  throw std::runtime_error("Operasi perkalian tidak valid.");
+  throw std::runtime_error(
+      this->errorInfo.inLine(this->tokens, "Operasi perkalian tidak valid."));
 }
 
 nstd::dinamis Interpreter::operasiPembagian(nstd::konst<nstd::dinamis> &left,
                                             nstd::konst<nstd::dinamis> &right) {
   if (nstd::isBulat(left) && nstd::isBulat(right)) {
-    return nstd::asBulat(left) / nstd::asBulat(right);
+    return (nstd::desimal)nstd::asBulat(left) / nstd::asBulat(right);
   }
   if (nstd::isDesimal(left) && nstd::isDesimal(right)) {
     return nstd::asDesimal(left) / nstd::asDesimal(right);
@@ -118,7 +133,8 @@ nstd::dinamis Interpreter::operasiPembagian(nstd::konst<nstd::dinamis> &left,
   if (nstd::isDesimal(left) && nstd::isBulat(right)) {
     return nstd::asDesimal(left) / nstd::asBulat(right);
   }
-  throw std::runtime_error("Operasi pembagian tidak valid.");
+  throw std::runtime_error(
+      this->errorInfo.inLine(this->tokens, "Operasi pembagian tidak valid."));
 }
 
 nstd::dinamis Interpreter::operasiSisaPembagian(
@@ -128,20 +144,24 @@ nstd::dinamis Interpreter::operasiSisaPembagian(
   }
   if (nstd::isDesimal(left) && nstd::isDesimal(right)) {
     throw std::runtime_error(
-        "Tidak dapat melakukan operasi sisa pembagian "
-        "antara bilangan desimal.");
+        this->errorInfo.inLine(this->tokens,
+                               "Tidak dapat melakukan operasi sisa pembagian "
+                               "antara bilangan desimal."));
   }
   if (nstd::isBulat(left) && nstd::isDesimal(right)) {
-    throw std::runtime_error(
+    throw std::runtime_error(this->errorInfo.inLine(
+        this->tokens,
         "Tidak dapat melakukan operasi sisa pembagian antara bilangan bulat "
-        "dengan bilangan desimal.");
+        "dengan bilangan desimal."));
   }
   if (nstd::isDesimal(left) && nstd::isBulat(right)) {
-    throw std::runtime_error(
+    throw std::runtime_error(this->errorInfo.inLine(
+        this->tokens,
         "Tidak dapat melakukan operasi sisa pembagian antara bilangan desimal "
-        "dengan bilangan bulat.");
+        "dengan bilangan bulat."));
   }
-  throw std::runtime_error("Operasi sisa pembagian tidak valid.");
+  throw std::runtime_error(this->errorInfo.inLine(
+      this->tokens, "Operasi sisa pembagian tidak valid."));
 }
 
 nstd::dinamis Interpreter::operasiPerbandingan(
@@ -165,7 +185,8 @@ nstd::dinamis Interpreter::operasiPerbandingan(
   if (simbolOp == "<=") {
     return Interpreter::operasiLebihKecilSamaDengan(left, right);
   }
-  throw std::runtime_error("Operator perbandingan tidak valid.");
+  throw std::runtime_error(this->errorInfo.inLine(
+      this->tokens, "Operator perbandingan tidak valid."));
 }
 
 nstd::dinamis Interpreter::operasiSama(nstd::konst<nstd::dinamis> &left,
@@ -182,7 +203,8 @@ nstd::dinamis Interpreter::operasiSama(nstd::konst<nstd::dinamis> &left,
   if (nstd::isDesimal(left) && nstd::isBulat(right)) {
     return nstd::asDesimal(left) == nstd::asBulat(right);
   }
-  throw std::runtime_error("Operasi sama tidak valid.");
+  throw std::runtime_error(
+      this->errorInfo.inLine(this->tokens, "Operasi sama tidak valid."));
 }
 
 nstd::dinamis Interpreter::operasiTidakSama(nstd::konst<nstd::dinamis> &left,
@@ -199,7 +221,8 @@ nstd::dinamis Interpreter::operasiTidakSama(nstd::konst<nstd::dinamis> &left,
   if (nstd::isDesimal(left) && nstd::isBulat(right)) {
     return nstd::asDesimal(left) != nstd::asBulat(right);
   }
-  throw std::runtime_error("Operasi tidak sama tidak valid.");
+  throw std::runtime_error(
+      this->errorInfo.inLine(this->tokens, "Operasi tidak sama tidak valid."));
 }
 
 nstd::dinamis Interpreter::operasiLebihBesar(
@@ -216,7 +239,8 @@ nstd::dinamis Interpreter::operasiLebihBesar(
   if (nstd::isDesimal(left) && nstd::isBulat(right)) {
     return nstd::asDesimal(left) > nstd::asBulat(right);
   }
-  throw std::runtime_error("Operasi lebih besar tidak valid.");
+  throw std::runtime_error(
+      this->errorInfo.inLine(this->tokens, "Operasi lebih besar tidak valid."));
 }
 
 nstd::dinamis Interpreter::operasiLebihKecil(
@@ -233,7 +257,8 @@ nstd::dinamis Interpreter::operasiLebihKecil(
   if (nstd::isDesimal(left) && nstd::isBulat(right)) {
     return nstd::asDesimal(left) < nstd::asBulat(right);
   }
-  throw std::runtime_error("Operasi lebih kecil tidak valid.");
+  throw std::runtime_error(
+      this->errorInfo.inLine(this->tokens, "Operasi lebih kecil tidak valid."));
 }
 
 nstd::dinamis Interpreter::operasiLebihBesarSamaDengan(
@@ -250,7 +275,8 @@ nstd::dinamis Interpreter::operasiLebihBesarSamaDengan(
   if (nstd::isDesimal(left) && nstd::isBulat(right)) {
     return nstd::asDesimal(left) >= nstd::asBulat(right);
   }
-  throw std::runtime_error("Operasi lebih besar sama dengan tidak valid.");
+  throw std::runtime_error(this->errorInfo.inLine(
+      this->tokens, "Operasi lebih besar sama dengan tidak valid."));
 }
 
 nstd::dinamis Interpreter::operasiLebihKecilSamaDengan(
@@ -267,7 +293,8 @@ nstd::dinamis Interpreter::operasiLebihKecilSamaDengan(
   if (nstd::isDesimal(left) && nstd::isBulat(right)) {
     return nstd::asDesimal(left) <= nstd::asBulat(right);
   }
-  throw std::runtime_error("Operasi lebih kecil sama dengan tidak valid.");
+  throw std::runtime_error(this->errorInfo.inLine(
+      this->tokens, "Operasi lebih kecil sama dengan tidak valid."));
 }
 
 nstd::dinamis Interpreter::fragmentVisitOperator(
@@ -277,7 +304,8 @@ nstd::dinamis Interpreter::fragmentVisitOperator(
     this->tokens.push_back(simbolOp.value());
     return simbolOp.value().getValue();
   }
-  throw std::runtime_error(std::format("Operator {} tidak valid.", opName));
+  throw std::runtime_error(this->errorInfo.inLine(
+      this->tokens, std::format("Operator {} tidak valid.", opName)));
 }
 
 nstd::dinamis Interpreter::visitNusantara(nstd::konst<NusantaraContext> &ctx) {
@@ -287,33 +315,7 @@ nstd::dinamis Interpreter::visitNusantara(nstd::konst<NusantaraContext> &ctx) {
       auto *childPtr = dynamic_cast<OperasiPenugasanContext *>(child.get());
       if (childPtr != nullptr) {
         nstd::dinamis result = this->visitOperasiPenugasan(*childPtr);
-        if (nstd::isKosong(result)) {
-          std::cout << "Hasil : kosong"
-                    << "\n";
-        } else if (nstd::isBulat(result)) {
-          std::cout << std::format("Hasil : {}",
-                                   nstd::ubahKeKalimat(nstd::asBulat(result)))
-                    << "\n";
-        } else if (nstd::isDesimal(result)) {
-          std::cout << std::format("Hasil : {}",
-                                   nstd::ubahKeKalimat(nstd::asDesimal(result)))
-                    << "\n";
-        } else if (nstd::isKarakter(result)) {
-          std::cout << std::format("Hasil : {}", nstd::ubahKeKalimat(
-                                                     nstd::asKarakter(result)))
-                    << "\n";
-        } else if (nstd::isKalimat(result)) {
-          std::cout << std::format("Hasil : {}", nstd::asKalimat(result))
-                    << "\n";
-        } else if (nstd::isBenarSalah(result)) {
-          std::cout << std::format(
-                           "Hasil : {}",
-                           nstd::ubahKeKalimat(nstd::asBenarSalah(result)))
-                    << "\n";
-        } else {
-          std::cout << "Hasil : tidak dapat di cetak"
-                    << "\n";
-        }
+        nstd::Konsol::cetak(result);
       }
       this->tokens.clear();
     }
@@ -482,10 +484,23 @@ nstd::dinamis Interpreter::visitOperasiLogika(
         nstd::asKalimat(this->visitOperatorLogika(*simbolOpPtr));
     nstd::konst<nstd::dinamis> right =
         this->visitOperasiPerbandingan(*rightPtr);
-    if (nstd::isBenarSalah(left) && nstd::isBenarSalah(right)) {
-      left = nstd::asBenarSalah(left) && nstd::asBenarSalah(right);
+    if (simbolOp == "&&") {
+      if (nstd::isBenarSalah(left) && nstd::isBenarSalah(right)) {
+        left = nstd::asBenarSalah(left) && nstd::asBenarSalah(right);
+      } else {
+        throw std::runtime_error(this->errorInfo.inLine(
+            this->tokens, "Operasi perbandingan dan tidak valid."));
+      }
+    } else if (simbolOp == "||") {
+      if (nstd::isBenarSalah(left) && nstd::isBenarSalah(right)) {
+        left = nstd::asBenarSalah(left) || nstd::asBenarSalah(right);
+      } else {
+        throw std::runtime_error(this->errorInfo.inLine(
+            this->tokens, "Operasi perbandingan atau tidak valid."));
+      }
     } else {
-      throw std::runtime_error("Operasi perbandingan tidak valid.");
+      throw std::runtime_error(this->errorInfo.inLine(
+          this->tokens, "Operator perbandingan tidak valid."));
     }
   }
   return left;
@@ -642,11 +657,7 @@ nstd::dinamis Interpreter::visitOperasiPerkalian(
     nstd::konst<nstd::kalimat> simbolOp =
         nstd::asKalimat(this->visitOperatorPerkalian(*simbolOpPtr));
     nstd::konst<nstd::dinamis> right = this->visitNilai(*rightPtr);
-    try {
-      left = Interpreter::operasiAritmatika(left, simbolOp, right);
-    } catch (const std::exception &error) {
-      throw std::runtime_error(this->errorInfo.inLine(tokens, error.what()));
-    }
+    left = Interpreter::operasiAritmatika(left, simbolOp, right);
   }
   return left;
 }
@@ -663,8 +674,10 @@ nstd::dinamis Interpreter::visitNilai(nstd::konst<NilaiContext> &ctx) {
       nilai.replace(nilai.find(','), 1, ".");
       return std::stod(nilai);
     } else if (type == TokenType::KARAKTER) {
-      return nilai[0];
+      return nilai[1];
     } else if (type == TokenType::KALIMAT) {
+      nilai.pop_back();
+      nilai = nilai.substr(1);
       return nilai;
     } else if (type == TokenType::BENAR) {
       return benar;

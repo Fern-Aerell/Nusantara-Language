@@ -5,8 +5,6 @@
 
 #include <regex>
 
-#include "nusantara/core/core.h"
-
 Lexer::Lexer(std::string source, std::string content)
     : source(std::move(source)), content(std::move(content)) {}
 
@@ -42,7 +40,7 @@ Token Lexer::getNextToken() {
       if (type == TokenType::WHITESPACE ||
           type == TokenType::KOMENTAR_SATU_BARIS ||
           type == TokenType::KOMENTAR_BANYAK_BARIS) {
-        return getNextToken();
+        continue;
       }
       return this->createToken(tokenType.getType(), match);
     }
@@ -53,9 +51,8 @@ Token Lexer::getNextToken() {
 }
 
 Token Lexer::createToken(const TokenType &type, const std::string &value) {
-  nstd::kalimat nilai = value;
-  if (type == TokenType::KARAKTER || type == TokenType::KALIMAT) {
-    nilai = nilai.substr(1, nilai.size() - 2);
-  }
-  return {this->source, type, nilai, this->line, this->charIndex};
+  return {
+      this->source,    type,
+      value,           this->line,
+      this->charIndex, static_cast<int>(this->charIndex + value.length() - 1)};
 }

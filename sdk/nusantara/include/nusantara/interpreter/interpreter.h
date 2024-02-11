@@ -52,33 +52,33 @@ class Interpreter : public Visitor<nstd::dinamis> {
       nstd::konst<nstd::bisa_kosong<Token>> &simbolOp,
       nstd::konst<nstd::kalimat> &opName);
 
-  static nstd::dinamis operasiAritmatika(nstd::konst<nstd::dinamis> &left,
-                                         nstd::konst<nstd::kalimat> &simbolOp,
-                                         nstd::konst<nstd::dinamis> &right);
-  static nstd::dinamis operasiPenjumlahan(nstd::konst<nstd::dinamis> &left,
-                                          nstd::konst<nstd::dinamis> &right);
-  static nstd::dinamis operasiPengurangan(nstd::konst<nstd::dinamis> &left,
-                                          nstd::konst<nstd::dinamis> &right);
-  static nstd::dinamis operasiPerkalian(nstd::konst<nstd::dinamis> &left,
-                                        nstd::konst<nstd::dinamis> &right);
-  static nstd::dinamis operasiPembagian(nstd::konst<nstd::dinamis> &left,
-                                        nstd::konst<nstd::dinamis> &right);
-  static nstd::dinamis operasiSisaPembagian(nstd::konst<nstd::dinamis> &left,
-                                            nstd::konst<nstd::dinamis> &right);
-
-  static nstd::dinamis operasiPerbandingan(nstd::konst<nstd::dinamis> &left,
-                                           nstd::konst<nstd::kalimat> &simbolOp,
-                                           nstd::konst<nstd::dinamis> &right);
-  static nstd::dinamis operasiSama(nstd::konst<nstd::dinamis> &left,
+  nstd::dinamis operasiAritmatika(nstd::konst<nstd::dinamis> &left,
+                                  nstd::konst<nstd::kalimat> &simbolOp,
+                                  nstd::konst<nstd::dinamis> &right);
+  nstd::dinamis operasiPenjumlahan(nstd::konst<nstd::dinamis> &left,
                                    nstd::konst<nstd::dinamis> &right);
-  static nstd::dinamis operasiTidakSama(nstd::konst<nstd::dinamis> &left,
-                                        nstd::konst<nstd::dinamis> &right);
-  static nstd::dinamis operasiLebihBesar(nstd::konst<nstd::dinamis> &left,
-                                         nstd::konst<nstd::dinamis> &right);
-  static nstd::dinamis operasiLebihKecil(nstd::konst<nstd::dinamis> &left,
-                                         nstd::konst<nstd::dinamis> &right);
-  static nstd::dinamis operasiLebihBesarSamaDengan(
-      nstd::konst<nstd::dinamis> &left, nstd::konst<nstd::dinamis> &right);
-  static nstd::dinamis operasiLebihKecilSamaDengan(
-      nstd::konst<nstd::dinamis> &left, nstd::konst<nstd::dinamis> &right);
+  nstd::dinamis operasiPengurangan(nstd::konst<nstd::dinamis> &left,
+                                   nstd::konst<nstd::dinamis> &right);
+  nstd::dinamis operasiPerkalian(nstd::konst<nstd::dinamis> &left,
+                                 nstd::konst<nstd::dinamis> &right);
+  nstd::dinamis operasiPembagian(nstd::konst<nstd::dinamis> &left,
+                                 nstd::konst<nstd::dinamis> &right);
+  nstd::dinamis operasiSisaPembagian(nstd::konst<nstd::dinamis> &left,
+                                     nstd::konst<nstd::dinamis> &right);
+
+  nstd::dinamis operasiPerbandingan(nstd::konst<nstd::dinamis> &left,
+                                    nstd::konst<nstd::kalimat> &simbolOp,
+                                    nstd::konst<nstd::dinamis> &right);
+  nstd::dinamis operasiSama(nstd::konst<nstd::dinamis> &left,
+                            nstd::konst<nstd::dinamis> &right);
+  nstd::dinamis operasiTidakSama(nstd::konst<nstd::dinamis> &left,
+                                 nstd::konst<nstd::dinamis> &right);
+  nstd::dinamis operasiLebihBesar(nstd::konst<nstd::dinamis> &left,
+                                  nstd::konst<nstd::dinamis> &right);
+  nstd::dinamis operasiLebihKecil(nstd::konst<nstd::dinamis> &left,
+                                  nstd::konst<nstd::dinamis> &right);
+  nstd::dinamis operasiLebihBesarSamaDengan(nstd::konst<nstd::dinamis> &left,
+                                            nstd::konst<nstd::dinamis> &right);
+  nstd::dinamis operasiLebihKecilSamaDengan(nstd::konst<nstd::dinamis> &left,
+                                            nstd::konst<nstd::dinamis> &right);
 };

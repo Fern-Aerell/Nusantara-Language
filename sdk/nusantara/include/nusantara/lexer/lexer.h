@@ -23,8 +23,8 @@ class Lexer {
       // Nilai Tipe Data
       {"DESIMAL", TokenType::DESIMAL, "-?[0-9]+,[0-9]+"},
       {"BULAT", TokenType::BULAT, "-?[0-9]+"},
-      {"KARAKTER", TokenType::KARAKTER, "(\"[^\n]\"|'[^\n]')"},
-      {"KALIMAT", TokenType::KALIMAT, "(\"[^\n]*\"|'[^\n]*')"},
+      {"KARAKTER", TokenType::KARAKTER, "(\"[^\n\"]\"|'[^\n\']')"},
+      {"KALIMAT", TokenType::KALIMAT, "(\"[^\n\"]*\"|'[^\n\']*')"},
       {"BENAR", TokenType::BENAR, "benar"},
       {"SALAH", TokenType::SALAH, "salah"},
       // Operator Penugasan

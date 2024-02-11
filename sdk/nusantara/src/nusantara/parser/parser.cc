@@ -11,6 +11,8 @@
 #include <stdexcept>
 #include <vector>
 
+#include "nusantara/core/core.h"
+
 Parser::Parser(ErrorInfo errorInfo, Lexer lexer)
     : errorInfo(std::move(errorInfo)),
       lexer(std::move(lexer)),
@@ -21,13 +23,11 @@ void Parser::eat(const TokenType &type) {
     this->currentToken = this->lexer.getNextToken();
     if (this->currentToken.getType() == TokenType::TIDAK_DIKENALI) {
       throw std::runtime_error(this->errorInfo.inLine(
-          this->currentToken.getLine(), this->currentToken.getCharIndex(),
-          this->currentToken.getValue(), "Karakter tidak di kenali."));
+          this->currentToken, "Karakter tidak di kenali."));
     }
   } else {
     throw std::runtime_error(this->errorInfo.inLine(
-        this->currentToken.getLine(), this->currentToken.getCharIndex(),
-        this->currentToken.getValue(),
+        this->currentToken,
         std::format("Harusnya '{}' tapi malah '{}'.", toString(type),
                     (this->currentToken.getValue().empty())
                         ? toString(this->currentToken.getType())
@@ -59,8 +59,7 @@ std::unique_ptr<ParserTree> Parser::fragmentTokenTypeGroup(
     }
   }
   throw std::runtime_error(this->errorInfo.inLine(
-      this->currentToken.getLine(), this->currentToken.getCharIndex(),
-      this->currentToken.getValue(),
+      this->currentToken,
       std::format("'{}' bukan {} yang valid.",
                   toString(this->currentToken.getType()), toString(rule))));
 }
@@ -290,9 +289,7 @@ std::unique_ptr<ParserTree> Parser::parseNilai() {
     return ekspresi_nilai;
   }
   throw std::runtime_error(this->errorInfo.inLine(
-      this->currentToken.getLine(), this->currentToken.getCharIndex(),
-      this->currentToken.getValue(),
-      std::format("'{}' bukan {} yang valid.",
-                  toString(this->currentToken.getType()),
-                  toString(ParserRule::nilai))));
+      this->currentToken, std::format("'{}' bukan {} yang valid.",
+                                      toString(this->currentToken.getType()),
+                                      toString(ParserRule::nilai))));
 }

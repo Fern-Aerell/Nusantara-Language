@@ -15,7 +15,7 @@ void Konsol::cetak(konst<karakter> &karakter) { std::cout << karakter << "\n"; }
 void Konsol::cetak(konst<kalimat> &kalimat) { std::cout << kalimat << "\n"; }
 
 void Konsol::cetak(konst<benarsalah> &benarsalah) {
-  std::cout << benarsalah << "\n";
+  std::cout << ubahKeKalimat(benarsalah) << "\n";
 }
 
 void Konsol::cetak(konst<dinamis> &dinamis) {
