@@ -42,7 +42,7 @@ Token Lexer::getNextToken() {
       if(type == TokenType::WHITESPACE ||
          type == TokenType::KOMENTAR_SATU_BARIS ||
          type == TokenType::KOMENTAR_BANYAK_BARIS) {
-        continue;
+        return getNextToken();
       }
       return this->createToken(tokenType.getType(), match);
     }

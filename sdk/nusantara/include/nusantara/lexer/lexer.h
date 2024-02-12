@@ -27,6 +27,13 @@ class Lexer {
         {"KALIMAT",                 TokenType::KALIMAT,                 "(\"[^\n\"]*\"|'[^\n\']*')"},
         {"BENAR",                   TokenType::BENAR,                   "benar"                    },
         {"SALAH",                   TokenType::SALAH,                   "salah"                    },
+// Operator Pembanding
+        {"SAMA",                    TokenType::SAMA,                    "=="                       },
+        {"TIDAK_SAMA",              TokenType::TIDAK_SAMA,              "!="                       },
+				{"LEBIH_BESAR_SAMA_DENGAN", TokenType::LEBIH_BESAR_SAMA_DENGAN, ">="                       },
+        {"LEBIH_KECIL_SAMA_DENGAN", TokenType::LEBIH_KECIL_SAMA_DENGAN, "<="                       },
+        {"LEBIH_BESAR",             TokenType::LEBIH_BESAR,             ">"                        },
+        {"LEBIH_KECIL",             TokenType::LEBIH_KECIL,             "<"                        },
  // Operator Penugasan
         {"SAMA_DENGAN",             TokenType::SAMA_DENGAN,             "="                        },
         {"TAMBAH_SAMA_DENGAN",      TokenType::TAMBAH_SAMA_DENGAN,      "\\+="                     },
@@ -42,13 +49,6 @@ class Lexer {
         {"KALI",                    TokenType::KALI,                    "\\*"                      },
         {"BAGI",                    TokenType::BAGI,                    "/"                        },
         {"SISA_BAGI",               TokenType::SISA_BAGI,               "%"                        },
- // Operator Pembanding
-        {"SAMA",                    TokenType::SAMA,                    "=="                       },
-        {"TIDAK_SAMA",              TokenType::TIDAK_SAMA,              "!="                       },
-        {"LEBIH_BESAR",             TokenType::LEBIH_BESAR,             ">"                        },
-        {"LEBIH_KECIL",             TokenType::LEBIH_KECIL,             "<"                        },
-        {"LEBIH_BESAR_SAMA_DENGAN", TokenType::LEBIH_BESAR_SAMA_DENGAN, ">="                       },
-        {"LEBIH_KECIL_SAMA_DENGAN", TokenType::LEBIH_KECIL_SAMA_DENGAN, "<="                       },
  // Operator Logika
         {"DAN",                     TokenType::DAN,                     "&&"                       },
         {"ATAU",                    TokenType::ATAU,                    "\\|\\|"                   },
