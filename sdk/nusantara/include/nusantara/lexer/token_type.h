@@ -48,7 +48,7 @@ enum class TokenType : int {
 };
 
 inline std::string toString(const TokenType &type) {
-  switch (type) {
+  switch(type) {
     case TokenType::TIDAK_DIKENALI:
       return "TIDAK_DIKENALI";
     case TokenType::AKHIR_DARI_FILE:

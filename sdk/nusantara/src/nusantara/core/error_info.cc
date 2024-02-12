@@ -13,11 +13,12 @@
 #include "nusantara/lexer/token.h"
 #include "nusantara/lexer/token_type.h"
 
-ErrorInfo::ErrorInfo(std::string source, const std::string &content)
-    : source(std::move(source)), contentPerLine(utils::split(content, '\n')) {}
+ErrorInfo::ErrorInfo(std::string source, const std::string &content):
+    source(std::move(source)), contentPerLine(utils::split(content, '\n')) {}
 
-nstd::kalimat ErrorInfo::inLine(nstd::konst<Token> &token,
-                                nstd::konst<nstd::kalimat> &msg) {
+nstd::kalimat ErrorInfo::inLine(
+    nstd::konst<Token> &token, nstd::konst<nstd::kalimat> &msg
+) {
   std::ostringstream stream;
   nstd::kalimat realSource = token.getSource();
   TokenType realType = token.getType();
@@ -31,15 +32,19 @@ nstd::kalimat ErrorInfo::inLine(nstd::konst<Token> &token,
   int endCharIndex = realEndCharIndex + 1;
 
   nstd::kalimat prefix = std::format("{}| ", line);
-  stream << std::format("{}[Baris {}, Karakter {} sampai {}]:\n\n", realSource,
-                        line, startCharIndex, endCharIndex);
-  nstd::Konsol::cetak(std::format("contentPerLine size {}, realLine {}",
-                                  this->contentPerLine.size(), realLine));
+  stream << std::format(
+      "{}[Baris {}, Karakter {} sampai {}]:\n\n", realSource, line,
+      startCharIndex, endCharIndex
+  );
+  nstd::Konsol::cetak(std::format(
+      "contentPerLine size {}, realLine {}", this->contentPerLine.size(),
+      realLine
+  ));
   stream << std::format(
       "{}{}\n", prefix,
-      this->contentPerLine[realLine >= this->contentPerLine.size()
-                               ? realLine - 1
-                               : realLine]);
+      this->contentPerLine
+          [realLine >= this->contentPerLine.size() ? realLine - 1 : realLine]
+  );
   int arrowCount = (realEndCharIndex - realStartCharIndex);
   stream << nstd::kalimat(prefix.length() + realStartCharIndex, ' ');
   stream << nstd::kalimat((arrowCount > 0) ? arrowCount : 1, '^') + "\n";
@@ -47,17 +52,16 @@ nstd::kalimat ErrorInfo::inLine(nstd::konst<Token> &token,
   return stream.str();
 }
 
-nstd::kalimat ErrorInfo::inLine(nstd::konst<nstd::daftar<Token>> &tokens,
-                                nstd::konst<nstd::kalimat> &msg) {
-  if (tokens.empty()) {
-    throw std::runtime_error("Daftar tidak boleh kosong.");
-  }
+nstd::kalimat ErrorInfo::inLine(
+    nstd::konst<nstd::daftar<Token>> &tokens, nstd::konst<nstd::kalimat> &msg
+) {
+  if(tokens.empty()) { throw std::runtime_error("Daftar tidak boleh kosong."); }
   std::ostringstream stream;
   Token token1 = tokens[0];
-  if (tokens.size() > 1) {
-    for (size_t index = 1; index < tokens.size(); ++index) {
-      if (token1.getSource() == tokens[index].getSource() &&
-          token1.getLine() == tokens[index].getLine()) {
+  if(tokens.size() > 1) {
+    for(size_t index = 1; index < tokens.size(); ++index) {
+      if(token1.getSource() == tokens[index].getSource() &&
+         token1.getLine() == tokens[index].getLine()) {
         token1 = combineToken(token1, tokens[index]);
       } else {
         stream << this->inLine(token1, "") << "\n";

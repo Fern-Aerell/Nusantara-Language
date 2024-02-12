@@ -8,13 +8,14 @@
 
 #include "nusantara/visitor/context/context.h"
 
-class OperatorPenugasanContext : public Context {
- public:
-  explicit OperatorPenugasanContext(nstd::bisa_kosong<Token> simbolOp);
-  static OperatorPenugasanContext generate(
-      const std::vector<std::unique_ptr<ParserTree>> &children);
-  [[nodiscard]] nstd::bisa_kosong<Token> getSimbolOp() const;
+class OperatorPenugasanContext: public Context {
+  public:
+    explicit OperatorPenugasanContext(nstd::bisa_kosong<Token> simbolOp);
+    static OperatorPenugasanContext generate(
+        const std::vector<std::unique_ptr<ParserTree>> &children
+    );
+    [[nodiscard]] nstd::bisa_kosong<Token> getSimbolOp() const;
 
- private:
-  nstd::bisa_kosong<Token> simbolOp;
+  private:
+    nstd::bisa_kosong<Token> simbolOp;
 };

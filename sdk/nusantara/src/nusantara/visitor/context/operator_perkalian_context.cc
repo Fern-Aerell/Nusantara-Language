@@ -6,17 +6,20 @@
 #include "nusantara/lexer/token_type.h"
 
 OperatorPerkalianContext::OperatorPerkalianContext(
-    nstd::bisa_kosong<Token> simbolOp)
-    : simbolOp(std::move(simbolOp)) {}
+    nstd::bisa_kosong<Token> simbolOp
+):
+    simbolOp(std::move(simbolOp)) {}
 
 OperatorPerkalianContext OperatorPerkalianContext::generate(
-    const std::vector<std::unique_ptr<ParserTree>> &children) {
+    const std::vector<std::unique_ptr<ParserTree>> &children
+) {
   const auto *ptchild0 = dynamic_cast<ParserTokenTree *>(children[0].get());
   const Token token = ptchild0->getToken();
   const TokenType type = token.getType();
   nstd::konst<nstd::daftar<TokenType>> tokenTypes = {
-      TokenType::KALI, TokenType::BAGI, TokenType::SISA_BAGI};
-  if (nstd::contains(tokenTypes, type)) {
+      TokenType::KALI, TokenType::BAGI, TokenType::SISA_BAGI
+  };
+  if(nstd::contains(tokenTypes, type)) {
     nstd::bisa_kosong<Token> simbolOpPerkalian = token;
     return OperatorPerkalianContext(std::move(simbolOpPerkalian));
   }

@@ -8,13 +8,14 @@
 
 #include "nusantara/visitor/context/context.h"
 
-class OperatorLogikaContext : public Context {
- public:
-  explicit OperatorLogikaContext(nstd::bisa_kosong<Token> simbolOp);
-  static OperatorLogikaContext generate(
-      const std::vector<std::unique_ptr<ParserTree>> &children);
-  [[nodiscard]] nstd::bisa_kosong<Token> getSimbolOp() const;
+class OperatorLogikaContext: public Context {
+  public:
+    explicit OperatorLogikaContext(nstd::bisa_kosong<Token> simbolOp);
+    static OperatorLogikaContext generate(
+        const std::vector<std::unique_ptr<ParserTree>> &children
+    );
+    [[nodiscard]] nstd::bisa_kosong<Token> getSimbolOp() const;
 
- private:
-  nstd::bisa_kosong<Token> simbolOp;
+  private:
+    nstd::bisa_kosong<Token> simbolOp;
 };

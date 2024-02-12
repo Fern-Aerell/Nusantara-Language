@@ -8,15 +8,16 @@
 #include "nusantara/core/core.h"
 #include "nusantara/core/konsol.h"
 
-Token::Token(std::string source, const TokenType& type, std::string value,
-             const int& line, const int& startCharIndex,
-             const int& endCharIndex)
-    : source(std::move(source)),
-      type(type),
-      value(std::move(value)),
-      line(line),
-      startCharIndex(startCharIndex),
-      endCharIndex(endCharIndex) {}
+Token::Token(
+    std::string source, const TokenType& type, std::string value,
+    const int& line, const int& startCharIndex, const int& endCharIndex
+):
+    source(std::move(source)),
+    type(type),
+    value(std::move(value)),
+    line(line),
+    startCharIndex(startCharIndex),
+    endCharIndex(endCharIndex) {}
 
 std::string Token::getSource() const { return this->source; }
 
@@ -31,20 +32,23 @@ int Token::getStartCharIndex() const { return this->startCharIndex; }
 int Token::getEndCharIndex() const { return this->endCharIndex; }
 
 std::string Token::toString() const {
-  return std::format("{}[Baris {}, Karakter {} sampai {}]: {} {}",
-                     this->getSource(), this->getLine(),
-                     this->getStartCharIndex(), this->getEndCharIndex(),
-                     ::toString(this->getType()), this->getValue());
+  return std::format(
+      "{}[Baris {}, Karakter {} sampai {}]: {} {}", this->getSource(),
+      this->getLine(), this->getStartCharIndex(), this->getEndCharIndex(),
+      ::toString(this->getType()), this->getValue()
+  );
 }
 
 Token combineToken(nstd::konst<Token>& token1, nstd::konst<Token>& token2) {
-  if (token1.getSource() != token2.getSource()) {
+  if(token1.getSource() != token2.getSource()) {
     throw std::runtime_error(
-        "Tidak dapat menggabungkan token dengan source yang berbeda.");
+        "Tidak dapat menggabungkan token dengan source yang berbeda."
+    );
   }
-  if (token1.getLine() != token2.getLine()) {
+  if(token1.getLine() != token2.getLine()) {
     throw std::runtime_error(
-        "Tidak dapat menggabungkan token dengan line yang berbeda.");
+        "Tidak dapat menggabungkan token dengan line yang berbeda."
+    );
   }
   TokenType type = TokenType::TIDAK_DIKENALI;
   nstd::kalimat source = token1.getSource();
@@ -56,12 +60,12 @@ Token combineToken(nstd::konst<Token>& token1, nstd::konst<Token>& token2) {
 }
 
 Token combineToken(nstd::konst<nstd::daftar<Token>>& tokens) {
-  if (tokens.size() < 2) {
-    throw std::runtime_error(
-        "Daftar harus berisi token sebanyak 2 atau lebih.");
+  if(tokens.size() < 2) {
+    throw std::runtime_error("Daftar harus berisi token sebanyak 2 atau lebih."
+    );
   }
   Token token1 = tokens[0];
-  for (size_t index = 1; index < tokens.size(); ++index) {
+  for(size_t index = 1; index < tokens.size(); ++index) {
     token1 = combineToken(token1, tokens[index]);
   }
   return token1;

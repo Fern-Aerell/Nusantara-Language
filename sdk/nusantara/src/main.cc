@@ -12,8 +12,6 @@ int main(int argc, char *argv[]) {
   try {
     Cli cli;
     cli.input(argc, argv);
-  } catch (const std::exception &error) {
-    std::cout << error.what() << "\n";
-  }
+  } catch(const std::exception &error) { std::cout << error.what() << "\n"; }
   return 0;
 }

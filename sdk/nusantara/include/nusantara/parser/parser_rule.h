@@ -24,7 +24,7 @@ enum class ParserRule : int {
 };
 
 inline std::string toString(const ParserRule &rule) {
-  switch (rule) {
+  switch(rule) {
     case ParserRule::nusantara:
       return "nusantara";
     case ParserRule::operator_penugasan:

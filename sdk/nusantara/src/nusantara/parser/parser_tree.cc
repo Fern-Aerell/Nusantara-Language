@@ -13,21 +13,19 @@ void ParserTree::addChild(std::unique_ptr<ParserTree> child) {
 }
 
 void ParserTree::printTree(const int &indent) const {
-  for (int i = 0; i < indent; ++i) {
-    std::cout << " ";
-  }
+  for(int i = 0; i < indent; ++i) { std::cout << " "; }
   std::cout << this->toString() << "\n";
-  for (const std::unique_ptr<ParserTree> &child : this->children) {
+  for(const std::unique_ptr<ParserTree> &child : this->children) {
     child->printTree(indent + 1);
   }
 }
 
-const std::vector<std::unique_ptr<ParserTree>> &ParserTree::getChildren()
-    const {
+const std::vector<std::unique_ptr<ParserTree>> &ParserTree::getChildren(
+) const {
   return this->children;
 }
 
-ParserRuleTree::ParserRuleTree(const ParserRule &rule) : rule(rule) {}
+ParserRuleTree::ParserRuleTree(const ParserRule &rule): rule(rule) {}
 
 std::string ParserRuleTree::toString() const {
   return std::format("RULE: {}", ::toString(this->rule));
@@ -35,11 +33,12 @@ std::string ParserRuleTree::toString() const {
 
 ParserRule ParserRuleTree::getRule() const { return this->rule; }
 
-ParserTokenTree::ParserTokenTree(Token token) : token(std::move(token)) {}
+ParserTokenTree::ParserTokenTree(Token token): token(std::move(token)) {}
 
 std::string ParserTokenTree::toString() const {
-  return std::format("{}: {}", ::toString(this->token.getType()),
-                     this->token.getValue());
+  return std::format(
+      "{}: {}", ::toString(this->token.getType()), this->token.getValue()
+  );
 }
 
 Token ParserTokenTree::getToken() const { return this->token; }

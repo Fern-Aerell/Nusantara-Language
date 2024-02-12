@@ -11,40 +11,46 @@ OperasiPerkalianContext::OperasiPerkalianContext(
     nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>
         kumpulanNilaiContext,
     nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>
-        kumpulanOperatorPerkalianContext)
-    : kumpulanNilaiContext(std::move(kumpulanNilaiContext)),
-      kumpulanOperatorPerkalianContext(
-          std::move(kumpulanOperatorPerkalianContext)) {}
+        kumpulanOperatorPerkalianContext
+):
+    kumpulanNilaiContext(std::move(kumpulanNilaiContext)),
+    kumpulanOperatorPerkalianContext(std::move(kumpulanOperatorPerkalianContext)
+    ) {}
 
 OperasiPerkalianContext OperasiPerkalianContext::generate(
-    const std::vector<std::unique_ptr<ParserTree>> &children) {
+    const std::vector<std::unique_ptr<ParserTree>> &children
+) {
   nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>
       kumpulanNilaiContext;
   nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>
       kumpulanOperatorPerkalianContext;
-  for (const std::unique_ptr<ParserTree> &child : children) {
+  for(const std::unique_ptr<ParserTree> &child : children) {
     auto *ptchild = dynamic_cast<ParserRuleTree *>(child.get());
     const ParserRule rule = ptchild->getRule();
-    if (rule == ParserRule::nilai) {
-      if (nstd::isKosong(kumpulanNilaiContext)) {
+    if(rule == ParserRule::nilai) {
+      if(nstd::isKosong(kumpulanNilaiContext)) {
         kumpulanNilaiContext = nstd::daftar<std::unique_ptr<Context>>();
       }
       std::unique_ptr<Context> context = std::make_unique<NilaiContext>(
-          NilaiContext::generate(ptchild->getChildren()));
+          NilaiContext::generate(ptchild->getChildren())
+      );
       kumpulanNilaiContext.value().push_back(std::move(context));
-    } else if (rule == ParserRule::operator_perkalian) {
-      if (nstd::isKosong(kumpulanOperatorPerkalianContext)) {
+    } else if(rule == ParserRule::operator_perkalian) {
+      if(nstd::isKosong(kumpulanOperatorPerkalianContext)) {
         kumpulanOperatorPerkalianContext =
             nstd::daftar<std::unique_ptr<Context>>();
       }
       std::unique_ptr<Context> context =
           std::make_unique<OperatorPerkalianContext>(
-              OperatorPerkalianContext::generate(ptchild->getChildren()));
+              OperatorPerkalianContext::generate(ptchild->getChildren())
+          );
       kumpulanOperatorPerkalianContext.value().push_back(std::move(context));
     }
   }
-  return {std::move(kumpulanNilaiContext),
-          std::move(kumpulanOperatorPerkalianContext)};
+  return {
+      std::move(kumpulanNilaiContext),
+      std::move(kumpulanOperatorPerkalianContext)
+  };
 }
 
 nstd::konst<nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>> &

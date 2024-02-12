@@ -6,11 +6,13 @@
 #include "nusantara/lexer/token_type.h"
 
 OperatorPerbandinganContext::OperatorPerbandinganContext(
-    nstd::bisa_kosong<Token> simbolOp)
-    : simbolOp(std::move(simbolOp)) {}
+    nstd::bisa_kosong<Token> simbolOp
+):
+    simbolOp(std::move(simbolOp)) {}
 
 OperatorPerbandinganContext OperatorPerbandinganContext::generate(
-    const std::vector<std::unique_ptr<ParserTree>> &children) {
+    const std::vector<std::unique_ptr<ParserTree>> &children
+) {
   const auto *ptchild0 = dynamic_cast<ParserTokenTree *>(children[0].get());
   const Token token = ptchild0->getToken();
   const TokenType type = token.getType();
@@ -20,8 +22,9 @@ OperatorPerbandinganContext OperatorPerbandinganContext::generate(
       TokenType::LEBIH_BESAR,
       TokenType::LEBIH_KECIL,
       TokenType::LEBIH_BESAR_SAMA_DENGAN,
-      TokenType::LEBIH_KECIL_SAMA_DENGAN};
-  if (nstd::contains(tokenTypes, type)) {
+      TokenType::LEBIH_KECIL_SAMA_DENGAN
+  };
+  if(nstd::contains(tokenTypes, type)) {
     nstd::bisa_kosong<Token> simbolOpPerbandingan = token;
     return OperatorPerbandinganContext(std::move(simbolOpPerbandingan));
   }

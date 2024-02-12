@@ -3,9 +3,10 @@
 
 #include <string>
 
-TokenTypeData::TokenTypeData(std::string name, const TokenType &type,
-                             std::string pattern)
-    : name(std::move(name)), type(type), pattern(std::move(pattern)) {}
+TokenTypeData::TokenTypeData(
+    std::string name, const TokenType &type, std::string pattern
+):
+    name(std::move(name)), type(type), pattern(std::move(pattern)) {}
 
 std::string TokenTypeData::getName() const { return this->name; }
 

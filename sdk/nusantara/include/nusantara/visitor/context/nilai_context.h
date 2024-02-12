@@ -8,23 +8,25 @@
 
 #include "nusantara/visitor/context/context.h"
 
-class NilaiContext : public Context {
- public:
-  explicit NilaiContext(
-      nstd::bisa_kosong<Token> nilai, nstd::bisa_kosong<Token> kurungBuka,
-      nstd::bisa_kosong<std::unique_ptr<Context>> operasiPenugasanContext,
-      nstd::bisa_kosong<Token> kurungTutup);
-  static NilaiContext generate(
-      const std::vector<std::unique_ptr<ParserTree>> &children);
-  [[nodiscard]] nstd::bisa_kosong<Token> getNilai() const;
-  [[nodiscard]] nstd::bisa_kosong<Token> getKurungBuka() const;
-  [[nodiscard]] nstd::konst<nstd::bisa_kosong<std::unique_ptr<Context>>> &
-  getOperasiPenugasanContext() const;
-  [[nodiscard]] nstd::bisa_kosong<Token> getKurungTutup() const;
+class NilaiContext: public Context {
+  public:
+    explicit NilaiContext(
+        nstd::bisa_kosong<Token> nilai, nstd::bisa_kosong<Token> kurungBuka,
+        nstd::bisa_kosong<std::unique_ptr<Context>> operasiPenugasanContext,
+        nstd::bisa_kosong<Token> kurungTutup
+    );
+    static NilaiContext generate(
+        const std::vector<std::unique_ptr<ParserTree>> &children
+    );
+    [[nodiscard]] nstd::bisa_kosong<Token> getNilai() const;
+    [[nodiscard]] nstd::bisa_kosong<Token> getKurungBuka() const;
+    [[nodiscard]] nstd::konst<nstd::bisa_kosong<std::unique_ptr<Context>>> &
+    getOperasiPenugasanContext() const;
+    [[nodiscard]] nstd::bisa_kosong<Token> getKurungTutup() const;
 
- private:
-  nstd::bisa_kosong<Token> nilai;
-  nstd::bisa_kosong<Token> kurungBuka;
-  nstd::bisa_kosong<std::unique_ptr<Context>> operasiPenugasanContext;
-  nstd::bisa_kosong<Token> kurungTutup;
+  private:
+    nstd::bisa_kosong<Token> nilai;
+    nstd::bisa_kosong<Token> kurungBuka;
+    nstd::bisa_kosong<std::unique_ptr<Context>> operasiPenugasanContext;
+    nstd::bisa_kosong<Token> kurungTutup;
 };

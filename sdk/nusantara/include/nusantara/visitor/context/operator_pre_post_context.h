@@ -8,13 +8,14 @@
 
 #include "nusantara/visitor/context/context.h"
 
-class OperatorPrePostContext : public Context {
- public:
-  explicit OperatorPrePostContext(nstd::bisa_kosong<Token> simbolOp);
-  static OperatorPrePostContext generate(
-      const std::vector<std::unique_ptr<ParserTree>> &children);
-  [[nodiscard]] nstd::bisa_kosong<Token> getSimbolOp() const;
+class OperatorPrePostContext: public Context {
+  public:
+    explicit OperatorPrePostContext(nstd::bisa_kosong<Token> simbolOp);
+    static OperatorPrePostContext generate(
+        const std::vector<std::unique_ptr<ParserTree>> &children
+    );
+    [[nodiscard]] nstd::bisa_kosong<Token> getSimbolOp() const;
 
- private:
-  nstd::bisa_kosong<Token> simbolOp;
+  private:
+    nstd::bisa_kosong<Token> simbolOp;
 };

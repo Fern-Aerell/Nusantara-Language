@@ -5,19 +5,21 @@
 
 #include <regex>
 
-Lexer::Lexer(std::string source, std::string content)
-    : source(std::move(source)), content(std::move(content)) {}
+Lexer::Lexer(std::string source, std::string content):
+    source(std::move(source)), content(std::move(content)) {}
 
 bool Lexer::match(const std::string &pattern, std::string &match) {
   std::regex regexPattern("^" + pattern);
   std::smatch matches;
-  if (std::regex_search(this->content, matches, regexPattern,
-                        std::regex_constants::match_continuous)) {
+  if(std::regex_search(
+         this->content, matches, regexPattern,
+         std::regex_constants::match_continuous
+     )) {
     match = matches.str();
     this->charIndex = this->realCharIndex;
-    for (const char &character : match) {
+    for(const char &character : match) {
       this->realCharIndex++;
-      if (character == '\n') {
+      if(character == '\n') {
         this->line++;
         this->realCharIndex = 0;
       }
@@ -31,15 +33,15 @@ bool Lexer::match(const std::string &pattern, std::string &match) {
 
 Token Lexer::getNextToken() {
   std::string match;
-  if (this->content.empty()) {
+  if(this->content.empty()) {
     return this->createToken(TokenType::AKHIR_DARI_FILE, match);
   }
-  for (const TokenTypeData &tokenType : this->tokenTypes) {
+  for(const TokenTypeData &tokenType : this->tokenTypes) {
     TokenType type = tokenType.getType();
-    if (this->match(tokenType.getPattern(), match)) {
-      if (type == TokenType::WHITESPACE ||
-          type == TokenType::KOMENTAR_SATU_BARIS ||
-          type == TokenType::KOMENTAR_BANYAK_BARIS) {
+    if(this->match(tokenType.getPattern(), match)) {
+      if(type == TokenType::WHITESPACE ||
+         type == TokenType::KOMENTAR_SATU_BARIS ||
+         type == TokenType::KOMENTAR_BANYAK_BARIS) {
         continue;
       }
       return this->createToken(tokenType.getType(), match);
@@ -54,5 +56,6 @@ Token Lexer::createToken(const TokenType &type, const std::string &value) {
   return {
       this->source,    type,
       value,           this->line,
-      this->charIndex, static_cast<int>(this->charIndex + value.length() - 1)};
+      this->charIndex, static_cast<int>(this->charIndex + value.length() - 1)
+  };
 }
