@@ -36,10 +36,10 @@ void Cli::input(nstd::konst<nstd::bulat>& argc, nstd::karakter* argv[]) {
       interpreter = benar;
     } else if (nstd::contains(perintahVersi, argument)) {
       showVersi();
-      break;
+      return;
     } else if (nstd::contains(perintahInfo, argument)) {
       showInfo();
-      break;
+      return;
     } else {
       interpreter = salah;
       kumpulanArgument[0] = argument;
