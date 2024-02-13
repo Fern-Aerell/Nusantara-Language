@@ -1,31 +1,40 @@
 # Nusantara CLI
 
-Nusantara memiliki alat command-line untuk membantu para Nusantara developer
+Nusantara memiliki alat command-line untuk Nusantara development.
 
-## Informasi
+## Informasi nusantara
+Perintah :
 ```bash
 nusantara -i | --info
-
-# output
-Sebuah alat command-line untuk Nusantara developer
+```
+Hasil :
+```
+Sebuah alat command-line untuk Nusantara development
 
 Penggunaan: nusantara <perintah|nusantara-file>
 
-Perintah yang tersedia:
+Pilihan umum:
  -v | --versi     Untuk melihat versi nusantara.
  -i | --info      Untuk melihat informasi lebih lanjut.
  
 ```
 
-## Melihat versi
+## Melihat versi nusantara
+Perintah :
 ```bash
 nusantara -v | --versi
-
-# output
+```
+Hasil :
+```
 nusantara 1.0.0
 ```
 
 ## Menjalankan nusantara file
+Perintah :
 ```bash
-nusantara <nlfile>
+nusantara <nusantara-file>
+```
+Hasil :
+```
+Sesuai dengan intruksi yang ada di file nusantara.
 ```

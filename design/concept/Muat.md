@@ -1,51 +1,13 @@
 # Muat
 
-Muat adalah sebuah kata kunci untuk mengimport file external di nusantara.
+'muat' adalah kata kunci yang digunakan untuk mengambil isi file nusantara external, ini berguna jika kita memisahkan kode kita menjadi beberapa file dan jika perlu menggunakan isi kode dari file tertentu kita tinggal memuat nya.
 
-## Sintaks
+Sintaks :
 ```nusantara
-muat 'filepath';
+muat "Lokasi file nusantara external";
 ```
 
-## Cara kerja
-
-Contoh kita punya file operasi_file.nl
+Contoh :
 ```nusantara
-// operasi_file.nl
-
-tambah(bulat a, bulat b) {
-    keluar a + b;
-}
-```
-
-Dan kita memuatnya ke file main.nl
-```nusantara
-// main.nl
-muat 'operasi_file.nl';
-
-awal {
- cetak(tambah(1, 5));
-}
-```
-
-Itu sama saja seperti kita membuat nya seperti ini
-```nusantara
-tambah(bulat a, bulat b) {
-    keluar a + b;
-}
-
-awal {
-    cetak(tambah(1, 5));
-}
-```
-
-## Aturan
-
-Untuk memuat file tidak harus di baris paling atas
-kalian bisa menaruh nya dikawasan mana aja, 
-contoh nya di blok kode
-```nusantara
-aerell {
-    muat 'file.nl';
-}
+muat "matematika.nl";
 ```

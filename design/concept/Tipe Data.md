@@ -1,11 +1,42 @@
-# Nusantara Data Types
+# Tipe Data Nusantara
 
-Nusantara hanya memiliki 5 tipe data bawaan.
+Tipe data di nusantara di bagi menjadi 1 jenis
+- bawaan (bilangan, kalimat, benarsalah, dinamis)
 
-| Tipe data  | Keterangan |
-| ---------- | ---------- |
-| bulat      | Tipe data yang dapat menyimpan nilai bilangan bulat |
-| desimal    | Tipe data yang dapat menyimpan nilai bilangan desimal |
-| karakter   | Tipe data yang dapat menyimpan nilai char, bisa ' atau " |
-| kalimat    | Tipe data yang dapat menyimpan nilai string, bisa ' atau " |
-| benersalah | Tipe data yang dapat menyimpan nilai benar atau salah |
+## Bilangan
+
+Tipe data ini akan menyimpan nilai bilangan bulat dan desimal.
+
+Contoh :
+```nusantara
+bilangan nilai = 10;
+```
+
+## Kalimat
+
+Tipe data ini akan menyimpan nilai kalimat yang biasa nya di bungkus dengan kutip 1 atau 2.
+
+Contoh :
+```nusantara
+kalimat nama = "Fern Aerell";
+```
+
+## Benarsalah
+
+Tipe data ini akan menyimpan 2 nilai, antara benar atau salah.
+
+Contoh :
+```nusantara
+benarsalah lulus = benar;
+```
+
+## Dinamis
+
+Tipe data ini akan menyimpan nilai dinamis sesuai dengan inisiasi nya.
+
+Contoh :
+```nusantara
+dinamis tipeDinamis = 10;
+tipeDinamis = "Fern Aerell";
+tipeDinamis = benar;
+```

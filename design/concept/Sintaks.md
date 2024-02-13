@@ -1,6 +1,6 @@
 # Nusantara Syntax
 
-Sintaks nusantara untuk print 'Halo Dunia!' :
+Sintaks nusantara untuk cetak 'Halo Dunia!' ke konsol :
 ```nusantara
 awal() {
     cetak("Halo Dunia!");

@@ -7,6 +7,7 @@ Operator di nusantara di bagi menjadi beberapa jenis :
 | [Penugasan Operator](#penugasan-operator) |
 | [Perbandingan Operator](#perbandingan-operator) |
 | [Logika Operator](#logika-operator) |
+| [Bitwise Operator](#bitwise-operator) |
 
 ## Aritmatika Operator
 
@@ -49,3 +50,14 @@ Operator di nusantara di bagi menjadi beberapa jenis :
 | && | Dan | Mengeluarkan ```benar``` jika ke-2 pernyataan ```benar``` | x && y |
 | \|\| | Atau | Mengeluarkan ```benar``` jika salah satu pernyataan ```benar``` | x \|\| y |
 | ! | Tidak | Mengeluarkan kebalikan nya, ```benar``` jika ```salah``` | !x |
+
+## Bitwise Operator
+
+| Operator | Nama | Contoh |
+| -------- | ---- | ------ |
+| & | Bitwise dan | x & y |
+| \| | Bitwise atau | x \| y |
+| ^ | Bitwise eksklusif atau | x ^ y |
+| ~ | Bitwise bukan | x ~ y |
+| << | Bitwise geser kiri | x << y |
+| >> | Bitwise geser kanan | x >> y |
