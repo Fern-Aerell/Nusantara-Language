@@ -1,55 +1,81 @@
 # Fungsi
 
-Nusantara memiliki fungsi sama seperti bahasa pemrograman lainnya.
-  
+Fungsi adalah tempat untuk menyimpan kumpulan intruksi yang akan di eksekusi ketika fungsi itu di panggil.
+
 Sintaks :
 ```nusantara
-namaFungsi() {
-    // kode
-}
-```
-
-## Fungsi parameter
-
-Di Nusantara kita dapat menaruh parameter,
-sama seperti di bahasa lain.
-
-```nusantara
-// parameter kosong
-namaFungsi() {
-    // kode
-}
-
-// parameter tidak kosong
-namaFungsi(parameter) {
-    // kode
-}
-
-// Contoh
-bulat tambah(bulat x, bulat y) {
-    keluar x + y;
+tipedata namaFungsi(parameter) {
+    // Kode yang akan di 
+    // eksekusi ketika 
+    // fungsi di panggil
 }
 ```
 
 ## Fungsi yang mengeluarkan sesuatu
 
-Di Nusantara fungsi dapat mengeluarkan
-sesuatu dengan keyword 'keluar'.
-
+Contoh :
 ```nusantara
-tipeData namaFungsi() {
-    // kode
-    keluar nilai;
+bilangan tambah(bilangan x, bilangan y) {
+    keluar x + y;
 }
+
+cetak(tambah(10, 5));
+```
+Hasil :
+```
+15
 ```
 
-## Panggil fungsi
+## Fungsi yang tidak mengeluarkan sesuatu
 
-Setelah membuat fungsi, kita dapat memanggil nya.
+Untuk membuat fungsi yang tidak akan mengeluarkan sesuatu kita tinggal tidak menulis tipedata yang akan
+di keluarkan.
+
+Contoh :
 ```nusantara
-// Sintaks
-namaFungsi(parameter);
+tambah(bilangan x, bilangan y) {
+    cetak(x + y);
+}
 
-// Contoh
-tambah(1,2);
+tambah(10, 5);
+```
+Hasil :
+```
+15
+```
+
+## Fungsi dengan nilai parameter bawaan
+
+Contoh :
+```nusantara
+tambah(bilangan x = 10, bilangan y) {
+    cetak(x + y);
+}
+
+tambah(5);
+```
+Hasil :
+```
+15
+```
+
+## Memanggil fungsi
+
+Contoh :
+```nusantara
+tambah(bilangan x = 20, bilangan y = 3) {
+    cetak(x + y);
+}
+
+tambah(10, 5);
+tambah(5);
+tambah(x: 10, y: 2);
+tambah();
+```
+Hasil :
+```
+15
+25
+12
+23
 ```

@@ -8,5 +8,3 @@ Saya sebenarnya masih bingung untuk nama file extension dari bahasa pemrograman 
 | .NS             | NuSantara          |
 | .NT             | NusanTara          |
 | .NL (saat ini)  | Nusantara Language |
-
-Jika kalian ada ide yang lebih bagus bisa berkontribusi ke github ini.

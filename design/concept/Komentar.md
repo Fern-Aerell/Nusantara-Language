@@ -14,3 +14,10 @@ Komentar banyak baris :
 * Baris
 */
 ```
+
+Komentar dokumentasi :
+```nusantara
+/// Ini adalah
+/// komentar untuk
+/// dokumentasi
+```

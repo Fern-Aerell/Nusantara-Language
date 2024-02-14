@@ -36,7 +36,8 @@ Tipe data ini akan menyimpan nilai dinamis sesuai dengan inisiasi nya.
 
 Contoh :
 ```nusantara
-dinamis tipeDinamis = 10;
+dinamis tipeDinamis;
+tipeDinamis = 10;
 tipeDinamis = "Fern Aerell";
 tipeDinamis = benar;
 ```
