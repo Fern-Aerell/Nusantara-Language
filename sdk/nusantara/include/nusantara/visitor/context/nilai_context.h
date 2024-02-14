@@ -1,11 +1,11 @@
 #pragma once
 
-#include <nusantara/core/core.h>
 #include <nusantara/lexer/token.h>
 #include <nusantara/parser/parser_tree.h>
 
 #include <memory>
 
+#include "nstd/kosong.h"
 #include "nusantara/visitor/context/context.h"
 
 class NilaiContext: public Context {
@@ -20,8 +20,7 @@ class NilaiContext: public Context {
     );
     [[nodiscard]] nstd::bisa_kosong<Token> getNilai() const;
     [[nodiscard]] nstd::bisa_kosong<Token> getKurungBuka() const;
-    [[nodiscard]] nstd::konst<nstd::bisa_kosong<std::unique_ptr<Context>>> &
-    getOperasiPenugasanContext() const;
+    [[nodiscard]] const nstd::bisa_kosong<std::unique_ptr<Context>>& getOperasiPenugasanContext() const;
     [[nodiscard]] nstd::bisa_kosong<Token> getKurungTutup() const;
 
   private:

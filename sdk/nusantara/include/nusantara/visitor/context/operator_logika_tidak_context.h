@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <nusantara/lexer/token.h>
 #include <nusantara/parser/parser_tree.h>
 
@@ -9,10 +8,10 @@
 #include "nstd/kosong.h"
 #include "nusantara/visitor/context/context.h"
 
-class OperatorPerbandinganContext: public Context {
+class OperatorLogikaTidakContext: public Context {
   public:
-    explicit OperatorPerbandinganContext(nstd::bisa_kosong<Token> simbolOp);
-    static OperatorPerbandinganContext generate(
+    explicit OperatorLogikaTidakContext(nstd::bisa_kosong<Token> simbolOp);
+    static OperatorLogikaTidakContext generate(
         const std::vector<std::unique_ptr<ParserTree>> &children
     );
     [[nodiscard]] nstd::bisa_kosong<Token> getSimbolOp() const;

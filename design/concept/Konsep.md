@@ -2,11 +2,14 @@
 
 Sebelum membuat bahasa pemrograman kita perlu mendefinisikan terlebih dulu bahasa pemrograman kita, bagaimana sintaks nya, cara kerja nya, dll.
 
-- [Cli](CLI.md) 
-- [Comments](Comments.md) 
-- [Data Types](<Data Types.md>) 
-- [File Extensions](<File Extension.md>) 
-- [Functions](Functions.md) 
-- [Operator](Operator.md) 
-- [Syntax](Syntax.md) 
-- [Variables](Variables.md)
+| Konsep |
+| ------ |
+| [CLI](CLI.md) |
+| [Ekstensi File](<Ekstensi File.md>) | 
+| [Komentar](Komentar.md) | 
+| [Muat](Muat.md) | 
+| [Tipe Data](<Tipe Data.md>) | 
+| [Operator](Operator.md) | 
+| [Variable](Variable.md) | 
+| [Fungsi](Fungsi.md) | 
+| [Sintaks](Sintaks.md) | 

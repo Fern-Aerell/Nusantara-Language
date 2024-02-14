@@ -3,8 +3,7 @@
 #include <nusantara/lexer/token_type.h>
 
 #include <string>
-
-#include "nusantara/core/core.h"
+#include "nstd/daftar.h"
 
 class Token {
   public:
@@ -29,6 +28,6 @@ class Token {
     int endCharIndex;
 };
 
-Token combineToken(nstd::konst<Token>& token1, nstd::konst<Token>& token2);
+Token combineToken(const Token& token1, const Token& token2);
 
-Token combineToken(nstd::konst<nstd::daftar<Token>>& tokens);
+Token combineToken(const nstd::daftar<Token>& tokens);

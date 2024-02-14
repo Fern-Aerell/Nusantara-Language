@@ -5,11 +5,11 @@
 #include <memory>
 #include <stdexcept>
 
-#include "nusantara/core/core.h"
 #include "nusantara/parser/parser_rule.h"
 #include "nusantara/visitor/context/nilai_context.h"
 #include "nusantara/visitor/context/nusantara_context.h"
 #include "nusantara/visitor/context/operasi_logika_context.h"
+#include "nusantara/visitor/context/operasi_logika_tidak_context.h"
 #include "nusantara/visitor/context/operasi_penjumlahan_context.h"
 #include "nusantara/visitor/context/operasi_penugasan_context.h"
 #include "nusantara/visitor/context/operasi_penugasan_penjumlahan_context.h"
@@ -18,6 +18,7 @@
 #include "nusantara/visitor/context/operasi_perkalian_context.h"
 #include "nusantara/visitor/context/operasi_pre_post_context.h"
 #include "nusantara/visitor/context/operator_logika_context.h"
+#include "nusantara/visitor/context/operator_logika_tidak_context.h"
 #include "nusantara/visitor/context/operator_penjumlahan_context.h"
 #include "nusantara/visitor/context/operator_penugasan_context.h"
 #include "nusantara/visitor/context/operator_penugasan_penjumlahan_context.h"
@@ -78,6 +79,14 @@ class Visitor {
             return this->visitOperasiLogika(
                 OperasiLogikaContext::generate(rule->getChildren())
             );
+          case ParserRule::operator_logika_tidak:
+            return this->visitOperatorLogikaTidak(
+                OperatorLogikaTidakContext::generate(rule->getChildren())
+            );
+          case ParserRule::operasi_logika_tidak:
+            return this->visitOperasiLogikaTidak(
+                OperasiLogikaTidakContext::generate(rule->getChildren())
+            );
           case ParserRule::operator_perbandingan:
             return this->visitOperatorPerbandingan(
                 OperatorPerbandinganContext::generate(rule->getChildren())
@@ -118,45 +127,51 @@ class Visitor {
       throw std::runtime_error("Aturan tidak valid.");
     }
 
-    virtual T visitNusantara(nstd::konst<NusantaraContext> &ctx) = 0;
-    virtual T visitOperatorPenugasan(nstd::konst<OperatorPenugasanContext> &ctx
+    virtual T visitNusantara(const NusantaraContext &ctx) = 0;
+    virtual T visitOperatorPenugasan(const OperatorPenugasanContext &ctx
     ) = 0;
-    virtual T visitOperasiPenugasan(nstd::konst<OperasiPenugasanContext> &ctx
+    virtual T visitOperasiPenugasan(const OperasiPenugasanContext &ctx
     ) = 0;
     virtual T visitOperatorPenugasanPenjumlahan(
-        nstd::konst<OperatorPenugasanPenjumlahanContext> &ctx
+        const OperatorPenugasanPenjumlahanContext &ctx
     ) = 0;
     virtual T visitOperasiPenugasanPenjumlahan(
-        nstd::konst<OperasiPenugasanPenjumlahanContext> &ctx
+        const OperasiPenugasanPenjumlahanContext &ctx
     ) = 0;
     virtual T visitOperatorPenugasanPerkalian(
-        nstd::konst<OperatorPenugasanPerkalianContext> &ctx
+        const OperatorPenugasanPerkalianContext &ctx
     ) = 0;
     virtual T visitOperasiPenugasanPerkalian(
-        nstd::konst<OperasiPenugasanPerkalianContext> &ctx
+        const OperasiPenugasanPerkalianContext &ctx
     ) = 0;
-    virtual T visitOperatorLogika(nstd::konst<OperatorLogikaContext> &ctx) = 0;
-    virtual T visitOperasiLogika(nstd::konst<OperasiLogikaContext> &ctx) = 0;
+    virtual T visitOperatorLogika(const OperatorLogikaContext &ctx) = 0;
+    virtual T visitOperasiLogika(const OperasiLogikaContext &ctx) = 0;
+    virtual T visitOperatorLogikaTidak(
+        const OperatorLogikaTidakContext &ctx
+    ) = 0;
+    virtual T visitOperasiLogikaTidak(
+        const OperasiLogikaTidakContext &ctx
+    ) = 0;
     virtual T visitOperatorPerbandingan(
-        nstd::konst<OperatorPerbandinganContext> &ctx
+        const OperatorPerbandinganContext &ctx
     ) = 0;
     virtual T visitOperasiPerbandingan(
-        nstd::konst<OperasiPerbandinganContext> &ctx
+        const OperasiPerbandinganContext &ctx
     ) = 0;
-    virtual T visitOperatorPrePost(nstd::konst<OperatorPrePostContext> &ctx
+    virtual T visitOperatorPrePost(const OperatorPrePostContext &ctx
     ) = 0;
-    virtual T visitOperasiPrePost(nstd::konst<OperasiPrePostContext> &ctx) = 0;
+    virtual T visitOperasiPrePost(const OperasiPrePostContext &ctx) = 0;
     virtual T visitOperatorPenjumlahan(
-        nstd::konst<OperatorPenjumlahanContext> &ctx
+        const OperatorPenjumlahanContext &ctx
     ) = 0;
     virtual T visitOperasiPenjumlahan(
-        nstd::konst<OperasiPenjumlahanContext> &ctx
+        const OperasiPenjumlahanContext &ctx
     ) = 0;
-    virtual T visitOperatorPerkalian(nstd::konst<OperatorPerkalianContext> &ctx
+    virtual T visitOperatorPerkalian(const OperatorPerkalianContext &ctx
     ) = 0;
-    virtual T visitOperasiPerkalian(nstd::konst<OperasiPerkalianContext> &ctx
+    virtual T visitOperasiPerkalian(const OperasiPerkalianContext &ctx
     ) = 0;
-    virtual T visitNilai(nstd::konst<NilaiContext> &ctx) = 0;
+    virtual T visitNilai(const NilaiContext &ctx) = 0;
 
   private:
 };

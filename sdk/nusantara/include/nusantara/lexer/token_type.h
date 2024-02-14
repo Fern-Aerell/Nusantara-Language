@@ -3,48 +3,47 @@
 #include <string>
 
 enum class TokenType : int {
-  AKHIR_DARI_FILE = -1,
-  TIDAK_DIKENALI = 0,
-  WHITESPACE = 1,
-  KOMENTAR_SATU_BARIS = 2,
-  KOMENTAR_BANYAK_BARIS = 3,
+  AKHIR_DARI_FILE,
+  TIDAK_DIKENALI,
+  WHITESPACE,
+  KOMENTAR_SATU_BARIS,
+  KOMENTAR_BANYAK_BARIS,
+  KOMENTAR_DOKUMENTASI,
   // Nilai Tipe Data
-  DESIMAL = 4,
-  BULAT = 5,
-  KARAKTER = 6,
-  KALIMAT = 7,
-  BENAR = 8,
-  SALAH = 9,
+  BILANGAN,
+  KALIMAT,
+  BENAR,
+  SALAH,
   // Operator Penugasan
-  SAMA_DENGAN = 10,
-  TAMBAH_SAMA_DENGAN = 11,
-  KURANG_SAMA_DENGAN = 12,
-  KALI_SAMA_DENGAN = 13,
-  BAGI_SAMA_DENGAN = 14,
-  SISA_BAGI_SAMA_DENGAN = 15,
+  SAMA_DENGAN,
+  TAMBAH_SAMA_DENGAN,
+  KURANG_SAMA_DENGAN,
+  KALI_SAMA_DENGAN,
+  BAGI_SAMA_DENGAN,
+  SISA_BAGI_SAMA_DENGAN,
   // Operator Aritmatika
-  TAMBAH = 16,
-  KURANG = 17,
-  KALI = 18,
-  BAGI = 19,
-  SISA_BAGI = 20,
-  TAMBAH_SATU = 21,
-  KURANG_SATU = 22,
+  TAMBAH,
+  KURANG,
+  KALI,
+  BAGI,
+  SISA_BAGI,
+  TAMBAH_SATU,
+  KURANG_SATU,
   // Operator Pembanding
-  SAMA = 23,
-  TIDAK_SAMA = 24,
-  LEBIH_BESAR = 25,
-  LEBIH_KECIL = 26,
-  LEBIH_BESAR_SAMA_DENGAN = 27,
-  LEBIH_KECIL_SAMA_DENGAN = 28,
+  SAMA,
+  TIDAK_SAMA,
+  LEBIH_BESAR,
+  LEBIH_KECIL,
+  LEBIH_BESAR_SAMA_DENGAN,
+  LEBIH_KECIL_SAMA_DENGAN,
   // Operator Logika
-  DAN = 29,
-  ATAU = 30,
-  TIDAK = 31,
+  DAN,
+  ATAU,
+  TIDAK,
   // Pemisah
-  TITIK_KOMA = 32,
-  KURUNG_BUKA = 33,
-  KURUNG_TUTUP = 34
+  TITIK_KOMA,
+  KURUNG_BUKA,
+  KURUNG_TUTUP
 };
 
 inline std::string toString(const TokenType &type) {
@@ -59,12 +58,10 @@ inline std::string toString(const TokenType &type) {
       return "KOMENTAR_SATU_BARIS";
     case TokenType::KOMENTAR_BANYAK_BARIS:
       return "KOMENTAR_BANYAK_BARIS";
-    case TokenType::DESIMAL:
-      return "DESIMAL";
-    case TokenType::BULAT:
-      return "BULAT";
-    case TokenType::KARAKTER:
-      return "KARAKTER";
+    case TokenType::KOMENTAR_DOKUMENTASI:
+      return "KOMENTAR_DOKUMENTASI";
+    case TokenType::BILANGAN:
+      return "BILANGAN";
     case TokenType::KALIMAT:
       return "KALIMAT";
     case TokenType::BENAR:

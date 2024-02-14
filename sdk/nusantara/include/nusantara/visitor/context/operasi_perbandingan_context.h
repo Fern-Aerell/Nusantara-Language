@@ -1,10 +1,11 @@
 #pragma once
 
-#include <nusantara/core/core.h>
+
 #include <nusantara/parser/parser_tree.h>
 
 #include <memory>
 
+#include "nstd/kosong.h"
 #include "nusantara/visitor/context/context.h"
 
 class OperasiPerbandinganContext: public Context {
@@ -18,11 +19,11 @@ class OperasiPerbandinganContext: public Context {
     static OperasiPerbandinganContext generate(
         const std::vector<std::unique_ptr<ParserTree>> &children
     );
-    [[nodiscard]] nstd::konst<
-        nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>> &
+    [[nodiscard]] const
+        nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>&
     getKumpulanOperasiPrePostContext() const;
-    [[nodiscard]] nstd::konst<
-        nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>> &
+    [[nodiscard]] const
+        nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>&
     getKumpulanOperatorPerbandinganContext() const;
 
   private:

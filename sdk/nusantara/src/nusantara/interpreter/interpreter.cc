@@ -1,9 +1,10 @@
 #include <nusantara/interpreter/interpreter.h>
 
+#include <cmath>
 #include <cstddef>
 #include <format>
-#include <iostream>
 #include <memory>
+#include <sstream>
 #include <string>
 
 #include "nusantara/core/core.h"
@@ -13,6 +14,7 @@
 #include "nusantara/visitor/context/context.h"
 #include "nusantara/visitor/context/nilai_context.h"
 #include "nusantara/visitor/context/operasi_logika_context.h"
+#include "nusantara/visitor/context/operasi_logika_tidak_context.h"
 #include "nusantara/visitor/context/operasi_penjumlahan_context.h"
 #include "nusantara/visitor/context/operasi_penugasan_context.h"
 #include "nusantara/visitor/context/operasi_penugasan_penjumlahan_context.h"
@@ -112,6 +114,13 @@ nstd::dinamis Interpreter::operasiPerkalian(
   if(nstd::isDesimal(left) && nstd::isBulat(right)) {
     return nstd::asDesimal(left) * nstd::asBulat(right);
   }
+  if(nstd::isKalimat(left) && nstd::isBulat(right)) {
+    std::ostringstream stream;
+    for(size_t index = 0; index < nstd::asBulat(right); ++index) {
+      stream << nstd::asKalimat(left);
+    }
+    return stream.str();
+  }
   throw std::runtime_error(
       this->errorInfo.inLine(this->tokens, "Operasi perkalian tidak valid.")
   );
@@ -144,27 +153,13 @@ nstd::dinamis Interpreter::operasiSisaPembagian(
     return nstd::asBulat(left) % nstd::asBulat(right);
   }
   if(nstd::isDesimal(left) && nstd::isDesimal(right)) {
-    throw std::runtime_error(this->errorInfo.inLine(
-        this->tokens,
-        "Tidak dapat melakukan operasi sisa pembagian "
-        "antara bilangan desimal."
-    ));
+    return fmod(nstd::asDesimal(left), nstd::asDesimal(right));
   }
   if(nstd::isBulat(left) && nstd::isDesimal(right)) {
-    throw std::runtime_error(this->errorInfo.inLine(
-        this->tokens,
-        "Tidak dapat melakukan operasi sisa "
-        "pembagian antara bilangan bulat "
-        "dengan bilangan desimal."
-    ));
+    return fmod(nstd::asBulat(left), nstd::asDesimal(right));
   }
   if(nstd::isDesimal(left) && nstd::isBulat(right)) {
-    throw std::runtime_error(this->errorInfo.inLine(
-        this->tokens,
-        "Tidak dapat melakukan operasi sisa "
-        "pembagian antara bilangan desimal "
-        "dengan bilangan bulat."
-    ));
+    return fmod(nstd::asDesimal(left), nstd::asBulat(right));
   }
   throw std::runtime_error(this->errorInfo.inLine(
       this->tokens, "Operasi sisa pembagian tidak valid."
@@ -198,6 +193,9 @@ nstd::dinamis Interpreter::operasiSama(
   }
   if(nstd::isDesimal(left) && nstd::isDesimal(right)) {
     return nstd::asDesimal(left) == nstd::asDesimal(right);
+  }
+  if(nstd::isKalimat(left) && nstd::isKalimat(right)) {
+    return nstd::asKalimat(left) == nstd::asKalimat(right);
   }
   if(nstd::isBulat(left) && nstd::isDesimal(right)) {
     return nstd::asBulat(left) == nstd::asDesimal(right);
@@ -489,26 +487,26 @@ nstd::dinamis Interpreter::visitOperatorLogika(
 nstd::dinamis Interpreter::visitOperasiLogika(
     nstd::konst<OperasiLogikaContext> &ctx
 ) {
-  const auto &nilai = ctx.getKumpulanOperasiPerbandinganContext();
+  const auto &nilai = ctx.getKumpulanOperasiLogikaTidakContext();
   const auto &simbolOp = ctx.getKumpulanOperatorLogikaContext();
   if(nstd::isKosong(nilai) || nilai.value().empty()) {
     throw std::runtime_error("Nilai tidak boleh kosong.");
   }
   const auto &leftPtr =
-      dynamic_cast<OperasiPerbandinganContext *>(nilai.value().front().get());
+      dynamic_cast<OperasiLogikaTidakContext *>(nilai.value().front().get());
   if(leftPtr == nullptr) {
     throw std::runtime_error(
-        "Gagal mengubah Context menjadi OperasiPerbandinganContext"
+        "Gagal mengubah Context menjadi OperasiLogikaTidakContext"
     );
   }
-  nstd::dinamis left = this->visitOperasiPerbandingan(*leftPtr);
+  nstd::dinamis left = this->visitOperasiLogikaTidak(*leftPtr);
   if(nstd::isKosong(simbolOp)) { return left; }
   for(size_t index = 0; index < simbolOp.value().size(); ++index) {
     const auto &simbolOpPtr =
         dynamic_cast<OperatorLogikaContext *>(simbolOp.value()[index].get());
-    const auto &rightPtr = dynamic_cast<OperasiPerbandinganContext *>(
-        nilai.value()[index + 1].get()
-    );
+    const auto &rightPtr =
+        dynamic_cast<OperasiLogikaTidakContext *>(nilai.value()[index + 1].get()
+        );
     if(simbolOpPtr == nullptr || rightPtr == nullptr) {
       throw std::runtime_error(
           "Gagal mengubah Context menjadi OperatorPerbandinganContext "
@@ -518,14 +516,13 @@ nstd::dinamis Interpreter::visitOperasiLogika(
     }
     nstd::konst<nstd::kalimat> simbolOp =
         nstd::asKalimat(this->visitOperatorLogika(*simbolOpPtr));
-    nstd::konst<nstd::dinamis> right =
-        this->visitOperasiPerbandingan(*rightPtr);
+    nstd::konst<nstd::dinamis> right = this->visitOperasiLogikaTidak(*rightPtr);
     if(simbolOp == "&&") {
       if(nstd::isBenarSalah(left) && nstd::isBenarSalah(right)) {
         left = nstd::asBenarSalah(left) && nstd::asBenarSalah(right);
       } else {
         throw std::runtime_error(this->errorInfo.inLine(
-            this->tokens, "Operasi perbandingan dan tidak valid."
+            this->tokens, "Operasi logika dan tidak valid."
         ));
       }
     } else if(simbolOp == "||") {
@@ -533,13 +530,62 @@ nstd::dinamis Interpreter::visitOperasiLogika(
         left = nstd::asBenarSalah(left) || nstd::asBenarSalah(right);
       } else {
         throw std::runtime_error(this->errorInfo.inLine(
-            this->tokens, "Operasi perbandingan atau tidak valid."
+            this->tokens, "Operasi logika atau tidak valid."
         ));
       }
     } else {
-      throw std::runtime_error(this->errorInfo.inLine(
-          this->tokens, "Operator perbandingan tidak valid."
-      ));
+      throw std::runtime_error(
+          this->errorInfo.inLine(this->tokens, "Operator logika tidak valid.")
+      );
+    }
+  }
+  return left;
+}
+
+nstd::dinamis Interpreter::visitOperatorLogikaTidak(
+    nstd::konst<OperatorLogikaTidakContext> &ctx
+) {
+  return this->fragmentVisitOperator(ctx.getSimbolOp(), "logika tidak");
+}
+
+nstd::dinamis Interpreter::visitOperasiLogikaTidak(
+    nstd::konst<OperasiLogikaTidakContext> &ctx
+) {
+  const auto &simbolOp = ctx.getOperatorLogikaTidakContext();
+  const auto &nilai = ctx.getOperasiPerbandinganContext();
+  if(nstd::isKosong(nilai)) {
+    throw std::runtime_error("Nilai tidak boleh kosong.");
+  }
+  const auto &leftPtr =
+      dynamic_cast<OperasiPerbandinganContext *>(nilai.value().get());
+  if(leftPtr == nullptr) {
+    throw std::runtime_error(
+        "Gagal mengubah Context menjadi OperasiPerbandinganContext."
+    );
+  }
+  nstd::dinamis left = this->visitOperasiPerbandingan(*leftPtr);
+  if(!nstd::isKosong(simbolOp)) {
+    const auto &simbolOpPtr =
+        dynamic_cast<OperatorLogikaTidakContext *>(simbolOp.value().get());
+    if(simbolOpPtr == nullptr) {
+      throw std::runtime_error(
+          "Gagal mengubah Context menjadi OperatorLogikaTidakContext"
+      );
+    }
+    nstd::konst<nstd::kalimat> simbolOp =
+        nstd::asKalimat(this->visitOperatorLogikaTidak(*simbolOpPtr));
+    if(simbolOp == "!") {
+      if(nstd::isBenarSalah(left)) {
+        left = !nstd::asBenarSalah(left);
+      } else {
+        throw std::runtime_error(
+            this->errorInfo.inLine(this->tokens, "Operasi logika tidak valid.")
+        );
+      }
+    } else {
+      throw std::runtime_error(
+          this->errorInfo.inLine(this->tokens, "Operator logika tidak valid.")
+      );
     }
   }
   return left;
@@ -714,13 +760,11 @@ nstd::dinamis Interpreter::visitNilai(nstd::konst<NilaiContext> &ctx) {
     this->tokens.push_back(token);
     nstd::konst<TokenType> &type = token.getType();
     nstd::kalimat nilai = token.getValue();
-    if(type == TokenType::BULAT) {
+    if(type == TokenType::BILANGAN) {
       return std::stoi(nilai);
     } else if(type == TokenType::DESIMAL) {
       nilai.replace(nilai.find(','), 1, ".");
       return std::stod(nilai);
-    } else if(type == TokenType::KARAKTER) {
-      return nilai[1];
     } else if(type == TokenType::KALIMAT) {
       nilai.pop_back();
       nilai = nilai.substr(1);

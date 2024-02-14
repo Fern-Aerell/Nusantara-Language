@@ -1,33 +1,31 @@
 #pragma once
 
-#include <nusantara/core/core.h>
 #include <nusantara/parser/parser_tree.h>
 
 #include <memory>
 
+#include "nstd/kosong.h"
 #include "nusantara/visitor/context/context.h"
 
 class OperasiLogikaContext: public Context {
   public:
     OperasiLogikaContext(
         nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>
-            kumpulanOperasiPerbandinganContext,
+            kumpulanOperasiLogikaTidakContext,
         nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>
             kumpulanOperatorLogikaContext
     );
     static OperasiLogikaContext generate(
-        const std::vector<std::unique_ptr<ParserTree>> &children
+        const std::vector<std::unique_ptr<ParserTree>>& children
     );
-    [[nodiscard]] nstd::konst<
-        nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>> &
-    getKumpulanOperasiPerbandinganContext() const;
-    [[nodiscard]] nstd::konst<
-        nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>> &
+    [[nodiscard]] const nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>&
+    getKumpulanOperasiLogikaTidakContext() const;
+    [[nodiscard]] const nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>&
     getKumpulanOperatorLogikaContext() const;
 
   private:
     nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>
-        kumpulanOperasiPerbandinganContext;
+        kumpulanOperasiLogikaTidakContext;
     nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>
         kumpulanOperatorLogikaContext;
 };

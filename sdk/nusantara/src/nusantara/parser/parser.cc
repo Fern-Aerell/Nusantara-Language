@@ -172,15 +172,33 @@ std::unique_ptr<ParserTree> Parser::parseOperatorLogika() {
 std::unique_ptr<ParserTree> Parser::parseOperasiLogika() {
   std::unique_ptr<ParserTree> operasiLogika =
       std::make_unique<ParserRuleTree>(ParserRule::operasi_logika);
-  std::unique_ptr<ParserTree> left = this->parseOperasiPerbandingan();
+  std::unique_ptr<ParserTree> left = this->parseOperasiLogikaTidak();
   operasiLogika->addChild(std::move(left));
   while(this->matchOr({TokenType::DAN, TokenType::ATAU})) {
     std::unique_ptr<ParserTree> operatorLogika = this->parseOperatorLogika();
     operasiLogika->addChild(std::move(operatorLogika));
-    std::unique_ptr<ParserTree> right = this->parseOperasiPerbandingan();
+    std::unique_ptr<ParserTree> right = this->parseOperasiLogikaTidak();
     operasiLogika->addChild(std::move(right));
   }
   return operasiLogika;
+}
+
+std::unique_ptr<ParserTree> Parser::parseOperatorLogikaTidak() {
+  std::vector<TokenType> types = {TokenType::TIDAK};
+  return this->fragmentTokenTypeGroup(types, ParserRule::operator_logika_tidak);
+}
+
+std::unique_ptr<ParserTree> Parser::parseOperasiLogikaTidak() {
+  std::unique_ptr<ParserTree> operasiLogikaTidak =
+      std::make_unique<ParserRuleTree>(ParserRule::operasi_logika_tidak);
+  if(match(TokenType::TIDAK)) {
+    std::unique_ptr<ParserTree> operatorLogikaTidak =
+        this->parseOperatorLogikaTidak();
+    operasiLogikaTidak->addChild(std::move(operatorLogikaTidak));
+  }
+  std::unique_ptr<ParserTree> left = this->parseOperasiPerbandingan();
+  operasiLogikaTidak->addChild(std::move(left));
+  return operasiLogikaTidak;
 }
 
 std::unique_ptr<ParserTree> Parser::parseOperatorPerbandingan() {
@@ -285,8 +303,7 @@ std::unique_ptr<ParserTree> Parser::parseOperasiPerkalian() {
 }
 
 std::unique_ptr<ParserTree> Parser::parseNilai() {
-  std::vector<TokenType> types = {TokenType::BULAT,    TokenType::DESIMAL,
-                                  TokenType::KARAKTER, TokenType::KALIMAT,
+  std::vector<TokenType> types = {TokenType::BILANGAN, TokenType::KALIMAT,
                                   TokenType::BENAR,    TokenType::SALAH};
   if(this->matchOr(types)) {
     return this->fragmentTokenTypeGroup(types, ParserRule::nilai);

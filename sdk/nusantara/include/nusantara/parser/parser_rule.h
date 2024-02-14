@@ -3,24 +3,26 @@
 #include <string>
 
 enum class ParserRule : int {
-  nusantara = 0,
-  operator_penugasan = 1,
-  operasi_penugasan = 2,
-  operator_penugasan_penjumlahan = 3,
-  operasi_penugasan_penjumlahan = 4,
-  operator_penugasan_perkalian = 5,
-  operasi_penugasan_perkalian = 6,
-  operator_logika = 7,
-  operasi_logika = 8,
-  operator_perbandingan = 9,
-  operasi_perbandingan = 10,
-  operator_penjumlahan = 11,
-  operasi_penjumlahan = 12,
-  operator_pre_post = 13,
-  operasi_pre_post = 14,
-  operator_perkalian = 15,
-  operasi_perkalian = 16,
-  nilai = 17
+  nusantara,
+  operator_penugasan,
+  operasi_penugasan,
+  operator_penugasan_penjumlahan,
+  operasi_penugasan_penjumlahan,
+  operator_penugasan_perkalian,
+  operasi_penugasan_perkalian,
+  operator_logika,
+  operasi_logika,
+  operator_logika_tidak,
+  operasi_logika_tidak,
+  operator_perbandingan,
+  operasi_perbandingan,
+  operator_penjumlahan,
+  operasi_penjumlahan,
+  operator_pre_post,
+  operasi_pre_post,
+  operator_perkalian,
+  operasi_perkalian,
+  nilai
 };
 
 inline std::string toString(const ParserRule &rule) {
@@ -43,6 +45,10 @@ inline std::string toString(const ParserRule &rule) {
       return "operator_logika";
     case ParserRule::operasi_logika:
       return "operasi_logika";
+    case ParserRule::operator_logika_tidak:
+      return "operator_logika_tidak";
+    case ParserRule::operasi_logika_tidak:
+      return "operasi_logika_tidak";
     case ParserRule::operator_perbandingan:
       return "operator_perbandingan";
     case ParserRule::operasi_perbandingan:

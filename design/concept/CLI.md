@@ -11,7 +11,7 @@ Hasil :
 ```
 Sebuah alat command-line untuk Nusantara development
 
-Penggunaan: nusantara <perintah|nusantara-file>
+Penggunaan: nusantara <perintah|nusantara-file> [argumen]
 
 Pilihan umum:
  -v | --versi     Untuk melihat versi nusantara.

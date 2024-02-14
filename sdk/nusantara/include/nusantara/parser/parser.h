@@ -35,6 +35,8 @@ class Parser {
     std::unique_ptr<ParserTree> parseOperasiPenugasanPerkalian();
     std::unique_ptr<ParserTree> parseOperatorLogika();
     std::unique_ptr<ParserTree> parseOperasiLogika();
+    std::unique_ptr<ParserTree> parseOperatorLogikaTidak();
+    std::unique_ptr<ParserTree> parseOperasiLogikaTidak();
     std::unique_ptr<ParserTree> parseOperatorPerbandingan();
     std::unique_ptr<ParserTree> parseOperasiPerbandingan();
     std::unique_ptr<ParserTree> parseOperatorPenjumlahan();

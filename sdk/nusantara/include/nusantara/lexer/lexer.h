@@ -18,19 +18,17 @@ class Lexer {
     std::vector<TokenTypeData> tokenTypes = {
         {"WHITESPACE",              TokenType::WHITESPACE,              "[ \n\t\r\f]+"             },
         {"KOMENTAR_SATU_BARIS",     TokenType::KOMENTAR_SATU_BARIS,     "//[^\n]*"                 },
-        {"KOMENTAR_BANYAK_BARIS",   TokenType::KOMENTAR_BANYAK_BARIS,
-         "/\\*(.|[ \n\t\r\f])*\\*/"                                                                },
+        {"KOMENTAR_BANYAK_BARIS",   TokenType::KOMENTAR_BANYAK_BARIS,   "/\\*(.|[ \n\t\r\f])*\\*/" },
+        {"KOMENTAR_DOKUMENTASI",    TokenType::KOMENTAR_DOKUMENTASI,    "///[^\n]*"                },
  // Nilai Tipe Data
-        {"DESIMAL",                 TokenType::DESIMAL,                 "-?[0-9]+,[0-9]+"          },
-        {"BULAT",                   TokenType::BULAT,                   "-?[0-9]+"                 },
-        {"KARAKTER",                TokenType::KARAKTER,                "(\"[^\n\"]\"|'[^\n\']')"  },
+        {"BILANGAN",                 TokenType::BILANGAN,               "-?([0-9]+(,[0-9]+)?)"     },
         {"KALIMAT",                 TokenType::KALIMAT,                 "(\"[^\n\"]*\"|'[^\n\']*')"},
         {"BENAR",                   TokenType::BENAR,                   "benar"                    },
         {"SALAH",                   TokenType::SALAH,                   "salah"                    },
-// Operator Pembanding
+ // Operator Pembanding
         {"SAMA",                    TokenType::SAMA,                    "=="                       },
         {"TIDAK_SAMA",              TokenType::TIDAK_SAMA,              "!="                       },
-				{"LEBIH_BESAR_SAMA_DENGAN", TokenType::LEBIH_BESAR_SAMA_DENGAN, ">="                       },
+        {"LEBIH_BESAR_SAMA_DENGAN", TokenType::LEBIH_BESAR_SAMA_DENGAN, ">="                       },
         {"LEBIH_KECIL_SAMA_DENGAN", TokenType::LEBIH_KECIL_SAMA_DENGAN, "<="                       },
         {"LEBIH_BESAR",             TokenType::LEBIH_BESAR,             ">"                        },
         {"LEBIH_KECIL",             TokenType::LEBIH_KECIL,             "<"                        },

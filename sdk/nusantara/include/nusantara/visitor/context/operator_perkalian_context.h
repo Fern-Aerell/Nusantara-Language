@@ -1,11 +1,12 @@
 #pragma once
 
-#include <nusantara/core/core.h>
+
 #include <nusantara/lexer/token.h>
 #include <nusantara/parser/parser_tree.h>
 
 #include <memory>
 
+#include "nstd/kosong.h"
 #include "nusantara/visitor/context/context.h"
 
 class OperatorPerkalianContext: public Context {

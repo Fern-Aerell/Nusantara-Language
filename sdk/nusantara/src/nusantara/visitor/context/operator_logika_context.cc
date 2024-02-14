@@ -15,7 +15,7 @@ OperatorLogikaContext OperatorLogikaContext::generate(
   const Token token = ptchild0->getToken();
   const TokenType type = token.getType();
   nstd::konst<nstd::daftar<TokenType>> tokenTypes = {
-      TokenType::DAN, TokenType::ATAU, TokenType::TIDAK
+      TokenType::DAN, TokenType::ATAU
   };
   if(nstd::contains(tokenTypes, type)) {
     nstd::bisa_kosong<Token> simbolOpLogika = token;

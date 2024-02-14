@@ -3,20 +3,20 @@
 #include <string>
 #include <vector>
 
-#include "nusantara/core/core.h"
+#include "nstd/daftar.h"
 #include "nusantara/lexer/token.h"
 
 class ErrorInfo {
   public:
     explicit ErrorInfo(std::string source, const std::string &content);
 
-    nstd::kalimat inLine(
-        nstd::konst<Token> &token, nstd::konst<nstd::kalimat> &msg
+    std::string inLine(
+        const Token& token, const std::string& msg
     );
 
-    nstd::kalimat inLine(
-        nstd::konst<nstd::daftar<Token>> &tokens,
-        nstd::konst<nstd::kalimat> &msg
+    std::string inLine(
+        const nstd::daftar<Token>& tokens,
+        const std::string& msg
     );
 
   private:
