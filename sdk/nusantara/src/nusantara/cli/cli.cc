@@ -1,39 +1,41 @@
+#include <iostream>
 #include <nusantara/cli/cli.h>
 
 #include <cstddef>
 #include <format>
+#include <string>
 
+#include "nstd/daftar.h"
+#include "nstd/konsol.h"
 #include "nusantara/config/config.h"
-#include "nusantara/core/core.h"
 #include "nusantara/core/error_info.h"
-#include "nusantara/core/konsol.h"
 #include "nusantara/interpreter/interpreter.h"
 #include "nusantara/lexer/lexer.h"
 #include "nusantara/parser/parser.h"
 #include "nusantara/utils/utils.h"
 
-void Cli::input(nstd::konst<nstd::bulat>& argc, nstd::karakter* argv[]) {
-  nstd::daftar<nstd::kalimat> kumpulanArgument;
+void Cli::input(const int& argc, char* argv[]) {
+  nstd::daftar<std::string> kumpulanArgument;
   if(argc > 1) {
     for(size_t index = 1; index < argc; ++index) {
       kumpulanArgument.emplace_back(argv[index]);
     }
   }
   size_t index = 0;
-  nstd::daftar<nstd::kalimat> perintahInfo = {"-i", "--info"};
-  nstd::daftar<nstd::kalimat> perintahVersi = {"-v", "--versi"};
-  nstd::benarsalah interpreter = salah;
-  nstd::kalimat source;
-  nstd::benarsalah onlyLexerDebug = salah;
-  nstd::benarsalah onlyLexerParserDebug = salah;
-  for(nstd::konst<nstd::kalimat>& argument : kumpulanArgument) {
+  nstd::daftar<std::string> perintahInfo = {"-i", "--info"};
+  nstd::daftar<std::string> perintahVersi = {"-v", "--versi"};
+  bool interpreter = false;
+  std::string source;
+  bool onlyLexerDebug = false;
+  bool onlyLexerParserDebug = false;
+  for(const std::string& argument : kumpulanArgument) {
     if(argument == "-ld" && interpreter && !onlyLexerParserDebug) {
-      onlyLexerDebug = benar;
+      onlyLexerDebug = true;
     } else if(argument == "-pd" && interpreter && !onlyLexerDebug) {
-      onlyLexerParserDebug = benar;
+      onlyLexerParserDebug = true;
     } else if(argument.contains('.')) {
       source = argument;
-      interpreter = benar;
+      interpreter = true;
     } else if(nstd::contains(perintahVersi, argument)) {
       showVersi();
       return;
@@ -41,14 +43,14 @@ void Cli::input(nstd::konst<nstd::bulat>& argc, nstd::karakter* argv[]) {
       showInfo();
       return;
     } else {
-      interpreter = salah;
+      interpreter = false;
       kumpulanArgument[0] = argument;
       break;
     }
     ++index;
   }
   if(interpreter) {
-    nstd::kalimat input = utils::readFile(source);
+    std::string input = utils::readFile(source);
     ErrorInfo errorInfo(source, input);
     Lexer lexer(source, input);
     Parser parser(errorInfo, lexer);
@@ -69,7 +71,7 @@ void Cli::input(nstd::konst<nstd::bulat>& argc, nstd::karakter* argv[]) {
   } else if(kumpulanArgument.empty()) {
     showInfo();
   } else {
-    nstd::Konsol::cetak(
+		nstd::cetak(
         std::format("Perintah '{}' tidak ada.", kumpulanArgument[0])
     );
     showInfo();
@@ -77,21 +79,21 @@ void Cli::input(nstd::konst<nstd::bulat>& argc, nstd::karakter* argv[]) {
 }
 
 void Cli::showInfo() {
-  nstd::Konsol::cetak(
-      nstd::kalimat("Sebuah alat command-line untuk Nusantara development.\n")
+  nstd::cetak(
+      std::string("Sebuah alat command-line untuk Nusantara development.\n")
   );
-  nstd::Konsol::cetak(nstd::kalimat(
+  nstd::cetak(std::string(
       "Penggunaan: nusantara <perintah|nusantara-file> [argumen]\n"
   ));
-  nstd::Konsol::cetak(nstd::kalimat("Pilihan umum:"));
-  nstd::Konsol::cetak(
-      nstd::kalimat("   -v | --versi        Untuk melihat versi nusantara.")
+  nstd::cetak(std::string("Pilihan umum:"));
+  nstd::cetak(
+      std::string("   -v | --versi        Untuk melihat versi nusantara.")
   );
-  nstd::Konsol::cetak(nstd::kalimat(
+  nstd::cetak(std::string(
       "   -i | --info         Untuk melihat informasi lebih lanjut."
   ));
 }
 
 void Cli::showVersi() {
-  nstd::Konsol::cetak(std::format("{} {}", APP, VERSION));
+  nstd::cetak(std::format("{} {}", APP, VERSION));
 }

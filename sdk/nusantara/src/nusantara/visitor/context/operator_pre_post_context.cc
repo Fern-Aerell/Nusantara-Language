@@ -2,8 +2,9 @@
 
 #include <stdexcept>
 
-#include "nusantara/core/core.h"
 #include "nusantara/lexer/token_type.h"
+#include "nstd/kosong.h"
+#include "nstd/daftar.h"
 
 OperatorPrePostContext::OperatorPrePostContext(nstd::bisa_kosong<Token> simbolOp
 ):
@@ -15,7 +16,7 @@ OperatorPrePostContext OperatorPrePostContext::generate(
   const auto *ptchild0 = dynamic_cast<ParserTokenTree *>(children[0].get());
   const Token token = ptchild0->getToken();
   const TokenType type = token.getType();
-  nstd::konst<nstd::daftar<TokenType>> tokenTypes = {
+  const nstd::daftar<TokenType> tokenTypes = {
       TokenType::TAMBAH_SATU, TokenType::KURANG_SATU
   };
   if(nstd::contains(tokenTypes, type)) {

@@ -20,10 +20,10 @@ class OperasiPerkalianContext: public Context {
         const std::vector<std::unique_ptr<ParserTree>> &children
     );
     [[nodiscard]] 
-        nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>&
+        const nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>&
     getKumpulanNilaiContext() const;
     [[nodiscard]] 
-        nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>&
+        const nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>&
     getKumpulanOperatorPerkalianContext() const;
 
   private:

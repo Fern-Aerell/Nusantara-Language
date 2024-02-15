@@ -2,10 +2,11 @@
 
 #include <memory>
 
-#include "nusantara/core/core.h"
 #include "nusantara/visitor/context/context.h"
 #include "nusantara/visitor/context/operasi_logika_context.h"
 #include "nusantara/visitor/context/operator_penugasan_perkalian_context.h"
+#include "nstd/kosong.h"
+#include "nstd/daftar.h"
 
 OperasiPenugasanPerkalianContext::OperasiPenugasanPerkalianContext(
     nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>
@@ -29,7 +30,7 @@ OperasiPenugasanPerkalianContext OperasiPenugasanPerkalianContext::generate(
     auto *ptchild = dynamic_cast<ParserRuleTree *>(child.get());
     const ParserRule rule = ptchild->getRule();
     if(rule == ParserRule::operasi_logika) {
-      if(nstd::isKosong(kumpulanOperasiLogikaContext)) {
+      if(nstd::kosong(kumpulanOperasiLogikaContext)) {
         kumpulanOperasiLogikaContext = nstd::daftar<std::unique_ptr<Context>>();
       }
       std::unique_ptr<Context> context = std::make_unique<OperasiLogikaContext>(
@@ -37,7 +38,7 @@ OperasiPenugasanPerkalianContext OperasiPenugasanPerkalianContext::generate(
       );
       kumpulanOperasiLogikaContext.value().push_back(std::move(context));
     } else if(rule == ParserRule::operator_penugasan_perkalian) {
-      if(nstd::isKosong(kumpulanOperatorPenugasanPerkalianContext)) {
+      if(nstd::kosong(kumpulanOperatorPenugasanPerkalianContext)) {
         kumpulanOperatorPenugasanPerkalianContext =
             nstd::daftar<std::unique_ptr<Context>>();
       }
@@ -57,12 +58,12 @@ OperasiPenugasanPerkalianContext OperasiPenugasanPerkalianContext::generate(
   };
 }
 
-nstd::konst<nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>> &
+const nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>> &
 OperasiPenugasanPerkalianContext::getKumpulanOperasiLogikaContext() const {
   return this->kumpulanOperasiLogikaContext;
 }
 
-nstd::konst<nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>> &
+const nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>> &
 OperasiPenugasanPerkalianContext::getKumpulanOperatorPenugasanPerkalianContext(
 ) const {
   return this->kumpulanOperatorPenugasanPerkalianContext;

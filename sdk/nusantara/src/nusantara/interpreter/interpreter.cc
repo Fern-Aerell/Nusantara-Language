@@ -7,9 +7,7 @@
 #include <sstream>
 #include <string>
 
-#include "nusantara/core/core.h"
 #include "nusantara/core/error_info.h"
-#include "nusantara/core/konsol.h"
 #include "nusantara/lexer/token_type.h"
 #include "nusantara/visitor/context/context.h"
 #include "nusantara/visitor/context/nilai_context.h"
@@ -29,13 +27,14 @@
 #include "nusantara/visitor/context/operator_penugasan_perkalian_context.h"
 #include "nusantara/visitor/context/operator_perbandingan_context.h"
 #include "nusantara/visitor/context/operator_perkalian_context.h"
+#include "nstd/dinamis.h"
 
 Interpreter::Interpreter(ErrorInfo errorInfo):
     errorInfo(std::move(errorInfo)) {}
 
 nstd::dinamis Interpreter::operasiAritmatika(
-    nstd::konst<nstd::dinamis> &left, nstd::konst<nstd::kalimat> &simbolOp,
-    nstd::konst<nstd::dinamis> &right
+    const nstd::dinamis &left, const std::string &simbolOp,
+    const nstd::dinamis &right
 ) {
   if(simbolOp == "+") { return Interpreter::operasiPenjumlahan(left, right); }
   if(simbolOp == "-") { return Interpreter::operasiPengurangan(left, right); }
@@ -48,7 +47,7 @@ nstd::dinamis Interpreter::operasiAritmatika(
 }
 
 nstd::dinamis Interpreter::operasiPenjumlahan(
-    nstd::konst<nstd::dinamis> &left, nstd::konst<nstd::dinamis> &right
+    const nstd::dinamis &left, const nstd::dinamis &right
 ) {
   if(nstd::isBulat(left) && nstd::isBulat(right)) {
     return nstd::asBulat(left) + nstd::asBulat(right);
@@ -66,7 +65,7 @@ nstd::dinamis Interpreter::operasiPenjumlahan(
     return nstd::asKalimat(left) + nstd::asKalimat(right);
   }
   if(nstd::isKarakter(left) && nstd::isKarakter(right)) {
-    return nstd::kalimat(1, nstd::asKarakter(left)) + nstd::asKarakter(right);
+    return std::string(1, nstd::asKarakter(left)) + nstd::asKarakter(right);
   }
   if(nstd::isKalimat(left) && nstd::isKarakter(right)) {
     return nstd::asKalimat(left) + nstd::asKarakter(right);
@@ -80,7 +79,7 @@ nstd::dinamis Interpreter::operasiPenjumlahan(
 }
 
 nstd::dinamis Interpreter::operasiPengurangan(
-    nstd::konst<nstd::dinamis> &left, nstd::konst<nstd::dinamis> &right
+    const nstd::dinamis> &left, const nstd::dinamis> &right
 ) {
   if(nstd::isBulat(left) && nstd::isBulat(right)) {
     return nstd::asBulat(left) - nstd::asBulat(right);
@@ -100,7 +99,7 @@ nstd::dinamis Interpreter::operasiPengurangan(
 }
 
 nstd::dinamis Interpreter::operasiPerkalian(
-    nstd::konst<nstd::dinamis> &left, nstd::konst<nstd::dinamis> &right
+    const nstd::dinamis> &left, const nstd::dinamis> &right
 ) {
   if(nstd::isBulat(left) && nstd::isBulat(right)) {
     return nstd::asBulat(left) * nstd::asBulat(right);
@@ -127,7 +126,7 @@ nstd::dinamis Interpreter::operasiPerkalian(
 }
 
 nstd::dinamis Interpreter::operasiPembagian(
-    nstd::konst<nstd::dinamis> &left, nstd::konst<nstd::dinamis> &right
+    const nstd::dinamis> &left, const nstd::dinamis> &right
 ) {
   if(nstd::isBulat(left) && nstd::isBulat(right)) {
     return (nstd::desimal)nstd::asBulat(left) / nstd::asBulat(right);
@@ -147,7 +146,7 @@ nstd::dinamis Interpreter::operasiPembagian(
 }
 
 nstd::dinamis Interpreter::operasiSisaPembagian(
-    nstd::konst<nstd::dinamis> &left, nstd::konst<nstd::dinamis> &right
+    const nstd::dinamis> &left, const nstd::dinamis> &right
 ) {
   if(nstd::isBulat(left) && nstd::isBulat(right)) {
     return nstd::asBulat(left) % nstd::asBulat(right);
@@ -167,8 +166,8 @@ nstd::dinamis Interpreter::operasiSisaPembagian(
 }
 
 nstd::dinamis Interpreter::operasiPerbandingan(
-    nstd::konst<nstd::dinamis> &left, nstd::konst<nstd::kalimat> &simbolOp,
-    nstd::konst<nstd::dinamis> &right
+    const nstd::dinamis> &left, const std::string> &simbolOp,
+    const nstd::dinamis> &right
 ) {
   if(simbolOp == "==") { return Interpreter::operasiSama(left, right); }
   if(simbolOp == "!=") { return Interpreter::operasiTidakSama(left, right); }
@@ -186,7 +185,7 @@ nstd::dinamis Interpreter::operasiPerbandingan(
 }
 
 nstd::dinamis Interpreter::operasiSama(
-    nstd::konst<nstd::dinamis> &left, nstd::konst<nstd::dinamis> &right
+    const nstd::dinamis> &left, const nstd::dinamis> &right
 ) {
   if(nstd::isBulat(left) && nstd::isBulat(right)) {
     return nstd::asBulat(left) == nstd::asBulat(right);
@@ -209,7 +208,7 @@ nstd::dinamis Interpreter::operasiSama(
 }
 
 nstd::dinamis Interpreter::operasiTidakSama(
-    nstd::konst<nstd::dinamis> &left, nstd::konst<nstd::dinamis> &right
+    const nstd::dinamis> &left, const nstd::dinamis> &right
 ) {
   if(nstd::isBulat(left) && nstd::isBulat(right)) {
     return nstd::asBulat(left) != nstd::asBulat(right);
@@ -229,7 +228,7 @@ nstd::dinamis Interpreter::operasiTidakSama(
 }
 
 nstd::dinamis Interpreter::operasiLebihBesar(
-    nstd::konst<nstd::dinamis> &left, nstd::konst<nstd::dinamis> &right
+    const nstd::dinamis> &left, const nstd::dinamis> &right
 ) {
   if(nstd::isBulat(left) && nstd::isBulat(right)) {
     return nstd::asBulat(left) > nstd::asBulat(right);
@@ -249,7 +248,7 @@ nstd::dinamis Interpreter::operasiLebihBesar(
 }
 
 nstd::dinamis Interpreter::operasiLebihKecil(
-    nstd::konst<nstd::dinamis> &left, nstd::konst<nstd::dinamis> &right
+    const nstd::dinamis> &left, const nstd::dinamis> &right
 ) {
   if(nstd::isBulat(left) && nstd::isBulat(right)) {
     return nstd::asBulat(left) < nstd::asBulat(right);
@@ -269,7 +268,7 @@ nstd::dinamis Interpreter::operasiLebihKecil(
 }
 
 nstd::dinamis Interpreter::operasiLebihBesarSamaDengan(
-    nstd::konst<nstd::dinamis> &left, nstd::konst<nstd::dinamis> &right
+    const nstd::dinamis> &left, const nstd::dinamis> &right
 ) {
   if(nstd::isBulat(left) && nstd::isBulat(right)) {
     return nstd::asBulat(left) >= nstd::asBulat(right);
@@ -289,7 +288,7 @@ nstd::dinamis Interpreter::operasiLebihBesarSamaDengan(
 }
 
 nstd::dinamis Interpreter::operasiLebihKecilSamaDengan(
-    nstd::konst<nstd::dinamis> &left, nstd::konst<nstd::dinamis> &right
+    const nstd::dinamis> &left, const nstd::dinamis> &right
 ) {
   if(nstd::isBulat(left) && nstd::isBulat(right)) {
     return nstd::asBulat(left) <= nstd::asBulat(right);
@@ -309,8 +308,8 @@ nstd::dinamis Interpreter::operasiLebihKecilSamaDengan(
 }
 
 nstd::dinamis Interpreter::fragmentVisitOperator(
-    nstd::konst<nstd::bisa_kosong<Token>> &simbolOp,
-    nstd::konst<nstd::kalimat> &opName
+    const nstd::bisa_kosong<Token>> &simbolOp,
+    const std::string> &opName
 ) {
   if(!nstd::isKosong(simbolOp)) {
     this->tokens.push_back(simbolOp.value());
@@ -321,10 +320,10 @@ nstd::dinamis Interpreter::fragmentVisitOperator(
   ));
 }
 
-nstd::dinamis Interpreter::visitNusantara(nstd::konst<NusantaraContext> &ctx) {
+nstd::dinamis Interpreter::visitNusantara(const NusantaraContext> &ctx) {
   const auto &context = ctx.getKumpulanOperasiPenugasanContext();
   if(!nstd::isKosong(context)) {
-    for(nstd::konst<std::unique_ptr<Context>> &child : context.value()) {
+    for(const std::unique_ptr<Context>> &child : context.value()) {
       auto *childPtr = dynamic_cast<OperasiPenugasanContext *>(child.get());
       if(childPtr != nullptr) {
         nstd::dinamis result = this->visitOperasiPenugasan(*childPtr);
@@ -337,13 +336,13 @@ nstd::dinamis Interpreter::visitNusantara(nstd::konst<NusantaraContext> &ctx) {
 }
 
 nstd::dinamis Interpreter::visitOperatorPenugasan(
-    nstd::konst<OperatorPenugasanContext> &ctx
+    const OperatorPenugasanContext> &ctx
 ) {
   return this->fragmentVisitOperator(ctx.getSimbolOp(), "penugasan");
 }
 
 nstd::dinamis Interpreter::visitOperasiPenugasan(
-    nstd::konst<OperasiPenugasanContext> &ctx
+    const OperasiPenugasanContext> &ctx
 ) {
   const auto &nilai = ctx.getKumpulanOperasiPenugasanPenjumlahanContext();
   const auto &simbolOp = ctx.getKumpulanOperatorPenugasanContext();
@@ -374,9 +373,9 @@ nstd::dinamis Interpreter::visitOperasiPenugasan(
           "OperasiPenugasanPenjumlahanContext"
       );
     }
-    nstd::konst<nstd::kalimat> simbolOp =
+    const std::string> simbolOp =
         nstd::asKalimat(this->visitOperatorPenugasan(*simbolOpPtr));
-    nstd::konst<nstd::dinamis> right =
+    const nstd::dinamis> right =
         this->visitOperasiPenugasanPenjumlahan(*rightPtr);
     throw std::runtime_error("Operasi penugasan tidak valid.");
   }
@@ -384,7 +383,7 @@ nstd::dinamis Interpreter::visitOperasiPenugasan(
 }
 
 nstd::dinamis Interpreter::visitOperatorPenugasanPenjumlahan(
-    nstd::konst<OperatorPenugasanPenjumlahanContext> &ctx
+    const OperatorPenugasanPenjumlahanContext> &ctx
 ) {
   return this->fragmentVisitOperator(
       ctx.getSimbolOp(), "penugasan penjumlahan"
@@ -392,7 +391,7 @@ nstd::dinamis Interpreter::visitOperatorPenugasanPenjumlahan(
 }
 
 nstd::dinamis Interpreter::visitOperasiPenugasanPenjumlahan(
-    nstd::konst<OperasiPenugasanPenjumlahanContext> &ctx
+    const OperasiPenugasanPenjumlahanContext> &ctx
 ) {
   const auto &nilai = ctx.getKumpulanOperasiPenugasanPerkalianContext();
   const auto &simbolOp = ctx.getKumpulanOperatorPenugasanPenjumlahanContext();
@@ -425,9 +424,9 @@ nstd::dinamis Interpreter::visitOperasiPenugasanPenjumlahan(
           "OperasiPenugasanPerkalianContext"
       );
     }
-    nstd::konst<nstd::kalimat> simbolOp =
+    const std::string> simbolOp =
         nstd::asKalimat(this->visitOperatorPenugasanPenjumlahan(*simbolOpPtr));
-    nstd::konst<nstd::dinamis> right =
+    const nstd::dinamis> right =
         this->visitOperasiPenugasanPerkalian(*rightPtr);
     throw std::runtime_error("Operasi penugasan penjumlahan tidak valid.");
   }
@@ -435,13 +434,13 @@ nstd::dinamis Interpreter::visitOperasiPenugasanPenjumlahan(
 }
 
 nstd::dinamis Interpreter::visitOperatorPenugasanPerkalian(
-    nstd::konst<OperatorPenugasanPerkalianContext> &ctx
+    const OperatorPenugasanPerkalianContext> &ctx
 ) {
   return this->fragmentVisitOperator(ctx.getSimbolOp(), "penugasan perkalian");
 }
 
 nstd::dinamis Interpreter::visitOperasiPenugasanPerkalian(
-    nstd::konst<OperasiPenugasanPerkalianContext> &ctx
+    const OperasiPenugasanPerkalianContext> &ctx
 ) {
   const auto &nilai = ctx.getKumpulanOperasiLogikaContext();
   const auto &simbolOp = ctx.getKumpulanOperatorPenugasanPerkalianContext();
@@ -470,22 +469,22 @@ nstd::dinamis Interpreter::visitOperasiPenugasanPerkalian(
           "atau OperasiLogikaContext"
       );
     }
-    nstd::konst<nstd::kalimat> simbolOp =
+    const std::string> simbolOp =
         nstd::asKalimat(this->visitOperatorPenugasanPerkalian(*simbolOpPtr));
-    nstd::konst<nstd::dinamis> right = this->visitOperasiLogika(*rightPtr);
+    const nstd::dinamis> right = this->visitOperasiLogika(*rightPtr);
     throw std::runtime_error("Operasi penugasan perkalian tidak valid.");
   }
   return left;
 }
 
 nstd::dinamis Interpreter::visitOperatorLogika(
-    nstd::konst<OperatorLogikaContext> &ctx
+    const OperatorLogikaContext> &ctx
 ) {
   return this->fragmentVisitOperator(ctx.getSimbolOp(), "logika");
 }
 
 nstd::dinamis Interpreter::visitOperasiLogika(
-    nstd::konst<OperasiLogikaContext> &ctx
+    const OperasiLogikaContext> &ctx
 ) {
   const auto &nilai = ctx.getKumpulanOperasiLogikaTidakContext();
   const auto &simbolOp = ctx.getKumpulanOperatorLogikaContext();
@@ -514,9 +513,9 @@ nstd::dinamis Interpreter::visitOperasiLogika(
           "OperasiPrePostContext"
       );
     }
-    nstd::konst<nstd::kalimat> simbolOp =
+    const std::string> simbolOp =
         nstd::asKalimat(this->visitOperatorLogika(*simbolOpPtr));
-    nstd::konst<nstd::dinamis> right = this->visitOperasiLogikaTidak(*rightPtr);
+    const nstd::dinamis> right = this->visitOperasiLogikaTidak(*rightPtr);
     if(simbolOp == "&&") {
       if(nstd::isBenarSalah(left) && nstd::isBenarSalah(right)) {
         left = nstd::asBenarSalah(left) && nstd::asBenarSalah(right);
@@ -543,13 +542,13 @@ nstd::dinamis Interpreter::visitOperasiLogika(
 }
 
 nstd::dinamis Interpreter::visitOperatorLogikaTidak(
-    nstd::konst<OperatorLogikaTidakContext> &ctx
+    const OperatorLogikaTidakContext> &ctx
 ) {
   return this->fragmentVisitOperator(ctx.getSimbolOp(), "logika tidak");
 }
 
 nstd::dinamis Interpreter::visitOperasiLogikaTidak(
-    nstd::konst<OperasiLogikaTidakContext> &ctx
+    const OperasiLogikaTidakContext> &ctx
 ) {
   const auto &simbolOp = ctx.getOperatorLogikaTidakContext();
   const auto &nilai = ctx.getOperasiPerbandinganContext();
@@ -572,7 +571,7 @@ nstd::dinamis Interpreter::visitOperasiLogikaTidak(
           "Gagal mengubah Context menjadi OperatorLogikaTidakContext"
       );
     }
-    nstd::konst<nstd::kalimat> simbolOp =
+    const std::string> simbolOp =
         nstd::asKalimat(this->visitOperatorLogikaTidak(*simbolOpPtr));
     if(simbolOp == "!") {
       if(nstd::isBenarSalah(left)) {
@@ -592,13 +591,13 @@ nstd::dinamis Interpreter::visitOperasiLogikaTidak(
 }
 
 nstd::dinamis Interpreter::visitOperatorPerbandingan(
-    nstd::konst<OperatorPerbandinganContext> &ctx
+    const OperatorPerbandinganContext> &ctx
 ) {
   return this->fragmentVisitOperator(ctx.getSimbolOp(), "perbandingan");
 }
 
 nstd::dinamis Interpreter::visitOperasiPerbandingan(
-    nstd::konst<OperasiPerbandinganContext> &ctx
+    const OperasiPerbandinganContext> &ctx
 ) {
   const auto &nilai = ctx.getKumpulanOperasiPrePostContext();
   const auto &simbolOp = ctx.getKumpulanOperatorPerbandinganContext();
@@ -627,22 +626,22 @@ nstd::dinamis Interpreter::visitOperasiPerbandingan(
           "OperasiPrePostContext"
       );
     }
-    nstd::konst<nstd::kalimat> simbolOp =
+    const std::string> simbolOp =
         nstd::asKalimat(this->visitOperatorPerbandingan(*simbolOpPtr));
-    nstd::konst<nstd::dinamis> right = this->visitOperasiPrePost(*rightPtr);
+    const nstd::dinamis> right = this->visitOperasiPrePost(*rightPtr);
     left = Interpreter::operasiPerbandingan(left, simbolOp, right);
   }
   return left;
 }
 
 nstd::dinamis Interpreter::visitOperatorPrePost(
-    nstd::konst<OperatorPrePostContext> &ctx
+    const OperatorPrePostContext> &ctx
 ) {
   return this->fragmentVisitOperator(ctx.getSimbolOp(), "pre post");
 }
 
 nstd::dinamis Interpreter::visitOperasiPrePost(
-    nstd::konst<OperasiPrePostContext> &ctx
+    const OperasiPrePostContext> &ctx
 ) {
   const auto &nilai = ctx.getOperasiPenjumlahanContext();
   const auto &simbolOp = ctx.getOperatorPrePostContext();
@@ -670,13 +669,13 @@ nstd::dinamis Interpreter::visitOperasiPrePost(
 }
 
 nstd::dinamis Interpreter::visitOperatorPenjumlahan(
-    nstd::konst<OperatorPenjumlahanContext> &ctx
+    const OperatorPenjumlahanContext> &ctx
 ) {
   return this->fragmentVisitOperator(ctx.getSimbolOp(), "penjumlahan");
 }
 
 nstd::dinamis Interpreter::visitOperasiPenjumlahan(
-    nstd::konst<OperasiPenjumlahanContext> &ctx
+    const OperasiPenjumlahanContext> &ctx
 ) {
   const auto &nilai = ctx.getKumpulanOperasiPerkalianContext();
   const auto &simbolOp = ctx.getKumpulanOperatorPenjumlahanContext();
@@ -705,22 +704,22 @@ nstd::dinamis Interpreter::visitOperasiPenjumlahan(
           "OperasiPerkalianContext"
       );
     }
-    nstd::konst<nstd::kalimat> simbolOp =
+    const std::string> simbolOp =
         nstd::asKalimat(this->visitOperatorPenjumlahan(*simbolOpPtr));
-    nstd::konst<nstd::dinamis> right = this->visitOperasiPerkalian(*rightPtr);
+    const nstd::dinamis> right = this->visitOperasiPerkalian(*rightPtr);
     left = Interpreter::operasiAritmatika(left, simbolOp, right);
   }
   return left;
 }
 
 nstd::dinamis Interpreter::visitOperatorPerkalian(
-    nstd::konst<OperatorPerkalianContext> &ctx
+    const OperatorPerkalianContext> &ctx
 ) {
   return this->fragmentVisitOperator(ctx.getSimbolOp(), "perkalian");
 }
 
 nstd::dinamis Interpreter::visitOperasiPerkalian(
-    nstd::konst<OperasiPerkalianContext> &ctx
+    const OperasiPerkalianContext> &ctx
 ) {
   const auto &nilai = ctx.getKumpulanNilaiContext();
   const auto &simbolOp = ctx.getKumpulanOperatorPerkalianContext();
@@ -746,20 +745,20 @@ nstd::dinamis Interpreter::visitOperasiPerkalian(
           "NilaiContext"
       );
     }
-    nstd::konst<nstd::kalimat> simbolOp =
+    const std::string> simbolOp =
         nstd::asKalimat(this->visitOperatorPerkalian(*simbolOpPtr));
-    nstd::konst<nstd::dinamis> right = this->visitNilai(*rightPtr);
+    const nstd::dinamis> right = this->visitNilai(*rightPtr);
     left = Interpreter::operasiAritmatika(left, simbolOp, right);
   }
   return left;
 }
 
-nstd::dinamis Interpreter::visitNilai(nstd::konst<NilaiContext> &ctx) {
+nstd::dinamis Interpreter::visitNilai(const NilaiContext> &ctx) {
   if(!nstd::isKosong(ctx.getNilai())) {
-    nstd::konst<Token> token = ctx.getNilai().value();
+    const Token> token = ctx.getNilai().value();
     this->tokens.push_back(token);
-    nstd::konst<TokenType> &type = token.getType();
-    nstd::kalimat nilai = token.getValue();
+    const TokenType> &type = token.getType();
+    std::string nilai = token.getValue();
     if(type == TokenType::BILANGAN) {
       return std::stoi(nilai);
     } else if(type == TokenType::DESIMAL) {

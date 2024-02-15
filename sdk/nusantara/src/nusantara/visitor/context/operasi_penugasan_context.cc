@@ -2,10 +2,11 @@
 
 #include <memory>
 
-#include "nusantara/core/core.h"
 #include "nusantara/visitor/context/context.h"
 #include "nusantara/visitor/context/operasi_penugasan_penjumlahan_context.h"
 #include "nusantara/visitor/context/operator_penugasan_context.h"
+#include "nstd/kosong.h"
+#include "nstd/daftar.h"
 
 OperasiPenugasanContext::OperasiPenugasanContext(
     nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>
@@ -30,7 +31,7 @@ OperasiPenugasanContext OperasiPenugasanContext::generate(
     auto *ptchild = dynamic_cast<ParserRuleTree *>(child.get());
     const ParserRule rule = ptchild->getRule();
     if(rule == ParserRule::operasi_penugasan_penjumlahan) {
-      if(nstd::isKosong(kumpulanOperasiPenugasanPenjumlahanContext)) {
+      if(nstd::kosong(kumpulanOperasiPenugasanPenjumlahanContext)) {
         kumpulanOperasiPenugasanPenjumlahanContext =
             nstd::daftar<std::unique_ptr<Context>>();
       }
@@ -43,7 +44,7 @@ OperasiPenugasanContext OperasiPenugasanContext::generate(
           std::move(context)
       );
     } else if(rule == ParserRule::operator_penugasan) {
-      if(nstd::isKosong(kumpulanOperatorPenugasanContext)) {
+      if(nstd::kosong(kumpulanOperatorPenugasanContext)) {
         kumpulanOperatorPenugasanContext =
             nstd::daftar<std::unique_ptr<Context>>();
       }
@@ -60,12 +61,12 @@ OperasiPenugasanContext OperasiPenugasanContext::generate(
   };
 }
 
-nstd::konst<nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>> &
+const nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>> &
 OperasiPenugasanContext::getKumpulanOperasiPenugasanPenjumlahanContext() const {
   return this->kumpulanOperasiPenugasanPenjumlahanContext;
 }
 
-nstd::konst<nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>> &
+const nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>> &
 OperasiPenugasanContext::getKumpulanOperatorPenugasanContext() const {
   return this->kumpulanOperatorPenugasanContext;
 }

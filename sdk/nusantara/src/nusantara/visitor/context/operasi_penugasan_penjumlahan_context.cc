@@ -2,10 +2,11 @@
 
 #include <memory>
 
-#include "nusantara/core/core.h"
 #include "nusantara/visitor/context/context.h"
 #include "nusantara/visitor/context/operasi_penugasan_perkalian_context.h"
 #include "nusantara/visitor/context/operator_penugasan_penjumlahan_context.h"
+#include "nstd/kosong.h"
+#include "nstd/daftar.h"
 
 OperasiPenugasanPenjumlahanContext::OperasiPenugasanPenjumlahanContext(
     nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>
@@ -31,7 +32,7 @@ OperasiPenugasanPenjumlahanContext OperasiPenugasanPenjumlahanContext::generate(
     auto *ptchild = dynamic_cast<ParserRuleTree *>(child.get());
     const ParserRule rule = ptchild->getRule();
     if(rule == ParserRule::operasi_penugasan_perkalian) {
-      if(nstd::isKosong(kumpulanOperasiPenugasanPerkalianContext)) {
+      if(nstd::kosong(kumpulanOperasiPenugasanPerkalianContext)) {
         kumpulanOperasiPenugasanPerkalianContext =
             nstd::daftar<std::unique_ptr<Context>>();
       }
@@ -43,7 +44,7 @@ OperasiPenugasanPenjumlahanContext OperasiPenugasanPenjumlahanContext::generate(
           std::move(context)
       );
     } else if(rule == ParserRule::operator_penugasan_penjumlahan) {
-      if(nstd::isKosong(kumpulanOperatorPenugasanPenjumlahanContext)) {
+      if(nstd::kosong(kumpulanOperatorPenugasanPenjumlahanContext)) {
         kumpulanOperatorPenugasanPenjumlahanContext =
             nstd::daftar<std::unique_ptr<Context>>();
       }
@@ -64,13 +65,13 @@ OperasiPenugasanPenjumlahanContext OperasiPenugasanPenjumlahanContext::generate(
   };
 }
 
-nstd::konst<nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>> &
+const nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>> &
 OperasiPenugasanPenjumlahanContext::getKumpulanOperasiPenugasanPerkalianContext(
 ) const {
   return this->kumpulanOperasiPenugasanPerkalianContext;
 }
 
-nstd::konst<nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>> &
+const nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>> &
 OperasiPenugasanPenjumlahanContext::
     getKumpulanOperatorPenugasanPenjumlahanContext() const {
   return this->kumpulanOperatorPenugasanPenjumlahanContext;

@@ -2,11 +2,11 @@
 
 #include <memory>
 
-#include "nusantara/core/core.h"
 #include "nusantara/parser/parser_rule.h"
 #include "nusantara/visitor/context/context.h"
 #include "nusantara/visitor/context/operasi_perbandingan_context.h"
 #include "nusantara/visitor/context/operator_logika_tidak_context.h"
+#include "nstd/kosong.h"
 
 OperasiLogikaTidakContext::OperasiLogikaTidakContext(
     nstd::bisa_kosong<std::unique_ptr<Context>> operatorLogikaTidakContext,
@@ -23,7 +23,7 @@ OperasiLogikaTidakContext OperasiLogikaTidakContext::generate(
   for(const auto &child : children) {
     auto *ptchild = dynamic_cast<ParserRuleTree *>(child.get());
     if(ptchild != nullptr) {
-      nstd::konst<ParserRule> rule = ptchild->getRule();
+      const ParserRule rule = ptchild->getRule();
       if(rule == ParserRule::operator_logika_tidak) {
         operatorLogikaTidakContext =
             std::make_unique<OperatorLogikaTidakContext>(
@@ -43,12 +43,12 @@ OperasiLogikaTidakContext OperasiLogikaTidakContext::generate(
   };
 }
 
-nstd::konst<nstd::bisa_kosong<std::unique_ptr<Context>>> &
+const nstd::bisa_kosong<std::unique_ptr<Context>> &
 OperasiLogikaTidakContext::getOperasiPerbandinganContext() const {
   return this->operasiPerbandinganContext;
 }
 
-nstd::konst<nstd::bisa_kosong<std::unique_ptr<Context>>> &
+const nstd::bisa_kosong<std::unique_ptr<Context>> &
 OperasiLogikaTidakContext::getOperatorLogikaTidakContext() const {
   return this->operatorLogikaTidakContext;
 }

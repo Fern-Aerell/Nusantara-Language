@@ -2,10 +2,10 @@
 
 #include <memory>
 
-#include "nusantara/core/core.h"
 #include "nusantara/visitor/context/context.h"
 #include "nusantara/visitor/context/operasi_penjumlahan_context.h"
 #include "nusantara/visitor/context/operator_pre_post_context.h"
+#include "nstd/kosong.h"
 
 OperasiPrePostContext::OperasiPrePostContext(
     nstd::bisa_kosong<std::unique_ptr<Context>> operasiPenjumlahanContext,
@@ -46,12 +46,12 @@ OperasiPrePostContext OperasiPrePostContext::generate(
 
 bool OperasiPrePostContext::getIsPre() const { return this->isPre; }
 
-nstd::konst<nstd::bisa_kosong<std::unique_ptr<Context>>> &
+const nstd::bisa_kosong<std::unique_ptr<Context>> &
 OperasiPrePostContext::getOperasiPenjumlahanContext() const {
   return this->operasiPenjumlahanContext;
 }
 
-nstd::konst<nstd::bisa_kosong<std::unique_ptr<Context>>> &
+const nstd::bisa_kosong<std::unique_ptr<Context>> &
 OperasiPrePostContext::getOperatorPrePostContext() const {
   return this->operatorPrePostContext;
 }

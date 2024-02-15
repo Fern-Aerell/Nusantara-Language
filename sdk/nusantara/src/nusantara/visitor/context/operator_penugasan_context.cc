@@ -1,6 +1,7 @@
 #include <nusantara/visitor/context/operator_penugasan_context.h>
 
 #include <stdexcept>
+#include "nstd/kosong.h"
 
 OperatorPenugasanContext::OperatorPenugasanContext(
     nstd::bisa_kosong<Token> simbolOp

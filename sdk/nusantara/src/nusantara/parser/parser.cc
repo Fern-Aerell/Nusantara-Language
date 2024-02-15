@@ -11,8 +11,6 @@
 #include <stdexcept>
 #include <vector>
 
-#include "nusantara/core/core.h"
-
 Parser::Parser(ErrorInfo errorInfo, Lexer lexer):
     errorInfo(std::move(errorInfo)),
     lexer(std::move(lexer)),

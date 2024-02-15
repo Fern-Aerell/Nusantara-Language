@@ -1,9 +1,11 @@
-#include <nusantara/core/core.h>
 #include <nusantara/visitor/context/context.h>
 #include <nusantara/visitor/context/nusantara_context.h>
 #include <nusantara/visitor/context/operasi_penugasan_context.h>
 
 #include <memory>
+
+#include "nstd/kosong.h"
+#include "nstd/daftar.h"
 
 NusantaraContext::NusantaraContext(
     nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>
@@ -22,7 +24,7 @@ NusantaraContext NusantaraContext::generate(
     if(ptchild != nullptr) {
       const ParserRule rule = ptchild->getRule();
       if(rule == ParserRule::operasi_penugasan) {
-        if(nstd::isKosong(kumpulanOperasiPenugasanContext)) {
+        if(nstd::kosong(kumpulanOperasiPenugasanContext)) {
           kumpulanOperasiPenugasanContext =
               nstd::daftar<std::unique_ptr<Context>>();
         }
@@ -37,7 +39,7 @@ NusantaraContext NusantaraContext::generate(
   return NusantaraContext(std::move(kumpulanOperasiPenugasanContext));
 }
 
-nstd::konst<nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>> &
+const nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>> &
 NusantaraContext::getKumpulanOperasiPenugasanContext() const {
   return this->kumpulanOperasiPenugasanContext;
 }

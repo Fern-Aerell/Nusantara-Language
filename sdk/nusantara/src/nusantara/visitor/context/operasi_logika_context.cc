@@ -2,11 +2,12 @@
 
 #include <memory>
 
-#include "nusantara/core/core.h"
 #include "nusantara/parser/parser_rule.h"
 #include "nusantara/visitor/context/context.h"
 #include "nusantara/visitor/context/operasi_logika_tidak_context.h"
 #include "nusantara/visitor/context/operator_logika_context.h"
+#include "nstd/kosong.h"
+#include "nstd/daftar.h"
 
 OperasiLogikaContext::OperasiLogikaContext(
     nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>
@@ -31,7 +32,7 @@ OperasiLogikaContext OperasiLogikaContext::generate(
     if(ptchild != nullptr) {
       const ParserRule rule = ptchild->getRule();
       if(rule == ParserRule::operasi_logika_tidak) {
-        if(nstd::isKosong(kumpulanOperasiLogikaTidakContext)) {
+        if(nstd::kosong(kumpulanOperasiLogikaTidakContext)) {
           kumpulanOperasiLogikaTidakContext =
               nstd::daftar<std::unique_ptr<Context>>();
         }
@@ -41,7 +42,7 @@ OperasiLogikaContext OperasiLogikaContext::generate(
             );
         kumpulanOperasiLogikaTidakContext.value().push_back(std::move(context));
       } else if(rule == ParserRule::operator_logika) {
-        if(nstd::isKosong(kumpulanOperatorLogikaContext)) {
+        if(nstd::kosong(kumpulanOperatorLogikaContext)) {
           kumpulanOperatorLogikaContext =
               nstd::daftar<std::unique_ptr<Context>>();
         }
@@ -59,12 +60,12 @@ OperasiLogikaContext OperasiLogikaContext::generate(
   };
 }
 
-nstd::konst<nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>> &
+const nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>> &
 OperasiLogikaContext::getKumpulanOperasiLogikaTidakContext() const {
   return this->kumpulanOperasiLogikaTidakContext;
 }
 
-nstd::konst<nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>> &
+const nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>> &
 OperasiLogikaContext::getKumpulanOperatorLogikaContext() const {
   return this->kumpulanOperatorLogikaContext;
 }

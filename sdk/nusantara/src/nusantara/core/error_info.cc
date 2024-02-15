@@ -8,21 +8,21 @@
 #include <stdexcept>
 #include <string>
 
-#include "nusantara/core/core.h"
-#include "nusantara/core/konsol.h"
 #include "nusantara/lexer/token.h"
 #include "nusantara/lexer/token_type.h"
+#include "nstd/konsol.h"
+#include "nstd/daftar.h"
 
 ErrorInfo::ErrorInfo(std::string source, const std::string &content):
     source(std::move(source)), contentPerLine(utils::split(content, '\n')) {}
 
-nstd::kalimat ErrorInfo::inLine(
-    nstd::konst<Token> &token, nstd::konst<nstd::kalimat> &msg
+std::string ErrorInfo::inLine(
+    const Token& token, const std::string& msg
 ) {
   std::ostringstream stream;
-  nstd::kalimat realSource = token.getSource();
+  std::string realSource = token.getSource();
   TokenType realType = token.getType();
-  nstd::kalimat realValue = token.getValue();
+  std::string realValue = token.getValue();
   int realLine = token.getLine();
   int realStartCharIndex = token.getStartCharIndex();
   int realEndCharIndex = token.getEndCharIndex();
@@ -31,12 +31,12 @@ nstd::kalimat ErrorInfo::inLine(
   int startCharIndex = realStartCharIndex + 1;
   int endCharIndex = realEndCharIndex + 1;
 
-  nstd::kalimat prefix = std::format("{}| ", line);
+  std::string prefix = std::format("{}| ", line);
   stream << std::format(
       "{}[Baris {}, Karakter {} sampai {}]:\n\n", realSource, line,
       startCharIndex, endCharIndex
   );
-  nstd::Konsol::cetak(std::format(
+  nstd::cetak(std::format(
       "contentPerLine size {}, realLine {}", this->contentPerLine.size(),
       realLine
   ));
@@ -46,14 +46,14 @@ nstd::kalimat ErrorInfo::inLine(
           [realLine >= this->contentPerLine.size() ? realLine - 1 : realLine]
   );
   int arrowCount = (realEndCharIndex - realStartCharIndex);
-  stream << nstd::kalimat(prefix.length() + realStartCharIndex, ' ');
-  stream << nstd::kalimat((arrowCount > 0) ? arrowCount : 1, '^') + "\n";
+  stream << std::string(prefix.length() + realStartCharIndex, ' ');
+  stream << std::string((arrowCount > 0) ? arrowCount : 1, '^') + "\n";
   stream << msg;
   return stream.str();
 }
 
-nstd::kalimat ErrorInfo::inLine(
-    nstd::konst<nstd::daftar<Token>> &tokens, nstd::konst<nstd::kalimat> &msg
+std::string ErrorInfo::inLine(
+    const nstd::daftar<Token>& tokens, const std::string& msg
 ) {
   if(tokens.empty()) { throw std::runtime_error("Daftar tidak boleh kosong."); }
   std::ostringstream stream;

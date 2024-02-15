@@ -2,10 +2,11 @@
 
 #include <memory>
 
-#include "nusantara/core/core.h"
 #include "nusantara/visitor/context/context.h"
 #include "nusantara/visitor/context/operasi_pre_post_context.h"
 #include "nusantara/visitor/context/operator_perbandingan_context.h"
+#include "nstd/kosong.h"
+#include "nstd/daftar.h"
 
 OperasiPerbandinganContext::OperasiPerbandinganContext(
     nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>
@@ -29,7 +30,7 @@ OperasiPerbandinganContext OperasiPerbandinganContext::generate(
     auto *ptchild = dynamic_cast<ParserRuleTree *>(child.get());
     const ParserRule rule = ptchild->getRule();
     if(rule == ParserRule::operasi_pre_post) {
-      if(nstd::isKosong(kumpulanOperasiPrePostContext)) {
+      if(nstd::kosong(kumpulanOperasiPrePostContext)) {
         kumpulanOperasiPrePostContext =
             nstd::daftar<std::unique_ptr<Context>>();
       }
@@ -39,7 +40,7 @@ OperasiPerbandinganContext OperasiPerbandinganContext::generate(
           );
       kumpulanOperasiPrePostContext.value().push_back(std::move(context));
     } else if(rule == ParserRule::operator_perbandingan) {
-      if(nstd::isKosong(kumpulanOperatorPerbandinganContext)) {
+      if(nstd::kosong(kumpulanOperatorPerbandinganContext)) {
         kumpulanOperatorPerbandinganContext =
             nstd::daftar<std::unique_ptr<Context>>();
       }
@@ -56,12 +57,12 @@ OperasiPerbandinganContext OperasiPerbandinganContext::generate(
   };
 }
 
-nstd::konst<nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>> &
+const nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>> &
 OperasiPerbandinganContext::getKumpulanOperasiPrePostContext() const {
   return this->kumpulanOperasiPrePostContext;
 }
 
-nstd::konst<nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>> &
+const nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>> &
 OperasiPerbandinganContext::getKumpulanOperatorPerbandinganContext() const {
   return this->kumpulanOperatorPerbandinganContext;
 }

@@ -39,7 +39,7 @@ std::string Token::toString() const {
   );
 }
 
-Token combineToken(nstd::konst<Token>& token1, nstd::konst<Token>& token2) {
+Token combineToken(const Token& token1, const Token& token2) {
   if(token1.getSource() != token2.getSource()) {
     throw std::runtime_error(
         "Tidak dapat menggabungkan token dengan source yang berbeda."
@@ -51,15 +51,15 @@ Token combineToken(nstd::konst<Token>& token1, nstd::konst<Token>& token2) {
     );
   }
   TokenType type = TokenType::TIDAK_DIKENALI;
-  nstd::kalimat source = token1.getSource();
+  std::string source = token1.getSource();
   int line = token1.getLine();
   int startCharIndex = token1.getStartCharIndex();
   int endCharIndex = token2.getEndCharIndex();
-  nstd::kalimat value = token1.getValue() + token2.getValue();
+  std::string value = token1.getValue() + token2.getValue();
   return {source, type, value, line, startCharIndex, endCharIndex};
 }
 
-Token combineToken(nstd::konst<nstd::daftar<Token>>& tokens) {
+Token combineToken(const nstd::daftar<Token>& tokens) {
   if(tokens.size() < 2) {
     throw std::runtime_error("Daftar harus berisi token sebanyak 2 atau lebih."
     );

@@ -2,8 +2,8 @@
 
 #include <stdexcept>
 
-#include "nusantara/core/core.h"
 #include "nusantara/visitor/context/operasi_penugasan_context.h"
+#include "nstd/kosong.h"
 
 NilaiContext::NilaiContext(
     nstd::bisa_kosong<Token> nilai, nstd::bisa_kosong<Token> kurungBuka,
@@ -20,10 +20,10 @@ NilaiContext NilaiContext::generate(
 ) {
   auto *ptchild0 = dynamic_cast<ParserTokenTree *>(children[0].get());
   if(ptchild0 != nullptr) {
-    nstd::konst<Token> token = ptchild0->getToken();
-    nstd::konst<TokenType> type = token.getType();
-    nstd::konst<nstd::daftar<TokenType>> nilaiTokenType = {
-        TokenType::BULAT,   TokenType::DESIMAL, TokenType::KARAKTER,
+    const Token token = ptchild0->getToken();
+    const TokenType type = token.getType();
+    const nstd::daftar<TokenType> nilaiTokenType = {
+        TokenType::BILANGAN,
         TokenType::KALIMAT, TokenType::BENAR,   TokenType::SALAH
     };
     if(nstd::contains<TokenType>(nilaiTokenType, type)) {
@@ -34,7 +34,7 @@ NilaiContext NilaiContext::generate(
       nstd::bisa_kosong<std::unique_ptr<Context>> operasiPenugasanContext;
       nstd::bisa_kosong<Token> kurungTutup;
       auto *ptchild1 = dynamic_cast<ParserRuleTree *>(children[1].get());
-      if(nstd::isKosong(operasiPenugasanContext)) {
+      if(nstd::kosong(operasiPenugasanContext)) {
         operasiPenugasanContext = std::make_unique<OperasiPenugasanContext>(
             OperasiPenugasanContext::generate(ptchild1->getChildren())
         );
@@ -56,7 +56,7 @@ nstd::bisa_kosong<Token> NilaiContext::getKurungBuka() const {
   return this->kurungBuka;
 }
 
-nstd::konst<nstd::bisa_kosong<std::unique_ptr<Context>>> &
+const nstd::bisa_kosong<std::unique_ptr<Context>> &
 NilaiContext::getOperasiPenugasanContext() const {
   return this->operasiPenugasanContext;
 }

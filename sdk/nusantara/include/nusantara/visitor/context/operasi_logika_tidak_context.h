@@ -17,9 +17,9 @@ class OperasiLogikaTidakContext: public Context {
     static OperasiLogikaTidakContext generate(
         const std::vector<std::unique_ptr<ParserTree>>& children
     );
-    [[nodiscard]] nstd::bisa_kosong<std::unique_ptr<Context>>&
+    [[nodiscard]] const nstd::bisa_kosong<std::unique_ptr<Context>>&
     getOperasiPerbandinganContext() const;
-    [[nodiscard]] nstd::bisa_kosong<std::unique_ptr<Context>>&
+    [[nodiscard]] const nstd::bisa_kosong<std::unique_ptr<Context>>&
     getOperatorLogikaTidakContext() const;
 
   private:
