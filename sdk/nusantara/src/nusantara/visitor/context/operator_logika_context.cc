@@ -2,8 +2,8 @@
 
 #include <stdexcept>
 
-#include "nusantara/lexer/token_type.h"
 #include "nstd/daftar.h"
+#include "nusantara/lexer/token_type.h"
 
 OperatorLogikaContext::OperatorLogikaContext(nstd::bisa_kosong<Token> simbolOp):
     simbolOp(std::move(simbolOp)) {}
@@ -14,9 +14,7 @@ OperatorLogikaContext OperatorLogikaContext::generate(
   const auto *ptchild0 = dynamic_cast<ParserTokenTree *>(children[0].get());
   const Token token = ptchild0->getToken();
   const TokenType type = token.getType();
-  const nstd::daftar<TokenType> tokenTypes = {
-      TokenType::DAN, TokenType::ATAU
-  };
+  const nstd::daftar<TokenType> tokenTypes = {TokenType::DAN, TokenType::ATAU};
   if(nstd::contains(tokenTypes, type)) {
     nstd::bisa_kosong<Token> simbolOpLogika = token;
     return OperatorLogikaContext(std::move(simbolOpLogika));

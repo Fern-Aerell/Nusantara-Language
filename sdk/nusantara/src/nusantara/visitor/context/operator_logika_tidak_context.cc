@@ -2,9 +2,9 @@
 
 #include <stdexcept>
 
-#include "nusantara/lexer/token_type.h"
-#include "nstd/kosong.h"
 #include "nstd/daftar.h"
+#include "nstd/kosong.h"
+#include "nusantara/lexer/token_type.h"
 
 OperatorLogikaTidakContext::OperatorLogikaTidakContext(
     nstd::bisa_kosong<Token> simbolOp

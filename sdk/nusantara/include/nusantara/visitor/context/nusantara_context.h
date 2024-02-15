@@ -14,9 +14,10 @@ class NusantaraContext: public Context {
             kumpulanOperasiPenugasanContext
     );
     static NusantaraContext generate(
-        const std::vector<std::unique_ptr<ParserTree>> &children
+        const std::vector<std::unique_ptr<ParserTree>>& children
     );
-    [[nodiscard]] const nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>&
+    [[nodiscard]] const nstd::bisa_kosong<
+        nstd::daftar<std::unique_ptr<Context>>>&
     getKumpulanOperasiPenugasanContext() const;
 
   private:

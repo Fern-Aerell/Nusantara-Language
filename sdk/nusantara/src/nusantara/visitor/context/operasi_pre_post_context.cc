@@ -2,10 +2,10 @@
 
 #include <memory>
 
+#include "nstd/kosong.h"
 #include "nusantara/visitor/context/context.h"
 #include "nusantara/visitor/context/operasi_penjumlahan_context.h"
 #include "nusantara/visitor/context/operator_pre_post_context.h"
-#include "nstd/kosong.h"
 
 OperasiPrePostContext::OperasiPrePostContext(
     nstd::bisa_kosong<std::unique_ptr<Context>> operasiPenjumlahanContext,

@@ -2,8 +2,8 @@
 
 #include <stdexcept>
 
-#include "nusantara/visitor/context/operasi_penugasan_context.h"
 #include "nstd/kosong.h"
+#include "nusantara/visitor/context/operasi_penugasan_context.h"
 
 NilaiContext::NilaiContext(
     nstd::bisa_kosong<Token> nilai, nstd::bisa_kosong<Token> kurungBuka,
@@ -23,8 +23,8 @@ NilaiContext NilaiContext::generate(
     const Token token = ptchild0->getToken();
     const TokenType type = token.getType();
     const nstd::daftar<TokenType> nilaiTokenType = {
-        TokenType::BILANGAN,
-        TokenType::KALIMAT, TokenType::BENAR,   TokenType::SALAH
+        TokenType::BILANGAN, TokenType::KALIMAT, TokenType::BENAR,
+        TokenType::SALAH
     };
     if(nstd::contains<TokenType>(nilaiTokenType, type)) {
       nstd::bisa_kosong<Token> nilai = token;

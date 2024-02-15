@@ -2,11 +2,11 @@
 
 #include <memory>
 
+#include "nstd/kosong.h"
 #include "nusantara/parser/parser_rule.h"
 #include "nusantara/visitor/context/context.h"
 #include "nusantara/visitor/context/operasi_perbandingan_context.h"
 #include "nusantara/visitor/context/operator_logika_tidak_context.h"
-#include "nstd/kosong.h"
 
 OperasiLogikaTidakContext::OperasiLogikaTidakContext(
     nstd::bisa_kosong<std::unique_ptr<Context>> operatorLogikaTidakContext,

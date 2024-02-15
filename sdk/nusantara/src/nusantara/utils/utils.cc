@@ -36,7 +36,7 @@ namespace utils {
     // Menggunakan vector untuk buffer
     std::vector<char> buffer(fileSize);
     // String untuk menyimpan isi file
-    std::stringstream content;
+    std::ostringstream content;
     // Loop membaca file hingga EOF
     while(file.read(buffer.data(), static_cast<long long>(buffer.size()))) {
       if(file.gcount() > 0) {

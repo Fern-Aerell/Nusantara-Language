@@ -18,10 +18,11 @@ class Lexer {
     std::vector<TokenTypeData> tokenTypes = {
         {"WHITESPACE",              TokenType::WHITESPACE,              "[ \n\t\r\f]+"             },
         {"KOMENTAR_SATU_BARIS",     TokenType::KOMENTAR_SATU_BARIS,     "//[^\n]*"                 },
-        {"KOMENTAR_BANYAK_BARIS",   TokenType::KOMENTAR_BANYAK_BARIS,   "/\\*(.|[ \n\t\r\f])*\\*/" },
+        {"KOMENTAR_BANYAK_BARIS",   TokenType::KOMENTAR_BANYAK_BARIS,
+         "/\\*(.|[ \n\t\r\f])*\\*/"                                                                },
         {"KOMENTAR_DOKUMENTASI",    TokenType::KOMENTAR_DOKUMENTASI,    "///[^\n]*"                },
  // Nilai Tipe Data
-        {"BILANGAN",                 TokenType::BILANGAN,               "-?([0-9]+(,[0-9]+)?)"     },
+        {"BILANGAN",                TokenType::BILANGAN,                "-?([0-9]+(,[0-9]+)?)"     },
         {"KALIMAT",                 TokenType::KALIMAT,                 "(\"[^\n\"]*\"|'[^\n\']*')"},
         {"BENAR",                   TokenType::BENAR,                   "benar"                    },
         {"SALAH",                   TokenType::SALAH,                   "salah"                    },

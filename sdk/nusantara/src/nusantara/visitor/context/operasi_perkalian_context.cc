@@ -2,11 +2,11 @@
 
 #include <memory>
 
+#include "nstd/daftar.h"
+#include "nstd/kosong.h"
 #include "nusantara/visitor/context/context.h"
 #include "nusantara/visitor/context/nilai_context.h"
 #include "nusantara/visitor/context/operator_perkalian_context.h"
-#include "nstd/kosong.h"
-#include "nstd/daftar.h"
 
 OperasiPerkalianContext::OperasiPerkalianContext(
     nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>

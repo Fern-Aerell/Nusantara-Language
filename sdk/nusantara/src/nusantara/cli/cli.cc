@@ -1,8 +1,8 @@
-#include <iostream>
 #include <nusantara/cli/cli.h>
 
 #include <cstddef>
 #include <format>
+#include <iostream>
 #include <string>
 
 #include "nstd/daftar.h"
@@ -71,9 +71,7 @@ void Cli::input(const int& argc, char* argv[]) {
   } else if(kumpulanArgument.empty()) {
     showInfo();
   } else {
-		nstd::cetak(
-        std::format("Perintah '{}' tidak ada.", kumpulanArgument[0])
-    );
+    nstd::cetak(std::format("Perintah '{}' tidak ada.", kumpulanArgument[0]));
     showInfo();
   }
 }
@@ -82,9 +80,9 @@ void Cli::showInfo() {
   nstd::cetak(
       std::string("Sebuah alat command-line untuk Nusantara development.\n")
   );
-  nstd::cetak(std::string(
-      "Penggunaan: nusantara <perintah|nusantara-file> [argumen]\n"
-  ));
+  nstd::cetak(
+      std::string("Penggunaan: nusantara <perintah|nusantara-file> [argumen]\n")
+  );
   nstd::cetak(std::string("Pilihan umum:"));
   nstd::cetak(
       std::string("   -v | --versi        Untuk melihat versi nusantara.")
@@ -94,6 +92,4 @@ void Cli::showInfo() {
   ));
 }
 
-void Cli::showVersi() {
-  nstd::cetak(std::format("{} {}", APP, VERSION));
-}
+void Cli::showVersi() { nstd::cetak(std::format("{} {}", APP, VERSION)); }

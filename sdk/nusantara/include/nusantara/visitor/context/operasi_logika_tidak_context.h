@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <nusantara/parser/parser_tree.h>
 
 #include <memory>

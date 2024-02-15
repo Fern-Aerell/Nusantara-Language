@@ -301,8 +301,10 @@ std::unique_ptr<ParserTree> Parser::parseOperasiPerkalian() {
 }
 
 std::unique_ptr<ParserTree> Parser::parseNilai() {
-  std::vector<TokenType> types = {TokenType::BILANGAN, TokenType::KALIMAT,
-                                  TokenType::BENAR,    TokenType::SALAH};
+  std::vector<TokenType> types = {
+      TokenType::BILANGAN, TokenType::KALIMAT, TokenType::BENAR,
+      TokenType::SALAH
+  };
   if(this->matchOr(types)) {
     return this->fragmentTokenTypeGroup(types, ParserRule::nilai);
   } else if(this->match(TokenType::KURUNG_BUKA)) {

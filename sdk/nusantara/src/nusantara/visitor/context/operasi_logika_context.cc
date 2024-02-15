@@ -2,12 +2,12 @@
 
 #include <memory>
 
+#include "nstd/daftar.h"
+#include "nstd/kosong.h"
 #include "nusantara/parser/parser_rule.h"
 #include "nusantara/visitor/context/context.h"
 #include "nusantara/visitor/context/operasi_logika_tidak_context.h"
 #include "nusantara/visitor/context/operator_logika_context.h"
-#include "nstd/kosong.h"
-#include "nstd/daftar.h"
 
 OperasiLogikaContext::OperasiLogikaContext(
     nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>

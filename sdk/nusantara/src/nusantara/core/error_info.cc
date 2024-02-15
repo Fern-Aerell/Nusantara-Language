@@ -3,22 +3,18 @@
 
 #include <cstddef>
 #include <format>
-#include <iostream>
 #include <sstream>
 #include <stdexcept>
 #include <string>
 
+#include "nstd/daftar.h"
 #include "nusantara/lexer/token.h"
 #include "nusantara/lexer/token_type.h"
-#include "nstd/konsol.h"
-#include "nstd/daftar.h"
 
-ErrorInfo::ErrorInfo(std::string source, const std::string &content):
+ErrorInfo::ErrorInfo(std::string source, const std::string& content):
     source(std::move(source)), contentPerLine(utils::split(content, '\n')) {}
 
-std::string ErrorInfo::inLine(
-    const Token& token, const std::string& msg
-) {
+std::string ErrorInfo::inLine(const Token& token, const std::string& msg) {
   std::ostringstream stream;
   std::string realSource = token.getSource();
   TokenType realType = token.getType();
@@ -36,10 +32,6 @@ std::string ErrorInfo::inLine(
       "{}[Baris {}, Karakter {} sampai {}]:\n\n", realSource, line,
       startCharIndex, endCharIndex
   );
-  nstd::cetak(std::format(
-      "contentPerLine size {}, realLine {}", this->contentPerLine.size(),
-      realLine
-  ));
   stream << std::format(
       "{}{}\n", prefix,
       this->contentPerLine

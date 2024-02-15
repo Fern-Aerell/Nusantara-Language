@@ -5,9 +5,6 @@
 #include <format>
 #include <stdexcept>
 
-#include "nusantara/core/core.h"
-#include "nusantara/core/konsol.h"
-
 Token::Token(
     std::string source, const TokenType& type, std::string value,
     const int& line, const int& startCharIndex, const int& endCharIndex

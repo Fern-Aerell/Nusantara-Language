@@ -4,6 +4,9 @@
 #include <nusantara/lexer/token_type_data.h>
 
 #include <regex>
+#include <string>
+
+#include "nstd/kalimat.h"
 
 Lexer::Lexer(std::string source, std::string content):
     source(std::move(source)), content(std::move(content)) {}

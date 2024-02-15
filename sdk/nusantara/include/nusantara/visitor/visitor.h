@@ -128,10 +128,8 @@ class Visitor {
     }
 
     virtual T visitNusantara(const NusantaraContext &ctx) = 0;
-    virtual T visitOperatorPenugasan(const OperatorPenugasanContext &ctx
-    ) = 0;
-    virtual T visitOperasiPenugasan(const OperasiPenugasanContext &ctx
-    ) = 0;
+    virtual T visitOperatorPenugasan(const OperatorPenugasanContext &ctx) = 0;
+    virtual T visitOperasiPenugasan(const OperasiPenugasanContext &ctx) = 0;
     virtual T visitOperatorPenugasanPenjumlahan(
         const OperatorPenugasanPenjumlahanContext &ctx
     ) = 0;
@@ -146,31 +144,20 @@ class Visitor {
     ) = 0;
     virtual T visitOperatorLogika(const OperatorLogikaContext &ctx) = 0;
     virtual T visitOperasiLogika(const OperasiLogikaContext &ctx) = 0;
-    virtual T visitOperatorLogikaTidak(
-        const OperatorLogikaTidakContext &ctx
+    virtual T visitOperatorLogikaTidak(const OperatorLogikaTidakContext &ctx
     ) = 0;
-    virtual T visitOperasiLogikaTidak(
-        const OperasiLogikaTidakContext &ctx
+    virtual T visitOperasiLogikaTidak(const OperasiLogikaTidakContext &ctx) = 0;
+    virtual T visitOperatorPerbandingan(const OperatorPerbandinganContext &ctx
     ) = 0;
-    virtual T visitOperatorPerbandingan(
-        const OperatorPerbandinganContext &ctx
+    virtual T visitOperasiPerbandingan(const OperasiPerbandinganContext &ctx
     ) = 0;
-    virtual T visitOperasiPerbandingan(
-        const OperasiPerbandinganContext &ctx
-    ) = 0;
-    virtual T visitOperatorPrePost(const OperatorPrePostContext &ctx
-    ) = 0;
+    virtual T visitOperatorPrePost(const OperatorPrePostContext &ctx) = 0;
     virtual T visitOperasiPrePost(const OperasiPrePostContext &ctx) = 0;
-    virtual T visitOperatorPenjumlahan(
-        const OperatorPenjumlahanContext &ctx
+    virtual T visitOperatorPenjumlahan(const OperatorPenjumlahanContext &ctx
     ) = 0;
-    virtual T visitOperasiPenjumlahan(
-        const OperasiPenjumlahanContext &ctx
-    ) = 0;
-    virtual T visitOperatorPerkalian(const OperatorPerkalianContext &ctx
-    ) = 0;
-    virtual T visitOperasiPerkalian(const OperasiPerkalianContext &ctx
-    ) = 0;
+    virtual T visitOperasiPenjumlahan(const OperasiPenjumlahanContext &ctx) = 0;
+    virtual T visitOperatorPerkalian(const OperatorPerkalianContext &ctx) = 0;
+    virtual T visitOperasiPerkalian(const OperasiPerkalianContext &ctx) = 0;
     virtual T visitNilai(const NilaiContext &ctx) = 0;
 
   private:

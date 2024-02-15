@@ -3,6 +3,7 @@
 #include <nusantara/lexer/token_type.h>
 
 #include <string>
+
 #include "nstd/daftar.h"
 
 class Token {

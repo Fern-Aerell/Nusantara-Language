@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <nusantara/parser/parser_tree.h>
 
 #include <memory>
@@ -17,13 +16,13 @@ class OperasiPenugasanContext: public Context {
             kumpulanOperatorPenugasanContext
     );
     static OperasiPenugasanContext generate(
-        const std::vector<std::unique_ptr<ParserTree>> &children
+        const std::vector<std::unique_ptr<ParserTree>>& children
     );
-    [[nodiscard]] const
-        nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>&
+    [[nodiscard]] const nstd::bisa_kosong<
+        nstd::daftar<std::unique_ptr<Context>>>&
     getKumpulanOperasiPenugasanPenjumlahanContext() const;
-    [[nodiscard]] const
-        nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>&
+    [[nodiscard]] const nstd::bisa_kosong<
+        nstd::daftar<std::unique_ptr<Context>>>&
     getKumpulanOperatorPenugasanContext() const;
 
   private:

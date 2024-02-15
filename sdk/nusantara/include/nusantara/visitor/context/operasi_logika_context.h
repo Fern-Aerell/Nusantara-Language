@@ -18,9 +18,11 @@ class OperasiLogikaContext: public Context {
     static OperasiLogikaContext generate(
         const std::vector<std::unique_ptr<ParserTree>>& children
     );
-    [[nodiscard]] const nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>&
+    [[nodiscard]] const nstd::bisa_kosong<
+        nstd::daftar<std::unique_ptr<Context>>>&
     getKumpulanOperasiLogikaTidakContext() const;
-    [[nodiscard]] const nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>&
+    [[nodiscard]] const nstd::bisa_kosong<
+        nstd::daftar<std::unique_ptr<Context>>>&
     getKumpulanOperatorLogikaContext() const;
 
   private:

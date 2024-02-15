@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <nusantara/lexer/token.h>
 #include <nusantara/parser/parser_tree.h>
 
