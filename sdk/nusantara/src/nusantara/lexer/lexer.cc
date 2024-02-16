@@ -6,7 +6,7 @@
 #include <regex>
 #include <string>
 
-#include "nstd/kalimat.h"
+#include "nstd/daftar.h"
 
 Lexer::Lexer(std::string source, std::string content):
     source(std::move(source)), content(std::move(content)) {}
@@ -35,24 +35,77 @@ bool Lexer::match(const std::string &pattern, std::string &match) {
 }
 
 Token Lexer::getNextToken() {
+  if(this->mode == LexerMode::KALIMAT) { return generateTokenKalimat(); }
+  return generateTokenBawaan();
+}
+
+Token Lexer::generateTokenTidakDiKenal() {
+  this->mode = LexerMode::BAWAAN;
+  std::string match;
+  match = content[0];
+  std::string patternMatch = match;
+  if(nstd::contains({"{", "}", "(", ")", "|", "+", "*"}, patternMatch)) {
+    patternMatch = "\\" + patternMatch;
+  }
+  this->match(patternMatch, match);
+  return this->createToken(TokenType::TIDAK_DIKENALI, match);
+}
+
+Token Lexer::generateTokenBawaan() {
   std::string match;
   if(this->content.empty()) {
     return this->createToken(TokenType::AKHIR_DARI_FILE, match);
   }
-  for(const TokenTypeData &tokenType : this->tokenTypes) {
+  for(const TokenTypeData &tokenType : this->tokenTypesBawaan) {
     TokenType type = tokenType.getType();
     if(this->match(tokenType.getPattern(), match)) {
       if(type == TokenType::WHITESPACE ||
+         type == TokenType::KOMENTAR_DOKUMENTASI ||
          type == TokenType::KOMENTAR_SATU_BARIS ||
          type == TokenType::KOMENTAR_BANYAK_BARIS) {
         return getNextToken();
       }
+      if(type == TokenType::KUTIP_DUA || type == TokenType::KUTIP_SATU) {
+        this->mode = LexerMode::KALIMAT;
+        this->modeState = LexerModeState::KALIMAT_PEMBUKA;
+      }
+      if(this->modeState == LexerModeState::KALIMAT_KURAWAL_BUKA) {
+        if(type == TokenType::KURUNG_KURAWAL_TUTUP) {
+          this->mode = LexerMode::KALIMAT;
+          this->modeState = LexerModeState::KALIMAT_KURAWAL_TUTUP;
+        }
+      }
+      if(this->modeState == LexerModeState::KALIMAT_DOLAR) {
+        this->mode = LexerMode::KALIMAT;
+        this->modeState = LexerModeState::KALIMAT;
+      }
       return this->createToken(tokenType.getType(), match);
     }
   }
-  match = content[0];
-  this->match(match, match);
-  return this->createToken(TokenType::TIDAK_DIKENALI, match);
+  return this->generateTokenTidakDiKenal();
+}
+
+Token Lexer::generateTokenKalimat() {
+  std::string match;
+  for(const TokenTypeData &tokenType : this->tokenTypesKalimat) {
+    TokenType type = tokenType.getType();
+    if(this->match(tokenType.getPattern(), match)) {
+      if(type == TokenType::KUTIP_DUA || type == TokenType::KUTIP_SATU) {
+        this->mode = LexerMode::BAWAAN;
+        this->modeState = LexerModeState::KALIMAT_PENUTUP;
+      }
+      if(type == TokenType::DOLAR) {
+        this->mode = LexerMode::BAWAAN;
+        this->modeState = LexerModeState::KALIMAT_DOLAR;
+      }
+      if(type == TokenType::KURUNG_KURAWAL_BUKA) {
+        this->mode = LexerMode::BAWAAN;
+        this->modeState = LexerModeState::KALIMAT_KURAWAL_BUKA;
+      }
+      return this->createToken(tokenType.getType(), match);
+    }
+  }
+  return this->generateTokenTidakDiKenal();
 }
 
 Token Lexer::createToken(const TokenType &type, const std::string &value) {

@@ -23,8 +23,7 @@ NilaiContext NilaiContext::generate(
     const Token token = ptchild0->getToken();
     const TokenType type = token.getType();
     const nstd::daftar<TokenType> nilaiTokenType = {
-        TokenType::BILANGAN, TokenType::KALIMAT, TokenType::BENAR,
-        TokenType::SALAH
+        TokenType::BILANGAN, TokenType::BENAR, TokenType::SALAH
     };
     if(nstd::contains<TokenType>(nilaiTokenType, type)) {
       nstd::bisa_kosong<Token> nilai = token;

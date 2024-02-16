@@ -10,8 +10,8 @@ namespace nstd {
   template<typename Tipe>
   using daftar = std::vector<Tipe>;
 
-  template<typename Tipe, typename Nilai>
-  inline bool contains(const daftar<Tipe>& daftar, const Nilai& nilai) {
+  template<typename Tipe>
+  inline bool contains(const daftar<Tipe>& daftar, const Tipe& nilai) {
     return std::find(daftar.begin(), daftar.end(), nilai) != daftar.end();
   }
 

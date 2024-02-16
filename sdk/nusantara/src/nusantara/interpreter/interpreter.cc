@@ -761,9 +761,9 @@ nstd::dinamis Interpreter::visitNilai(const NilaiContext &ctx) {
     if(type == TokenType::BILANGAN) {
       if(nstd::isInt(nilai)) { return nstd::asInt(nilai); }
       if(nstd::isDouble(nilai)) { return nstd::asDouble(nilai); }
-    } else if(type == TokenType::KALIMAT) {
-      if(nstd::isChar(nilai)) { return nstd::asChar(nilai); }
-      return nstd::formatString(nilai);
+      // } else if(type == TokenType::KALIMAT) {
+      //   if(nstd::isChar(nilai)) { return nstd::asChar(nilai); }
+      //   return nstd::formatString(nilai);
     } else if(type == TokenType::BENAR) {
       return true;
     } else if(type == TokenType::SALAH) {
