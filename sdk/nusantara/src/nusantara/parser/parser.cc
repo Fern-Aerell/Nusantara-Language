@@ -16,15 +16,27 @@ Parser::Parser(ErrorInfo errorInfo, Lexer lexer):
     lexer(std::move(lexer)),
     currentToken(this->lexer.getNextToken()) {}
 
-void Parser::eat(const TokenType &type) {
+void Parser::eat(const TokenType &type, const bool &skipWs) {
   if(this->currentToken.getType() == type) {
     this->currentToken = this->lexer.getNextToken();
-    if(this->currentToken.getType() == TokenType::TIDAK_DIKENALI) {
+    if(skipWs &&
+       matchOr(
+           {TokenType::SPASI, TokenType::TAB, TokenType::BARIS_BARU,
+            TokenType::OTHER_WHITESPACE, TokenType::KOMENTAR_BANYAK_BARIS,
+            TokenType::KOMENTAR_SATU_BARIS, TokenType::KOMENTAR_DOKUMENTASI}
+       )) {
+      eat(this->currentToken.getType());
+    } else if(match(TokenType::TIDAK_DIKENALI)) {
       throw std::runtime_error(this->errorInfo.inLine(
           this->currentToken, "Karakter tidak di kenali."
       ));
     }
   } else {
+    if(type == TokenType::TITIK_KOMA) {
+      throw std::runtime_error(this->errorInfo.inLine(
+          this->currentToken, "Sandhika Galih : Jangan lupa titik koma ';'."
+      ));
+    }
     throw std::runtime_error(this->errorInfo.inLine(
         this->currentToken,
         std::format(
@@ -306,6 +318,12 @@ std::unique_ptr<ParserTree> Parser::parseNilai() {
   };
   if(this->matchOr(types)) {
     return this->fragmentTokenTypeGroup(types, ParserRule::nilai);
+  } else if(this->matchOr({TokenType::KUTIP_SATU, TokenType::KUTIP_DUA})) {
+    std::unique_ptr<ParserTree> ekspresi_nilai =
+        std::make_unique<ParserRuleTree>(ParserRule::nilai);
+    std::unique_ptr<ParserTree> nilaiKalimat = this->parseNilaiKalimat();
+    ekspresi_nilai->addChild(std::move(nilaiKalimat));
+    return ekspresi_nilai;
   } else if(this->match(TokenType::KURUNG_BUKA)) {
     std::unique_ptr<ParserTree> ekspresi_nilai =
         std::make_unique<ParserRuleTree>(ParserRule::nilai);
@@ -329,4 +347,75 @@ std::unique_ptr<ParserTree> Parser::parseNilai() {
           toString(ParserRule::nilai)
       )
   ));
+}
+
+std::unique_ptr<ParserTree> Parser::parseNilaiKalimat() {
+  std::unique_ptr<ParserTree> nilaiKalimat =
+      std::make_unique<ParserRuleTree>(ParserRule::nilaiKalimat);
+  // Kutip pembuka
+  std::unique_ptr<ParserTree> kutipPembuka =
+      std::make_unique<ParserTokenTree>(this->currentToken);
+  nilaiKalimat->addChild(std::move(kutipPembuka));
+  TokenType kutipPembukaType = TokenType::KUTIP_SATU;
+  if(match(TokenType::KUTIP_SATU)) {
+    eat(TokenType::KUTIP_SATU, false);
+  } else {
+    eat(TokenType::KUTIP_DUA, false);
+    kutipPembukaType = TokenType::KUTIP_DUA;
+  }
+  // Isinya
+  while(!this->match(kutipPembukaType)) {
+    if(this->match(TokenType::GARIS_MIRING_KEBALIK)) {
+      std::unique_ptr<ParserTree> garisMiringKebalik =
+          std::make_unique<ParserTokenTree>(this->currentToken);
+      nilaiKalimat->addChild(std::move(garisMiringKebalik));
+      eat(this->currentToken.getType(), false);
+      std::unique_ptr<ParserTree> karakterSetelahnya =
+          std::make_unique<ParserTokenTree>(this->currentToken);
+      nilaiKalimat->addChild(std::move(karakterSetelahnya));
+      eat(this->currentToken.getType(), false);
+    } else if(this->match(TokenType::DOLAR)) {
+      std::unique_ptr<ParserTree> dolar =
+          std::make_unique<ParserTokenTree>(this->currentToken);
+      nilaiKalimat->addChild(std::move(dolar));
+      eat(TokenType::DOLAR, false);
+      if(this->match(TokenType::KURUNG_KURAWAL_BUKA)) {
+        std::unique_ptr<ParserTree> kurungKurawalBuka =
+            std::make_unique<ParserTokenTree>(this->currentToken);
+        nilaiKalimat->addChild(std::move(kurungKurawalBuka));
+        eat(TokenType::KURUNG_KURAWAL_BUKA);
+        std::unique_ptr<ParserTree> operatorPenugasan =
+            this->parseOperasiPenugasan();
+        nilaiKalimat->addChild(std::move(operatorPenugasan));
+        std::unique_ptr<ParserTree> kurungKurawalTutup =
+            std::make_unique<ParserTokenTree>(this->currentToken);
+        nilaiKalimat->addChild(std::move(kurungKurawalTutup));
+        eat(TokenType::KURUNG_KURAWAL_TUTUP, false);
+      } else {
+        throw std::runtime_error(this->errorInfo.inLine(
+            this->currentToken,
+            "Kalimat interpolasi harus berisi identifikasi atau blok kode."
+        ));
+      }
+    } else {
+      if(matchOr(
+             {TokenType::BARIS_BARU, TokenType::OTHER_WHITESPACE,
+              TokenType::AKHIR_DARI_FILE}
+         )) {
+        throw std::runtime_error(
+            this->errorInfo.inLine(this->currentToken, "Kalimat tidak valid.")
+        );
+      }
+      std::unique_ptr<ParserTree> isiKalimat =
+          std::make_unique<ParserTokenTree>(this->currentToken);
+      nilaiKalimat->addChild(std::move(isiKalimat));
+      eat(this->currentToken.getType(), false);
+    }
+  }
+  // Kutip penutup
+  std::unique_ptr<ParserTree> kutipPenutup =
+      std::make_unique<ParserTokenTree>(this->currentToken);
+  nilaiKalimat->addChild(std::move(kutipPenutup));
+  eat(kutipPembukaType);
+  return nilaiKalimat;
 }

@@ -39,8 +39,8 @@ std::string ErrorInfo::inLine(const Token& token, const std::string& msg) {
   );
   int arrowCount = (realEndCharIndex - realStartCharIndex);
   stream << std::string(prefix.length() + realStartCharIndex, ' ');
-  stream << std::string((arrowCount > 0) ? arrowCount : 1, '^') + "\n";
-  stream << msg;
+  stream << std::string((arrowCount > 0) ? arrowCount : 1, '^');
+  stream << "\n" << msg;
   return stream.str();
 }
 

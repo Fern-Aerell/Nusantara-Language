@@ -7,6 +7,7 @@
 
 #include "nusantara/parser/parser_rule.h"
 #include "nusantara/visitor/context/nilai_context.h"
+#include "nusantara/visitor/context/nilai_kalimat_context.h"
 #include "nusantara/visitor/context/nusantara_context.h"
 #include "nusantara/visitor/context/operasi_logika_context.h"
 #include "nusantara/visitor/context/operasi_logika_tidak_context.h"
@@ -122,6 +123,10 @@ class Visitor {
           case ParserRule::nilai:
             return this->visitNilai(NilaiContext::generate(rule->getChildren())
             );
+          case ParserRule::nilaiKalimat:
+            return this->visitNilaiKalimat(
+                NilaiKalimatContext::generate(rule->getChildren())
+            );
         }
       }
       throw std::runtime_error("Aturan tidak valid.");
@@ -159,6 +164,7 @@ class Visitor {
     virtual T visitOperatorPerkalian(const OperatorPerkalianContext &ctx) = 0;
     virtual T visitOperasiPerkalian(const OperasiPerkalianContext &ctx) = 0;
     virtual T visitNilai(const NilaiContext &ctx) = 0;
+    virtual T visitNilaiKalimat(const NilaiKalimatContext &ctx) = 0;
 
   private:
 };

@@ -52,6 +52,7 @@ class Interpreter: public Visitor<nstd::dinamis> {
     nstd::dinamis visitOperasiPerkalian(const OperasiPerkalianContext &ctx
     ) override;
     nstd::dinamis visitNilai(const NilaiContext &ctx) override;
+    nstd::dinamis visitNilaiKalimat(const NilaiKalimatContext &ctx) override;
 
   private:
     ErrorInfo errorInfo;

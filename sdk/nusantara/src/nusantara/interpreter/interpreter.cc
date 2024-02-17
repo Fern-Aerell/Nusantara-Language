@@ -7,14 +7,17 @@
 #include <sstream>
 #include <string>
 
+#include "nstd/daftar.h"
 #include "nstd/dinamis.h"
 #include "nstd/kalimat.h"
 #include "nstd/konsol.h"
 #include "nstd/kosong.h"
 #include "nusantara/core/error_info.h"
+#include "nusantara/lexer/token.h"
 #include "nusantara/lexer/token_type.h"
 #include "nusantara/visitor/context/context.h"
 #include "nusantara/visitor/context/nilai_context.h"
+#include "nusantara/visitor/context/nilai_kalimat_context.h"
 #include "nusantara/visitor/context/operasi_logika_context.h"
 #include "nusantara/visitor/context/operasi_logika_tidak_context.h"
 #include "nusantara/visitor/context/operasi_penjumlahan_context.h"
@@ -757,13 +760,10 @@ nstd::dinamis Interpreter::visitNilai(const NilaiContext &ctx) {
     const Token token = ctx.getNilai().value();
     this->tokens.push_back(token);
     const TokenType &type = token.getType();
-    std::string nilai = token.getValue();
     if(type == TokenType::BILANGAN) {
+      std::string nilai = token.getValue();
       if(nstd::isInt(nilai)) { return nstd::asInt(nilai); }
       if(nstd::isDouble(nilai)) { return nstd::asDouble(nilai); }
-      // } else if(type == TokenType::KALIMAT) {
-      //   if(nstd::isChar(nilai)) { return nstd::asChar(nilai); }
-      //   return nstd::formatString(nilai);
     } else if(type == TokenType::BENAR) {
       return true;
     } else if(type == TokenType::SALAH) {
@@ -780,5 +780,70 @@ nstd::dinamis Interpreter::visitNilai(const NilaiContext &ctx) {
         "Gagal mengubah Context menjadi OperasiPenugasanContext"
     );
   }
+  if(!nstd::kosong(ctx.getNilaiKalimatContext())) {
+    const auto &nilaiKalimatPtr = dynamic_cast<NilaiKalimatContext *>(
+        ctx.getNilaiKalimatContext().value().get()
+    );
+    if(nilaiKalimatPtr != nullptr) {
+      return this->visitNilaiKalimat(*nilaiKalimatPtr);
+    }
+    throw std::runtime_error(
+        "Gagal mengubah Context menjadi NilaiKalimatContext"
+    );
+  }
   throw std::runtime_error("Nilai tidak boleh kosong.");
+}
+
+nstd::dinamis Interpreter::visitNilaiKalimat(const NilaiKalimatContext &ctx) {
+  const auto &kumpulanToken = ctx.getKumpulanToken();
+  const auto &kumpulanOperasiPenugasanContext =
+      ctx.getKumpulanOperasiPenugasanContext();
+  if(nstd::kosong(kumpulanToken)) {
+    throw std::runtime_error("Nilai Kalimat tidak boleh kosong.");
+  }
+  size_t kumpulanOperasiPenugasanContextLength = 0;
+  size_t kumpulanOperasiPenugasanContextIndex = 0;
+  if(nstd::tidakKosong(kumpulanOperasiPenugasanContext)) {
+    kumpulanOperasiPenugasanContextLength =
+        kumpulanOperasiPenugasanContext->size();
+  }
+  std::string nilaiKalimat;
+  for(size_t index = 0; index < kumpulanToken.value().size(); ++index) {
+    if(index != 0 && index != (kumpulanToken.value().size() - 1)) {
+      const Token &token = kumpulanToken.value()[index];
+      const TokenType &type = token.getType();
+      if(type == TokenType::DOLAR) {
+        ++index;
+        const Token &kurungKurawalBuka = kumpulanToken.value()[index];
+        if(kumpulanOperasiPenugasanContextIndex <
+           kumpulanOperasiPenugasanContextLength) {
+          const auto &nilaiPtr = dynamic_cast<OperasiPenugasanContext *>(
+              kumpulanOperasiPenugasanContext
+                  .value()[kumpulanOperasiPenugasanContextIndex]
+                  .get()
+          );
+          if(nilaiPtr != nullptr) {
+            nilaiKalimat +=
+                nstd::toString(this->visitOperasiPenugasan(*nilaiPtr));
+            ++kumpulanOperasiPenugasanContextIndex;
+          }
+        }
+        ++index;
+        const Token &kurungKurawalTutup = kumpulanToken.value()[index];
+      } else if(type == TokenType::GARIS_MIRING_KEBALIK) {
+        ++index;
+        const Token &karakterSetelahnya = kumpulanToken.value()[index];
+        if(karakterSetelahnya.getValue() == "n") {
+          nilaiKalimat += "\n";
+        } else if(karakterSetelahnya.getValue() == "t") {
+          nilaiKalimat += "\t";
+        } else {
+          nilaiKalimat += karakterSetelahnya.getValue();
+        }
+      } else {
+        nilaiKalimat += token.getValue();
+      }
+    }
+  }
+  return nilaiKalimat;
 }

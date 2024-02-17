@@ -18,7 +18,7 @@ class Parser {
     ErrorInfo errorInfo;
     Lexer lexer;
     Token currentToken;
-    void eat(const TokenType &type);
+    void eat(const TokenType &type, const bool &skipWs = true);
     bool match(const TokenType &type);
     bool matchOr(const std::vector<TokenType> &types);
     // fragment
@@ -46,4 +46,5 @@ class Parser {
     std::unique_ptr<ParserTree> parseOperatorPerkalian();
     std::unique_ptr<ParserTree> parseOperasiPerkalian();
     std::unique_ptr<ParserTree> parseNilai();
+    std::unique_ptr<ParserTree> parseNilaiKalimat();
 };

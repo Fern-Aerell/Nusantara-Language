@@ -22,7 +22,8 @@ enum class ParserRule : int {
   operasi_pre_post,
   operator_perkalian,
   operasi_perkalian,
-  nilai
+  nilai,
+  nilaiKalimat
 };
 
 inline std::string toString(const ParserRule &rule) {
@@ -67,5 +68,7 @@ inline std::string toString(const ParserRule &rule) {
       return "operasi_perkalian";
     case ParserRule::nilai:
       return "nilai";
+    case ParserRule::nilaiKalimat:
+      return "nilai_kalimat";
   }
-}
+};

@@ -6,7 +6,10 @@ enum class TokenType : int {
   TIDAK_DIKENALI,
   AKHIR_DARI_FILE,
   // Skip token
-  WHITESPACE,
+  SPASI,
+  BARIS_BARU,
+  TAB,
+  OTHER_WHITESPACE,
   KOMENTAR_DOKUMENTASI,
   KOMENTAR_SATU_BARIS,
   KOMENTAR_BANYAK_BARIS,
@@ -51,8 +54,7 @@ enum class TokenType : int {
   DOLAR,
   KUTIP_SATU,
   KUTIP_DUA,
-  // Lainnya
-  IDENTIFIKASI
+  GARIS_MIRING_KEBALIK
 };
 
 inline std::string toString(const TokenType &type) {
@@ -61,8 +63,14 @@ inline std::string toString(const TokenType &type) {
       return "TIDAK_DIKENALI";
     case TokenType::AKHIR_DARI_FILE:
       return "AKHIR_DARI_FILE";
-    case TokenType::WHITESPACE:
-      return "WHITESPACE";
+    case TokenType::SPASI:
+      return "SPASI";
+    case TokenType::BARIS_BARU:
+      return "BARIS_BARU";
+    case TokenType::TAB:
+      return "TAB";
+    case TokenType::OTHER_WHITESPACE:
+      return "OTHER_WHITESPACE";
     case TokenType::KOMENTAR_DOKUMENTASI:
       return "KOMENTAR_DOKUMENTASI";
     case TokenType::KOMENTAR_SATU_BARIS:
@@ -71,8 +79,6 @@ inline std::string toString(const TokenType &type) {
       return "KOMENTAR_BANYAK_BARIS";
     case TokenType::BILANGAN:
       return "BILANGAN";
-    case TokenType::KARAKTER:
-      return "KARAKTER";
     case TokenType::BENAR:
       return "BENAR";
     case TokenType::SALAH:
@@ -137,7 +143,9 @@ inline std::string toString(const TokenType &type) {
       return "KUTIP_SATU";
     case TokenType::KUTIP_DUA:
       return "KUTIP_DUA";
-    case TokenType::IDENTIFIKASI:
-      return "IDENTIFIKASI";
+    case TokenType::KARAKTER:
+      return "KARAKTER";
+    case TokenType::GARIS_MIRING_KEBALIK:
+      return "GARIS_MIRING_KEBALIK";
   }
-}
+};

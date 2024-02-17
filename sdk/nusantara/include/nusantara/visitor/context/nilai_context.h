@@ -10,10 +10,11 @@
 
 class NilaiContext: public Context {
   public:
-    explicit NilaiContext(
+    NilaiContext(
         nstd::bisa_kosong<Token> nilai, nstd::bisa_kosong<Token> kurungBuka,
         nstd::bisa_kosong<std::unique_ptr<Context>> operasiPenugasanContext,
-        nstd::bisa_kosong<Token> kurungTutup
+        nstd::bisa_kosong<Token> kurungTutup,
+        nstd::bisa_kosong<std::unique_ptr<Context>> nilaiKalimatContext
     );
     static NilaiContext generate(
         const std::vector<std::unique_ptr<ParserTree>>& children
@@ -23,10 +24,13 @@ class NilaiContext: public Context {
     [[nodiscard]] const nstd::bisa_kosong<std::unique_ptr<Context>>&
     getOperasiPenugasanContext() const;
     [[nodiscard]] nstd::bisa_kosong<Token> getKurungTutup() const;
+    [[nodiscard]] const nstd::bisa_kosong<std::unique_ptr<Context>>&
+    getNilaiKalimatContext() const;
 
   private:
     nstd::bisa_kosong<Token> nilai;
     nstd::bisa_kosong<Token> kurungBuka;
     nstd::bisa_kosong<std::unique_ptr<Context>> operasiPenugasanContext;
     nstd::bisa_kosong<Token> kurungTutup;
+    nstd::bisa_kosong<std::unique_ptr<Context>> nilaiKalimatContext;
 };
