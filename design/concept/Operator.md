@@ -55,9 +55,9 @@ Operator di nusantara di bagi menjadi beberapa jenis :
 
 | Operator | Nama | Contoh |
 | -------- | ---- | ------ |
-| & | Bitwise dan | x & y |
-| \| | Bitwise atau | x \| y |
-| ^ | Bitwise eksklusif atau | x ^ y |
-| ~ | Bitwise bukan | x ~ y |
-| << | Bitwise geser kiri | x << y |
-| >> | Bitwise geser kanan | x >> y |
+| & | AND Bit | x & y |
+| \| | OR Bit | x \| y |
+| ^ | XOR Bit | x ^ y |
+| ~ | NOT Bit | x ~ y |
+| << | Pergeseran Kiri Bit | x << y |
+| >> | Pergeseran Kanan Bit| x >> y |

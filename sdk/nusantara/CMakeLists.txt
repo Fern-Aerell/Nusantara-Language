@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(
 	nusantara
-	VERSION 1.0.0
+	VERSION 1.11.6
 	DESCRIPTION "Sebuah alat command-line untuk Nusantara development."
 	LANGUAGES CXX
 )
