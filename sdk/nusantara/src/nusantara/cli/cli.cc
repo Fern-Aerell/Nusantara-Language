@@ -65,8 +65,11 @@ void Cli::input(const int& argc, char* argv[]) {
       tree->printTree(0);
     } else {
       std::unique_ptr<ParserTree> tree = parser.parse();
-      Interpreter interpreter(errorInfo);
-      interpreter.visit(tree);
+      nstd::cetak(
+          std::string("Untuk sementara interpreter tidak bisa digunakan.")
+      );
+      // Interpreter interpreter(errorInfo);
+      // interpreter.visit(tree);
     }
   } else if(kumpulanArgument.empty()) {
     showInfo();

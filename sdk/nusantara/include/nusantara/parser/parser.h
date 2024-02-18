@@ -6,8 +6,13 @@
 #include <nusantara/lexer/token_type.h>
 #include <nusantara/parser/parser_tree.h>
 
+#include <functional>
 #include <memory>
+#include <string>
 #include <vector>
+
+#include "nstd/daftar.h"
+#include "nusantara/parser/parser_rule.h"
 
 class Parser {
   public:
@@ -18,33 +23,58 @@ class Parser {
     ErrorInfo errorInfo;
     Lexer lexer;
     Token currentToken;
-    void eat(const TokenType &type, const bool &skipWs = true);
-    bool match(const TokenType &type);
-    bool matchOr(const std::vector<TokenType> &types);
+    std::unique_ptr<ParserTree> eat(
+        const TokenType& type, const bool& skipWs = true
+    );
+    bool match(const TokenType& type);
+    bool matchOr(const std::vector<TokenType>& types);
     // fragment
-    std::unique_ptr<ParserTree> fragmentTokenTypeGroup(
-        const std::vector<TokenType> &tokenTypes, const ParserRule &rule
+    std::unique_ptr<ParserTree> fragmentMultiOperasiLeftRight(
+        const ParserRule& rule,
+        const std::function<std::unique_ptr<ParserTree>()>& leftRightFunction,
+        const TokenType& opSymbol
+    );
+    std::unique_ptr<ParserTree> fragmentOperasiPrePost(
+        const ParserRule& rule,
+        const std::function<std::unique_ptr<ParserTree>()>& leftFunction,
+        const TokenType& opSymbol, const bool& pre, const bool& post
     );
     // parse
     std::unique_ptr<ParserTree> parseNusantara();
-    std::unique_ptr<ParserTree> parseOperatorPenugasan();
-    std::unique_ptr<ParserTree> parseOperasiPenugasan();
-    std::unique_ptr<ParserTree> parseOperatorPenugasanPenjumlahan();
-    std::unique_ptr<ParserTree> parseOperasiPenugasanPenjumlahan();
-    std::unique_ptr<ParserTree> parseOperatorPenugasanPerkalian();
-    std::unique_ptr<ParserTree> parseOperasiPenugasanPerkalian();
-    std::unique_ptr<ParserTree> parseOperatorLogika();
-    std::unique_ptr<ParserTree> parseOperasiLogika();
-    std::unique_ptr<ParserTree> parseOperatorLogikaTidak();
-    std::unique_ptr<ParserTree> parseOperasiLogikaTidak();
-    std::unique_ptr<ParserTree> parseOperatorPerbandingan();
-    std::unique_ptr<ParserTree> parseOperasiPerbandingan();
-    std::unique_ptr<ParserTree> parseOperatorPenjumlahan();
-    std::unique_ptr<ParserTree> parseOperasiPenjumlahan();
-    std::unique_ptr<ParserTree> parseOperatorPrePost();
-    std::unique_ptr<ParserTree> parseOperasiPrePost();
-    std::unique_ptr<ParserTree> parseOperatorPerkalian();
+    std::unique_ptr<ParserTree> parseEkspresi();
+    std::unique_ptr<ParserTree> parseOperasiGeserKananBitSamaDengan();
+    std::unique_ptr<ParserTree> parseOperasiGeserKiriBitSamaDengan();
+    std::unique_ptr<ParserTree> parseOperasiXorBitSamaDengan();
+    std::unique_ptr<ParserTree> parseOperasiOrBitSamaDengan();
+    std::unique_ptr<ParserTree> parseOperasiAndBitSamaDengan();
+    std::unique_ptr<ParserTree> parseOperasiKurangSamaDengan();
+    std::unique_ptr<ParserTree> parseOperasiTambahSamaDengan();
+    std::unique_ptr<ParserTree> parseOperasiSisaBagiSamaDengan();
+    std::unique_ptr<ParserTree> parseOperasiBagiSamaDengan();
+    std::unique_ptr<ParserTree> parseOperasiKaliSamaDengan();
+    std::unique_ptr<ParserTree> parseOperasiSamaDengan();
+    std::unique_ptr<ParserTree> parseOperasiAtau();
+    std::unique_ptr<ParserTree> parseOperasiDan();
+    std::unique_ptr<ParserTree> parseOperasiOrBit();
+    std::unique_ptr<ParserTree> parseOperasiXorBit();
+    std::unique_ptr<ParserTree> parseOperasiAndBit();
+    std::unique_ptr<ParserTree> parseOperasiTidakSama();
+    std::unique_ptr<ParserTree> parseOperasiSama();
+    std::unique_ptr<ParserTree> parseOperasiLebihBesarSamaDengan();
+    std::unique_ptr<ParserTree> parseOperasiLebihBesar();
+    std::unique_ptr<ParserTree> parseOperasiLebihKecilSamaDengan();
+    std::unique_ptr<ParserTree> parseOperasiLebihKecil();
+    std::unique_ptr<ParserTree> parseOperasiGeserKananBit();
+    std::unique_ptr<ParserTree> parseOperasiGeserKiriBit();
+    std::unique_ptr<ParserTree> parseOperasiKurang();
+    std::unique_ptr<ParserTree> parseOperasiTambah();
+    std::unique_ptr<ParserTree> parseOperasiSisaPembagian();
+    std::unique_ptr<ParserTree> parseOperasiPembagian();
     std::unique_ptr<ParserTree> parseOperasiPerkalian();
+    std::unique_ptr<ParserTree> parseOperasiTidak();
+    std::unique_ptr<ParserTree> parseOperasiNotBit();
+    std::unique_ptr<ParserTree> parseOperasiKurangSatu();
+    std::unique_ptr<ParserTree> parseOperasiTambahSatu();
     std::unique_ptr<ParserTree> parseNilai();
     std::unique_ptr<ParserTree> parseNilaiKalimat();
 };

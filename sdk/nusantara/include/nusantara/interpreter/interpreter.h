@@ -2,106 +2,135 @@
 
 #include "nstd/dinamis.h"
 #include "nusantara/core/error_info.h"
-#include "nusantara/visitor/context/operasi_logika_tidak_context.h"
-#include "nusantara/visitor/context/operator_logika_tidak_context.h"
 #include "nusantara/visitor/visitor.h"
 
 class Interpreter: public Visitor<nstd::dinamis> {
   public:
     explicit Interpreter(ErrorInfo errorInfo);
 
-    nstd::dinamis visitNusantara(const NusantaraContext &ctx) override;
-    nstd::dinamis visitOperatorPenugasan(const OperatorPenugasanContext &ctx
+    nstd::dinamis visitNusantara(const NusantaraContext& ctx) override;
+    nstd::dinamis visitEkspresi(const EkspresiContext& ctx) override;
+    nstd::dinamis visitOperasiGeserKananBitSamaDengan(
+        const OperasiGeserKananBitSamaDenganContext& ctx
     ) override;
-    nstd::dinamis visitOperasiPenugasan(const OperasiPenugasanContext &ctx
+    nstd::dinamis visitOperasiGeserKiriBitSamaDengan(
+        const OperasiGeserKiriBitSamaDenganContext& ctx
     ) override;
-    nstd::dinamis visitOperatorPenugasanPenjumlahan(
-        const OperatorPenugasanPenjumlahanContext &ctx
+    nstd::dinamis visitOperasiXorBitSamaDengan(
+        const OperasiXorBitSamaDenganContext& ctx
     ) override;
-    nstd::dinamis visitOperasiPenugasanPenjumlahan(
-        const OperasiPenugasanPenjumlahanContext &ctx
+    nstd::dinamis visitOperasiOrBitSamaDengan(
+        const OperasiOrBitSamaDenganContext& ctx
     ) override;
-    nstd::dinamis visitOperatorPenugasanPerkalian(
-        const OperatorPenugasanPerkalianContext &ctx
+    nstd::dinamis visitOperasiAndBitSamaDengan(
+        const OperasiAndBitSamaDenganContext& ctx
     ) override;
-    nstd::dinamis visitOperasiPenugasanPerkalian(
-        const OperasiPenugasanPerkalianContext &ctx
+    nstd::dinamis visitOperasiKurangSamaDengan(
+        const OperasiKurangSamaDenganContext& ctx
     ) override;
-    nstd::dinamis visitOperatorLogika(const OperatorLogikaContext &ctx
+    nstd::dinamis visitOperasiTambahSamaDengan(
+        const OperasiTambahSamaDenganContext& ctx
     ) override;
-    nstd::dinamis visitOperasiLogika(const OperasiLogikaContext &ctx) override;
-    nstd::dinamis visitOperatorLogikaTidak(const OperatorLogikaTidakContext &ctx
+    nstd::dinamis visitOperasiSisaBagiSamaDengan(
+        const OperasiSisaBagiSamaDenganContext& ctx
     ) override;
-    nstd::dinamis visitOperasiLogikaTidak(const OperasiLogikaTidakContext &ctx
+    nstd::dinamis visitOperasiBagiSamaDengan(
+        const OperasiBagiSamaDenganContext& ctx
     ) override;
-    nstd::dinamis visitOperatorPerbandingan(
-        const OperatorPerbandinganContext &ctx
+    nstd::dinamis visitOperasiKaliSamaDengan(
+        const OperasiKaliSamaDenganContext& ctx
     ) override;
-    nstd::dinamis visitOperasiPerbandingan(const OperasiPerbandinganContext &ctx
+    nstd::dinamis visitOperasiSamaDengan(const OperasiSamaDenganContext& ctx
     ) override;
-    nstd::dinamis visitOperatorPrePost(const OperatorPrePostContext &ctx
+    nstd::dinamis visitOperasiAtau(const OperasiAtauContext& ctx) override;
+    nstd::dinamis visitOperasiDan(const OperasiDanContext& ctx) override;
+    nstd::dinamis visitOperasiOrBit(const OperasiOrBitContext& ctx) override;
+    nstd::dinamis visitOperasiXorBit(const OperasiXorBitContext& ctx) override;
+    nstd::dinamis visitOperasiAndBit(const OperasiAndBitContext& ctx) override;
+    nstd::dinamis visitOperasiTidakSama(const OperasiTidakSamaContext& ctx
     ) override;
-    nstd::dinamis visitOperasiPrePost(const OperasiPrePostContext &ctx
+    nstd::dinamis visitOperasiSama(const OperasiSamaContext& ctx) override;
+    nstd::dinamis visitOperasiLebihBesarSamaDengan(
+        const OperasiLebihBesarSamaDenganContext& ctx
     ) override;
-    nstd::dinamis visitOperatorPenjumlahan(const OperatorPenjumlahanContext &ctx
+    nstd::dinamis visitOperasiLebihBesar(const OperasiLebihBesarContext& ctx
     ) override;
-    nstd::dinamis visitOperasiPenjumlahan(const OperasiPenjumlahanContext &ctx
+    nstd::dinamis visitOperasiLebihKecilSamaDengan(
+        const OperasiLebihKecilSamaDenganContext& ctx
     ) override;
-    nstd::dinamis visitOperatorPerkalian(const OperatorPerkalianContext &ctx
+    nstd::dinamis visitOperasiLebihKecil(const OperasiLebihKecilContext& ctx
     ) override;
-    nstd::dinamis visitOperasiPerkalian(const OperasiPerkalianContext &ctx
+    nstd::dinamis visitOperasiGeserKananBit(
+        const OperasiGeserKananBitContext& ctx
     ) override;
-    nstd::dinamis visitNilai(const NilaiContext &ctx) override;
-    nstd::dinamis visitNilaiKalimat(const NilaiKalimatContext &ctx) override;
+    nstd::dinamis visitOperasiGeserKiriBit(const OperasiGeserKiriBitContext& ctx
+    ) override;
+    nstd::dinamis visitOperasiKurang(const OperasiKurangContext& ctx) override;
+    nstd::dinamis visitOperasiTambah(const OperasiTambahContext& ctx) override;
+    nstd::dinamis visitOperasiSisaPembagian(
+        const OperasiSisaPembagianContext& ctx
+    ) override;
+    nstd::dinamis visitOperasiPembagian(const OperasiPembagianContext& ctx
+    ) override;
+    nstd::dinamis visitOperasiPerkalian(const OperasiPerkalianContext& ctx
+    ) override;
+    nstd::dinamis visitOperasiTidak(const OperasiTidakContext& ctx) override;
+    nstd::dinamis visitOperasiNotBit(const OperasiNotBitContext& ctx) override;
+    nstd::dinamis visitOperasiKurangSatu(const OperasiKurangSatuContext& ctx
+    ) override;
+    nstd::dinamis visitOperasiTambahSatu(const OperasiTambahSatuContext& ctx
+    ) override;
+    nstd::dinamis visitNilai(const NilaiContext& ctx) override;
+    nstd::dinamis visitNilaiKalimat(const NilaiKalimatContext& ctx) override;
 
   private:
     ErrorInfo errorInfo;
     nstd::daftar<Token> tokens;
 
     nstd::dinamis fragmentVisitOperator(
-        const nstd::bisa_kosong<Token> &simbolOp, const std::string &opName
+        const nstd::bisa_kosong<Token>& simbolOp, const std::string& opName
     );
 
     nstd::dinamis operasiAritmatika(
-        const nstd::dinamis &left, const std::string &simbolOp,
-        const nstd::dinamis &right
+        const nstd::dinamis& left, const std::string& simbolOp,
+        const nstd::dinamis& right
     );
     nstd::dinamis operasiPenjumlahan(
-        const nstd::dinamis &left, const nstd::dinamis &right
+        const nstd::dinamis& left, const nstd::dinamis& right
     );
     nstd::dinamis operasiPengurangan(
-        const nstd::dinamis &left, const nstd::dinamis &right
+        const nstd::dinamis& left, const nstd::dinamis& right
     );
     nstd::dinamis operasiPerkalian(
-        const nstd::dinamis &left, const nstd::dinamis &right
+        const nstd::dinamis& left, const nstd::dinamis& right
     );
     nstd::dinamis operasiPembagian(
-        const nstd::dinamis &left, const nstd::dinamis &right
+        const nstd::dinamis& left, const nstd::dinamis& right
     );
     nstd::dinamis operasiSisaPembagian(
-        const nstd::dinamis &left, const nstd::dinamis &right
+        const nstd::dinamis& left, const nstd::dinamis& right
     );
 
     nstd::dinamis operasiPerbandingan(
-        const nstd::dinamis &left, const std::string &simbolOp,
-        const nstd::dinamis &right
+        const nstd::dinamis& left, const std::string& simbolOp,
+        const nstd::dinamis& right
     );
     nstd::dinamis operasiSama(
-        const nstd::dinamis &left, const nstd::dinamis &right
+        const nstd::dinamis& left, const nstd::dinamis& right
     );
     nstd::dinamis operasiTidakSama(
-        const nstd::dinamis &left, const nstd::dinamis &right
+        const nstd::dinamis& left, const nstd::dinamis& right
     );
     nstd::dinamis operasiLebihBesar(
-        const nstd::dinamis &left, const nstd::dinamis &right
+        const nstd::dinamis& left, const nstd::dinamis& right
     );
     nstd::dinamis operasiLebihKecil(
-        const nstd::dinamis &left, const nstd::dinamis &right
+        const nstd::dinamis& left, const nstd::dinamis& right
     );
     nstd::dinamis operasiLebihBesarSamaDengan(
-        const nstd::dinamis &left, const nstd::dinamis &right
+        const nstd::dinamis& left, const nstd::dinamis& right
     );
     nstd::dinamis operasiLebihKecilSamaDengan(
-        const nstd::dinamis &left, const nstd::dinamis &right
+        const nstd::dinamis& left, const nstd::dinamis& right
     );
 };

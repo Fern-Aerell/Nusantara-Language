@@ -5,8 +5,10 @@
 
 #include <chrono>
 #include <exception>
-#include <iostream>
+#include <format>
+#include <string>
 
+#include "nstd/konsol.h"
 #include "nusantara/cli/cli.h"
 
 #ifdef _WIN32
@@ -22,10 +24,13 @@ int main(int argc, char* argv[]) {
   try {
     Cli cli;
     cli.input(argc, argv);
-  } catch(const std::exception& error) { std::cout << error.what() << "\n"; }
+  } catch(const std::exception& error) {
+    nstd::cetak(std::string(error.what()));
+  }
   auto end = std::chrono::steady_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::seconds>(end - start);
-  std::cout << "Program berjalan selama: " << duration.count() << " detik."
-            << "\n";
+  nstd::cetak(
+      std::format("Program berjalan selama: {} detik.", duration.count())
+  );
   return 0;
 }

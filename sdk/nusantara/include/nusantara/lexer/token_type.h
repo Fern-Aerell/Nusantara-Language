@@ -25,6 +25,12 @@ enum class TokenType : int {
   KALI_SAMA_DENGAN,
   BAGI_SAMA_DENGAN,
   SISA_BAGI_SAMA_DENGAN,
+  AND_BIT_SAMA_DENGAN,
+  OR_BIT_SAMA_DENGAN,
+  XOR_BIT_SAMA_DENGAN,
+  NOT_BIT_SAMA_DENGAN,
+  GESER_KIRI_BIT_SAMA_DENGAN,
+  GESER_KANAN_BIT_SAMA_DENGAN,
   // Operator Aritmatika
   TAMBAH,
   KURANG,
@@ -44,6 +50,13 @@ enum class TokenType : int {
   DAN,
   ATAU,
   TIDAK,
+  // Operator Bitwise
+  AND_BIT,
+  OR_BIT,
+  XOR_BIT,
+  NOT_BIT,
+  GESER_KIRI_BIT,
+  GESER_KANAN_BIT,
   // Pemisah
   TITIK_KOMA,
   KURUNG_BUKA,
@@ -147,5 +160,29 @@ inline std::string toString(const TokenType &type) {
       return "KARAKTER";
     case TokenType::GARIS_MIRING_KEBALIK:
       return "GARIS_MIRING_KEBALIK";
+    case TokenType::AND_BIT:
+      return "AND_BIT";
+    case TokenType::OR_BIT:
+      return "OR_BIT";
+    case TokenType::XOR_BIT:
+      return "XOR_BIT";
+    case TokenType::NOT_BIT:
+      return "NOT_BIT";
+    case TokenType::GESER_KIRI_BIT:
+      return "GESER_KIRI_BIT";
+    case TokenType::GESER_KANAN_BIT:
+      return "GESER_KANAN_BIT";
+    case TokenType::AND_BIT_SAMA_DENGAN:
+      return "AND_BIT_SAMA_DENGAN";
+    case TokenType::OR_BIT_SAMA_DENGAN:
+      return "OR_BIT_SAMA_DENGAN";
+    case TokenType::XOR_BIT_SAMA_DENGAN:
+      return "XOR_BIT_SAMA_DENGAN";
+    case TokenType::NOT_BIT_SAMA_DENGAN:
+      return "NOT_BIT_SAMA_DENGAN";
+    case TokenType::GESER_KIRI_BIT_SAMA_DENGAN:
+      return "GESER_KIRI_BIT_SAMA_DENGAN";
+    case TokenType::GESER_KANAN_BIT_SAMA_DENGAN:
+      return "GESER_KANAN_BIT_SAMA_DENGAN";
   }
 };

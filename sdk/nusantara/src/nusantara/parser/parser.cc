@@ -16,7 +16,9 @@ Parser::Parser(ErrorInfo errorInfo, Lexer lexer):
     lexer(std::move(lexer)),
     currentToken(this->lexer.getNextToken()) {}
 
-void Parser::eat(const TokenType &type, const bool &skipWs) {
+std::unique_ptr<ParserTree> Parser::eat(
+    const TokenType& type, const bool& skipWs
+) {
   if(this->currentToken.getType() == type) {
     this->currentToken = this->lexer.getNextToken();
     if(skipWs &&
@@ -31,6 +33,7 @@ void Parser::eat(const TokenType &type, const bool &skipWs) {
           this->currentToken, "Karakter tidak di kenali."
       ));
     }
+    return std::make_unique<ParserTokenTree>(this->currentToken);
   } else {
     if(type == TokenType::TITIK_KOMA) {
       throw std::runtime_error(this->errorInfo.inLine(
@@ -49,38 +52,49 @@ void Parser::eat(const TokenType &type, const bool &skipWs) {
   }
 }
 
-bool Parser::match(const TokenType &type) {
+bool Parser::match(const TokenType& type) {
   return this->currentToken.getType() == type;
 }
 
-bool Parser::matchOr(const std::vector<TokenType> &types) {
-  return std::ranges::any_of(types, [this](const TokenType &type) {
+bool Parser::matchOr(const std::vector<TokenType>& types) {
+  return std::ranges::any_of(types, [this](const TokenType& type) {
     return this->match(type);
   });
 }
 
 // Fragment
-std::unique_ptr<ParserTree> Parser::fragmentTokenTypeGroup(
-    const std::vector<TokenType> &tokenTypes, const ParserRule &rule
+std::unique_ptr<ParserTree> Parser::fragmentMultiOperasiLeftRight(
+    const ParserRule& rule,
+    const std::function<std::unique_ptr<ParserTree>()>& leftRightFunction,
+    const TokenType& opSymbol
 ) {
-  for(const TokenType &type : tokenTypes) {
-    if(this->currentToken.getType() == type) {
-      std::unique_ptr<ParserTree> result =
-          std::make_unique<ParserRuleTree>(rule);
-      std::unique_ptr<ParserTree> token =
-          std::make_unique<ParserTokenTree>(this->currentToken);
-      result->addChild(std::move(token));
-      eat(type);
-      return result;
+  std::unique_ptr<ParserTree> pRuleTree =
+      std::make_unique<ParserRuleTree>(rule);
+  pRuleTree->addChild(leftRightFunction());
+  while(this->match(opSymbol)) {
+    pRuleTree->addChild(eat(opSymbol));
+    pRuleTree->addChild(leftRightFunction());
+  }
+  return pRuleTree;
+}
+
+std::unique_ptr<ParserTree> Parser::fragmentOperasiPrePost(
+    const ParserRule& rule,
+    const std::function<std::unique_ptr<ParserTree>()>& leftFunction,
+    const TokenType& opSymbol, const bool& pre, const bool& post
+) {
+  std::unique_ptr<ParserTree> pRuleTree =
+      std::make_unique<ParserRuleTree>(rule);
+  if(pre && this->match(opSymbol)) {
+    pRuleTree->addChild(this->eat(opSymbol));
+    pRuleTree->addChild(leftFunction());
+  } else {
+    pRuleTree->addChild(leftFunction());
+    if(post && this->match(opSymbol)) {
+      pRuleTree->addChild(this->eat(opSymbol));
     }
   }
-  throw std::runtime_error(this->errorInfo.inLine(
-      this->currentToken,
-      std::format(
-          "'{}' bukan {} yang valid.", toString(this->currentToken.getType()),
-          toString(rule)
-      )
-  ));
+  return pRuleTree;
 }
 
 // Parse
@@ -90,254 +104,288 @@ std::unique_ptr<ParserTree> Parser::parseNusantara() {
   std::unique_ptr<ParserTree> nusantara =
       std::make_unique<ParserRuleTree>(ParserRule::nusantara);
   while(!match(TokenType::AKHIR_DARI_FILE)) {
-    std::unique_ptr<ParserTree> operasiPenugasan =
-        this->parseOperasiPenugasan();
-    nusantara->addChild(std::move(operasiPenugasan));
-    std::unique_ptr<ParserTree> titikKoma =
-        std::make_unique<ParserTokenTree>(this->currentToken);
-    nusantara->addChild(std::move(titikKoma));
-    eat(TokenType::TITIK_KOMA);
+    nusantara->addChild(this->parseEkspresi());
+    nusantara->addChild(eat(TokenType::TITIK_KOMA));
   }
   return nusantara;
 }
 
-std::unique_ptr<ParserTree> Parser::parseOperatorPenugasan() {
-  std::vector<TokenType> types = {TokenType::SAMA_DENGAN};
-  return this->fragmentTokenTypeGroup(types, ParserRule::operator_penugasan);
+std::unique_ptr<ParserTree> Parser::parseEkspresi() {
+  std::unique_ptr<ParserTree> ekspresi =
+      std::make_unique<ParserRuleTree>(ParserRule::ekspresi);
+  ekspresi->addChild(this->parseOperasiGeserKananBitSamaDengan());
+  return ekspresi;
 }
 
-std::unique_ptr<ParserTree> Parser::parseOperasiPenugasan() {
-  std::unique_ptr<ParserTree> operasiPenugasan =
-      std::make_unique<ParserRuleTree>(ParserRule::operasi_penugasan);
-  std::unique_ptr<ParserTree> left = this->parseOperasiPenugasanPenjumlahan();
-  operasiPenugasan->addChild(std::move(left));
-  while(this->matchOr({TokenType::SAMA_DENGAN})) {
-    std::unique_ptr<ParserTree> operatorPenugasan =
-        this->parseOperatorPenugasan();
-    operasiPenugasan->addChild(std::move(operatorPenugasan));
-    std::unique_ptr<ParserTree> right =
-        this->parseOperasiPenugasanPenjumlahan();
-    operasiPenugasan->addChild(std::move(right));
-  }
-  return operasiPenugasan;
+std::unique_ptr<ParserTree> Parser::parseOperasiGeserKananBitSamaDengan() {
+  return this->fragmentMultiOperasiLeftRight(
+      ParserRule::operasi_geser_kanan_bit_sama_dengan,
+      [this]() { return this->parseOperasiGeserKiriBitSamaDengan(); },
+      TokenType::GESER_KANAN_BIT_SAMA_DENGAN
+  );
 }
 
-std::unique_ptr<ParserTree> Parser::parseOperatorPenugasanPenjumlahan() {
-  std::vector<TokenType> types = {
-      TokenType::TAMBAH_SAMA_DENGAN, TokenType::KURANG_SAMA_DENGAN
-  };
-  return this->fragmentTokenTypeGroup(types, ParserRule::operator_penugasan);
+std::unique_ptr<ParserTree> Parser::parseOperasiGeserKiriBitSamaDengan() {
+  return this->fragmentMultiOperasiLeftRight(
+      ParserRule::operasi_geser_kiri_bit_sama_dengan,
+      [this]() { return this->parseOperasiXorBitSamaDengan(); },
+      TokenType::GESER_KIRI_BIT_SAMA_DENGAN
+  );
 }
 
-std::unique_ptr<ParserTree> Parser::parseOperasiPenugasanPenjumlahan() {
-  std::unique_ptr<ParserTree> operasiPenugasanPenjumlahan =
-      std::make_unique<ParserRuleTree>(ParserRule::operasi_penugasan_penjumlahan
-      );
-  std::unique_ptr<ParserTree> left = this->parseOperasiPenugasanPerkalian();
-  operasiPenugasanPenjumlahan->addChild(std::move(left));
-  while(this->matchOr(
-      {TokenType::TAMBAH_SAMA_DENGAN, TokenType::KURANG_SAMA_DENGAN}
-  )) {
-    std::unique_ptr<ParserTree> operatorPenugasanPenjumlahan =
-        this->parseOperatorPenugasanPenjumlahan();
-    operasiPenugasanPenjumlahan->addChild(std::move(operatorPenugasanPenjumlahan
-    ));
-    std::unique_ptr<ParserTree> right = this->parseOperasiPenugasanPerkalian();
-    operasiPenugasanPenjumlahan->addChild(std::move(right));
-  }
-  return operasiPenugasanPenjumlahan;
+std::unique_ptr<ParserTree> Parser::parseOperasiXorBitSamaDengan() {
+  return this->fragmentMultiOperasiLeftRight(
+      ParserRule::operasi_xor_bit_sama_dengan,
+      [this]() { return this->parseOperasiOrBitSamaDengan(); },
+      TokenType::XOR_BIT_SAMA_DENGAN
+  );
 }
 
-std::unique_ptr<ParserTree> Parser::parseOperatorPenugasanPerkalian() {
-  std::vector<TokenType> types = {
-      TokenType::KALI_SAMA_DENGAN, TokenType::BAGI_SAMA_DENGAN,
+std::unique_ptr<ParserTree> Parser::parseOperasiOrBitSamaDengan() {
+  return this->fragmentMultiOperasiLeftRight(
+      ParserRule::operasi_or_bit_sama_dengan,
+      [this]() { return this->parseOperasiAndBitSamaDengan(); },
+      TokenType::OR_BIT_SAMA_DENGAN
+  );
+}
+
+std::unique_ptr<ParserTree> Parser::parseOperasiAndBitSamaDengan() {
+  return this->fragmentMultiOperasiLeftRight(
+      ParserRule::operasi_and_bit_sama_dengan,
+      [this]() { return this->parseOperasiKurangSamaDengan(); },
+      TokenType::AND_BIT_SAMA_DENGAN
+  );
+}
+
+std::unique_ptr<ParserTree> Parser::parseOperasiKurangSamaDengan() {
+  return this->fragmentMultiOperasiLeftRight(
+      ParserRule::operasi_kurang_sama_dengan,
+      [this]() { return this->parseOperasiTambahSamaDengan(); },
+      TokenType::KURANG_SAMA_DENGAN
+  );
+}
+
+std::unique_ptr<ParserTree> Parser::parseOperasiTambahSamaDengan() {
+  return this->fragmentMultiOperasiLeftRight(
+      ParserRule::operasi_tambah_sama_dengan,
+      [this]() { return this->parseOperasiSisaBagiSamaDengan(); },
+      TokenType::TAMBAH_SAMA_DENGAN
+  );
+}
+
+std::unique_ptr<ParserTree> Parser::parseOperasiSisaBagiSamaDengan() {
+  return this->fragmentMultiOperasiLeftRight(
+      ParserRule::operasi_sisa_bagi_sama_dengan,
+      [this]() { return this->parseOperasiBagiSamaDengan(); },
       TokenType::SISA_BAGI_SAMA_DENGAN
-  };
-  return this->fragmentTokenTypeGroup(types, ParserRule::operator_penugasan);
+  );
 }
 
-std::unique_ptr<ParserTree> Parser::parseOperasiPenugasanPerkalian() {
-  std::unique_ptr<ParserTree> operasiPenugasanPerkalian =
-      std::make_unique<ParserRuleTree>(ParserRule::operasi_penugasan_perkalian);
-  std::unique_ptr<ParserTree> left = this->parseOperasiLogika();
-  operasiPenugasanPerkalian->addChild(std::move(left));
-  while(this->matchOr(
-      {TokenType::KALI_SAMA_DENGAN, TokenType::BAGI_SAMA_DENGAN,
-       TokenType::SISA_BAGI_SAMA_DENGAN}
-  )) {
-    std::unique_ptr<ParserTree> operatorPenugasanPerkalian =
-        this->parseOperatorPenugasanPerkalian();
-    operasiPenugasanPerkalian->addChild(std::move(operatorPenugasanPerkalian));
-    std::unique_ptr<ParserTree> right = this->parseOperasiLogika();
-    operasiPenugasanPerkalian->addChild(std::move(right));
-  }
-  return operasiPenugasanPerkalian;
+std::unique_ptr<ParserTree> Parser::parseOperasiBagiSamaDengan() {
+  return this->fragmentMultiOperasiLeftRight(
+      ParserRule::operasi_bagi_sama_dengan,
+      [this]() { return this->parseOperasiKaliSamaDengan(); },
+      TokenType::BAGI_SAMA_DENGAN
+  );
 }
 
-std::unique_ptr<ParserTree> Parser::parseOperatorLogika() {
-  std::vector<TokenType> types = {TokenType::DAN, TokenType::ATAU};
-  return this->fragmentTokenTypeGroup(types, ParserRule::operator_logika);
+std::unique_ptr<ParserTree> Parser::parseOperasiKaliSamaDengan() {
+  return this->fragmentMultiOperasiLeftRight(
+      ParserRule::operasi_kali_sama_dengan,
+      [this]() { return this->parseOperasiSamaDengan(); },
+      TokenType::KALI_SAMA_DENGAN
+  );
 }
 
-std::unique_ptr<ParserTree> Parser::parseOperasiLogika() {
-  std::unique_ptr<ParserTree> operasiLogika =
-      std::make_unique<ParserRuleTree>(ParserRule::operasi_logika);
-  std::unique_ptr<ParserTree> left = this->parseOperasiLogikaTidak();
-  operasiLogika->addChild(std::move(left));
-  while(this->matchOr({TokenType::DAN, TokenType::ATAU})) {
-    std::unique_ptr<ParserTree> operatorLogika = this->parseOperatorLogika();
-    operasiLogika->addChild(std::move(operatorLogika));
-    std::unique_ptr<ParserTree> right = this->parseOperasiLogikaTidak();
-    operasiLogika->addChild(std::move(right));
-  }
-  return operasiLogika;
+std::unique_ptr<ParserTree> Parser::parseOperasiSamaDengan() {
+  return this->fragmentMultiOperasiLeftRight(
+      ParserRule::operasi_sama_dengan,
+      [this]() { return this->parseOperasiAtau(); }, TokenType::SAMA_DENGAN
+  );
 }
 
-std::unique_ptr<ParserTree> Parser::parseOperatorLogikaTidak() {
-  std::vector<TokenType> types = {TokenType::TIDAK};
-  return this->fragmentTokenTypeGroup(types, ParserRule::operator_logika_tidak);
+std::unique_ptr<ParserTree> Parser::parseOperasiAtau() {
+  return this->fragmentMultiOperasiLeftRight(
+      ParserRule::operasi_atau, [this]() { return this->parseOperasiDan(); },
+      TokenType::ATAU
+  );
 }
 
-std::unique_ptr<ParserTree> Parser::parseOperasiLogikaTidak() {
-  std::unique_ptr<ParserTree> operasiLogikaTidak =
-      std::make_unique<ParserRuleTree>(ParserRule::operasi_logika_tidak);
-  if(match(TokenType::TIDAK)) {
-    std::unique_ptr<ParserTree> operatorLogikaTidak =
-        this->parseOperatorLogikaTidak();
-    operasiLogikaTidak->addChild(std::move(operatorLogikaTidak));
-  }
-  std::unique_ptr<ParserTree> left = this->parseOperasiPerbandingan();
-  operasiLogikaTidak->addChild(std::move(left));
-  return operasiLogikaTidak;
+std::unique_ptr<ParserTree> Parser::parseOperasiDan() {
+  return this->fragmentMultiOperasiLeftRight(
+      ParserRule::operasi_dan, [this]() { return this->parseOperasiOrBit(); },
+      TokenType::DAN
+  );
 }
 
-std::unique_ptr<ParserTree> Parser::parseOperatorPerbandingan() {
-  std::vector<TokenType> types = {
-      TokenType::SAMA,
-      TokenType::TIDAK_SAMA,
-      TokenType::LEBIH_BESAR,
-      TokenType::LEBIH_KECIL,
-      TokenType::LEBIH_BESAR_SAMA_DENGAN,
+std::unique_ptr<ParserTree> Parser::parseOperasiOrBit() {
+  return this->fragmentMultiOperasiLeftRight(
+      ParserRule::operasi_or_bit,
+      [this]() { return this->parseOperasiXorBit(); }, TokenType::OR_BIT
+  );
+}
+
+std::unique_ptr<ParserTree> Parser::parseOperasiXorBit() {
+  return this->fragmentMultiOperasiLeftRight(
+      ParserRule::operasi_xor_bit,
+      [this]() { return this->parseOperasiAndBit(); }, TokenType::XOR_BIT
+  );
+}
+
+std::unique_ptr<ParserTree> Parser::parseOperasiAndBit() {
+  return this->fragmentMultiOperasiLeftRight(
+      ParserRule::operasi_and_bit,
+      [this]() { return this->parseOperasiTidakSama(); }, TokenType::AND_BIT
+  );
+}
+
+std::unique_ptr<ParserTree> Parser::parseOperasiTidakSama() {
+  return this->fragmentMultiOperasiLeftRight(
+      ParserRule::operasi_tidak_sama,
+      [this]() { return this->parseOperasiSama(); }, TokenType::TIDAK_SAMA
+  );
+}
+
+std::unique_ptr<ParserTree> Parser::parseOperasiSama() {
+  return this->fragmentMultiOperasiLeftRight(
+      ParserRule::operasi_sama,
+      [this]() { return this->parseOperasiLebihBesarSamaDengan(); },
+      TokenType::SAMA
+  );
+}
+
+std::unique_ptr<ParserTree> Parser::parseOperasiLebihBesarSamaDengan() {
+  return this->fragmentMultiOperasiLeftRight(
+      ParserRule::operasi_lebih_besar_sama_dengan,
+      [this]() { return this->parseOperasiLebihBesar(); },
+      TokenType::LEBIH_BESAR_SAMA_DENGAN
+  );
+}
+
+std::unique_ptr<ParserTree> Parser::parseOperasiLebihBesar() {
+  return this->fragmentMultiOperasiLeftRight(
+      ParserRule::operasi_lebih_besar,
+      [this]() { return this->parseOperasiLebihKecilSamaDengan(); },
+      TokenType::LEBIH_BESAR
+  );
+}
+
+std::unique_ptr<ParserTree> Parser::parseOperasiLebihKecilSamaDengan() {
+  return this->fragmentMultiOperasiLeftRight(
+      ParserRule::operasi_lebih_kecil_sama_dengan,
+      [this]() { return this->parseOperasiLebihKecil(); },
       TokenType::LEBIH_KECIL_SAMA_DENGAN
-  };
-  return this->fragmentTokenTypeGroup(types, ParserRule::operator_perbandingan);
+  );
 }
 
-std::unique_ptr<ParserTree> Parser::parseOperasiPerbandingan() {
-  std::unique_ptr<ParserTree> operasiPerbandingan =
-      std::make_unique<ParserRuleTree>(ParserRule::operasi_perbandingan);
-  std::unique_ptr<ParserTree> left = this->parseOperasiPrePost();
-  operasiPerbandingan->addChild(std::move(left));
-  while(this->matchOr(
-      {TokenType::SAMA, TokenType::TIDAK_SAMA, TokenType::LEBIH_BESAR,
-       TokenType::LEBIH_KECIL, TokenType::LEBIH_BESAR_SAMA_DENGAN,
-       TokenType::LEBIH_KECIL_SAMA_DENGAN}
-  )) {
-    std::unique_ptr<ParserTree> operatorPerbandingan =
-        this->parseOperatorPerbandingan();
-    operasiPerbandingan->addChild(std::move(operatorPerbandingan));
-    std::unique_ptr<ParserTree> right = this->parseOperasiPrePost();
-    operasiPerbandingan->addChild(std::move(right));
-  }
-  return operasiPerbandingan;
+std::unique_ptr<ParserTree> Parser::parseOperasiLebihKecil() {
+  return this->fragmentMultiOperasiLeftRight(
+      ParserRule::operasi_lebih_kecil,
+      [this]() { return this->parseOperasiGeserKananBit(); },
+      TokenType::LEBIH_KECIL
+  );
 }
 
-std::unique_ptr<ParserTree> Parser::parseOperatorPrePost() {
-  std::vector<TokenType> types = {
-      TokenType::TAMBAH_SATU, TokenType::KURANG_SATU
-  };
-  return this->fragmentTokenTypeGroup(types, ParserRule::operator_pre_post);
+std::unique_ptr<ParserTree> Parser::parseOperasiGeserKananBit() {
+  return this->fragmentMultiOperasiLeftRight(
+      ParserRule::operasi_geser_kanan_bit,
+      [this]() { return this->parseOperasiGeserKiriBit(); },
+      TokenType::GESER_KANAN_BIT
+  );
 }
 
-std::unique_ptr<ParserTree> Parser::parseOperasiPrePost() {
-  std::unique_ptr<ParserTree> operasiPrePost =
-      std::make_unique<ParserRuleTree>(ParserRule::operasi_pre_post);
-  if(this->matchOr({TokenType::TAMBAH_SATU, TokenType::KURANG_SATU})) {
-    std::unique_ptr<ParserTree> operatorPrePost = this->parseOperatorPrePost();
-    operasiPrePost->addChild(std::move(operatorPrePost));
-    std::unique_ptr<ParserTree> nilai = this->parseOperasiPenjumlahan();
-    operasiPrePost->addChild(std::move(nilai));
-  } else {
-    std::unique_ptr<ParserTree> nilai = this->parseOperasiPenjumlahan();
-    operasiPrePost->addChild(std::move(nilai));
-    if(this->matchOr({TokenType::TAMBAH_SATU, TokenType::KURANG_SATU})) {
-      std::unique_ptr<ParserTree> operatorPrePost =
-          this->parseOperatorPrePost();
-      operasiPrePost->addChild(std::move(operatorPrePost));
-    }
-  }
-  return operasiPrePost;
+std::unique_ptr<ParserTree> Parser::parseOperasiGeserKiriBit() {
+  return this->fragmentMultiOperasiLeftRight(
+      ParserRule::operasi_geser_kiri_bit,
+      [this]() { return this->parseOperasiKurang(); }, TokenType::GESER_KIRI_BIT
+  );
 }
 
-std::unique_ptr<ParserTree> Parser::parseOperatorPenjumlahan() {
-  std::vector<TokenType> types = {TokenType::TAMBAH, TokenType::KURANG};
-  return this->fragmentTokenTypeGroup(types, ParserRule::operator_penjumlahan);
+std::unique_ptr<ParserTree> Parser::parseOperasiKurang() {
+  return this->fragmentMultiOperasiLeftRight(
+      ParserRule::operasi_kurang,
+      [this]() { return this->parseOperasiTambah(); }, TokenType::KURANG
+  );
 }
 
-std::unique_ptr<ParserTree> Parser::parseOperasiPenjumlahan() {
-  std::unique_ptr<ParserTree> operasiPenjumlahan =
-      std::make_unique<ParserRuleTree>(ParserRule::operasi_penjumlahan);
-  std::unique_ptr<ParserTree> left = this->parseOperasiPerkalian();
-  operasiPenjumlahan->addChild(std::move(left));
-  while(this->matchOr({TokenType::TAMBAH, TokenType::KURANG})) {
-    std::unique_ptr<ParserTree> operatorPenjumlahan =
-        this->parseOperatorPenjumlahan();
-    operasiPenjumlahan->addChild(std::move(operatorPenjumlahan));
-    std::unique_ptr<ParserTree> right = this->parseOperasiPerkalian();
-    operasiPenjumlahan->addChild(std::move(right));
-  }
-  return operasiPenjumlahan;
+std::unique_ptr<ParserTree> Parser::parseOperasiTambah() {
+  return this->fragmentMultiOperasiLeftRight(
+      ParserRule::operasi_tambah,
+      [this]() { return this->parseOperasiSisaPembagian(); }, TokenType::TAMBAH
+  );
 }
 
-std::unique_ptr<ParserTree> Parser::parseOperatorPerkalian() {
-  std::vector<TokenType> types = {
-      TokenType::KALI, TokenType::BAGI, TokenType::SISA_BAGI
-  };
-  return this->fragmentTokenTypeGroup(types, ParserRule::operator_perkalian);
+std::unique_ptr<ParserTree> Parser::parseOperasiSisaPembagian() {
+  return this->fragmentMultiOperasiLeftRight(
+      ParserRule::operasi_sisa_pembagian,
+      [this]() { return this->parseOperasiPembagian(); }, TokenType::SISA_BAGI
+  );
+}
+
+std::unique_ptr<ParserTree> Parser::parseOperasiPembagian() {
+  return this->fragmentMultiOperasiLeftRight(
+      ParserRule::operasi_pembagian,
+      [this]() { return this->parseOperasiPerkalian(); }, TokenType::BAGI
+  );
 }
 
 std::unique_ptr<ParserTree> Parser::parseOperasiPerkalian() {
-  std::unique_ptr<ParserTree> operasiPerkalian =
-      std::make_unique<ParserRuleTree>(ParserRule::operasi_perkalian);
-  std::unique_ptr<ParserTree> left = this->parseNilai();
-  operasiPerkalian->addChild(std::move(left));
-  while(this->matchOr({TokenType::KALI, TokenType::BAGI, TokenType::SISA_BAGI})
-  ) {
-    std::unique_ptr<ParserTree> operatorPerkalian =
-        this->parseOperatorPerkalian();
-    operasiPerkalian->addChild(std::move(operatorPerkalian));
-    std::unique_ptr<ParserTree> right = this->parseNilai();
-    operasiPerkalian->addChild(std::move(right));
-  }
-  return operasiPerkalian;
+  return this->fragmentMultiOperasiLeftRight(
+      ParserRule::operasi_perkalian,
+      [this]() { return this->parseOperasiTidak(); }, TokenType::KALI
+  );
+}
+
+std::unique_ptr<ParserTree> Parser::parseOperasiTidak() {
+  return this->fragmentOperasiPrePost(
+      ParserRule::operasi_tidak,
+      [this]() { return this->parseOperasiNotBit(); }, TokenType::TIDAK, true,
+      false
+  );
+}
+
+std::unique_ptr<ParserTree> Parser::parseOperasiNotBit() {
+  return this->fragmentMultiOperasiLeftRight(
+      ParserRule::operasi_not_bit,
+      [this]() { return this->parseOperasiKurangSatu(); }, TokenType::NOT_BIT
+  );
+}
+
+std::unique_ptr<ParserTree> Parser::parseOperasiKurangSatu() {
+  return this->fragmentOperasiPrePost(
+      ParserRule::operasi_kurang_satu,
+      [this]() { return this->parseOperasiTambahSatu(); },
+      TokenType::KURANG_SATU, true, true
+  );
+}
+
+std::unique_ptr<ParserTree> Parser::parseOperasiTambahSatu() {
+  return this->fragmentOperasiPrePost(
+      ParserRule::operasi_tambah_satu, [this]() { return this->parseNilai(); },
+      TokenType::TAMBAH_SATU, true, true
+  );
 }
 
 std::unique_ptr<ParserTree> Parser::parseNilai() {
-  std::vector<TokenType> types = {
+  std::unique_ptr<ParserTree> ekspresi_nilai =
+      std::make_unique<ParserRuleTree>(ParserRule::nilai);
+  const nstd::daftar<TokenType> types = {
       TokenType::BILANGAN, TokenType::BENAR, TokenType::SALAH
   };
   if(this->matchOr(types)) {
-    return this->fragmentTokenTypeGroup(types, ParserRule::nilai);
+    for(const TokenType& type : types) {
+      if(this->match(type)) {
+        ekspresi_nilai->addChild(this->eat(type));
+        return ekspresi_nilai;
+      }
+    }
   } else if(this->matchOr({TokenType::KUTIP_SATU, TokenType::KUTIP_DUA})) {
-    std::unique_ptr<ParserTree> ekspresi_nilai =
-        std::make_unique<ParserRuleTree>(ParserRule::nilai);
-    std::unique_ptr<ParserTree> nilaiKalimat = this->parseNilaiKalimat();
-    ekspresi_nilai->addChild(std::move(nilaiKalimat));
+    ekspresi_nilai->addChild(this->parseNilaiKalimat());
     return ekspresi_nilai;
   } else if(this->match(TokenType::KURUNG_BUKA)) {
-    std::unique_ptr<ParserTree> ekspresi_nilai =
-        std::make_unique<ParserRuleTree>(ParserRule::nilai);
-    std::unique_ptr<ParserTree> kurungBuka =
-        std::make_unique<ParserTokenTree>(this->currentToken);
-    ekspresi_nilai->addChild(std::move(kurungBuka));
-    eat(TokenType::KURUNG_BUKA);
-    std::unique_ptr<ParserTree> operatorPenugasan =
-        this->parseOperasiPenugasan();
-    ekspresi_nilai->addChild(std::move(operatorPenugasan));
-    std::unique_ptr<ParserTree> kurungTutup =
-        std::make_unique<ParserTokenTree>(this->currentToken);
-    ekspresi_nilai->addChild(std::move(kurungTutup));
-    eat(TokenType::KURUNG_TUTUP);
+    ekspresi_nilai->addChild(eat(TokenType::KURUNG_BUKA));
+    ekspresi_nilai->addChild(this->parseEkspresi());
+    ekspresi_nilai->addChild(eat(TokenType::KURUNG_TUTUP));
     return ekspresi_nilai;
   }
   throw std::runtime_error(this->errorInfo.inLine(
@@ -351,46 +399,24 @@ std::unique_ptr<ParserTree> Parser::parseNilai() {
 
 std::unique_ptr<ParserTree> Parser::parseNilaiKalimat() {
   std::unique_ptr<ParserTree> nilaiKalimat =
-      std::make_unique<ParserRuleTree>(ParserRule::nilaiKalimat);
-  // Kutip pembuka
-  std::unique_ptr<ParserTree> kutipPembuka =
-      std::make_unique<ParserTokenTree>(this->currentToken);
-  nilaiKalimat->addChild(std::move(kutipPembuka));
+      std::make_unique<ParserRuleTree>(ParserRule::nilai_kalimat);
   TokenType kutipPembukaType = TokenType::KUTIP_SATU;
   if(match(TokenType::KUTIP_SATU)) {
-    eat(TokenType::KUTIP_SATU, false);
+    nilaiKalimat->addChild(eat(TokenType::KUTIP_SATU, false));
   } else {
-    eat(TokenType::KUTIP_DUA, false);
+    nilaiKalimat->addChild(eat(TokenType::KUTIP_DUA, false));
     kutipPembukaType = TokenType::KUTIP_DUA;
   }
-  // Isinya
   while(!this->match(kutipPembukaType)) {
     if(this->match(TokenType::GARIS_MIRING_KEBALIK)) {
-      std::unique_ptr<ParserTree> garisMiringKebalik =
-          std::make_unique<ParserTokenTree>(this->currentToken);
-      nilaiKalimat->addChild(std::move(garisMiringKebalik));
-      eat(this->currentToken.getType(), false);
-      std::unique_ptr<ParserTree> karakterSetelahnya =
-          std::make_unique<ParserTokenTree>(this->currentToken);
-      nilaiKalimat->addChild(std::move(karakterSetelahnya));
-      eat(this->currentToken.getType(), false);
+      nilaiKalimat->addChild(eat(this->currentToken.getType(), false));
+      nilaiKalimat->addChild(eat(this->currentToken.getType(), false));
     } else if(this->match(TokenType::DOLAR)) {
-      std::unique_ptr<ParserTree> dolar =
-          std::make_unique<ParserTokenTree>(this->currentToken);
-      nilaiKalimat->addChild(std::move(dolar));
-      eat(TokenType::DOLAR, false);
+      nilaiKalimat->addChild(eat(TokenType::DOLAR, false));
       if(this->match(TokenType::KURUNG_KURAWAL_BUKA)) {
-        std::unique_ptr<ParserTree> kurungKurawalBuka =
-            std::make_unique<ParserTokenTree>(this->currentToken);
-        nilaiKalimat->addChild(std::move(kurungKurawalBuka));
-        eat(TokenType::KURUNG_KURAWAL_BUKA);
-        std::unique_ptr<ParserTree> operatorPenugasan =
-            this->parseOperasiPenugasan();
-        nilaiKalimat->addChild(std::move(operatorPenugasan));
-        std::unique_ptr<ParserTree> kurungKurawalTutup =
-            std::make_unique<ParserTokenTree>(this->currentToken);
-        nilaiKalimat->addChild(std::move(kurungKurawalTutup));
-        eat(TokenType::KURUNG_KURAWAL_TUTUP, false);
+        nilaiKalimat->addChild(eat(TokenType::KURUNG_KURAWAL_BUKA));
+        nilaiKalimat->addChild(this->parseEkspresi());
+        nilaiKalimat->addChild(eat(TokenType::KURUNG_KURAWAL_TUTUP, false));
       } else {
         throw std::runtime_error(this->errorInfo.inLine(
             this->currentToken,
@@ -406,16 +432,9 @@ std::unique_ptr<ParserTree> Parser::parseNilaiKalimat() {
             this->errorInfo.inLine(this->currentToken, "Kalimat tidak valid.")
         );
       }
-      std::unique_ptr<ParserTree> isiKalimat =
-          std::make_unique<ParserTokenTree>(this->currentToken);
-      nilaiKalimat->addChild(std::move(isiKalimat));
-      eat(this->currentToken.getType(), false);
+      nilaiKalimat->addChild(eat(this->currentToken.getType(), false));
     }
   }
-  // Kutip penutup
-  std::unique_ptr<ParserTree> kutipPenutup =
-      std::make_unique<ParserTokenTree>(this->currentToken);
-  nilaiKalimat->addChild(std::move(kutipPenutup));
-  eat(kutipPembukaType);
+  nilaiKalimat->addChild(eat(kutipPembukaType));
   return nilaiKalimat;
 }

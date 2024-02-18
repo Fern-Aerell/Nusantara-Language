@@ -1,3 +1,8 @@
+#  Fitur yang akan dibuat.
+- Nusantara mendukung operasi bit.
+- Nusantara mendukung operasi kondisional.
+- Nusantara mendukung ekspresi fungsi.
+
 # 1.11.6-Indev (18 Feb 2024)
 
 ### Sdk (nusantara)
