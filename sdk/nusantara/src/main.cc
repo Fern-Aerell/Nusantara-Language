@@ -1,20 +1,17 @@
-#include <nusantara/core/error_info.h>
-#include <nusantara/lexer/lexer.h>
-#include <nusantara/parser/parser.h>
-#include <nusantara/utils/utils.h>
-
 #include <chrono>
 #include <exception>
 #include <format>
 #include <string>
 
+#include "cli/cli.h"
 #include "nstd/konsol.h"
-#include "nusantara/cli/cli.h"
 
 #ifdef _WIN32
   #include <windows.h>
   #include <winnls.h>
 #endif
+
+using namespace nstd;
 
 int main(int argc, char* argv[]) {
   auto start = std::chrono::steady_clock::now();

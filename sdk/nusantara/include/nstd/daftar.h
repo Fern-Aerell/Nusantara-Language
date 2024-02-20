@@ -16,6 +16,16 @@ namespace nstd {
   }
 
   template<typename Tipe>
+  inline bool kosong(const daftar<Tipe>& daftar) {
+    return daftar.size() == 0;
+  }
+
+  template<typename Tipe>
+  inline bool tidakKosong(const daftar<Tipe>& daftar) {
+    return daftar.size() != 0;
+  }
+
+  template<typename Tipe>
   inline std::string toString(const daftar<Tipe>& daftar) {
     std::ostringstream stream;
     int index = 0;
