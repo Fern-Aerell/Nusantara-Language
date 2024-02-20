@@ -5,7 +5,9 @@
 #include <memory>
 #include <stdexcept>
 
+#include "nstd/daftar.h"
 #include "nstd/kosong.h"
+#include "nusantara/parser/parser_rule.h"
 
 class Context {
   public:
@@ -16,127 +18,6 @@ class Context {
     Context& operator=(const Context&) = default;      // copy assignment
     Context(Context&&) noexcept = default;             // move constructor
     Context& operator=(Context&&) noexcept = default;  // move assignment
-
-  private:
-};
-
-class NusantaraContext: public Context {
-  public:
-    static NusantaraContext generate(
-        const nstd::daftar<std::unique_ptr<ParserTree>>& children
-    ) {
-      return {};
-    }
-
-  private:
-};
-
-class EkspresiContext: public Context {
-  public:
-    static EkspresiContext generate(
-        const nstd::daftar<std::unique_ptr<ParserTree>>& children
-    ) {
-      return {};
-    }
-
-  private:
-};
-
-class OperasiGeserKananBitSamaDenganContext: public Context {
-  public:
-    static OperasiGeserKananBitSamaDenganContext generate(
-        const nstd::daftar<std::unique_ptr<ParserTree>>& children
-    ) {
-      return {};
-    }
-
-  private:
-};
-
-class OperasiGeserKiriBitSamaDenganContext: public Context {
-  public:
-    static OperasiGeserKiriBitSamaDenganContext generate(
-        const nstd::daftar<std::unique_ptr<ParserTree>>& children
-    ) {
-      return {};
-    }
-
-  private:
-};
-
-class OperasiXorBitSamaDenganContext: public Context {
-  public:
-    static OperasiXorBitSamaDenganContext generate(
-        const nstd::daftar<std::unique_ptr<ParserTree>>& children
-    ) {
-      return {};
-    }
-
-  private:
-};
-
-class OperasiOrBitSamaDenganContext: public Context {
-  public:
-    static OperasiOrBitSamaDenganContext generate(
-        const nstd::daftar<std::unique_ptr<ParserTree>>& children
-    ) {
-      return {};
-    }
-
-  private:
-};
-
-class OperasiAndBitSamaDenganContext: public Context {
-  public:
-    static OperasiAndBitSamaDenganContext generate(
-        const nstd::daftar<std::unique_ptr<ParserTree>>& children
-    ) {
-      return {};
-    }
-
-  private:
-};
-
-class OperasiKurangSamaDenganContext: public Context {
-  public:
-    static OperasiKurangSamaDenganContext generate(
-        const nstd::daftar<std::unique_ptr<ParserTree>>& children
-    ) {
-      return {};
-    }
-
-  private:
-};
-
-class OperasiTambahSamaDenganContext: public Context {
-  public:
-    static OperasiTambahSamaDenganContext generate(
-        const nstd::daftar<std::unique_ptr<ParserTree>>& children
-    ) {
-      return {};
-    }
-
-  private:
-};
-
-class OperasiSisaBagiSamaDenganContext: public Context {
-  public:
-    static OperasiSisaBagiSamaDenganContext generate(
-        const nstd::daftar<std::unique_ptr<ParserTree>>& children
-    ) {
-      return {};
-    }
-
-  private:
-};
-
-class OperasiBagiSamaDenganContext: public Context {
-  public:
-    static OperasiBagiSamaDenganContext generate(
-        const nstd::daftar<std::unique_ptr<ParserTree>>& children
-    ) {
-      return {};
-    }
 
   private:
 };
@@ -394,11 +275,338 @@ class OperasiKurangSatuContext: public Context {
   private:
 };
 
+class OperasiBagiSamaDenganContext: public Context {
+  public:
+    static OperasiBagiSamaDenganContext generate(
+        const nstd::daftar<std::unique_ptr<ParserTree>>& children
+    ) {
+      return {};
+    }
+
+  private:
+};
+
+class OperasiSisaBagiSamaDenganContext: public Context {
+  public:
+		explicit OperasiSisaBagiSamaDenganContext(
+			nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiBagiSamaDenganContext
+		):
+		kumpulanOperasiBagiSamaDenganContext(std::move(kumpulanOperasiBagiSamaDenganContext))
+		{}
+    static OperasiSisaBagiSamaDenganContext generate(
+        const nstd::daftar<std::unique_ptr<ParserTree>>& children
+    ) {
+      nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiBagiSamaDenganContext;
+			for(const std::unique_ptr<ParserTree>& child : children) {
+				if(auto* prt = dynamic_cast<ParserRuleTree*>(child.get())) {
+					if(prt->getRule() == ParserRule::operasi_bagi_sama_dengan) {	
+						kumpulanOperasiBagiSamaDenganContext.push_back(
+								std::make_unique<OperasiBagiSamaDenganContext>(
+									OperasiBagiSamaDenganContext::generate(prt->getChildren())
+								)
+						);
+					}
+				}
+			}
+      return OperasiSisaBagiSamaDenganContext(
+					std::move(kumpulanOperasiBagiSamaDenganContext)
+			);
+    }
+		[[nodiscard]] const nstd::daftar<std::unique_ptr<Context>>& getKumpulanOperasiBagiSamaDenganContext() const {
+			return this->kumpulanOperasiBagiSamaDenganContext;
+		}
+  private:
+		nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiBagiSamaDenganContext;
+};
+
+class OperasiTambahSamaDenganContext: public Context {
+  public:
+		explicit OperasiTambahSamaDenganContext(
+			nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiSisaBagiSamaDenganContext
+		):
+		kumpulanOperasiSisaBagiSamaDenganContext(std::move(kumpulanOperasiSisaBagiSamaDenganContext))
+		{}
+    static OperasiTambahSamaDenganContext generate(
+        const nstd::daftar<std::unique_ptr<ParserTree>>& children
+    ) {
+      nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiSisaBagiSamaDenganContext;
+			for(const std::unique_ptr<ParserTree>& child : children) {
+				if(auto* prt = dynamic_cast<ParserRuleTree*>(child.get())) {
+					if(prt->getRule() == ParserRule::operasi_sisa_bagi_sama_dengan) {	
+						kumpulanOperasiSisaBagiSamaDenganContext.push_back(
+								std::make_unique<OperasiSisaBagiSamaDenganContext>(
+									OperasiSisaBagiSamaDenganContext::generate(prt->getChildren())
+								)
+						);
+					}
+				}
+			}
+      return OperasiTambahSamaDenganContext(
+					std::move(kumpulanOperasiSisaBagiSamaDenganContext)
+			);
+    }
+		[[nodiscard]] const nstd::daftar<std::unique_ptr<Context>>& getKumpulanOperasiSisaBagiSamaDenganContext() const {
+			return this->kumpulanOperasiSisaBagiSamaDenganContext;
+		}
+  private:
+		nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiSisaBagiSamaDenganContext;
+};
+
+class OperasiKurangSamaDenganContext: public Context {
+  public:
+		explicit OperasiKurangSamaDenganContext(
+			nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiTambahSamaDenganContext
+		):
+		kumpulanOperasiTambahSamaDenganContext(std::move(kumpulanOperasiTambahSamaDenganContext))
+		{}
+    static OperasiKurangSamaDenganContext generate(
+        const nstd::daftar<std::unique_ptr<ParserTree>>& children
+    ) {
+      nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiTambahSamaDenganContext;
+			for(const std::unique_ptr<ParserTree>& child : children) {
+				if(auto* prt = dynamic_cast<ParserRuleTree*>(child.get())) {
+					if(prt->getRule() == ParserRule::operasi_tambah_sama_dengan) {	
+						kumpulanOperasiTambahSamaDenganContext.push_back(
+								std::make_unique<OperasiTambahSamaDenganContext>(
+									OperasiTambahSamaDenganContext::generate(prt->getChildren())
+								)
+						);
+					}
+				}
+			}
+      return OperasiKurangSamaDenganContext(
+					std::move(kumpulanOperasiTambahSamaDenganContext)
+			);
+    }
+		[[nodiscard]] const nstd::daftar<std::unique_ptr<Context>>& getKumpulanOperasiTambahSamaDenganContext() const {
+			return this->kumpulanOperasiTambahSamaDenganContext;
+		}
+  private:
+		nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiTambahSamaDenganContext;
+};
+
+class OperasiAndBitSamaDenganContext: public Context {
+  public:
+		explicit OperasiAndBitSamaDenganContext(
+			nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiKurangSamaDenganContext
+		):
+		kumpulanOperasiKurangSamaDenganContext(std::move(kumpulanOperasiKurangSamaDenganContext))
+		{}
+    static OperasiAndBitSamaDenganContext generate(
+        const nstd::daftar<std::unique_ptr<ParserTree>>& children
+    ) {
+      nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiKurangSamaDenganContext;
+			for(const std::unique_ptr<ParserTree>& child : children) {
+				if(auto* prt = dynamic_cast<ParserRuleTree*>(child.get())) {
+					if(prt->getRule() == ParserRule::operasi_kurang_sama_dengan) {	
+						kumpulanOperasiKurangSamaDenganContext.push_back(
+								std::make_unique<OperasiKurangSamaDenganContext>(
+									OperasiKurangSamaDenganContext::generate(prt->getChildren())
+								)
+						);
+					}
+				}
+			}
+      return OperasiAndBitSamaDenganContext(
+					std::move(kumpulanOperasiKurangSamaDenganContext)
+			);
+    }
+		[[nodiscard]] const nstd::daftar<std::unique_ptr<Context>>& getKumpulanOperasiKurangSamaDenganContext() const {
+			return this->kumpulanOperasiKurangSamaDenganContext;
+		}
+  private:
+		nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiKurangSamaDenganContext;
+};
+
+class OperasiOrBitSamaDenganContext: public Context {
+  public:
+		explicit OperasiOrBitSamaDenganContext(
+			nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiAndBitSamaDenganContext
+		):
+		kumpulanOperasiAndBitSamaDenganContext(std::move(kumpulanOperasiAndBitSamaDenganContext))
+		{}
+    static OperasiOrBitSamaDenganContext generate(
+        const nstd::daftar<std::unique_ptr<ParserTree>>& children
+    ) {
+      nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiAndBitSamaDenganContext;
+			for(const std::unique_ptr<ParserTree>& child : children) {
+				if(auto* prt = dynamic_cast<ParserRuleTree*>(child.get())) {
+					if(prt->getRule() == ParserRule::operasi_and_bit_sama_dengan) {	
+						kumpulanOperasiAndBitSamaDenganContext.push_back(
+								std::make_unique<OperasiAndBitSamaDenganContext>(
+									OperasiAndBitSamaDenganContext::generate(prt->getChildren())
+								)
+						);
+					}
+				}
+			}
+      return OperasiOrBitSamaDenganContext(
+					std::move(kumpulanOperasiAndBitSamaDenganContext)
+			);
+    }
+		[[nodiscard]] const nstd::daftar<std::unique_ptr<Context>>& getKumpulanOperasiAndBitSamaDenganContext() const {
+			return this->kumpulanOperasiAndBitSamaDenganContext;
+		}
+  private:
+		nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiAndBitSamaDenganContext;
+};
+
+class OperasiXorBitSamaDenganContext: public Context {
+  public:
+		explicit OperasiXorBitSamaDenganContext(
+			nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiOrBitSamaDenganContext
+		):
+		kumpulanOperasiOrBitSamaDenganContext(std::move(kumpulanOperasiOrBitSamaDenganContext))
+		{}
+    static OperasiXorBitSamaDenganContext generate(
+        const nstd::daftar<std::unique_ptr<ParserTree>>& children
+    ) {
+      nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiOrBitSamaDenganContext;
+			for(const std::unique_ptr<ParserTree>& child : children) {
+				if(auto* prt = dynamic_cast<ParserRuleTree*>(child.get())) {
+					if(prt->getRule() == ParserRule::operasi_or_bit_sama_dengan) {	
+						kumpulanOperasiOrBitSamaDenganContext.push_back(
+								std::make_unique<OperasiOrBitSamaDenganContext>(
+									OperasiOrBitSamaDenganContext::generate(prt->getChildren())
+								)
+						);
+					}
+				}
+			}
+      return OperasiXorBitSamaDenganContext(
+					std::move(kumpulanOperasiOrBitSamaDenganContext)
+			);
+    }
+		[[nodiscard]] const nstd::daftar<std::unique_ptr<Context>>& getKumpulanOperasiOrBitSamaDenganContext() const {
+			return this->kumpulanOperasiOrBitSamaDenganContext;
+		}
+  private:
+		nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiOrBitSamaDenganContext;
+};
+
+class OperasiGeserKiriBitSamaDenganContext: public Context {
+  public:
+		explicit OperasiGeserKiriBitSamaDenganContext(
+			nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiXorBitSamaDenganContext
+		):
+		kumpulanOperasiXorBitSamaDenganContext(std::move(kumpulanOperasiXorBitSamaDenganContext))
+		{}
+    static OperasiGeserKiriBitSamaDenganContext generate(
+        const nstd::daftar<std::unique_ptr<ParserTree>>& children
+    ) {
+      nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiXorBitSamaDenganContext;
+			for(const std::unique_ptr<ParserTree>& child : children) {
+				if(auto* prt = dynamic_cast<ParserRuleTree*>(child.get())) {
+					if(prt->getRule() == ParserRule::operasi_xor_bit_sama_dengan) {	
+						kumpulanOperasiXorBitSamaDenganContext.push_back(
+								std::make_unique<OperasiXorBitSamaDenganContext>(
+									OperasiXorBitSamaDenganContext::generate(prt->getChildren())
+								)
+						);
+					}
+				}
+			}
+      return OperasiGeserKiriBitSamaDenganContext(
+					std::move(kumpulanOperasiXorBitSamaDenganContext)
+			);
+    }
+		[[nodiscard]] const nstd::daftar<std::unique_ptr<Context>>& getKumpulanOperasiXorBitSamaDenganContext() const {
+			return this->kumpulanOperasiXorBitSamaDenganContext;
+		}
+  private:
+		nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiXorBitSamaDenganContext;
+};
+
+class OperasiGeserKananBitSamaDenganContext: public Context {
+  public:
+		explicit OperasiGeserKananBitSamaDenganContext(
+			nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiGeserKiriBitSamaDenganContext
+		):
+		kumpulanOperasiGeserKiriBitSamaDenganContext(std::move(kumpulanOperasiGeserKiriBitSamaDenganContext))
+		{}
+    static OperasiGeserKananBitSamaDenganContext generate(
+        const nstd::daftar<std::unique_ptr<ParserTree>>& children
+    ) {
+			nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiGeserKiriBitSamaDenganContext;
+			for(const std::unique_ptr<ParserTree>& child : children) {
+				if(auto* prt = dynamic_cast<ParserRuleTree*>(child.get())) {
+					if(prt->getRule() == ParserRule::operasi_geser_kiri_bit_sama_dengan) {	
+						kumpulanOperasiGeserKiriBitSamaDenganContext.push_back(
+								std::make_unique<OperasiGeserKiriBitSamaDenganContext>(
+									OperasiGeserKiriBitSamaDenganContext::generate(prt->getChildren())
+								)
+						);
+					}
+				}
+			}
+      return OperasiGeserKananBitSamaDenganContext(
+					std::move(kumpulanOperasiGeserKiriBitSamaDenganContext)
+			);
+    }
+		[[nodiscard]] const nstd::daftar<std::unique_ptr<Context>>& getKumpulanOperasiGeserKiriBitSamaDenganContext() const {
+			return this->kumpulanOperasiGeserKiriBitSamaDenganContext;
+		}
+  private:
+		nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiGeserKiriBitSamaDenganContext;
+};
+
+class EkspresiContext: public Context {
+  public:
+		explicit EkspresiContext(
+			std::unique_ptr<Context> operasiGeserKananBitSamaDenganContext
+		):
+		operasiGeserKananBitSamaDenganContext(std::move(operasiGeserKananBitSamaDenganContext))
+		{}
+    static EkspresiContext generate(
+        const nstd::daftar<std::unique_ptr<ParserTree>>& children
+    ) {
+			std::unique_ptr<Context> operasiGeserKananBitSamaDenganContext = std::make_unique<OperasiGeserKananBitSamaDenganContext>(OperasiGeserKananBitSamaDenganContext::generate(children[0]->getChildren()));
+      return EkspresiContext(std::move(operasiGeserKananBitSamaDenganContext));
+    }
+		[[nodiscard]] const std::unique_ptr<Context>& getOperasiGeserKananBitSamaDenganContext() const {
+			return this->operasiGeserKananBitSamaDenganContext;
+		}
+  private:
+		std::unique_ptr<Context> operasiGeserKananBitSamaDenganContext; 
+};
+
+class NusantaraContext: public Context {
+  public:
+		explicit NusantaraContext(
+				nstd::daftar<std::unique_ptr<Context>> kumpulanEkspresiContext
+		)
+		: kumpulanEkspresiContext(std::move(kumpulanEkspresiContext)) 
+		{}
+    static NusantaraContext generate(
+        const nstd::daftar<std::unique_ptr<ParserTree>>& children
+    ) {
+			nstd::daftar<std::unique_ptr<Context>> kumpulanEkspresiContext;
+			for(const std::unique_ptr<ParserTree>& child : children) {
+				if(auto* prt = dynamic_cast<ParserRuleTree*>(child.get())) {
+					if(prt->getRule() == ParserRule::ekspresi) {	
+						kumpulanEkspresiContext.push_back(
+								std::make_unique<EkspresiContext>(
+									EkspresiContext::generate(prt->getChildren())
+								)
+						);
+					}
+				}
+			}
+      return NusantaraContext(std::move(kumpulanEkspresiContext));
+    }
+		[[nodiscard]] const nstd::daftar<std::unique_ptr<Context>>& getKumpulanEkspresi() const {
+			return this->kumpulanEkspresiContext;
+		}
+  private:
+	nstd::daftar<std::unique_ptr<Context>> kumpulanEkspresiContext;
+};
+
+
 class NilaiKalimatContext: public Context {
   public:
     NilaiKalimatContext(
-        nstd::bisa_kosong<nstd::daftar<Token>> kumpulanToken,
-        nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>
+        nstd::daftar<Token> kumpulanToken,
+        nstd::daftar<std::unique_ptr<Context>>
             kumpulanEkspresiContext
     ):
         kumpulanToken(std::move(kumpulanToken)),
@@ -407,57 +615,49 @@ class NilaiKalimatContext: public Context {
     static NilaiKalimatContext generate(
         const nstd::daftar<std::unique_ptr<ParserTree>>& children
     ) {
-      nstd::bisa_kosong<nstd::daftar<Token>> kumpulanToken;
-      nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>
+      nstd::daftar<Token> kumpulanToken;
+      nstd::daftar<std::unique_ptr<Context>>
           kumpulanEkspresiContext;
-      for(const std::unique_ptr<ParserTree>& child : children) {
-        if(auto* ptchildRule = dynamic_cast<ParserRuleTree*>(child.get())) {
-          if(nstd::kosong(kumpulanEkspresiContext)) {
-            kumpulanEkspresiContext = nstd::daftar<std::unique_ptr<Context>>();
-          }
-          std::unique_ptr<Context> context = std::make_unique<EkspresiContext>(
-              EkspresiContext::generate(ptchildRule->getChildren())
-          );
-          kumpulanEkspresiContext->push_back(std::move(context));
-        } else if(auto* ptchildToken = dynamic_cast<ParserTokenTree*>(child.get())) {
-          if(nstd::kosong(kumpulanToken)) {
-            kumpulanToken = nstd::daftar<Token>();
-          }
-          kumpulanToken->push_back(ptchildToken->getToken());
-        }
+      for(size_t index = 0; index < children.size(); ++index) {
+				if(index != 0 && index != (children.size() - 1)) {
+  	      if(auto* ptchildRule = dynamic_cast<ParserRuleTree*>(children[index].get())) {
+	          kumpulanEkspresiContext.push_back(
+							std::make_unique<EkspresiContext>(
+      	        EkspresiContext::generate(ptchildRule->getChildren())
+    	      	)
+						);
+	        } else if(auto* ptchildToken = dynamic_cast<ParserTokenTree*>(children[index].get())) {
+          	kumpulanToken.push_back(ptchildToken->getToken());
+        	}
+				}
       }
       return {std::move(kumpulanToken), std::move(kumpulanEkspresiContext)};
     }
 
-    [[nodiscard]] const nstd::bisa_kosong<nstd::daftar<Token>>&
+    [[nodiscard]] const nstd::daftar<Token>&
     getKumpulanToken() const {
       return this->kumpulanToken;
     }
 
-    [[nodiscard]] const nstd::bisa_kosong<
-        nstd::daftar<std::unique_ptr<Context>>>&
+    [[nodiscard]] const nstd::daftar<std::unique_ptr<Context>>&
     getkumpulanEkspresiContext() const {
       return this->kumpulanEkspresiContext;
     }
 
   private:
-    nstd::bisa_kosong<nstd::daftar<Token>> kumpulanToken;
-    nstd::bisa_kosong<nstd::daftar<std::unique_ptr<Context>>>
-        kumpulanEkspresiContext;
+    nstd::daftar<Token> kumpulanToken;
+    nstd::daftar<std::unique_ptr<Context>> kumpulanEkspresiContext;
 };
 
 class NilaiContext: public Context {
   public:
     NilaiContext(
-        nstd::bisa_kosong<Token> nilai, nstd::bisa_kosong<Token> kurungBuka,
+        nstd::bisa_kosong<Token> nilai, 
         nstd::bisa_kosong<std::unique_ptr<Context>> ekspresiContext,
-        nstd::bisa_kosong<Token> kurungTutup,
         nstd::bisa_kosong<std::unique_ptr<Context>> nilaiKalimatContext
     ):
         nilai(std::move(nilai)),
-        kurungBuka(std::move(kurungBuka)),
         ekspresiContext(std::move(ekspresiContext)),
-        kurungTutup(std::move(kurungTutup)),
         nilaiKalimatContext(std::move(nilaiKalimatContext)){};
 
     static NilaiContext generate(
@@ -472,22 +672,19 @@ class NilaiContext: public Context {
         };
         if(nstd::contains<TokenType>(nilaiTokenType, type)) {
           nstd::bisa_kosong<Token> nilai = token;
-          return NilaiContext(std::move(nilai), {}, {}, {}, {});
+          return NilaiContext(std::move(nilai), {}, {});
         } else if(type == TokenType::KURUNG_BUKA) {
-          nstd::bisa_kosong<Token> kurungBuka = token;
           nstd::bisa_kosong<std::unique_ptr<Context>> ekspresiContext;
-          nstd::bisa_kosong<Token> kurungTutup;
           auto* ptchild1 = dynamic_cast<ParserRuleTree*>(children[1].get());
           if(nstd::kosong(ekspresiContext)) {
             ekspresiContext = std::make_unique<EkspresiContext>(
                 EkspresiContext::generate(ptchild1->getChildren())
             );
           }
-          auto* ptchild2 = dynamic_cast<ParserTokenTree*>(children[2].get());
-          if(ptchild2 != nullptr) { kurungTutup = ptchild2->getToken(); }
           return NilaiContext(
-              {}, std::move(kurungBuka), std::move(ekspresiContext),
-              std::move(kurungTutup), {}
+              {}, 
+							std::move(ekspresiContext),
+							{}
           );
         }
       } else if(auto* ptchildRule = dynamic_cast<ParserRuleTree*>(children[0].get())) {
@@ -496,7 +693,7 @@ class NilaiContext: public Context {
               std::make_unique<NilaiKalimatContext>(
                   NilaiKalimatContext::generate(ptchildRule->getChildren())
               );
-          return NilaiContext({}, {}, {}, {}, std::move(nilaiKalimatContext));
+          return NilaiContext({}, {}, std::move(nilaiKalimatContext));
         }
       }
       throw std::runtime_error("Nilai Context Tidak Valid");
@@ -506,17 +703,9 @@ class NilaiContext: public Context {
       return this->nilai;
     }
 
-    [[nodiscard]] const nstd::bisa_kosong<Token>& getKurungBuka() const {
-      return this->kurungBuka;
-    }
-
     [[nodiscard]] const nstd::bisa_kosong<std::unique_ptr<Context>>&
     getEkspresiContext() const {
       return this->ekspresiContext;
-    }
-
-    [[nodiscard]] nstd::bisa_kosong<Token> getKurungTutup() const {
-      return this->kurungTutup;
     }
 
     [[nodiscard]] const nstd::bisa_kosong<std::unique_ptr<Context>>&
@@ -526,9 +715,7 @@ class NilaiContext: public Context {
 
   private:
     nstd::bisa_kosong<Token> nilai;
-    nstd::bisa_kosong<Token> kurungBuka;
     nstd::bisa_kosong<std::unique_ptr<Context>> ekspresiContext;
-    nstd::bisa_kosong<Token> kurungTutup;
     nstd::bisa_kosong<std::unique_ptr<Context>> nilaiKalimatContext;
 };
 

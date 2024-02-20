@@ -5,7 +5,7 @@ BasedOnStyle: Google
 IndentWidth: 2
 AccessModifierOffset: 0
 AlignAfterOpenBracket: BlockIndent
-AlignArrayOfStructures: Left
+AlignArrayOfStructures: Left 
 AlignConsecutiveShortCaseStatements:
   Enabled: true
   AcrossEmptyLines: true
@@ -16,7 +16,7 @@ AlignTrailingComments:
   Kind: Always
   OverEmptyLines: 1
 AllowShortBlocksOnASingleLine: Always
-# AllowShortCompoundRequirementOnASingleLine: true # Clang Format 18
+  #AllowShortCompoundRequirementOnASingleLine: true # Clang Format 18
 AllowShortEnumsOnASingleLine: true
 AllowShortFunctionsOnASingleLine: All
 AllowShortIfStatementsOnASingleLine: AllIfsAndElse
@@ -27,7 +27,7 @@ BreakBeforeBraces: Attach
 BreakBeforeConceptDeclarations: Always
 BreakConstructorInitializers: AfterColon
 BreakInheritanceList: AfterColon
-# BreakTemplateDeclarations: Yes # Clang Format 19
+  #BreakTemplateDeclarations: Yes # Clang Format 19
 Cpp11BracedListStyle: true
 EmptyLineAfterAccessModifier: Never
 EmptyLineBeforeAccessModifier: Always
@@ -45,7 +45,7 @@ NamespaceIndentation: All
 PointerAlignment: Left
 QualifierAlignment: Left
 ReferenceAlignment: Left
-RemoveParentheses: ReturnStatement
+RemoveParentheses: ReturnStatement 
 RequiresClausePosition: WithPreceding
 SeparateDefinitionBlocks: Always
 ShortNamespaceLines: 1
