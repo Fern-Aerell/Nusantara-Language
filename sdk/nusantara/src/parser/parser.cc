@@ -17,24 +17,37 @@ Parser::Parser(ErrorInfo errorInfo, Lexer lexer):
     lexer(std::move(lexer)),
     currentToken(this->lexer.getNextToken()) {}
 
+void Parser::skipWs() {
+	while(
+			matchOr(
+				{
+					TokenType::SPASI, 
+					TokenType::TAB, 
+					TokenType::BARIS_BARU,
+          TokenType::OTHER_WHITESPACE, 
+					TokenType::KOMENTAR_BANYAK_BARIS,
+          TokenType::KOMENTAR_SATU_BARIS, 
+					TokenType::KOMENTAR_DOKUMENTASI
+				}
+  		)
+	) {
+		this->currentToken = this->lexer.getNextToken();
+  }
+}
+
 std::unique_ptr<ParserTree> Parser::eat(
     const TokenType& type, const bool& skipWs
 ) {
   if(this->currentToken.getType() == type) {
+		const Token beforeToken = this->currentToken;
     this->currentToken = this->lexer.getNextToken();
-    if(skipWs &&
-       matchOr(
-           {TokenType::SPASI, TokenType::TAB, TokenType::BARIS_BARU,
-            TokenType::OTHER_WHITESPACE, TokenType::KOMENTAR_BANYAK_BARIS,
-            TokenType::KOMENTAR_SATU_BARIS, TokenType::KOMENTAR_DOKUMENTASI}
-       )) {
-      eat(this->currentToken.getType());
-    } else if(match(TokenType::TIDAK_DIKENALI)) {
+		if(skipWs) {this->skipWs();}
+		if(match(TokenType::TIDAK_DIKENALI)) {
       throw std::runtime_error(this->errorInfo.inLine(
           this->currentToken, "Karakter tidak di kenali."
       ));
     }
-    return std::make_unique<ParserTokenTree>(this->currentToken);
+    return std::make_unique<ParserTokenTree>(beforeToken);
   } else {
     if(type == TokenType::TITIK_KOMA) {
       throw std::runtime_error(this->errorInfo.inLine(
@@ -108,6 +121,7 @@ std::unique_ptr<ParserTree> Parser::parseNusantara() {
     nusantara->addChild(this->parseEkspresi());
     nusantara->addChild(eat(TokenType::TITIK_KOMA));
   }
+	nusantara->addChild(eat(TokenType::AKHIR_DARI_FILE));
   return nusantara;
 }
 
@@ -374,6 +388,7 @@ std::unique_ptr<ParserTree> Parser::parseNilai() {
   const nstd::daftar<TokenType> types = {
       TokenType::BILANGAN, TokenType::BENAR, TokenType::SALAH
   };
+	this->skipWs();
   if(this->matchOr(types)) {
     for(const TokenType& type : types) {
       if(this->match(type)) {

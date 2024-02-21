@@ -23,6 +23,9 @@ nstd::dinamis Interpreter::fragmentMultiOperasiLeftRight(
     const nstd::daftar<std::unique_ptr<Context>>& kumpulanContext,
     const nstd::daftar<Token>& kumpulanOperator
 ) {
+	if(nstd::kosong(kumpulanContext)) {
+		throw std::runtime_error("Nilai tidak boleh kosong.");
+	}
   nstd::dinamis left = this->visit(kumpulanContext[0]);
   size_t index = 1;
   for(const Token& optr : kumpulanOperator) {
@@ -410,7 +413,18 @@ nstd::dinamis Interpreter::visitNilaiKalimat(const NilaiKalimatContext& ctx) {
     const Token& token = kumpulanToken[index];
     const TokenType& type = token.getType();
     this->tokens.push_back(token);
-    if(type == TokenType::DOLAR) {
+    if(type == TokenType::GARIS_MIRING_KEBALIK) {
+			++index;
+			const Token& token = kumpulanToken[index];
+			const std::string& value = token.getValue();
+			if(value == "n") {
+				klmt += "\n";
+			}else if(value == "t") {
+				klmt += "\t";
+			}else{
+				klmt += value;
+			}
+		}else if(type == TokenType::DOLAR) {
       ++index;
       const Token& token = kumpulanToken[index];
       const TokenType& type = token.getType();

@@ -16,7 +16,7 @@ OperasiSisaPembagianContext OperasiSisaPembagianContext::generate(
   nstd::daftar<Token> kumpulanOperator;
   for(const std::unique_ptr<ParserTree>& child : children) {
     if(auto* prt = dynamic_cast<ParserRuleTree*>(child.get())) {
-      if(prt->getRule() == ParserRule::operasi_sisa_pembagian) {
+      if(prt->getRule() == ParserRule::operasi_pembagian) {
         kumpulanOperasiPembagianContext.push_back(
             std::make_unique<OperasiPembagianContext>(
                 OperasiPembagianContext::generate(prt->getChildren())

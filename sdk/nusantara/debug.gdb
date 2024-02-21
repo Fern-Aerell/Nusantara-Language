@@ -7,7 +7,7 @@ skip -gfi /usr/include/c++/*/*/*
 b main
 
 # Mulai eksekusi program
-run
+run $HOME/development/Nusantara-Language/sdk/nusantara/examples/halo_dunia.nl
 
 # Perulangan while untuk menjalankan step sampai program selesai
 while !$_exitcode

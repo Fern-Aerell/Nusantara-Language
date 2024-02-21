@@ -1,0 +1,10 @@
+"Kalimat kosong : ";
+"";
+'Fern' + " " + 'Aerell';
+"Semua operasi yang didukung nusantara :";
+"1++ = ${1++}";
+"++1 = ${++1}";
+"1-- = ${1--}";
+"--1 = ${--1}";
+"~1 = ${~1}";
+"!benar = ${!benar}";

@@ -23,6 +23,7 @@ class Parser {
     std::unique_ptr<ParserTree> eat(
         const TokenType& type, const bool& skipWs = true
     );
+		void skipWs();
     bool match(const TokenType& type);
     bool matchOr(const std::vector<TokenType>& types);
     // fragment
