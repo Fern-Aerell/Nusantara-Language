@@ -12,7 +12,7 @@
 #endif
 
 int main(int argc, char* argv[]) {
-	auto start = std::chrono::steady_clock::now();
+  auto start = std::chrono::steady_clock::now();
 #ifdef _WIN32
   SetConsoleOutputCP(CP_UTF8);
 #endif

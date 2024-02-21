@@ -193,7 +193,7 @@ class Visitor {
       }
       throw std::runtime_error("Context tidak dapat di cast.");
     }
-	
+
     T visit(const std::unique_ptr<ParserTree>& tree) {
       if(auto* rule = dynamic_cast<ParserRuleTree*>(tree.get())) {
         switch(rule->getRule()) {

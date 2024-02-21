@@ -346,13 +346,11 @@ std::unique_ptr<ParserTree> Parser::parseOperasiTidak() {
 }
 
 std::unique_ptr<ParserTree> Parser::parseOperasiNotBit() {
-	return this->fragmentOperasiPrePost(
+  return this->fragmentOperasiPrePost(
       ParserRule::operasi_not_bit,
-      [this]() { return this->parseOperasiKurangSatu(); }, 
-			TokenType::NOT_BIT,
-			true,
-      false
-  ); 
+      [this]() { return this->parseOperasiKurangSatu(); }, TokenType::NOT_BIT,
+      true, false
+  );
 }
 
 std::unique_ptr<ParserTree> Parser::parseOperasiKurangSatu() {

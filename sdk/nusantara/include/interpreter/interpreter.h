@@ -5,6 +5,8 @@
 #include <string>
 
 #include "error/error_info.h"
+#include "lexer/token.h"
+#include "nstd/daftar.h"
 #include "nstd/dinamis.h"
 #include "visitor/context/context.h"
 #include "visitor/visitor.h"
@@ -91,4 +93,13 @@ class Interpreter: public Visitor<nstd::dinamis> {
     ErrorInfo errorInfo;
     nstd::daftar<Token> tokens;
     std::runtime_error error(const std::string& msg);
+    nstd::dinamis fragmentMultiOperasiLeftRight(
+        const nstd::daftar<std::unique_ptr<Context>>& kumpulanContext,
+        const nstd::daftar<Token>& kumpulanOperator
+    );
+    nstd::dinamis fragmentOperasiPrePost(
+        const std::unique_ptr<Context>& context,
+        const nstd::bisa_kosong<Token>& satuOperator, const bool& isPre,
+        const bool& isPost
+    );
 };

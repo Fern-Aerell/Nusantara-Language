@@ -58,10 +58,9 @@ namespace nstd {
       }
     }
     return "kosong";
-  } 
-}  // namespace nstd
+  }
 
-// Operator Aritmatika
+  // Operator Aritmatika
   inline nstd::dinamis operator+(nstd::dinamis nilaiX, nstd::dinamis nilaiY) {
     // int + int = int
     if(nstd::is<int>(nilaiX) && nstd::is<int>(nilaiY)) {
@@ -306,11 +305,13 @@ namespace nstd {
     }
     // string == char = bool
     if(nstd::is<std::string>(nilaiX) && nstd::is<char>(nilaiY)) {
-      return nstd::as<std::string>(nilaiX) == nstd::toString(nstd::as<char>(nilaiY));
+      return nstd::as<std::string>(nilaiX) ==
+             nstd::toString(nstd::as<char>(nilaiY));
     }
     // char == string = bool
     if(nstd::is<char>(nilaiX) && nstd::is<std::string>(nilaiY)) {
-      return nstd::toString(nstd::as<char>(nilaiX)) == nstd::as<std::string>(nilaiY);
+      return nstd::toString(nstd::as<char>(nilaiX)) ==
+             nstd::as<std::string>(nilaiY);
     }
     // bool == bool = bool
     if(nstd::is<bool>(nilaiX) && nstd::is<bool>(nilaiY)) {
@@ -358,11 +359,13 @@ namespace nstd {
     }
     // string != char = bool
     if(nstd::is<std::string>(nilaiX) && nstd::is<char>(nilaiY)) {
-      return nstd::as<std::string>(nilaiX) != nstd::toString(nstd::as<char>(nilaiY));
+      return nstd::as<std::string>(nilaiX) !=
+             nstd::toString(nstd::as<char>(nilaiY));
     }
     // char != string = bool
     if(nstd::is<char>(nilaiX) && nstd::is<std::string>(nilaiY)) {
-      return nstd::toString(nstd::as<char>(nilaiX)) != nstd::as<std::string>(nilaiY);
+      return nstd::toString(nstd::as<char>(nilaiX)) !=
+             nstd::as<std::string>(nilaiY);
     }
     // bool != bool = bool
     if(nstd::is<bool>(nilaiX) && nstd::is<bool>(nilaiY)) {
@@ -499,346 +502,73 @@ namespace nstd {
     throw std::runtime_error("Operasi lebih kecil sama dengan tidak valid.");
   }
 
-  // Operator Penugasan	
-  inline nstd::dinamis operator+=(nstd::dinamis nilaiX, nstd::dinamis nilaiY) {
-    // int += int = int
-    if(nstd::is<int>(nilaiX) && nstd::is<int>(nilaiY)) {
-      nilaiX = nstd::as<int>(nilaiX) + nstd::as<int>(nilaiY);
-      return nilaiX;
-    }
-    // float += float = float
-    if(nstd::is<float>(nilaiX) && nstd::is<float>(nilaiY)) {
-      nilaiX = nstd::as<float>(nilaiX) + nstd::as<float>(nilaiY);
-      return nilaiX;
-    }
-    // double += double = double
-    if(nstd::is<double>(nilaiX) && nstd::is<double>(nilaiY)) {
-      nilaiX = nstd::as<double>(nilaiX) + nstd::as<double>(nilaiY);
-      return nilaiX;
-    }
-    // int += float = float
-    if(nstd::is<int>(nilaiX) && nstd::is<float>(nilaiY)) {
-      nilaiX = (float)nstd::as<int>(nilaiX) + nstd::as<float>(nilaiY);
-      return nilaiX;
-    }
-    // int  += double = double
-    if(nstd::is<int>(nilaiX) && nstd::is<double>(nilaiY)) {
-      nilaiX = (double)nstd::as<int>(nilaiX) + nstd::as<double>(nilaiY);
-      return nilaiX;
-    }
-    // float += int = float
-    if(nstd::is<float>(nilaiX) && nstd::is<int>(nilaiY)) {
-      nilaiX = nstd::as<float>(nilaiX) + (float)nstd::as<int>(nilaiY);
-      return nilaiX;
-    }
-    // double += int = double
-    if(nstd::is<double>(nilaiX) && nstd::is<int>(nilaiY)) {
-      nilaiX = nstd::as<double>(nilaiX) + (double)nstd::as<int>(nilaiY);
-      return nilaiX;
-    }
-    // string += string = string
-    if(nstd::is<std::string>(nilaiX) && nstd::is<std::string>(nilaiY)) {
-      nilaiX = nstd::as<std::string>(nilaiX) + nstd::as<std::string>(nilaiY);
-      return nilaiX;
-    }
-    // char += char = string
-    if(nstd::is<char>(nilaiX) && nstd::is<char>(nilaiY)) {
-      nilaiX = std::string(1, nstd::as<char>(nilaiX)) + nstd::as<char>(nilaiY);
-      return nilaiX;
-    }
-    // string += char = char
-    if(nstd::is<std::string>(nilaiX) && nstd::is<char>(nilaiY)) {
-      nilaiX = nstd::as<std::string>(nilaiX) + nstd::as<char>(nilaiY);
-      return nilaiX;
-    }
-    // char += string = string
-    if(nstd::is<char>(nilaiX) && nstd::is<std::string>(nilaiY)) {
-      nilaiX = nstd::as<char>(nilaiX) + nstd::as<std::string>(nilaiY);
-      return nilaiX;
-    }
-    throw std::runtime_error("Operasi penugasan tambah tidak valid.");
-  }
-
-  inline nstd::dinamis operator-=(nstd::dinamis nilaiX, nstd::dinamis nilaiY) {
-    // int -= int = int
-    if(nstd::is<int>(nilaiX) && nstd::is<int>(nilaiY)) {
-      nilaiX = nstd::as<int>(nilaiX) - nstd::as<int>(nilaiY);
-      return nilaiX;
-    }
-    // float -= float = float
-    if(nstd::is<float>(nilaiX) && nstd::is<float>(nilaiY)) {
-      nilaiX = nstd::as<float>(nilaiX) - nstd::as<float>(nilaiY);
-      return nilaiX;
-    }
-    // double -= double = double
-    if(nstd::is<double>(nilaiX) && nstd::is<double>(nilaiY)) {
-      nilaiX = nstd::as<double>(nilaiX) - nstd::as<double>(nilaiY);
-      return nilaiX;
-    }
-    // int -= float = float
-    if(nstd::is<int>(nilaiX) && nstd::is<float>(nilaiY)) {
-      nilaiX = (float)nstd::as<int>(nilaiX) - nstd::as<float>(nilaiY);
-      return nilaiX;
-    }
-    // int  -= double = double
-    if(nstd::is<int>(nilaiX) && nstd::is<double>(nilaiY)) {
-      nilaiX = (double)nstd::as<int>(nilaiX) - nstd::as<double>(nilaiY);
-      return nilaiX;
-    }
-    // float -= int = float
-    if(nstd::is<float>(nilaiX) && nstd::is<int>(nilaiY)) {
-      nilaiX = nstd::as<float>(nilaiX) - (float)nstd::as<int>(nilaiY);
-      return nilaiX;
-    }
-    // double -= int = double
-    if(nstd::is<double>(nilaiX) && nstd::is<int>(nilaiY)) {
-      nilaiX = nstd::as<double>(nilaiX) - (double)nstd::as<int>(nilaiY);
-      return nilaiX;
-    }
-    throw std::runtime_error("Operasi penugasan kurang tidak valid.");
-  }
-
-  inline nstd::dinamis operator*=(nstd::dinamis nilaiX, nstd::dinamis nilaiY) {
-    // int *= int = int
-    if(nstd::is<int>(nilaiX) && nstd::is<int>(nilaiY)) {
-      nilaiX = nstd::as<int>(nilaiX) * nstd::as<int>(nilaiY);
-      return nilaiX;
-    }
-    // float *= float = float
-    if(nstd::is<float>(nilaiX) && nstd::is<float>(nilaiY)) {
-      nilaiX = nstd::as<float>(nilaiX) * nstd::as<float>(nilaiY);
-      return nilaiX;
-    }
-    // double *= double = double
-    if(nstd::is<double>(nilaiX) && nstd::is<double>(nilaiY)) {
-      nilaiX = nstd::as<double>(nilaiX) * nstd::as<double>(nilaiY);
-      return nilaiX;
-    }
-    // int *= float = float
-    if(nstd::is<int>(nilaiX) && nstd::is<float>(nilaiY)) {
-      nilaiX = (float)nstd::as<int>(nilaiX) * nstd::as<float>(nilaiY);
-      return nilaiX;
-    }
-    // int *= double = double
-    if(nstd::is<int>(nilaiX) && nstd::is<double>(nilaiY)) {
-      nilaiX = (double)nstd::as<int>(nilaiX) * nstd::as<double>(nilaiY);
-      return nilaiX;
-    }
-    // float *= int = float
-    if(nstd::is<float>(nilaiX) && nstd::is<int>(nilaiY)) {
-      nilaiX = nstd::as<float>(nilaiX) * (float)nstd::as<int>(nilaiY);
-      return nilaiX;
-    }
-    // double *= int = double
-    if(nstd::is<double>(nilaiX) && nstd::is<int>(nilaiY)) {
-      nilaiX = nstd::as<double>(nilaiX) * (double)nstd::as<int>(nilaiY);
-      return nilaiX;
-    }
-    // string *= int = string
-    if(nstd::is<std::string>(nilaiX) && nstd::is<int>(nilaiY)) {
-      std::ostringstream stream;
-      for(size_t index = 0; index < nstd::as<int>(nilaiY); ++index) {
-        stream << nstd::as<std::string>(nilaiX);
-      }
-      nilaiX = stream.str();
-      return nilaiX;
-    }
-    throw std::runtime_error("Operasi penugasan kali tidak valid.");
-  }
-
-  inline nstd::dinamis operator/=(nstd::dinamis nilaiX, nstd::dinamis nilaiY) {
-    // int /= int = int
-    if(nstd::is<int>(nilaiX) && nstd::is<int>(nilaiY)) {
-      nilaiX = nstd::as<int>(nilaiX) / nstd::as<int>(nilaiY);
-      return nilaiX;
-    }
-    // float /= float = float
-    if(nstd::is<float>(nilaiX) && nstd::is<float>(nilaiY)) {
-      nilaiX = nstd::as<float>(nilaiX) / nstd::as<float>(nilaiY);
-      return nilaiX;
-    }
-    // double /= double = double
-    if(nstd::is<double>(nilaiX) && nstd::is<double>(nilaiY)) {
-      nilaiX = nstd::as<double>(nilaiX) / nstd::as<double>(nilaiY);
-      return nilaiX;
-    }
-    // int /= float = float
-    if(nstd::is<int>(nilaiX) && nstd::is<float>(nilaiY)) {
-      nilaiX = (float)nstd::as<int>(nilaiX) / nstd::as<float>(nilaiY);
-      return nilaiX;
-    }
-    // int  /= double = double
-    if(nstd::is<int>(nilaiX) && nstd::is<double>(nilaiY)) {
-      nilaiX = (double)nstd::as<int>(nilaiX) / nstd::as<double>(nilaiY);
-      return nilaiX;
-    }
-    // float /= int = float
-    if(nstd::is<float>(nilaiX) && nstd::is<int>(nilaiY)) {
-      nilaiX = nstd::as<float>(nilaiX) / (float)nstd::as<int>(nilaiY);
-      return nilaiX;
-    }
-    // double /= int = double
-    if(nstd::is<double>(nilaiX) && nstd::is<int>(nilaiY)) {
-      nilaiX = nstd::as<double>(nilaiX) / (double)nstd::as<int>(nilaiY);
-      return nilaiX;
-    }
-    throw std::runtime_error("Operasi penugasan bagi tidak valid.");
-  }
-
-  inline nstd::dinamis operator%=(nstd::dinamis nilaiX, nstd::dinamis nilaiY) {
-    // int %= int = int
-    if(nstd::is<int>(nilaiX) && nstd::is<int>(nilaiY)) {
-      nilaiX = nstd::as<int>(nilaiX) % nstd::as<int>(nilaiY);
-      return nilaiX;
-    }
-    // float %= float = float
-    if(nstd::is<float>(nilaiX) && nstd::is<float>(nilaiY)) {
-      nilaiX = fmodf(nstd::as<float>(nilaiX), nstd::as<float>(nilaiY));
-      return nilaiX;
-    }
-    // double %= double = double
-    if(nstd::is<double>(nilaiX) && nstd::is<double>(nilaiY)) {
-      nilaiX = std::fmod(nstd::as<double>(nilaiX), nstd::as<double>(nilaiY));
-      return nilaiX;
-    }
-    // int %= float = float
-    if(nstd::is<int>(nilaiX) && nstd::is<float>(nilaiY)) {
-      nilaiX = fmodf((float)nstd::as<int>(nilaiX), nstd::as<float>(nilaiY));
-      return nilaiX;
-    }
-    // int  %= double  = double
-    if(nstd::is<int>(nilaiX) && nstd::is<double>(nilaiY)) {
-      nilaiX = std::fmod((double)nstd::as<int>(nilaiX), nstd::as<double>(nilaiY));
-      return nilaiX;
-    }
-    // float %= int = float
-    if(nstd::is<float>(nilaiX) && nstd::is<int>(nilaiY)) {
-      nilaiX = fmodf(nstd::as<float>(nilaiX), (float)nstd::as<int>(nilaiY));
-      return nilaiX;
-    }
-    // double %= int = double
-    if(nstd::is<double>(nilaiX) && nstd::is<int>(nilaiY)) {
-      nilaiX = std::fmod(nstd::as<double>(nilaiX), (double)nstd::as<int>(nilaiY));
-      return nilaiX;
-    }
-    throw std::runtime_error("Operasi penugasan sisa bagi tidak valid.");
-  }
-
-	inline nstd::dinamis operator&=(nstd::dinamis nilaiX, nstd::dinamis nilaiY) {
-    // int &= int = int
-    if(nstd::is<int>(nilaiX) && nstd::is<int>(nilaiY)) {
-      nilaiX = nstd::as<int>(nilaiX) & nstd::as<int>(nilaiY);
-      return nilaiX;
-    } 
-    throw std::runtime_error("Operasi penugasan and bit tidak valid.");
-  }
-
-	inline nstd::dinamis operator|=(nstd::dinamis nilaiX, nstd::dinamis nilaiY) {
-    // int |= int = int
-    if(nstd::is<int>(nilaiX) && nstd::is<int>(nilaiY)) {
-      nilaiX = nstd::as<int>(nilaiX) | nstd::as<int>(nilaiY);
-      return nilaiX;
-    } 
-    throw std::runtime_error("Operasi penugasan or bit tidak valid.");
-  }
-
-	inline nstd::dinamis operator^=(nstd::dinamis nilaiX, nstd::dinamis nilaiY) {
-    // int ^= int = int
-    if(nstd::is<int>(nilaiX) && nstd::is<int>(nilaiY)) {
-      nilaiX = nstd::as<int>(nilaiX) ^ nstd::as<int>(nilaiY);
-      return nilaiX;
-    } 
-    throw std::runtime_error("Operasi penugasan xor bit tidak valid.");
-  }
-
-	inline nstd::dinamis operator<<=(nstd::dinamis nilaiX, nstd::dinamis nilaiY) {
-    // int <<= int = int
-    if(nstd::is<int>(nilaiX) && nstd::is<int>(nilaiY)) {
-      nilaiX = nstd::as<int>(nilaiX) << nstd::as<int>(nilaiY);
-      return nilaiX;
-    } 
-    throw std::runtime_error("Operasi penugasan geser kiri bit tidak valid.");
-  }
-
-	inline nstd::dinamis operator>>=(nstd::dinamis nilaiX, nstd::dinamis nilaiY) {
-    // int >>= int = int
-    if(nstd::is<int>(nilaiX) && nstd::is<int>(nilaiY)) {
-      nilaiX = nstd::as<int>(nilaiX) >> nstd::as<int>(nilaiY);
-      return nilaiX;
-    } 
-    throw std::runtime_error("Operasi penugasan geser kanan bit tidak valid.");
-  }
-
-	// Operasi Logika
-	inline nstd::dinamis operator&&(nstd::dinamis nilaiX, nstd::dinamis nilaiY) {
+  // Operasi Logika
+  inline nstd::dinamis operator&&(nstd::dinamis nilaiX, nstd::dinamis nilaiY) {
     // bool && bool = bool
     if(nstd::is<bool>(nilaiX) && nstd::is<bool>(nilaiY)) {
       return nstd::as<bool>(nilaiX) && nstd::as<bool>(nilaiY);
-    } 
+    }
     throw std::runtime_error("Operasi dan tidak valid.");
   }
 
-	inline nstd::dinamis operator||(nstd::dinamis nilaiX, nstd::dinamis nilaiY) {
+  inline nstd::dinamis operator||(nstd::dinamis nilaiX, nstd::dinamis nilaiY) {
     // bool || bool = bool
     if(nstd::is<bool>(nilaiX) && nstd::is<bool>(nilaiY)) {
       return nstd::as<bool>(nilaiX) || nstd::as<bool>(nilaiY);
-    } 
+    }
     throw std::runtime_error("Operasi atau tidak valid.");
   }
 
-	inline nstd::dinamis operator!(nstd::dinamis nilaiX) {
+  inline nstd::dinamis operator!(nstd::dinamis nilaiX) {
     // !bool = bool
-    if(nstd::is<bool>(nilaiX)) {
-      return !nstd::as<bool>(nilaiX);
-    } 
+    if(nstd::is<bool>(nilaiX)) { return !nstd::as<bool>(nilaiX); }
     throw std::runtime_error("Operasi tidak gak valid.");
   }
 
-	// Operasi Bitwise
-	inline nstd::dinamis operator&(nstd::dinamis nilaiX, nstd::dinamis nilaiY) {
+  // Operasi Bitwise
+  inline nstd::dinamis operator&(nstd::dinamis nilaiX, nstd::dinamis nilaiY) {
     // int & int = int
     if(nstd::is<int>(nilaiX) && nstd::is<int>(nilaiY)) {
       return nstd::as<int>(nilaiX) & nstd::as<int>(nilaiY);
-    } 
+    }
     throw std::runtime_error("Operasi and bit tidak valid.");
   }
 
-	inline nstd::dinamis operator|(nstd::dinamis nilaiX, nstd::dinamis nilaiY) {
+  inline nstd::dinamis operator|(nstd::dinamis nilaiX, nstd::dinamis nilaiY) {
     // int | int = int
     if(nstd::is<int>(nilaiX) && nstd::is<int>(nilaiY)) {
       return nstd::as<int>(nilaiX) | nstd::as<int>(nilaiY);
-    } 
+    }
     throw std::runtime_error("Operasi or bit tidak valid.");
   }
 
-	inline nstd::dinamis operator^(nstd::dinamis nilaiX, nstd::dinamis nilaiY) {
+  inline nstd::dinamis operator^(nstd::dinamis nilaiX, nstd::dinamis nilaiY) {
     // int ^ int = int
     if(nstd::is<int>(nilaiX) && nstd::is<int>(nilaiY)) {
       return nstd::as<int>(nilaiX) ^ nstd::as<int>(nilaiY);
-    } 
+    }
     throw std::runtime_error("Operasi xor bit tidak valid.");
   }
 
-	inline nstd::dinamis operator~(nstd::dinamis nilaiX) {
+  inline nstd::dinamis operator~(nstd::dinamis nilaiX) {
     // ~int = int
-    if(nstd::is<int>(nilaiX)) {
-      return ~nstd::as<int>(nilaiX);
-    } 
+    if(nstd::is<int>(nilaiX)) { return ~nstd::as<int>(nilaiX); }
     throw std::runtime_error("Operasi not bit tidak valid.");
   }
 
-	inline nstd::dinamis operator<<(nstd::dinamis nilaiX, nstd::dinamis nilaiY) {
+  inline nstd::dinamis operator<<(nstd::dinamis nilaiX, nstd::dinamis nilaiY) {
     // int << int = int
     if(nstd::is<int>(nilaiX) && nstd::is<int>(nilaiY)) {
       return nstd::as<int>(nilaiX) << nstd::as<int>(nilaiY);
-    } 
+    }
     throw std::runtime_error("Operasi geser kiri bit tidak valid.");
   }
 
-	inline nstd::dinamis operator>>(nstd::dinamis nilaiX, nstd::dinamis nilaiY) {
+  inline nstd::dinamis operator>>(nstd::dinamis nilaiX, nstd::dinamis nilaiY) {
     // int >> int = int
     if(nstd::is<int>(nilaiX) && nstd::is<int>(nilaiY)) {
       return nstd::as<int>(nilaiX) >> nstd::as<int>(nilaiY);
-    } 
+    }
     throw std::runtime_error("Operasi geser kanan bit tidak valid.");
   }
+}  // namespace nstd

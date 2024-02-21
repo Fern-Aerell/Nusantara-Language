@@ -1,15 +1,111 @@
 #include "interpreter/interpreter.h"
 
 #include <stdexcept>
+#include <string>
 
+#include "error/error_info.h"
+#include "lexer/token.h"
+#include "lexer/token_type.h"
 #include "nstd/daftar.h"
 #include "nstd/dinamis.h"
+#include "nstd/kalimat.h"
 #include "nstd/konsol.h"
-#include "visitor/context/ekspresi/ekspresi_context.h"
-#include "visitor/context/operasi/operasi_geser_kanan_bit_sama_dengan_context.h"
+#include "nstd/kosong.h"
+
+Interpreter::Interpreter(ErrorInfo errorInfo):
+    errorInfo(std::move(errorInfo)) {}
 
 std::runtime_error Interpreter::error(const std::string& msg) {
   return std::runtime_error(this->errorInfo.inLine(this->tokens, msg));
+}
+
+nstd::dinamis Interpreter::fragmentMultiOperasiLeftRight(
+    const nstd::daftar<std::unique_ptr<Context>>& kumpulanContext,
+    const nstd::daftar<Token>& kumpulanOperator
+) {
+  nstd::dinamis left = this->visit(kumpulanContext[0]);
+  size_t index = 1;
+  for(const Token& optr : kumpulanOperator) {
+    this->tokens.push_back(optr);
+    nstd::dinamis right = this->visit(kumpulanContext[index]);
+    const TokenType& type = optr.getType();
+    using namespace nstd;
+    if(type == TokenType::TAMBAH) {
+      left = left + right;
+    } else if(type == TokenType::KURANG) {
+      left = left - right;
+    } else if(type == TokenType::KALI) {
+      left = left * right;
+    } else if(type == TokenType::BAGI) {
+      left = left / right;
+    } else if(type == TokenType::SISA_BAGI) {
+      left = left % right;
+    } else if(type == TokenType::SAMA) {
+      left = left == right;
+    } else if(type == TokenType::TIDAK_SAMA) {
+      left = left != right;
+    } else if(type == TokenType::LEBIH_BESAR) {
+      left = left > right;
+    } else if(type == TokenType::LEBIH_KECIL) {
+      left = left < right;
+    } else if(type == TokenType::LEBIH_BESAR_SAMA_DENGAN) {
+      left = left >= right;
+    } else if(type == TokenType::LEBIH_KECIL_SAMA_DENGAN) {
+      left = left <= right;
+    } else if(type == TokenType::DAN) {
+      left = left && right;
+    } else if(type == TokenType::ATAU) {
+      left = left || right;
+    } else if(type == TokenType::AND_BIT) {
+      left = left & right;
+    } else if(type == TokenType::OR_BIT) {
+      left = left | right;
+    } else if(type == TokenType::XOR_BIT) {
+      left = left ^ right;
+    } else if(type == TokenType::GESER_KIRI_BIT) {
+      left = left << right;
+    } else if(type == TokenType::GESER_KANAN_BIT) {
+      left = left >> right;
+    } else {
+      throw this->error("Operator operasi tidak valid.");
+    }
+    ++index;
+  }
+  return left;
+}
+
+nstd::dinamis Interpreter::fragmentOperasiPrePost(
+    const std::unique_ptr<Context>& context,
+    const nstd::bisa_kosong<Token>& satuOperator, const bool& isPre,
+    const bool& isPost
+) {
+  nstd::dinamis left = this->visit(context);
+  if(nstd::tidakKosong(satuOperator)) {
+    const Token& token = satuOperator.value();
+    const TokenType& type = token.getType();
+    this->tokens.push_back(token);
+    using namespace nstd;
+    if(type == TokenType::TAMBAH_SATU) {
+      if(isPre) {
+        left = 1 + left;
+      } else if(isPost) {
+        left = left + 1;
+      }
+    } else if(type == TokenType::KURANG_SATU) {
+      if(isPre) {
+        left = 1 - left;
+      } else if(isPost) {
+        left = left - 1;
+      }
+    } else if(type == TokenType::TIDAK) {
+      if(isPre) { left = !left; }
+    } else if(type == TokenType::NOT_BIT) {
+      if(isPre) { left = ~left; }
+    } else {
+      throw this->error("Operator operasi tidak valid.");
+    }
+  }
+  return left;
 }
 
 nstd::dinamis Interpreter::visitNusantara(const NusantaraContext& ctx) {
@@ -28,193 +124,307 @@ nstd::dinamis Interpreter::visitEkspresi(const EkspresiContext& ctx) {
 nstd::dinamis Interpreter::visitOperasiGeserKananBitSamaDengan(
     const OperasiGeserKananBitSamaDenganContext& ctx
 ) {
-	const auto& ogkbsdctx = ctx.getKumpulanOperasiGeserKiriBitSamaDenganContext();
-	const auto& koptr = ctx.getKumpulanOperator();
-	nstd::dinamis left = this->visit(ogkbsdctx[0]);
-	size_t index = 1;
-	for(const Token& optr: koptr) {
-		this->tokens.push_back(optr);
-		nstd::dinamis right = this->visit(ogkbsdctx[index]);
-		left >>= right;
-		++index;
-	}
-  return left;
+  return this->fragmentMultiOperasiLeftRight(
+      ctx.getKumpulanOperasiGeserKiriBitSamaDenganContext(),
+      ctx.getKumpulanOperator()
+  );
 }
 
 nstd::dinamis Interpreter::visitOperasiGeserKiriBitSamaDengan(
     const OperasiGeserKiriBitSamaDenganContext& ctx
 ) {
-  return {};
+  return this->fragmentMultiOperasiLeftRight(
+      ctx.getKumpulanOperasiXorBitSamaDenganContext(), ctx.getKumpulanOperator()
+  );
 }
 
 nstd::dinamis Interpreter::visitOperasiXorBitSamaDengan(
     const OperasiXorBitSamaDenganContext& ctx
 ) {
-  return {};
+  return this->fragmentMultiOperasiLeftRight(
+      ctx.getKumpulanOperasiOrBitSamaDenganContext(), ctx.getKumpulanOperator()
+  );
 }
 
 nstd::dinamis Interpreter::visitOperasiOrBitSamaDengan(
     const OperasiOrBitSamaDenganContext& ctx
 ) {
-  return {};
+  return this->fragmentMultiOperasiLeftRight(
+      ctx.getKumpulanOperasiAndBitSamaDenganContext(), ctx.getKumpulanOperator()
+  );
 }
 
 nstd::dinamis Interpreter::visitOperasiAndBitSamaDengan(
     const OperasiAndBitSamaDenganContext& ctx
 ) {
-  return {};
+  return this->fragmentMultiOperasiLeftRight(
+      ctx.getKumpulanOperasiKurangSamaDenganContext(), ctx.getKumpulanOperator()
+  );
 }
 
 nstd::dinamis Interpreter::visitOperasiKurangSamaDengan(
     const OperasiKurangSamaDenganContext& ctx
 ) {
-  return {};
+  return this->fragmentMultiOperasiLeftRight(
+      ctx.getKumpulanOperasiTambahSamaDenganContext(), ctx.getKumpulanOperator()
+  );
 }
 
 nstd::dinamis Interpreter::visitOperasiTambahSamaDengan(
     const OperasiTambahSamaDenganContext& ctx
 ) {
-  return {};
+  return this->fragmentMultiOperasiLeftRight(
+      ctx.getKumpulanOperasiSisaBagiSamaDenganContext(),
+      ctx.getKumpulanOperator()
+  );
 }
 
 nstd::dinamis Interpreter::visitOperasiSisaBagiSamaDengan(
     const OperasiSisaBagiSamaDenganContext& ctx
 ) {
-  return {};
+  return this->fragmentMultiOperasiLeftRight(
+      ctx.getKumpulanOperasiBagiSamaDenganContext(), ctx.getKumpulanOperator()
+  );
 }
 
 nstd::dinamis Interpreter::visitOperasiBagiSamaDengan(
     const OperasiBagiSamaDenganContext& ctx
 ) {
-  return {};
+  return this->fragmentMultiOperasiLeftRight(
+      ctx.getKumpulanOperasiKaliSamaDenganContext(), ctx.getKumpulanOperator()
+  );
 }
 
 nstd::dinamis Interpreter::visitOperasiKaliSamaDengan(
     const OperasiKaliSamaDenganContext& ctx
 ) {
-  return {};
+  return this->fragmentMultiOperasiLeftRight(
+      ctx.getKumpulanOperasiSamaDenganContext(), ctx.getKumpulanOperator()
+  );
 }
 
 nstd::dinamis Interpreter::visitOperasiSamaDengan(
     const OperasiSamaDenganContext& ctx
 ) {
-  return {};
+  return this->fragmentMultiOperasiLeftRight(
+      ctx.getKumpulanOperasiAtauContext(), ctx.getKumpulanOperator()
+  );
 }
 
 nstd::dinamis Interpreter::visitOperasiAtau(const OperasiAtauContext& ctx) {
-  return {};
+  return this->fragmentMultiOperasiLeftRight(
+      ctx.getKumpulanOperasiDanContext(), ctx.getKumpulanOperator()
+  );
 }
 
 nstd::dinamis Interpreter::visitOperasiDan(const OperasiDanContext& ctx) {
-  return {};
+  return this->fragmentMultiOperasiLeftRight(
+      ctx.getKumpulanOperasiOrBitContext(), ctx.getKumpulanOperator()
+  );
 }
 
 nstd::dinamis Interpreter::visitOperasiOrBit(const OperasiOrBitContext& ctx) {
-  return {};
+  return this->fragmentMultiOperasiLeftRight(
+      ctx.getKumpulanOperasiXorBitContext(), ctx.getKumpulanOperator()
+  );
 }
 
 nstd::dinamis Interpreter::visitOperasiXorBit(const OperasiXorBitContext& ctx) {
-  return {};
+  return this->fragmentMultiOperasiLeftRight(
+      ctx.getKumpulanOperasiAndBitContext(), ctx.getKumpulanOperator()
+  );
 }
 
 nstd::dinamis Interpreter::visitOperasiAndBit(const OperasiAndBitContext& ctx) {
-  return {};
+  return this->fragmentMultiOperasiLeftRight(
+      ctx.getKumpulanOperasiTidakSamaContext(), ctx.getKumpulanOperator()
+  );
 }
 
 nstd::dinamis Interpreter::visitOperasiTidakSama(
     const OperasiTidakSamaContext& ctx
 ) {
-  return {};
+  return this->fragmentMultiOperasiLeftRight(
+      ctx.getKumpulanOperasiSamaContext(), ctx.getKumpulanOperator()
+  );
 }
 
 nstd::dinamis Interpreter::visitOperasiSama(const OperasiSamaContext& ctx) {
-  return {};
+  return this->fragmentMultiOperasiLeftRight(
+      ctx.getKumpulanOperasiLebihBesarSamaDenganContext(),
+      ctx.getKumpulanOperator()
+  );
 }
 
 nstd::dinamis Interpreter::visitOperasiLebihBesarSamaDengan(
     const OperasiLebihBesarSamaDenganContext& ctx
 ) {
-  return {};
+  return this->fragmentMultiOperasiLeftRight(
+      ctx.getKumpulanOperasiLebihBesarContext(), ctx.getKumpulanOperator()
+  );
 }
 
 nstd::dinamis Interpreter::visitOperasiLebihBesar(
     const OperasiLebihBesarContext& ctx
 ) {
-  return {};
+  return this->fragmentMultiOperasiLeftRight(
+      ctx.getKumpulanOperasiLebihKecilSamaDenganContext(),
+      ctx.getKumpulanOperator()
+  );
 }
 
 nstd::dinamis Interpreter::visitOperasiLebihKecilSamaDengan(
     const OperasiLebihKecilSamaDenganContext& ctx
 ) {
-  return {};
+  return this->fragmentMultiOperasiLeftRight(
+      ctx.getKumpulanOperasiLebihKecilContext(), ctx.getKumpulanOperator()
+  );
 }
 
 nstd::dinamis Interpreter::visitOperasiLebihKecil(
     const OperasiLebihKecilContext& ctx
 ) {
-  return {};
+  return this->fragmentMultiOperasiLeftRight(
+      ctx.getKumpulanOperasiGeserKananBitContext(), ctx.getKumpulanOperator()
+  );
 }
 
 nstd::dinamis Interpreter::visitOperasiGeserKananBit(
     const OperasiGeserKananBitContext& ctx
 ) {
-  return {};
+  return this->fragmentMultiOperasiLeftRight(
+      ctx.getKumpulanOperasiGeserKiriBitContext(), ctx.getKumpulanOperator()
+  );
 }
 
 nstd::dinamis Interpreter::visitOperasiGeserKiriBit(
     const OperasiGeserKiriBitContext& ctx
 ) {
-  return {};
+  return this->fragmentMultiOperasiLeftRight(
+      ctx.getKumpulanOperasiKurangContext(), ctx.getKumpulanOperator()
+  );
 }
 
 nstd::dinamis Interpreter::visitOperasiKurang(const OperasiKurangContext& ctx) {
-  return {};
+  return this->fragmentMultiOperasiLeftRight(
+      ctx.getKumpulanOperasiTambahContext(), ctx.getKumpulanOperator()
+  );
 }
 
 nstd::dinamis Interpreter::visitOperasiTambah(const OperasiTambahContext& ctx) {
-  return {};
+  return this->fragmentMultiOperasiLeftRight(
+      ctx.getKumpulanOperasiSisaPembagianContext(), ctx.getKumpulanOperator()
+  );
 }
 
 nstd::dinamis Interpreter::visitOperasiSisaPembagian(
     const OperasiSisaPembagianContext& ctx
 ) {
-  return {};
+  return this->fragmentMultiOperasiLeftRight(
+      ctx.getKumpulanOperasiPembagianContext(), ctx.getKumpulanOperator()
+  );
 }
 
 nstd::dinamis Interpreter::visitOperasiPembagian(
     const OperasiPembagianContext& ctx
 ) {
-  return {};
+  return this->fragmentMultiOperasiLeftRight(
+      ctx.getKumpulanOperasiPerkalianContext(), ctx.getKumpulanOperator()
+  );
 }
 
 nstd::dinamis Interpreter::visitOperasiPerkalian(
     const OperasiPerkalianContext& ctx
 ) {
-  return {};
+  return this->fragmentMultiOperasiLeftRight(
+      ctx.getKumpulanOperasiTidakContext(), ctx.getKumpulanOperator()
+  );
 }
 
 nstd::dinamis Interpreter::visitOperasiTidak(const OperasiTidakContext& ctx) {
-  return {};
+  return this->fragmentOperasiPrePost(
+      ctx.getOperasiNotBitContext(), ctx.getSatuOperator(), ctx.getIsPre(),
+      false
+  );
 }
 
 nstd::dinamis Interpreter::visitOperasiNotBit(const OperasiNotBitContext& ctx) {
-  return {};
+  return this->fragmentOperasiPrePost(
+      ctx.getOperasiKurangSatuContext(), ctx.getSatuOperator(), ctx.getIsPre(),
+      false
+  );
 }
 
 nstd::dinamis Interpreter::visitOperasiKurangSatu(
     const OperasiKurangSatuContext& ctx
 ) {
-  return {};
+  return this->fragmentOperasiPrePost(
+      ctx.getOperasiTambahSatuContext(), ctx.getSatuOperator(), ctx.getIsPre(),
+      ctx.getIsPost()
+  );
 }
 
 nstd::dinamis Interpreter::visitOperasiTambahSatu(
     const OperasiTambahSatuContext& ctx
 ) {
-  return {};
+  return this->fragmentOperasiPrePost(
+      ctx.getNilaiContext(), ctx.getSatuOperator(), ctx.getIsPre(),
+      ctx.getIsPost()
+  );
 }
 
-nstd::dinamis Interpreter::visitNilai(const NilaiContext& ctx) { return {}; }
+nstd::dinamis Interpreter::visitNilai(const NilaiContext& ctx) {
+  const auto& nilai = ctx.getNilai();
+  const auto& nilaiKalimat = ctx.getNilaiKalimatContext();
+  const auto& ekspresi = ctx.getEkspresiContext();
+  if(nstd::tidakKosong(nilai)) {
+    const Token& token = nilai.value();
+    const TokenType& type = token.getType();
+    std::string klmt = token.getValue();
+    this->tokens.push_back(token);
+    if(type == TokenType::BILANGAN) {
+      if(nstd::isFloat(klmt)) {
+        return nstd::toFloat(klmt);
+      } else if(nstd::isDouble(klmt)) {
+        return nstd::toDouble(klmt);
+      } else if(nstd::isInt(klmt)) {
+        return nstd::toInt(klmt);
+      }
+    } else if(type == TokenType::BENAR || type == TokenType::SALAH) {
+      if(nstd::isBool(klmt)) { return nstd::toBool(klmt); }
+    }
+  } else if(nstd::tidakKosong(nilaiKalimat)) {
+    return this->visit(nilaiKalimat.value());
+  } else if(nstd::tidakKosong(ekspresi)) {
+    return this->visit(ekspresi.value());
+  }
+  throw this->error("Nilai tidak valid.");
+}
 
 nstd::dinamis Interpreter::visitNilaiKalimat(const NilaiKalimatContext& ctx) {
-  return {};
+  const auto& kumpulanToken = ctx.getKumpulanToken();
+  const auto& kumpulanEkspresi = ctx.getkumpulanEkspresiContext();
+  std::string klmt;
+  size_t ekspresiIndex = 0;
+  for(size_t index = 0; index < kumpulanToken.size(); ++index) {
+    const Token& token = kumpulanToken[index];
+    const TokenType& type = token.getType();
+    this->tokens.push_back(token);
+    if(type == TokenType::DOLAR) {
+      ++index;
+      const Token& token = kumpulanToken[index];
+      const TokenType& type = token.getType();
+      this->tokens.push_back(token);
+      if(type == TokenType::KURUNG_KURAWAL_BUKA) {
+        if(nstd::tidakKosong(kumpulanEkspresi)) {
+          klmt += nstd::toString(this->visit(kumpulanEkspresi[ekspresiIndex]));
+          ++ekspresiIndex;
+        }
+      }
+      ++index;
+    } else {
+      klmt += token.getValue();
+    }
+  }
+  return klmt;
 }

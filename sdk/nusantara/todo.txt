@@ -1,7 +1,0 @@
-1. Merubah konsep desain operator   [X]
-2. Merubah cara kerja operasi '~'. 	[X]
-3. Membuat interpreter bisa         []
-	 melakukan semua operasi
-	 yang ditentukan.
-4. Mengaktifkan interpreter kembali []
-	 di cli.

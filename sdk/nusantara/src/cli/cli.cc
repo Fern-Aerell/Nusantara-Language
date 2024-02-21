@@ -7,6 +7,7 @@
 
 #include "config/config.h"
 #include "error/error_info.h"
+#include "interpreter/interpreter.h"
 #include "lexer/lexer.h"
 #include "nstd/daftar.h"
 #include "nstd/konsol.h"
@@ -64,9 +65,8 @@ void Cli::input(const int& argc, char* argv[]) {
       tree->printTree(0);
     } else {
       std::unique_ptr<ParserTree> tree = parser.parse();
-      nstd::cetak(
-          std::string("Untuk sementara interpreter tidak bisa digunakan.")
-      );
+      Interpreter interpreter(errorInfo);
+      interpreter.visit(tree);
     }
   } else if(kumpulanArgument.empty()) {
     showInfo();

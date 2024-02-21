@@ -63,7 +63,7 @@ Operator di nusantara di bagi menjadi beberapa jenis :
 | & | AND Bit | x & y |
 | \| | OR Bit | x \| y |
 | ^ | XOR Bit | x ^ y |
-| ~ | NOT Bit | x ~ y |
+| ~ | NOT Bit | ~x |
 | << | Pergeseran Kiri Bit | x << y |
 | >> | Pergeseran Kanan Bit| x >> y |
 

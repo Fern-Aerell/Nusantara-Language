@@ -3,12 +3,11 @@
 #include "visitor/context/operasi/operasi_kurang_satu_context.h"
 
 OperasiNotBitContext::OperasiNotBitContext(
-		const bool& isPre, 
-		std::unique_ptr<Context> operasiKurangSatuContext,
+    const bool& isPre, std::unique_ptr<Context> operasiKurangSatuContext,
     nstd::bisa_kosong<Token> satuOperator
 ):
-		isPre(isPre),
-  	operasiKurangSatuContext(std::move(operasiKurangSatuContext)),
+    isPre(isPre),
+    operasiKurangSatuContext(std::move(operasiKurangSatuContext)),
     satuOperator(std::move(satuOperator)) {}
 
 OperasiNotBitContext OperasiNotBitContext::generate(
@@ -32,16 +31,14 @@ OperasiNotBitContext OperasiNotBitContext::generate(
     }
   }
   return OperasiNotBitContext(
-      isPre, 
-			std::move(operasiKurangSatuContext), 
-			std::move(satuOperator)
+      isPre, std::move(operasiKurangSatuContext), std::move(satuOperator)
   );
 }
 
 const bool& OperasiNotBitContext::getIsPre() const { return this->isPre; }
 
-const std::unique_ptr<Context>& OperasiNotBitContext::getOperasiKurangSatuContext(
-) const {
+const std::unique_ptr<Context>&
+OperasiNotBitContext::getOperasiKurangSatuContext() const {
   return this->operasiKurangSatuContext;
 }
 
