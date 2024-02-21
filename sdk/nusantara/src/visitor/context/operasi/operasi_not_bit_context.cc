@@ -3,43 +3,48 @@
 #include "visitor/context/operasi/operasi_kurang_satu_context.h"
 
 OperasiNotBitContext::OperasiNotBitContext(
-    nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiKurangSatuContext,
-    nstd::daftar<Token> kumpulanOperator
+		const bool& isPre, 
+		std::unique_ptr<Context> operasiKurangSatuContext,
+    nstd::bisa_kosong<Token> satuOperator
 ):
-    kumpulanOperasiKurangSatuContext(std::move(kumpulanOperasiKurangSatuContext)
-    ),
-    kumpulanOperator(std::move(kumpulanOperator)) {}
+		isPre(isPre),
+  	operasiKurangSatuContext(std::move(operasiKurangSatuContext)),
+    satuOperator(std::move(satuOperator)) {}
 
 OperasiNotBitContext OperasiNotBitContext::generate(
     const nstd::daftar<std::unique_ptr<ParserTree>>& children
 ) {
-  nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiKurangSatuContext;
-  nstd::daftar<Token> kumpulanOperator;
+  std::unique_ptr<Context> operasiKurangSatuContext;
+  nstd::bisa_kosong<Token> satuOperator;
+  bool isPre = false;
   for(const std::unique_ptr<ParserTree>& child : children) {
-    if(auto* prt = dynamic_cast<ParserRuleTree*>(child.get())) {
-      if(prt->getRule() == ParserRule::operasi_kurang_satu) {
-        kumpulanOperasiKurangSatuContext.push_back(
-            std::make_unique<OperasiKurangSatuContext>(
-                OperasiKurangSatuContext::generate(prt->getChildren())
-            )
-        );
-      }
-    } else if(auto* ptt = dynamic_cast<ParserTokenTree*>(child.get())) {
+    if(auto* ptt = dynamic_cast<ParserTokenTree*>(child.get())) {
       if(ptt->getToken().getType() == TokenType::NOT_BIT) {
-        kumpulanOperator.push_back(ptt->getToken());
+        isPre = true;
+        satuOperator = ptt->getToken();
+      }
+    } else if(auto* prt = dynamic_cast<ParserRuleTree*>(child.get())) {
+      if(prt->getRule() == ParserRule::operasi_kurang_satu) {
+        operasiKurangSatuContext = std::make_unique<OperasiKurangSatuContext>(
+            OperasiKurangSatuContext::generate(prt->getChildren())
+        );
       }
     }
   }
   return OperasiNotBitContext(
-      std::move(kumpulanOperasiKurangSatuContext), std::move(kumpulanOperator)
+      isPre, 
+			std::move(operasiKurangSatuContext), 
+			std::move(satuOperator)
   );
 }
 
-const nstd::daftar<std::unique_ptr<Context>>&
-OperasiNotBitContext::getKumpulanOperasiKurangSatuContext() const {
-  return this->kumpulanOperasiKurangSatuContext;
+const bool& OperasiNotBitContext::getIsPre() const { return this->isPre; }
+
+const std::unique_ptr<Context>& OperasiNotBitContext::getOperasiKurangSatuContext(
+) const {
+  return this->operasiKurangSatuContext;
 }
 
-const nstd::daftar<Token>& OperasiNotBitContext::getKumpulanOperator() const {
-  return this->kumpulanOperator;
+const nstd::bisa_kosong<Token>& OperasiNotBitContext::getSatuOperator() const {
+  return this->satuOperator;
 }

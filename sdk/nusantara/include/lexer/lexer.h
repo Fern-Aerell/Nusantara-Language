@@ -36,7 +36,6 @@ class Lexer {
         {"AND_BIT_SAMA_DENGAN",         TokenType::AND_BIT_SAMA_DENGAN,         "&="                  },
         {"OR_BIT_SAMA_DENGAN",          TokenType::OR_BIT_SAMA_DENGAN,          "\\|="                },
         {"XOR_BIT_SAMA_DENGAN",         TokenType::XOR_BIT_SAMA_DENGAN,         "\\^="                },
-        {"NOT_BIT_SAMA_DENGAN",         TokenType::NOT_BIT_SAMA_DENGAN,         "\\~="                },
         {"GESER_KIRI_BIT_SAMA_DENGAN",  TokenType::GESER_KIRI_BIT_SAMA_DENGAN,
          "<<="                                                                                        },
         {"GESER_KANAN_BIT_SAMA_DENGAN", TokenType::GESER_KANAN_BIT_SAMA_DENGAN,

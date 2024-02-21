@@ -5,21 +5,24 @@
 #include "nstd/daftar.h"
 #include "parser/parser_tree.h"
 #include "visitor/context/context.h"
+#include "nstd/kosong.h"
 
 class OperasiNotBitContext: public Context {
   public:
     explicit OperasiNotBitContext(
-        nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiKurangSatuContext,
-        nstd::daftar<Token> kumpulanOperator
-    );
+      const bool& isPre,
+    	std::unique_ptr<Context> operasiKurangSatuContext,
+    	nstd::bisa_kosong<Token> satuOperator
+		);
     static OperasiNotBitContext generate(
         const nstd::daftar<std::unique_ptr<ParserTree>>& children
     );
-    [[nodiscard]] const nstd::daftar<std::unique_ptr<Context>>&
-    getKumpulanOperasiKurangSatuContext() const;
-    [[nodiscard]] const nstd::daftar<Token>& getKumpulanOperator() const;
+    [[nodiscard]] const bool& getIsPre() const;
+    [[nodiscard]] const std::unique_ptr<Context>& getOperasiKurangSatuContext() const;
+    [[nodiscard]] const nstd::bisa_kosong<Token>& getSatuOperator() const;
 
   private:
-    nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiKurangSatuContext;
-    nstd::daftar<Token> kumpulanOperator;
+    bool isPre;
+    std::unique_ptr<Context> operasiKurangSatuContext;
+    nstd::bisa_kosong<Token> satuOperator;
 };

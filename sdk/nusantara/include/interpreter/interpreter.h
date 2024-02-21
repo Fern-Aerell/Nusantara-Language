@@ -1,16 +1,17 @@
 #pragma once
 
+#include <memory>
 #include <stdexcept>
 #include <string>
 
 #include "error/error_info.h"
 #include "nstd/dinamis.h"
+#include "visitor/context/context.h"
 #include "visitor/visitor.h"
 
 class Interpreter: public Visitor<nstd::dinamis> {
   public:
     explicit Interpreter(ErrorInfo errorInfo);
-
     nstd::dinamis visitNusantara(const NusantaraContext& ctx) override;
     nstd::dinamis visitEkspresi(const EkspresiContext& ctx) override;
     nstd::dinamis visitOperasiGeserKananBitSamaDengan(

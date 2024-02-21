@@ -34,7 +34,6 @@ Operator di nusantara di bagi menjadi beberapa jenis :
 | &= | x & y |
 | \|= | x \|= y |
 | ^= | x ^= y |
-| ~= | x ~= y |
 | <<= | x <<= y |
 | >>= | x >>= y |
 

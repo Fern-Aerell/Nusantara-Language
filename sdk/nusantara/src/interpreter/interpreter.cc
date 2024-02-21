@@ -28,7 +28,17 @@ nstd::dinamis Interpreter::visitEkspresi(const EkspresiContext& ctx) {
 nstd::dinamis Interpreter::visitOperasiGeserKananBitSamaDengan(
     const OperasiGeserKananBitSamaDenganContext& ctx
 ) {
-  return {};
+	const auto& ogkbsdctx = ctx.getKumpulanOperasiGeserKiriBitSamaDenganContext();
+	const auto& koptr = ctx.getKumpulanOperator();
+	nstd::dinamis left = this->visit(ogkbsdctx[0]);
+	size_t index = 1;
+	for(const Token& optr: koptr) {
+		this->tokens.push_back(optr);
+		nstd::dinamis right = this->visit(ogkbsdctx[index]);
+		left >>= right;
+		++index;
+	}
+  return left;
 }
 
 nstd::dinamis Interpreter::visitOperasiGeserKiriBitSamaDengan(

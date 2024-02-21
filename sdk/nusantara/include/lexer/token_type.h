@@ -28,7 +28,6 @@ enum class TokenType : int {
   AND_BIT_SAMA_DENGAN,
   OR_BIT_SAMA_DENGAN,
   XOR_BIT_SAMA_DENGAN,
-  NOT_BIT_SAMA_DENGAN,
   GESER_KIRI_BIT_SAMA_DENGAN,
   GESER_KANAN_BIT_SAMA_DENGAN,
   // Operator Aritmatika
@@ -178,8 +177,6 @@ inline std::string toString(const TokenType &type) {
       return "OR_BIT_SAMA_DENGAN";
     case TokenType::XOR_BIT_SAMA_DENGAN:
       return "XOR_BIT_SAMA_DENGAN";
-    case TokenType::NOT_BIT_SAMA_DENGAN:
-      return "NOT_BIT_SAMA_DENGAN";
     case TokenType::GESER_KIRI_BIT_SAMA_DENGAN:
       return "GESER_KIRI_BIT_SAMA_DENGAN";
     case TokenType::GESER_KANAN_BIT_SAMA_DENGAN:

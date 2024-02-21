@@ -3,6 +3,7 @@
 #include <memory>
 #include <stdexcept>
 
+#include "nstd/dinamis.h"
 #include "parser/parser_rule.h"
 #include "parser/parser_tree.h"
 #include "visitor/context/context.h"
@@ -76,123 +77,123 @@ class Visitor {
       }
       if(const auto* oobsdctx =
              dynamic_cast<OperasiOrBitSamaDenganContext*>(ctx.get())) {
-        return this->visitOperasiOrBitSamaDenganContext(*oobsdctx);
+        return this->visitOperasiOrBitSamaDengan(*oobsdctx);
       }
       if(const auto* oabsdctx =
              dynamic_cast<OperasiAndBitSamaDenganContext*>(ctx.get())) {
-        return this->visitOperasiAndBitSamaDenganContext(*oabsdctx);
+        return this->visitOperasiAndBitSamaDengan(*oabsdctx);
       }
       if(const auto* oksdctx =
              dynamic_cast<OperasiKurangSamaDenganContext*>(ctx.get())) {
-        return this->visitOperasiKurangSamaDenganContext(*oksdctx);
+        return this->visitOperasiKurangSamaDengan(*oksdctx);
       }
       if(const auto* otsdctx =
              dynamic_cast<OperasiTambahSamaDenganContext*>(ctx.get())) {
-        return this->visitOperasiTambahSamaDenganContext(*otsdctx);
+        return this->visitOperasiTambahSamaDengan(*otsdctx);
       }
       if(const auto* osbsdctx =
              dynamic_cast<OperasiSisaBagiSamaDenganContext*>(ctx.get())) {
-        return this->visitOperasiSisaBagiSamaDenganContext(*osbsdctx);
+        return this->visitOperasiSisaBagiSamaDengan(*osbsdctx);
       }
       if(const auto* obsdctx =
              dynamic_cast<OperasiBagiSamaDenganContext*>(ctx.get())) {
-        return this->visitOperasiBagiSamaDenganContext(*obsdctx);
+        return this->visitOperasiBagiSamaDengan(*obsdctx);
       }
       if(const auto* oksdctx =
              dynamic_cast<OperasiKaliSamaDenganContext*>(ctx.get())) {
-        return this->visitOperasiKaliSamaDenganContext(*oksdctx);
+        return this->visitOperasiKaliSamaDengan(*oksdctx);
       }
       if(const auto* osdctx =
              dynamic_cast<OperasiSamaDenganContext*>(ctx.get())) {
-        return this->visitOperasiSamaDenganContext(*osdctx);
+        return this->visitOperasiSamaDengan(*osdctx);
       }
       if(const auto* oactx = dynamic_cast<OperasiAtauContext*>(ctx.get())) {
-        return this->visitOperasiAtauContext(*oactx);
+        return this->visitOperasiAtau(*oactx);
       }
       if(const auto* odctx = dynamic_cast<OperasiDanContext*>(ctx.get())) {
-        return this->visitOperasiDanContext(*odctx);
+        return this->visitOperasiDan(*odctx);
       }
       if(const auto* oobtcx = dynamic_cast<OperasiOrBitContext*>(ctx.get())) {
-        return this->visitOperasiOrBitContext(*oobtcx);
+        return this->visitOperasiOrBit(*oobtcx);
       }
       if(const auto* oxbtcx = dynamic_cast<OperasiXorBitContext*>(ctx.get())) {
-        return this->visitOperasiXorBitContext(*oxbtcx);
+        return this->visitOperasiXorBit(*oxbtcx);
       }
       if(const auto* oabctx = dynamic_cast<OperasiAndBitContext*>(ctx.get())) {
-        return this->visitOperasiAndBitContext(*oabctx);
+        return this->visitOperasiAndBit(*oabctx);
       }
       if(const auto* otsctx =
              dynamic_cast<OperasiTidakSamaContext*>(ctx.get())) {
-        return this->visitOperasiTidakSamaContext(*otsctx);
+        return this->visitOperasiTidakSama(*otsctx);
       }
       if(const auto* osctx = dynamic_cast<OperasiSamaContext*>(ctx.get())) {
-        return this->visitOperasiSamaContext(*osctx);
+        return this->visitOperasiSama(*osctx);
       }
       if(const auto* olbsdctx =
              dynamic_cast<OperasiLebihBesarSamaDenganContext*>(ctx.get())) {
-        return this->visitOperasiLebihBesarSamaDenganContext(*olbsdctx);
+        return this->visitOperasiLebihBesarSamaDengan(*olbsdctx);
       }
       if(const auto* olbctx =
              dynamic_cast<OperasiLebihBesarContext*>(ctx.get())) {
-        return this->visitOperasiLebihBesarContext(*olbctx);
+        return this->visitOperasiLebihBesar(*olbctx);
       }
       if(const auto* olksdctx =
              dynamic_cast<OperasiLebihKecilSamaDenganContext*>(ctx.get())) {
-        return this->visitOperasiLebihKecilSamaDenganContext(*olksdctx);
+        return this->visitOperasiLebihKecilSamaDengan(*olksdctx);
       }
       if(const auto* olkctx =
              dynamic_cast<OperasiLebihKecilContext*>(ctx.get())) {
-        return this->visitOperasiLebihKecilContext(*olkctx);
+        return this->visitOperasiLebihKecil(*olkctx);
       }
       if(const auto* ogkananbctx =
              dynamic_cast<OperasiGeserKananBitContext*>(ctx.get())) {
-        return this->visitOperasiGeserKananBitContext(*ogkananbctx);
+        return this->visitOperasiGeserKananBit(*ogkananbctx);
       }
       if(const auto* ogkiribctx =
              dynamic_cast<OperasiGeserKiriBitContext*>(ctx.get())) {
-        return this->visitOperasiGeserKiriBitContext(*ogkiribctx);
+        return this->visitOperasiGeserKiriBit(*ogkiribctx);
       }
       if(const auto* okctx = dynamic_cast<OperasiKurangContext*>(ctx.get())) {
-        return this->visitOperasiKurangContext(*okctx);
+        return this->visitOperasiKurang(*okctx);
       }
       if(const auto* otctx = dynamic_cast<OperasiTambahContext*>(ctx.get())) {
-        return this->visitOperasiTambahContext(*otctx);
+        return this->visitOperasiTambah(*otctx);
       }
       if(const auto* ospctx =
              dynamic_cast<OperasiSisaPembagianContext*>(ctx.get())) {
-        return this->visitOperasiSisaPembagianContext(*ospctx);
+        return this->visitOperasiSisaPembagian(*ospctx);
       }
       if(const auto* opctx =
              dynamic_cast<OperasiPembagianContext*>(ctx.get())) {
-        return this->visitOperasiPembagianContext(*opctx);
+        return this->visitOperasiPembagian(*opctx);
       }
       if(const auto* opklianctx =
              dynamic_cast<OperasiPerkalianContext*>(ctx.get())) {
-        return this->visitOperasiPerkalianContext(*opklianctx);
+        return this->visitOperasiPerkalian(*opklianctx);
       }
       if(const auto* otdkctx = dynamic_cast<OperasiTidakContext*>(ctx.get())) {
-        return this->visitOperasiTidakContext(*otdkctx);
+        return this->visitOperasiTidak(*otdkctx);
       }
       if(const auto* onbctx = dynamic_cast<OperasiNotBitContext*>(ctx.get())) {
-        return this->visitOperasiNotBitContext(*onbctx);
+        return this->visitOperasiNotBit(*onbctx);
       }
       if(const auto* oksctx =
              dynamic_cast<OperasiKurangSatuContext*>(ctx.get())) {
-        return this->visitOperasiKurangSatuContext(*oksctx);
+        return this->visitOperasiKurangSatu(*oksctx);
       }
       if(const auto* otsctx =
              dynamic_cast<OperasiTambahSatuContext*>(ctx.get())) {
-        return this->visitOperasiTambahSatuContext(*otsctx);
+        return this->visitOperasiTambahSatu(*otsctx);
       }
       if(const auto* nilaictx = dynamic_cast<NilaiContext*>(ctx.get())) {
-        return this->visitNilaiContext(*nilaictx);
+        return this->visitNilai(*nilaictx);
       }
       if(const auto* nklmtctx = dynamic_cast<NilaiKalimatContext*>(ctx.get())) {
-        return this->visitNilaiKalimatContext(*nklmtctx);
+        return this->visitNilaiKalimat(*nklmtctx);
       }
       throw std::runtime_error("Context tidak dapat di cast.");
     }
-
+	
     T visit(const std::unique_ptr<ParserTree>& tree) {
       if(auto* rule = dynamic_cast<ParserRuleTree*>(tree.get())) {
         switch(rule->getRule()) {
