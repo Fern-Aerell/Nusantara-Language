@@ -9,6 +9,10 @@ namespace nstd {
     return std::to_string(nilai);
   }
 
+  inline std::string toString(const size_t& nilai) {
+    return std::to_string(nilai);
+  }
+
   inline std::string toString(const double& nilai) {
     std::string str = std::to_string(nilai);
     size_t pos = str.find('.');

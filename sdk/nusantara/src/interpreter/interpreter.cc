@@ -1,5 +1,6 @@
 #include "interpreter/interpreter.h"
 
+#include <format>
 #include <stdexcept>
 #include <string>
 
@@ -11,12 +12,33 @@
 #include "nstd/kalimat.h"
 #include "nstd/konsol.h"
 #include "nstd/kosong.h"
+#include "nstd/peta.h"
 
 Interpreter::Interpreter(ErrorInfo errorInfo):
     errorInfo(std::move(errorInfo)) {}
 
 std::runtime_error Interpreter::error(const std::string& msg) {
   return std::runtime_error(this->errorInfo.inLine(this->tokens, msg));
+}
+
+void Interpreter::createVariable(const std::string& name) {
+  this->variables[name] = {};
+}
+
+void Interpreter::setVariable(
+    const std::string& name, const nstd::dinamis& value
+) {
+  nstd::cetak(std::format(
+      "Membuat variable '{}' dengan value '{}'.", name, nstd::toString(value)
+  ));
+  this->variables[name] = value;
+}
+
+nstd::dinamis Interpreter::getVariable(const std::string& name) {
+  if(!nstd::containsKey(this->variables, name)) {
+    throw std::runtime_error(std::format("Variable '{}' belum dibuat.", name));
+  }
+  return this->variables[name];
 }
 
 nstd::dinamis Interpreter::fragmentMultiOperasiLeftRight(
@@ -118,7 +140,19 @@ nstd::dinamis Interpreter::fragmentOperasiPrePost(
 nstd::dinamis Interpreter::visitNusantara(const NusantaraContext& ctx) {
   for(const auto& ekspresi : ctx.getKumpulanEkspresi()) {
     nstd::dinamis hasil = this->visit(ekspresi);
-    nstd::cetak(hasil);
+    if(nstd::is<Token>(hasil)) {
+      const Token& token = nstd::as<Token>(hasil);
+      const TokenType& type = token.getType();
+      if(type == TokenType::IDENTIFIKASI) {
+        try {
+          nstd::cetak(this->getVariable(token.getValue()));
+        } catch(const std::exception& error) {
+          throw this->error(error.what());
+        }
+      }
+    } else {
+      nstd::cetak(hasil);
+    }
     this->tokens.clear();
   }
   return {};
@@ -434,6 +468,8 @@ nstd::dinamis Interpreter::visitNilai(const NilaiContext& ctx) {
       }
     } else if(type == TokenType::BENAR || type == TokenType::SALAH) {
       if(nstd::isBool(klmt)) { return nstd::toBool(klmt); }
+    } else if(type == TokenType::IDENTIFIKASI) {
+      return token;
     }
   } else if(nstd::tidakKosong(nilaiKalimat)) {
     return this->visit(nilaiKalimat.value());
@@ -473,6 +509,8 @@ nstd::dinamis Interpreter::visitNilaiKalimat(const NilaiKalimatContext& ctx) {
           klmt += nstd::toString(this->visit(kumpulanEkspresi[ekspresiIndex]));
           ++ekspresiIndex;
         }
+      } else if(type == TokenType::IDENTIFIKASI) {
+        klmt += nstd::toString(this->getVariable(token.getValue()));
       }
       ++index;
     } else {

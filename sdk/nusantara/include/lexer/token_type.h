@@ -69,7 +69,9 @@ enum class TokenType : int {
   DOLAR,
   KUTIP_SATU,
   KUTIP_DUA,
-  GARIS_MIRING_KEBALIK
+  GARIS_MIRING_KEBALIK,
+  // IDENTIFIKASI
+  IDENTIFIKASI
 };
 
 inline std::string toString(const TokenType &type) {
@@ -188,5 +190,7 @@ inline std::string toString(const TokenType &type) {
       return "TANDA_TANYA";
     case TokenType::TITIK_DUA:
       return "TITIK_DUA";
+    case TokenType::IDENTIFIKASI:
+      return "IDENTIFIKASI";
   }
 };

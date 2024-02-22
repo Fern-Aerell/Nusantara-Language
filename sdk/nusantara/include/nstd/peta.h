@@ -10,6 +10,12 @@ namespace nstd {
   using peta = std::map<Key, Value>;
 
   template<class Key, class Value>
+  inline bool containsKey(const peta<Key, Value>& peta, const Key& key) {
+    auto value = peta.find(key);
+    return static_cast<bool>(value != peta.end());
+  }
+
+  template<class Key, class Value>
   inline std::string toString(const peta<Key, Value>& peta) {
     std::ostringstream stream;
     int index = 0;

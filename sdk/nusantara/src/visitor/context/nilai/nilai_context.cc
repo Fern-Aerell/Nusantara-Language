@@ -1,5 +1,6 @@
 #include "visitor/context/nilai/nilai_context.h"
 
+#include "lexer/token_type.h"
 #include "visitor/context/ekspresi/ekspresi_context.h"
 #include "visitor/context/nilai/nilai_kalimat_context.h"
 
@@ -19,7 +20,8 @@ NilaiContext NilaiContext::generate(
     const Token token = ptchildToken->getToken();
     const TokenType type = token.getType();
     const nstd::daftar<TokenType> nilaiTokenType = {
-        TokenType::BILANGAN, TokenType::BENAR, TokenType::SALAH
+        TokenType::BILANGAN, TokenType::BENAR, TokenType::SALAH,
+        TokenType::IDENTIFIKASI
     };
     if(nstd::contains<TokenType>(nilaiTokenType, type)) {
       nstd::bisa_kosong<Token> nilai = token;

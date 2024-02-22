@@ -392,7 +392,8 @@ std::unique_ptr<ParserTree> Parser::parseNilai() {
   std::unique_ptr<ParserTree> ekspresi_nilai =
       std::make_unique<ParserRuleTree>(ParserRule::nilai);
   const nstd::daftar<TokenType> types = {
-      TokenType::BILANGAN, TokenType::BENAR, TokenType::SALAH
+      TokenType::BILANGAN, TokenType::BENAR, TokenType::SALAH,
+      TokenType::IDENTIFIKASI
   };
   this->skipWs();
   if(this->matchOr(types)) {
@@ -440,6 +441,8 @@ std::unique_ptr<ParserTree> Parser::parseNilaiKalimat() {
         nilaiKalimat->addChild(eat(TokenType::KURUNG_KURAWAL_BUKA));
         nilaiKalimat->addChild(this->parseEkspresi());
         nilaiKalimat->addChild(eat(TokenType::KURUNG_KURAWAL_TUTUP, false));
+      } else if(this->match(TokenType::IDENTIFIKASI)) {
+        nilaiKalimat->addChild(eat(TokenType::IDENTIFIKASI));
       } else {
         throw std::runtime_error(this->errorInfo.inLine(
             this->currentToken,

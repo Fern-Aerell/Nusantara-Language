@@ -8,6 +8,7 @@
 #include "lexer/token.h"
 #include "nstd/daftar.h"
 #include "nstd/dinamis.h"
+#include "nstd/peta.h"
 #include "visitor/context/context.h"
 #include "visitor/context/operasi/operasi_kondisional_context.h"
 #include "visitor/visitor.h"
@@ -91,10 +92,14 @@ class Interpreter: public Visitor<nstd::dinamis> {
     ) override;
     nstd::dinamis visitNilai(const NilaiContext& ctx) override;
     nstd::dinamis visitNilaiKalimat(const NilaiKalimatContext& ctx) override;
+    void createVariable(const std::string& name);
+    void setVariable(const std::string& name, const nstd::dinamis& value);
+    nstd::dinamis getVariable(const std::string& name);
 
   private:
     ErrorInfo errorInfo;
     nstd::daftar<Token> tokens;
+    nstd::peta<std::string, nstd::dinamis> variables;
     std::runtime_error error(const std::string& msg);
     nstd::dinamis fragmentMultiOperasiLeftRight(
         const nstd::daftar<std::unique_ptr<Context>>& kumpulanContext,
