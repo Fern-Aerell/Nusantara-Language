@@ -33,45 +33,47 @@ nstd::dinamis Interpreter::fragmentMultiOperasiLeftRight(
     nstd::dinamis right = this->visit(kumpulanContext[index]);
     const TokenType& type = optr.getType();
     using namespace nstd;
-    if(type == TokenType::TAMBAH) {
-      left = left + right;
-    } else if(type == TokenType::KURANG) {
-      left = left - right;
-    } else if(type == TokenType::KALI) {
-      left = left * right;
-    } else if(type == TokenType::BAGI) {
-      left = left / right;
-    } else if(type == TokenType::SISA_BAGI) {
-      left = left % right;
-    } else if(type == TokenType::SAMA) {
-      left = left == right;
-    } else if(type == TokenType::TIDAK_SAMA) {
-      left = left != right;
-    } else if(type == TokenType::LEBIH_BESAR) {
-      left = left > right;
-    } else if(type == TokenType::LEBIH_KECIL) {
-      left = left < right;
-    } else if(type == TokenType::LEBIH_BESAR_SAMA_DENGAN) {
-      left = left >= right;
-    } else if(type == TokenType::LEBIH_KECIL_SAMA_DENGAN) {
-      left = left <= right;
-    } else if(type == TokenType::DAN) {
-      left = left && right;
-    } else if(type == TokenType::ATAU) {
-      left = left || right;
-    } else if(type == TokenType::AND_BIT) {
-      left = left & right;
-    } else if(type == TokenType::OR_BIT) {
-      left = left | right;
-    } else if(type == TokenType::XOR_BIT) {
-      left = left ^ right;
-    } else if(type == TokenType::GESER_KIRI_BIT) {
-      left = left << right;
-    } else if(type == TokenType::GESER_KANAN_BIT) {
-      left = left >> right;
-    } else {
-      throw this->error("Operator operasi tidak valid.");
-    }
+    try {
+      if(type == TokenType::TAMBAH) {
+        left = left + right;
+      } else if(type == TokenType::KURANG) {
+        left = left - right;
+      } else if(type == TokenType::KALI) {
+        left = left * right;
+      } else if(type == TokenType::BAGI) {
+        left = left / right;
+      } else if(type == TokenType::SISA_BAGI) {
+        left = left % right;
+      } else if(type == TokenType::SAMA) {
+        left = left == right;
+      } else if(type == TokenType::TIDAK_SAMA) {
+        left = left != right;
+      } else if(type == TokenType::LEBIH_BESAR) {
+        left = left > right;
+      } else if(type == TokenType::LEBIH_KECIL) {
+        left = left < right;
+      } else if(type == TokenType::LEBIH_BESAR_SAMA_DENGAN) {
+        left = left >= right;
+      } else if(type == TokenType::LEBIH_KECIL_SAMA_DENGAN) {
+        left = left <= right;
+      } else if(type == TokenType::DAN) {
+        left = left && right;
+      } else if(type == TokenType::ATAU) {
+        left = left || right;
+      } else if(type == TokenType::AND_BIT) {
+        left = left & right;
+      } else if(type == TokenType::OR_BIT) {
+        left = left | right;
+      } else if(type == TokenType::XOR_BIT) {
+        left = left ^ right;
+      } else if(type == TokenType::GESER_KIRI_BIT) {
+        left = left << right;
+      } else if(type == TokenType::GESER_KANAN_BIT) {
+        left = left >> right;
+      } else {
+        throw this->error("Operator tidak valid.");
+      }
+    } catch(const std::exception& error) { throw this->error(error.what()); }
     ++index;
   }
   return left;
@@ -88,25 +90,27 @@ nstd::dinamis Interpreter::fragmentOperasiPrePost(
     const TokenType& type = token.getType();
     this->tokens.push_back(token);
     using namespace nstd;
-    if(type == TokenType::TAMBAH_SATU) {
-      if(isPre) {
-        left = 1 + left;
-      } else if(isPost) {
-        left = left + 1;
+    try {
+      if(type == TokenType::TAMBAH_SATU) {
+        if(isPre) {
+          left = 1 + left;
+        } else if(isPost) {
+          left = left + 1;
+        }
+      } else if(type == TokenType::KURANG_SATU) {
+        if(isPre) {
+          left = 1 - left;
+        } else if(isPost) {
+          left = left - 1;
+        }
+      } else if(type == TokenType::TIDAK) {
+        if(isPre) { left = !left; }
+      } else if(type == TokenType::NOT_BIT) {
+        if(isPre) { left = ~left; }
+      } else {
+        throw this->error("Operator tidak valid.");
       }
-    } else if(type == TokenType::KURANG_SATU) {
-      if(isPre) {
-        left = 1 - left;
-      } else if(isPost) {
-        left = left - 1;
-      }
-    } else if(type == TokenType::TIDAK) {
-      if(isPre) { left = !left; }
-    } else if(type == TokenType::NOT_BIT) {
-      if(isPre) { left = ~left; }
-    } else {
-      throw this->error("Operator operasi tidak valid.");
-    }
+    } catch(const std::exception& error) { throw this->error(error.what()); }
   }
   return left;
 }
