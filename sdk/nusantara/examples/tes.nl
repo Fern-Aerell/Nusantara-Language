@@ -1,10 +1,1 @@
-"Kalimat kosong : ";
-"";
-'Fern' + " " + 'Aerell';
-"Semua operasi yang didukung nusantara :";
-"1++ = ${1++}";
-"++1 = ${++1}";
-"1-- = ${1--}";
-"--1 = ${--1}";
-"~1 = ${~1}";
-"!benar = ${!benar}";
+(10 + 5 == 15) ? "Benar" : "Salah";

@@ -16,6 +16,7 @@ enum class ParserRule : int {
   operasi_bagi_sama_dengan,
   operasi_kali_sama_dengan,
   operasi_sama_dengan,
+  operasi_kondisional,
   operasi_atau,
   operasi_dan,
   operasi_or_bit,
@@ -70,6 +71,8 @@ inline std::string toString(const ParserRule &rule) {
       return "operasi_kali_sama_dengan";
     case ParserRule::operasi_sama_dengan:
       return "operasi_sama_dengan";
+    case ParserRule::operasi_kondisional:
+      return "operasi_kondisional";
     case ParserRule::operasi_atau:
       return "operasi_atau";
     case ParserRule::operasi_dan:

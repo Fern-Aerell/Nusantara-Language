@@ -23,9 +23,9 @@ nstd::dinamis Interpreter::fragmentMultiOperasiLeftRight(
     const nstd::daftar<std::unique_ptr<Context>>& kumpulanContext,
     const nstd::daftar<Token>& kumpulanOperator
 ) {
-	if(nstd::kosong(kumpulanContext)) {
-		throw std::runtime_error("Nilai tidak boleh kosong.");
-	}
+  if(nstd::kosong(kumpulanContext)) {
+    throw std::runtime_error("Nilai tidak boleh kosong.");
+  }
   nstd::dinamis left = this->visit(kumpulanContext[0]);
   size_t index = 1;
   for(const Token& optr : kumpulanOperator) {
@@ -210,8 +210,43 @@ nstd::dinamis Interpreter::visitOperasiSamaDengan(
     const OperasiSamaDenganContext& ctx
 ) {
   return this->fragmentMultiOperasiLeftRight(
-      ctx.getKumpulanOperasiAtauContext(), ctx.getKumpulanOperator()
+      ctx.getKumpulanOperasiKondisionalContext(), ctx.getKumpulanOperator()
   );
+}
+
+nstd::dinamis Interpreter::visitOperasiKondisional(
+    const OperasiKondisionalContext& ctx
+) {
+  const auto& kondisiPtr = ctx.getKondisiOperasiAtauContext();
+  const auto& tandaTanya = ctx.getTandaTanya();
+  const auto& nilaiBenarPtr = ctx.getNilaiBenarEkspresiContext();
+  const auto& titikDua = ctx.getTitikDua();
+  const auto& nilaiSalahPtr = ctx.getNilaiSalahEkspresiContext();
+  nstd::dinamis kondisi = this->visit(kondisiPtr);
+  if(nstd::tidakKosong(tandaTanya)) {
+    this->tokens.push_back(tandaTanya.value());
+    if(nstd::is<bool>(kondisi)) {
+      if(nstd::as<bool>(kondisi)) {
+        if(nstd::kosong(nilaiBenarPtr)) {
+          throw std::runtime_error("Nilai benar tidak boleh kosong.");
+        }
+        nstd::dinamis nilaiBenar = this->visit(nilaiBenarPtr.value());
+        return nilaiBenar;
+      } else {
+        if(nstd::kosong(nilaiSalahPtr)) {
+          throw std::runtime_error("Nilai salah tidak boleh kosong.");
+        }
+        if(nstd::tidakKosong(titikDua)) {
+          this->tokens.push_back(titikDua.value());
+        }
+        nstd::dinamis nilaiSalah = this->visit(nilaiSalahPtr.value());
+        return nilaiSalah;
+      }
+    } else {
+      throw this->error("Kondisi harus bernilai benar atau salah.");
+    }
+  }
+  return kondisi;
 }
 
 nstd::dinamis Interpreter::visitOperasiAtau(const OperasiAtauContext& ctx) {
@@ -414,17 +449,17 @@ nstd::dinamis Interpreter::visitNilaiKalimat(const NilaiKalimatContext& ctx) {
     const TokenType& type = token.getType();
     this->tokens.push_back(token);
     if(type == TokenType::GARIS_MIRING_KEBALIK) {
-			++index;
-			const Token& token = kumpulanToken[index];
-			const std::string& value = token.getValue();
-			if(value == "n") {
-				klmt += "\n";
-			}else if(value == "t") {
-				klmt += "\t";
-			}else{
-				klmt += value;
-			}
-		}else if(type == TokenType::DOLAR) {
+      ++index;
+      const Token& token = kumpulanToken[index];
+      const std::string& value = token.getValue();
+      if(value == "n") {
+        klmt += "\n";
+      } else if(value == "t") {
+        klmt += "\t";
+      } else {
+        klmt += value;
+      }
+    } else if(type == TokenType::DOLAR) {
       ++index;
       const Token& token = kumpulanToken[index];
       const TokenType& type = token.getType();

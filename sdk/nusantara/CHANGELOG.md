@@ -1,7 +1,8 @@
 #  Fitur yang akan dibuat.
-- Nusantara mendukung operasi bit.
-- Nusantara mendukung operasi kondisional.
-- Nusantara mendukung ekspresi fungsi.
+- [X] Nusantara mendukung operasi bit.
+- [X] Nusantara mendukung operasi kondisional.
+- [ ] Nusantara mendukung deklarasi variable.
+- [ ] Nusantara mendukung ekspresi fungsi.
 
 # 1.11.6-Indev (18 Feb 2024)
 

@@ -23,7 +23,8 @@ int main(int argc, char* argv[]) {
     nstd::cetak(std::string(error.what()));
   }
   auto end = std::chrono::steady_clock::now();
-  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+  auto duration =
+      std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
   nstd::cetak(
       std::format("Program berjalan selama: {} milidetik.", duration.count())
   );

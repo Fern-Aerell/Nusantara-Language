@@ -69,6 +69,9 @@ class Lexer {
         {"KALI",                        TokenType::KALI,                        "\\*"                 },
         {"BAGI",                        TokenType::BAGI,                        "/"                   },
         {"SISA_BAGI",                   TokenType::SISA_BAGI,                   "%"                   },
+ // Operator Kondisional
+        {"TANDA_TANYA",                 TokenType::TANDA_TANYA,                 "\\?"                 },
+        {"TITIK_DUA",                   TokenType::TITIK_DUA,                   ":"                   },
  // Pemisah
         {"TITIK_KOMA",                  TokenType::TITIK_KOMA,                  ";"                   },
         {"KURUNG_BUKA",                 TokenType::KURUNG_BUKA,                 "\\("                 },
@@ -88,6 +91,4 @@ class Lexer {
     int charIndex = 0;
     bool match(const std::string &pattern, std::string &match);
     Token createToken(const TokenType &type, const std::string &value);
-    Token generateTokenBawaan();
-    Token generateTokenTidakDiKenal();
 };

@@ -9,6 +9,7 @@
 #include "nstd/daftar.h"
 #include "nstd/dinamis.h"
 #include "visitor/context/context.h"
+#include "visitor/context/operasi/operasi_kondisional_context.h"
 #include "visitor/visitor.h"
 
 class Interpreter: public Visitor<nstd::dinamis> {
@@ -47,6 +48,8 @@ class Interpreter: public Visitor<nstd::dinamis> {
         const OperasiKaliSamaDenganContext& ctx
     ) override;
     nstd::dinamis visitOperasiSamaDengan(const OperasiSamaDenganContext& ctx
+    ) override;
+    nstd::dinamis visitOperasiKondisional(const OperasiKondisionalContext& ctx
     ) override;
     nstd::dinamis visitOperasiAtau(const OperasiAtauContext& ctx) override;
     nstd::dinamis visitOperasiDan(const OperasiDanContext& ctx) override;

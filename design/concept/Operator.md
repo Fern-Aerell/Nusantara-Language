@@ -67,6 +67,13 @@ Operator di nusantara di bagi menjadi beberapa jenis :
 | << | Pergeseran Kiri Bit | x << y |
 | >> | Pergeseran Kanan Bit| x >> y |
 
+## Kondisional Operator
+
+Sintaks :
+```
+(kondisi) ? benar : salah;
+```
+
 ## Urutan Operator
 
 Urutan operator yang Anda berikan adalah sebagai berikut, dengan operator yang memiliki prioritas yang lebih tinggi ditempatkan lebih awal:
@@ -93,16 +100,17 @@ Urutan operator yang Anda berikan adalah sebagai berikut, dengan operator yang m
 20. `|` (Bitwise OR)
 21. `&&` (Logical AND)
 22. `||` (Logical OR)
-23. `=` (Assignment)
-26. `*=` (Multiplication Assignment)
-27. `/=` (Division Assignment)
-28. `%=` (Modulus Assignment)
-24. `+=` (Addition Assignment)
-25. `-=` (Subtraction Assignment)
-29. `&=` (Bitwise AND Assignment)
-30. `|=` (Bitwise OR Assignment)
-31. `^=` (Bitwise XOR Assignment)
-32. `<<=` (Bitwise Left Shift Assignment)
-33. `>>=` (Bitwise Right Shift Assignment)
+23. `?:` (Conditional/Ternary Operator)
+24. `=` (Assignment)
+25. `*=` (Multiplication Assignment)
+26. `/=` (Division Assignment)
+27. `%=` (Modulus Assignment)
+28. `+=` (Addition Assignment)
+29. `-=` (Subtraction Assignment)
+30. `&=` (Bitwise AND Assignment)
+31. `|=` (Bitwise OR Assignment)
+32. `^=` (Bitwise XOR Assignment)
+33. `<<=` (Bitwise Left Shift Assignment)
+34. `>>=` (Bitwise Right Shift Assignment)
 
 Perlu diingat bahwa urutan ini berdasarkan pada standar umum. Beberapa bahasa pemrograman dapat memiliki aturan yang sedikit berbeda atau mendukung operator tambahan yang tidak ada dalam daftar ini. Juga, penggunaan tanda kurung bisa memodifikasi urutan evaluasi.

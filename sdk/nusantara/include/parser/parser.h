@@ -23,7 +23,7 @@ class Parser {
     std::unique_ptr<ParserTree> eat(
         const TokenType& type, const bool& skipWs = true
     );
-		void skipWs();
+    void skipWs();
     bool match(const TokenType& type);
     bool matchOr(const std::vector<TokenType>& types);
     // fragment
@@ -51,6 +51,7 @@ class Parser {
     std::unique_ptr<ParserTree> parseOperasiBagiSamaDengan();
     std::unique_ptr<ParserTree> parseOperasiKaliSamaDengan();
     std::unique_ptr<ParserTree> parseOperasiSamaDengan();
+    std::unique_ptr<ParserTree> parseOperasiKondisional();
     std::unique_ptr<ParserTree> parseOperasiAtau();
     std::unique_ptr<ParserTree> parseOperasiDan();
     std::unique_ptr<ParserTree> parseOperasiOrBit();

@@ -33,16 +33,7 @@ bool Lexer::match(const std::string &pattern, std::string &match) {
   }
 }
 
-Token Lexer::getNextToken() { return generateTokenBawaan(); }
-
-Token Lexer::generateTokenTidakDiKenal() {
-  std::string match;
-  match = content[0];
-  this->match(".", match);
-  return this->createToken(TokenType::TIDAK_DIKENALI, match);
-}
-
-Token Lexer::generateTokenBawaan() {
+Token Lexer::getNextToken() {
   std::string match;
   if(this->content.empty()) {
     return this->createToken(TokenType::AKHIR_DARI_FILE, match);
@@ -53,7 +44,9 @@ Token Lexer::generateTokenBawaan() {
       return this->createToken(tokenType.getType(), match);
     }
   }
-  return this->generateTokenTidakDiKenal();
+  match = content[0];
+  this->match(match, match);
+  return this->createToken(TokenType::TIDAK_DIKENALI, match);
 }
 
 Token Lexer::createToken(const TokenType &type, const std::string &value) {

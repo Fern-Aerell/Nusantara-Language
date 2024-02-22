@@ -21,6 +21,7 @@
 #include "visitor/context/operasi/operasi_geser_kiri_bit_context.h"
 #include "visitor/context/operasi/operasi_geser_kiri_bit_sama_dengan_context.h"
 #include "visitor/context/operasi/operasi_kali_sama_dengan_context.h"
+#include "visitor/context/operasi/operasi_kondisional_context.h"
 #include "visitor/context/operasi/operasi_kurang_context.h"
 #include "visitor/context/operasi/operasi_kurang_sama_dengan_context.h"
 #include "visitor/context/operasi/operasi_kurang_satu_context.h"
@@ -106,6 +107,10 @@ class Visitor {
       if(const auto* osdctx =
              dynamic_cast<OperasiSamaDenganContext*>(ctx.get())) {
         return this->visitOperasiSamaDengan(*osdctx);
+      }
+      if(const auto* okctx =
+             dynamic_cast<OperasiKondisionalContext*>(ctx.get())) {
+        return this->visitOperasiKondisional(*okctx);
       }
       if(const auto* oactx = dynamic_cast<OperasiAtauContext*>(ctx.get())) {
         return this->visitOperasiAtau(*oactx);
@@ -253,6 +258,10 @@ class Visitor {
             return this->visitOperasiSamaDengan(
                 OperasiSamaDenganContext::generate(rule->getChildren())
             );
+          case ParserRule::operasi_kondisional:
+            return this->visitOperasiKondisional(
+                OperasiKondisionalContext::generate(rule->getChildren())
+            );
           case ParserRule::operasi_atau:
             return this->visitOperasiAtau(
                 OperasiAtauContext::generate(rule->getChildren())
@@ -386,6 +395,7 @@ class Visitor {
     virtual T visitOperasiKaliSamaDengan(const OperasiKaliSamaDenganContext& ctx
     ) = 0;
     virtual T visitOperasiSamaDengan(const OperasiSamaDenganContext& ctx) = 0;
+    virtual T visitOperasiKondisional(const OperasiKondisionalContext& ctx) = 0;
     virtual T visitOperasiAtau(const OperasiAtauContext& ctx) = 0;
     virtual T visitOperasiDan(const OperasiDanContext& ctx) = 0;
     virtual T visitOperasiOrBit(const OperasiOrBitContext& ctx) = 0;

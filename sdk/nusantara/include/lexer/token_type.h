@@ -56,6 +56,9 @@ enum class TokenType : int {
   NOT_BIT,
   GESER_KIRI_BIT,
   GESER_KANAN_BIT,
+  // Operator Kondisional
+  TANDA_TANYA,
+  TITIK_DUA,
   // Pemisah
   TITIK_KOMA,
   KURUNG_BUKA,
@@ -181,5 +184,9 @@ inline std::string toString(const TokenType &type) {
       return "GESER_KIRI_BIT_SAMA_DENGAN";
     case TokenType::GESER_KANAN_BIT_SAMA_DENGAN:
       return "GESER_KANAN_BIT_SAMA_DENGAN";
+    case TokenType::TANDA_TANYA:
+      return "TANDA_TANYA";
+    case TokenType::TITIK_DUA:
+      return "TITIK_DUA";
   }
 };
