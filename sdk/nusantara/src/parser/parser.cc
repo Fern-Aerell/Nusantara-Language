@@ -110,11 +110,42 @@ std::unique_ptr<ParserTree> Parser::parseNusantara() {
   std::unique_ptr<ParserTree> nusantara =
       std::make_unique<ParserRuleTree>(ParserRule::nusantara);
   while(!match(TokenType::AKHIR_DARI_FILE)) {
-    nusantara->addChild(this->parseEkspresi());
-    nusantara->addChild(eat(TokenType::TITIK_KOMA));
+    nusantara->addChild(this->parsePernyataan());
   }
   nusantara->addChild(eat(TokenType::AKHIR_DARI_FILE));
   return nusantara;
+}
+
+std::unique_ptr<ParserTree> Parser::parsePernyataan() {
+	std::unique_ptr<ParserTree> pernyataan = std::make_unique<ParserRuleTree>(ParserRule::pernyataan);
+	if(matchOr({TokenType::TIPE_DATA_BILANGAN, TokenType::TIPE_DATA_KALIMAT, TokenType::TIPE_DATA_BENARSALAH})) {
+		pernyataan->addChild(this->parseVariable());
+	}else{
+		pernyataan->addChild(this->parseEkspresi());
+	}
+	pernyataan->addChild(this->eat(TokenType::TITIK_KOMA));
+  return pernyataan;
+}
+
+std::unique_ptr<ParserTree> Parser::parseVariable() {
+	// tipe nama;
+	// tipe nama = nilai;
+	if(matchOr({TokenType::TIPE_DATA_BILANGAN, TokenType::TIPE_DATA_KALIMAT, TokenType::TIPE_DATA_BENARSALAH})) {
+		// rule
+		std::unique_ptr<ParserTree> variable = std::make_unique<ParserRuleTree>(ParserRule::variable);
+		// tipe
+		variable->addChild(this->eat(this->currentToken.getType()));
+		// nama
+		variable->addChild(this->eat(TokenType::IDENTIFIKASI));
+		if(match(TokenType::SAMA_DENGAN)) {
+			// =
+			variable->addChild(this->eat(TokenType::SAMA_DENGAN));
+			// nilai
+			variable->addChild(this->parseEkspresi());
+		}
+		return variable;
+	}
+	throw std::runtime_error(this->errorInfo.inLine(this->currentToken, "Tipe data variable tidak valid."));
 }
 
 std::unique_ptr<ParserTree> Parser::parseEkspresi() {

@@ -105,6 +105,10 @@ class Interpreter: public Visitor<nstd::dinamis> {
         const nstd::daftar<std::unique_ptr<Context>>& kumpulanContext,
         const nstd::daftar<Token>& kumpulanOperator
     );
+		nstd::dinamis fragmentMultiOperasiRightLeft(
+				const nstd::daftar<std::unique_ptr<Context>>& kumpulanContext,
+        const nstd::daftar<Token>& kumpulanOperator
+		);
     nstd::dinamis fragmentOperasiPrePost(
         const std::unique_ptr<Context>& context,
         const nstd::bisa_kosong<Token>& satuOperator, const bool& isPre,

@@ -39,7 +39,13 @@ class Parser {
     );
     // parse
     std::unique_ptr<ParserTree> parseNusantara();
+		// parse pernyataan
+		std::unique_ptr<ParserTree> parsePernyataan();
+		// parse variable
+		std::unique_ptr<ParserTree> parseVariable();
+		// parse ekspresi
     std::unique_ptr<ParserTree> parseEkspresi();
+		// parse operasi
     std::unique_ptr<ParserTree> parseOperasiGeserKananBitSamaDengan();
     std::unique_ptr<ParserTree> parseOperasiGeserKiriBitSamaDengan();
     std::unique_ptr<ParserTree> parseOperasiXorBitSamaDengan();
@@ -74,6 +80,7 @@ class Parser {
     std::unique_ptr<ParserTree> parseOperasiNotBit();
     std::unique_ptr<ParserTree> parseOperasiKurangSatu();
     std::unique_ptr<ParserTree> parseOperasiTambahSatu();
+		// parse nilai
     std::unique_ptr<ParserTree> parseNilai();
     std::unique_ptr<ParserTree> parseNilaiKalimat();
 };

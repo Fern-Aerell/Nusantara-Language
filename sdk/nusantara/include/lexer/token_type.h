@@ -13,6 +13,10 @@ enum class TokenType : int {
   KOMENTAR_DOKUMENTASI,
   KOMENTAR_SATU_BARIS,
   KOMENTAR_BANYAK_BARIS,
+	// Tipe Data
+	TIPE_DATA_BILANGAN,
+	TIPE_DATA_KALIMAT,
+	TIPE_DATA_BENARSALAH,
   // Nilai Tipe Data
   BILANGAN,
   KARAKTER,
@@ -192,5 +196,11 @@ inline std::string toString(const TokenType &type) {
       return "TITIK_DUA";
     case TokenType::IDENTIFIKASI:
       return "IDENTIFIKASI";
+		case TokenType::TIPE_DATA_BILANGAN:
+			return "TIPE_DATA_BILANGAN";
+		case TokenType::TIPE_DATA_KALIMAT:
+			return "TIPE_DATA_KALIMAT";
+		case TokenType::TIPE_DATA_BENARSALAH:
+			return "TIPE_DATA_BENARSALAH";
   }
 };

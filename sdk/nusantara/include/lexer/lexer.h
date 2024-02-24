@@ -24,6 +24,10 @@ class Lexer {
         {"KOMENTAR_SATU_BARIS",         TokenType::KOMENTAR_SATU_BARIS,         "//[^\n]*"               },
         {"KOMENTAR_BANYAK_BARIS",       TokenType::KOMENTAR_BANYAK_BARIS,
          "/\\*(.|[ \n\t\r\f])*\\*/"                                                                      },
+				// Tipe Data
+				{"TIPE_DATA_BILANGAN", TokenType::TIPE_DATA_BILANGAN, "bilangan"},
+				{"TIPE_DATA_KALIMAT", TokenType::TIPE_DATA_KALIMAT, "kalimat"},
+				{"TIPE_DATA_BENARSALAH", TokenType::TIPE_DATA_BENARSALAH, "benarsalah"},
  // Nilai Tipe Data
         {"BILANGAN",                    TokenType::BILANGAN,                    "-?([0-9]+(,[0-9]+)?)"   },
         {"BENAR",                       TokenType::BENAR,                       "benar"                  },
