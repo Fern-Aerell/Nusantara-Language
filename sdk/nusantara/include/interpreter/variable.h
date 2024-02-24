@@ -5,12 +5,13 @@
 
 class Variable {
     public:
+        Variable() = default;
         Variable(
             const TokenType& tipe,
             nstd::dinamis nilai
         );
-        [[nodiscard]] const nstd::dinamis& get() const;
-        void set(const nstd::dinamis& nilai);
+        [[nodiscard]] const nstd::dinamis& getNilai() const;
+        void setNilai(const nstd::dinamis& nilai);
     private:
         TokenType tipe;
         nstd::dinamis nilai;

@@ -2,9 +2,6 @@
 #include <format>
 #include <stdexcept>
 #include <string>
-#include "lexer/token_type.h"
-#include "nstd/bilangan.h"
-#include "nstd/dinamis.h"
 
 Variable::Variable(
     const TokenType& tipe,
@@ -14,19 +11,17 @@ Variable::Variable(
     nilai(std::move(nilai))
 {}
 
-const nstd::dinamis& Variable::get() const  {
+const nstd::dinamis& Variable::getNilai() const  {
     return this->nilai;
 }
 
-void Variable::set(const nstd::dinamis& nilai) {
+void Variable::setNilai(const nstd::dinamis& nilai) {
     if(this->tipe == TokenType::TIPE_DATA_BILANGAN && !nstd::isBilangan(nilai)) {
         throw std::runtime_error(std::format("'{}' bukanlah sebuah bilangan.", nstd::toString(nilai)));
     }else if(this->tipe == TokenType::TIPE_DATA_KALIMAT && !nstd::is<std::string>(nilai)) {
         throw std::runtime_error(std::format("'{}' bukanlah sebuah kalimat.", nstd::toString(nilai)));
     }else if(this->tipe == TokenType::TIPE_DATA_BENARSALAH && !nstd::is<bool>(nilai)) {
         throw std::runtime_error(std::format("'{}' bukanlah sebuah benar atau salah.", nstd::toString(nilai)));
-    }else{
-        throw std::runtime_error("Tipe data tidak valid.");
     }
     this->nilai = nilai;
 }

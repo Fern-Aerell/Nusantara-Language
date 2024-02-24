@@ -27,6 +27,10 @@ namespace nstd {
     return false;
   }
 
+  inline bool isBilangan(const dinamis& dinamis) {
+    return (is<int>(dinamis)||is<float>(dinamis)||is<double>(dinamis));
+  }
+
   template<typename Tipe>
   inline Tipe& as(dinamis& dinamis) {
     if(tidakKosong(dinamis)) {

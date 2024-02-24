@@ -1,15 +1,9 @@
 #pragma once
 
 #include <algorithm>
-#include <any>
 #include <string>
-#include "nstd/dinamis.h"
 
 namespace nstd {
-
-  inline bool isBilangan(const std::any& dinamis) {
-    return (is<int>(dinamis)||is<float>(dinamis)||is<double>(dinamis));
-  }
 
   inline std::string toString(const int& nilai) {
     return std::to_string(nilai);
