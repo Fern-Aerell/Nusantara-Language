@@ -2,6 +2,7 @@
 #include "parser/parser_rule.h"
 #include "visitor/context/ekspresi/ekspresi_context.h"
 #include "visitor/context/pernyataan/pernyataan_context.h"
+#include "visitor/context/variable/variable_context.h"
 #include <memory>
 
 PernyataanContext::PernyataanContext(
@@ -19,7 +20,7 @@ PernyataanContext PernyataanContext::generate(const nstd::daftar<std::unique_ptr
 		if(auto* prt = dynamic_cast<ParserRuleTree*>(child.get())) {
 			const ParserRule& rule = prt->getRule();
 			if(rule == ParserRule::variable) {
-
+				variableContext = std::make_unique<VariableContext>(VariableContext::generate(prt->getChildren()));
 			}else if(rule == ParserRule::ekspresi) {
 				ekspresiContext = std::make_unique<EkspresiContext>(EkspresiContext::generate(prt->getChildren()));
 			}

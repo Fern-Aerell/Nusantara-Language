@@ -81,23 +81,4 @@ namespace nstd {
     throw std::runtime_error("String bukan berformat bool.");
   }
 
-  inline std::string formatString(const std::string& str) {
-    std::string valueStr = str;
-    valueStr.pop_back();
-    valueStr = valueStr.substr(1);
-    for(size_t i = 0; i < valueStr.length(); ++i) {
-      if(valueStr[i] == '\\') {
-        if(valueStr[i + 1] == 'n') {
-          if(valueStr[i - 1] != '\\') {
-            valueStr[i] = '\n';
-            valueStr.erase(i + 1, 1);
-          } else {
-            valueStr.replace(i, 1, "");
-          }
-        }
-      }
-    }
-    return valueStr;
-  }
-
 }  // namespace nstd

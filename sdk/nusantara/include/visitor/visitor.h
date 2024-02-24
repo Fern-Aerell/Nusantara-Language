@@ -45,6 +45,8 @@
 #include "visitor/context/operasi/operasi_tidak_sama_context.h"
 #include "visitor/context/operasi/operasi_xor_bit_context.h"
 #include "visitor/context/operasi/operasi_xor_bit_sama_dengan_context.h"
+#include "visitor/context/pernyataan/pernyataan_context.h"
+#include "visitor/context/variable/variable_context.h"
 
 template<typename T>
 class Visitor {
@@ -63,6 +65,12 @@ class Visitor {
       }
       if(const auto* ectx = dynamic_cast<EkspresiContext*>(ctx.get())) {
         return this->visitEkspresi(*ectx);
+      }
+      if(const auto* pctx = dynamic_cast<PernyataanContext*>(ctx.get())) {
+        return this->visitPernyataan(*pctx);
+      }
+      if(const auto* vctx = dynamic_cast<VariableContext*>(ctx.get())) {
+        return this->visitVariable(*vctx);
       }
       if(const auto* ogkananbsdctx =
              dynamic_cast<OperasiGeserKananBitSamaDenganContext*>(ctx.get())) {
@@ -209,6 +217,14 @@ class Visitor {
           case ParserRule::ekspresi:
             return this->visitEkspresi(
                 EkspresiContext::generate(rule->getChildren())
+            );
+          case ParserRule::pernyataan:
+            return this->visitPernyataan(
+                PernyataanContext::generate(rule->getChildren())
+            );
+          case ParserRule::variable:
+            return this->visitVariable(
+                VariableContext::generate(rule->getChildren())
             );
           case ParserRule::operasi_geser_kanan_bit_sama_dengan:
             return this->visitOperasiGeserKananBitSamaDengan(
@@ -366,6 +382,8 @@ class Visitor {
 
     virtual T visitNusantara(const NusantaraContext& ctx) = 0;
     virtual T visitEkspresi(const EkspresiContext& ctx) = 0;
+    virtual T visitPernyataan(const PernyataanContext& ctx) = 0;
+    virtual T visitVariable(const VariableContext& ctx) = 0;
     virtual T visitOperasiGeserKananBitSamaDengan(
         const OperasiGeserKananBitSamaDenganContext& ctx
     ) = 0;

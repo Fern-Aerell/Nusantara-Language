@@ -1,8 +1,6 @@
 #pragma once
 
 #include <memory>
-#include <stdexcept>
-#include <string>
 
 #include "error/error_info.h"
 #include "lexer/token.h"
@@ -11,6 +9,8 @@
 #include "nstd/peta.h"
 #include "visitor/context/context.h"
 #include "visitor/context/operasi/operasi_kondisional_context.h"
+#include "visitor/context/pernyataan/pernyataan_context.h"
+#include "visitor/context/variable/variable_context.h"
 #include "visitor/visitor.h"
 
 class Interpreter: public Visitor<nstd::dinamis> {
@@ -18,6 +18,8 @@ class Interpreter: public Visitor<nstd::dinamis> {
     explicit Interpreter(ErrorInfo errorInfo);
     nstd::dinamis visitNusantara(const NusantaraContext& ctx) override;
     nstd::dinamis visitEkspresi(const EkspresiContext& ctx) override;
+    nstd::dinamis visitPernyataan(const PernyataanContext& ctx) override;
+    nstd::dinamis visitVariable(const VariableContext& ctx) override;
     nstd::dinamis visitOperasiGeserKananBitSamaDengan(
         const OperasiGeserKananBitSamaDenganContext& ctx
     ) override;

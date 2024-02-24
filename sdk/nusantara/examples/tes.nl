@@ -1,1 +1,6 @@
-nama3 = nama2 = nama = 'Aerell';
+kalimat nama = "Fern" + ' ' + "Aerell";
+nama;
+bilangan wahyu;
+wahyu = nama = "udin";
+nama;
+wahyu;

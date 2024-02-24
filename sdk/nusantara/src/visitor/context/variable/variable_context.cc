@@ -1,5 +1,9 @@
 #include "visitor/context/variable/variable_context.h"
+#include <memory>
+#include "lexer/token_type.h"
+#include "parser/parser_rule.h"
 #include "parser/parser_tree.h"
+#include "visitor/context/ekspresi/ekspresi_context.h"
 
 VariableContext::VariableContext(
 	Token tipe,
@@ -20,6 +24,20 @@ VariableContext VariableContext::generate(const nstd::daftar<std::unique_ptr<Par
 	Token nama = namaPtr->getToken();
 	nstd::bisa_kosong<Token> samaDengan;
 	nstd::bisa_kosong<std::unique_ptr<Context>> ekspresiContext;
+	if(children.size() > 2) {
+		for(size_t index = 2; index < children.size(); ++index) {
+			if(auto* ptt = dynamic_cast<ParserTokenTree*>(children[index].get())) {
+				const Token& token = ptt->getToken();
+				if(token.getType() == TokenType::SAMA_DENGAN) {
+					samaDengan = token;
+				}
+			}else if(auto* prt = dynamic_cast<ParserRuleTree*>(children[index].get())) {
+				if(prt->getRule() == ParserRule::ekspresi) {
+					ekspresiContext = std::make_unique<EkspresiContext>(EkspresiContext::generate(prt->getChildren()));
+				}
+			}
+		}
+	}
 	return VariableContext(
 			std::move(tipe),
 			std::move(nama),
@@ -28,18 +46,18 @@ VariableContext VariableContext::generate(const nstd::daftar<std::unique_ptr<Par
 	);
 }
 
-const Token& VariableContext::getTipe() {
+const Token& VariableContext::getTipe() const {
 	return this->tipe;
 }
 
-const Token& VariableContext::getNama() {
+const Token& VariableContext::getNama() const {
 	return this->nama;
 }
 
-const nstd::bisa_kosong<Token>& VariableContext::getSamaDengan() {
+const nstd::bisa_kosong<Token>& VariableContext::getSamaDengan() const {
 	return this->samaDengan;
 }
 
-const nstd::bisa_kosong<std::unique_ptr<Context>>& VariableContext::getEkspresiContext() {
+const nstd::bisa_kosong<std::unique_ptr<Context>>& VariableContext::getEkspresiContext() const {
 	return this->ekspresiContext;
 }

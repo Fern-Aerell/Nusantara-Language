@@ -5,7 +5,6 @@
 #include "nstd/kosong.h"
 #include "parser/parser_tree.h"
 #include "visitor/context/context.h"
-#include <algorithm>
 #include <memory>
 class VariableContext: public Context {
 	public:
@@ -16,10 +15,10 @@ class VariableContext: public Context {
 			nstd::bisa_kosong<std::unique_ptr<Context>> ekspresiContext
 		);
 		static VariableContext generate(const nstd::daftar<std::unique_ptr<ParserTree>>& children);
-		[[nodiscard]] const Token& getTipe();
-		[[nodiscard]] const Token& getNama();
-		[[nodiscard]] const nstd::bisa_kosong<Token>& getSamaDengan();
-		[[nodiscard]] const nstd::bisa_kosong<std::unique_ptr<Context>>& getEkspresiContext();
+		[[nodiscard]] const Token& getTipe() const;
+		[[nodiscard]] const Token& getNama() const;
+		[[nodiscard]] const nstd::bisa_kosong<Token>& getSamaDengan() const;
+		[[nodiscard]] const nstd::bisa_kosong<std::unique_ptr<Context>>& getEkspresiContext() const;
 	private:
 		Token tipe;
 		Token nama;

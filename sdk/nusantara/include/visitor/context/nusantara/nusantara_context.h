@@ -9,14 +9,14 @@
 class NusantaraContext: public Context {
   public:
     explicit NusantaraContext(
-        nstd::daftar<std::unique_ptr<Context>> kumpulanEkspresiContext
+        nstd::daftar<std::unique_ptr<Context>> kumpulanPernyataanContext
     );
     static NusantaraContext generate(
         const nstd::daftar<std::unique_ptr<ParserTree>>& children
     );
     [[nodiscard]] const nstd::daftar<std::unique_ptr<Context>>&
-    getKumpulanEkspresi() const;
+    getKumpulanPernyataan() const;
 
   private:
-    nstd::daftar<std::unique_ptr<Context>> kumpulanEkspresiContext;
+    nstd::daftar<std::unique_ptr<Context>> kumpulanPernyataanContext;
 };

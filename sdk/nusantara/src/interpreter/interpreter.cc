@@ -13,6 +13,7 @@
 #include "nstd/konsol.h"
 #include "nstd/kosong.h"
 #include "nstd/peta.h"
+#include "visitor/context/ekspresi/ekspresi_context.h"
 
 Interpreter::Interpreter(ErrorInfo errorInfo):
     errorInfo(std::move(errorInfo)) {}
@@ -28,7 +29,35 @@ void Interpreter::createVariable(const std::string& name) {
 void Interpreter::setVariable(
     const std::string& name, const nstd::dinamis& value
 ) {
-  this->variables[name] = value;
+  // Cek apakah variable sudah dibuat.
+  if(!nstd::containsKey(this->variables, name)) {
+    throw std::runtime_error(std::format("Variable '{}' belum dibuat.", name));
+  }
+  // Cek apakah value baru tipe nya sama seperti value lama jika tidak kosong.
+  if(nstd::tidakKosong(this->variables[name])) {
+    const nstd::dinamis& valueInVariable = this->variables[name];
+    if(nstd::is<int>(valueInVariable) || nstd::is<float>(valueInVariable) || nstd::is<double>(valueInVariable)) {
+      if(nstd::is<int>(value) || nstd::is<float>(value) || nstd::is<double>(value)) {
+        this->variables[name] = value;
+      }else{
+        throw this->error("bukanlah sebuah bilangan.");
+      }
+    }else if(nstd::is<std::string>(valueInVariable)) {
+      if(nstd::is<std::string>(value)) {
+        this->variables[name] = value;
+      }else{
+        throw this->error("bukanlah sebuah kalimat.");
+      }
+    }else if(nstd::is<bool>(valueInVariable)) {
+      if(nstd::is<bool>(value)) {
+        this->variables[name] = value;
+      }else{
+        throw this->error("bukanlah benar atau salah.");
+      }
+    }
+  }else{
+    this->variables[name] = value;
+  }
 }
 
 nstd::dinamis Interpreter::getVariable(const std::string& name) {
@@ -233,8 +262,20 @@ nstd::dinamis Interpreter::fragmentOperasiPrePost(
 }
 
 nstd::dinamis Interpreter::visitNusantara(const NusantaraContext& ctx) {
-  for(const auto& ekspresi : ctx.getKumpulanEkspresi()) {
-    nstd::dinamis hasil = this->visit(ekspresi);
+  for(const auto& pernyataan : ctx.getKumpulanPernyataan()) {
+    this->visit(pernyataan);
+    this->tokens.clear();
+  }
+  return {};
+}
+
+nstd::dinamis Interpreter::visitPernyataan(const PernyataanContext& ctx) {
+  const auto& variable = ctx.getVariableContext();
+  const auto& ekspresi = ctx.getEkspresiContext();
+  if(nstd::tidakKosong(variable)) {
+    this->visit(variable.value());
+  }else if(nstd::tidakKosong(ekspresi)) {
+    nstd::dinamis hasil = this->visit(ekspresi.value());
     if(nstd::is<Token>(hasil)) {
       const Token& token = nstd::as<Token>(hasil);
       const TokenType& type = token.getType();
@@ -248,7 +289,47 @@ nstd::dinamis Interpreter::visitNusantara(const NusantaraContext& ctx) {
     } else {
       nstd::cetak(hasil);
     }
-    this->tokens.clear();
+  }else {
+    throw std::runtime_error("Pernyataan tidak boleh kosong.");
+  }
+  return {};
+}
+
+nstd::dinamis Interpreter::visitVariable(const VariableContext& ctx) {
+  const auto& tipeTkn = ctx.getTipe();
+  const auto& namaTkn = ctx.getNama();
+  const auto& samaDenganTkn = ctx.getSamaDengan();
+  const auto& ekspresiCtx = ctx.getEkspresiContext();
+  tokens.push_back(tipeTkn);
+  tokens.push_back(namaTkn);
+  const TokenType& tipeType = tipeTkn.getType();
+  const std::string& namaVariable = namaTkn.getValue();
+  this->createVariable(namaVariable);
+  if(nstd::tidakKosong(samaDenganTkn)) {
+    tokens.push_back(samaDenganTkn.value());
+    if(nstd::tidakKosong(ekspresiCtx)) {
+      const auto* ekspresiCtxPtr = dynamic_cast<EkspresiContext*>(ekspresiCtx->get());
+      nstd::dinamis hasilEkspresi = this->visitEkspresi(*ekspresiCtxPtr);
+      if(tipeType == TokenType::TIPE_DATA_BILANGAN) {
+        if(nstd::is<int>(hasilEkspresi) || nstd::is<float>(hasilEkspresi) || nstd::is<double>(hasilEkspresi)) {
+          this->setVariable(namaVariable, hasilEkspresi);
+        }else{
+          throw this->error("bukanlah sebuah bilangan.");
+        }
+      }else if(tipeType == TokenType::TIPE_DATA_KALIMAT) {
+        if(nstd::is<std::string>(hasilEkspresi)) {
+          this->setVariable(namaVariable, hasilEkspresi);
+        }else{
+          throw this->error("bukanlah sebuah kalimat.");
+        }
+      }else if(tipeType == TokenType::TIPE_DATA_BENARSALAH) {
+        if(nstd::is<bool>(hasilEkspresi)) {
+          this->setVariable(namaVariable, hasilEkspresi);
+        }else{
+          throw this->error("bukanlah benar atau salah.");
+        }
+      }
+    }
   }
   return {};
 }

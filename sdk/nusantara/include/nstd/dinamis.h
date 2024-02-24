@@ -8,8 +8,8 @@
 #include <string>
 
 #include "benarsalah.h"
-#include "bilangan.h"
 #include "karakter.h"
+#include "bilangan.h"
 
 namespace nstd {
 
