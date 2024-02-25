@@ -1,10 +1,11 @@
 #include "visitor/context/operasi/operasi_tambah_satu_context.h"
+#include <optional>
 
 #include "visitor/context/nilai/nilai_context.h"
 
 OperasiTambahSatuContext::OperasiTambahSatuContext(
     const bool& isPre, const bool& isPost,
-    std::unique_ptr<Context> nilaiContext, nstd::bisa_kosong<Token> satuOperator
+    std::unique_ptr<Context> nilaiContext, std::optional<Token> satuOperator
 ):
     isPre(isPre),
     isPost(isPost),
@@ -12,10 +13,10 @@ OperasiTambahSatuContext::OperasiTambahSatuContext(
     satuOperator(std::move(satuOperator)) {}
 
 OperasiTambahSatuContext OperasiTambahSatuContext::generate(
-    const nstd::daftar<std::unique_ptr<ParserTree>>& children
+    const std::vector<std::unique_ptr<ParserTree>>& children
 ) {
   std::unique_ptr<Context> nilaiContext;
-  nstd::bisa_kosong<Token> satuOperator;
+  std::optional<Token> satuOperator;
   bool isPre = false;
   bool isPost = false;
   size_t index = 0;
@@ -54,7 +55,7 @@ const std::unique_ptr<Context>& OperasiTambahSatuContext::getNilaiContext(
   return this->nilaiContext;
 }
 
-const nstd::bisa_kosong<Token>& OperasiTambahSatuContext::getSatuOperator(
+const std::optional<Token>& OperasiTambahSatuContext::getSatuOperator(
 ) const {
   return this->satuOperator;
 }

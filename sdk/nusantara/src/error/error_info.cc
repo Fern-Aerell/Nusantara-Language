@@ -5,10 +5,11 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 #include "lexer/token.h"
 #include "lexer/token_type.h"
-#include "nstd/daftar.h"
+
 #include "utils/utils.h"
 
 ErrorInfo::ErrorInfo(std::string source, const std::string& content):
@@ -45,7 +46,7 @@ std::string ErrorInfo::inLine(const Token& token, const std::string& msg) {
 }
 
 std::string ErrorInfo::inLine(
-    const nstd::daftar<Token>& tokens, const std::string& msg
+    const std::vector<Token>& tokens, const std::string& msg
 ) {
   if(tokens.empty()) { throw std::runtime_error("Daftar tidak boleh kosong."); }
   std::ostringstream stream;

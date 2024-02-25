@@ -1,9 +1,8 @@
 #pragma once
 
 #include <string>
-
+#include <vector>
 #include "lexer/token_type.h"
-#include "nstd/daftar.h"
 
 class Token {
   public:
@@ -30,4 +29,4 @@ class Token {
 
 Token combineToken(const Token& token1, const Token& token2);
 
-Token combineToken(const nstd::daftar<Token>& tokens);
+Token combineToken(const std::vector<Token>& tokens);

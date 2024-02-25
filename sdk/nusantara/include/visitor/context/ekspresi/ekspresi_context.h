@@ -1,8 +1,9 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
-#include "nstd/daftar.h"
+
 #include "parser/parser_tree.h"
 #include "visitor/context/context.h"
 
@@ -12,7 +13,7 @@ class EkspresiContext: public Context {
         std::unique_ptr<Context> operasiGeserKananBitSamaDenganContext
     );
     static EkspresiContext generate(
-        const nstd::daftar<std::unique_ptr<ParserTree>>& children
+        const std::vector<std::unique_ptr<ParserTree>>& children
     );
     [[nodiscard]] const std::unique_ptr<Context>&
     getOperasiGeserKananBitSamaDenganContext() const;

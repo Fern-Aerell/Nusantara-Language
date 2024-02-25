@@ -1,12 +1,13 @@
 #pragma once
 
 #include <memory>
+#include <optional>
+#include <vector>
 
 #include "error/error_info.h"
-#include "interpreter/variable_manager.h"
 #include "lexer/token.h"
-#include "nstd/daftar.h"
-#include "nstd/dinamis.h"
+
+#include "nstd/tipe_data/dinamis.h"
 #include "visitor/context/context.h"
 #include "visitor/context/operasi/operasi_kondisional_context.h"
 #include "visitor/context/pernyataan/pernyataan_context.h"
@@ -97,20 +98,19 @@ class Interpreter: public Visitor<nstd::dinamis> {
 
   private:
     ErrorInfo errorInfo;
-    nstd::daftar<Token> tokens;
-    VariableManager variables = VariableManager({});
+    std::vector<Token> tokens;
     std::runtime_error error(const std::string& msg);
     nstd::dinamis fragmentMultiOperasiLeftRight(
-        const nstd::daftar<std::unique_ptr<Context>>& kumpulanContext,
-        const nstd::daftar<Token>& kumpulanOperator
+        const std::vector<std::unique_ptr<Context>>& kumpulanContext,
+        const std::vector<Token>& kumpulanOperator
     );
 		nstd::dinamis fragmentMultiOperasiRightLeft(
-				const nstd::daftar<std::unique_ptr<Context>>& kumpulanContext,
-        const nstd::daftar<Token>& kumpulanOperator
+				const std::vector<std::unique_ptr<Context>>& kumpulanContext,
+        const std::vector<Token>& kumpulanOperator
 		);
     nstd::dinamis fragmentOperasiPrePost(
         const std::unique_ptr<Context>& context,
-        const nstd::bisa_kosong<Token>& satuOperator, const bool& isPre,
+        const std::optional<Token>& satuOperator, const bool& isPre,
         const bool& isPost
     );
 };

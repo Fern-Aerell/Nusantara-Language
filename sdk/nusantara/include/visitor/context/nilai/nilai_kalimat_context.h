@@ -1,28 +1,29 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
-#include "nstd/daftar.h"
+
 #include "parser/parser_tree.h"
 #include "visitor/context/context.h"
 
 class NilaiKalimatContext: public Context {
   public:
     NilaiKalimatContext(
-        nstd::daftar<Token> kumpulanToken,
-        nstd::daftar<std::unique_ptr<Context>> kumpulanEkspresiContext
+        std::vector<Token> kumpulanToken,
+        std::vector<std::unique_ptr<Context>> kumpulanEkspresiContext
     );
 
     static NilaiKalimatContext generate(
-        const nstd::daftar<std::unique_ptr<ParserTree>>& children
+        const std::vector<std::unique_ptr<ParserTree>>& children
     );
 
-    [[nodiscard]] const nstd::daftar<Token>& getKumpulanToken() const;
+    [[nodiscard]] const std::vector<Token>& getKumpulanToken() const;
 
-    [[nodiscard]] const nstd::daftar<std::unique_ptr<Context>>&
+    [[nodiscard]] const std::vector<std::unique_ptr<Context>>&
     getkumpulanEkspresiContext() const;
 
   private:
-    nstd::daftar<Token> kumpulanToken;
-    nstd::daftar<std::unique_ptr<Context>> kumpulanEkspresiContext;
+    std::vector<Token> kumpulanToken;
+    std::vector<std::unique_ptr<Context>> kumpulanEkspresiContext;
 };

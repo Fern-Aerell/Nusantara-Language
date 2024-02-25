@@ -1,5 +1,6 @@
 #include "visitor/context/variable/variable_context.h"
 #include <memory>
+#include <optional>
 #include "lexer/token_type.h"
 #include "parser/parser_rule.h"
 #include "parser/parser_tree.h"
@@ -8,8 +9,8 @@
 VariableContext::VariableContext(
 	Token tipe,
 	Token nama,
-	nstd::bisa_kosong<Token> samaDengan,
-	nstd::bisa_kosong<std::unique_ptr<Context>> ekspresiContext
+	std::optional<Token> samaDengan,
+	std::optional<std::unique_ptr<Context>> ekspresiContext
 ):
 	tipe(std::move(tipe)),
 	nama(std::move(nama)),
@@ -17,13 +18,13 @@ VariableContext::VariableContext(
 	ekspresiContext(std::move(ekspresiContext))
 {}
 
-VariableContext VariableContext::generate(const nstd::daftar<std::unique_ptr<ParserTree>>& children) {
+VariableContext VariableContext::generate(const std::vector<std::unique_ptr<ParserTree>>& children) {
 	auto* tipePtr = dynamic_cast<ParserTokenTree*>(children[0].get());
 	auto* namaPtr = dynamic_cast<ParserTokenTree*>(children[1].get());
 	Token tipe = tipePtr->getToken();
 	Token nama = namaPtr->getToken();
-	nstd::bisa_kosong<Token> samaDengan;
-	nstd::bisa_kosong<std::unique_ptr<Context>> ekspresiContext;
+	std::optional<Token> samaDengan;
+	std::optional<std::unique_ptr<Context>> ekspresiContext;
 	if(children.size() > 2) {
 		for(size_t index = 2; index < children.size(); ++index) {
 			if(auto* ptt = dynamic_cast<ParserTokenTree*>(children[index].get())) {
@@ -54,10 +55,10 @@ const Token& VariableContext::getNama() const {
 	return this->nama;
 }
 
-const nstd::bisa_kosong<Token>& VariableContext::getSamaDengan() const {
+const std::optional<Token>& VariableContext::getSamaDengan() const {
 	return this->samaDengan;
 }
 
-const nstd::bisa_kosong<std::unique_ptr<Context>>& VariableContext::getEkspresiContext() const {
+const std::optional<std::unique_ptr<Context>>& VariableContext::getEkspresiContext() const {
 	return this->ekspresiContext;
 }

@@ -3,9 +3,9 @@
 #include "visitor/context/operasi/operasi_sisa_bagi_sama_dengan_context.h"
 
 OperasiTambahSamaDenganContext::OperasiTambahSamaDenganContext(
-    nstd::daftar<std::unique_ptr<Context>>
+    std::vector<std::unique_ptr<Context>>
         kumpulanOperasiSisaBagiSamaDenganContext,
-    nstd::daftar<Token> kumpulanOperator
+    std::vector<Token> kumpulanOperator
 ):
     kumpulanOperasiSisaBagiSamaDenganContext(
         std::move(kumpulanOperasiSisaBagiSamaDenganContext)
@@ -13,11 +13,11 @@ OperasiTambahSamaDenganContext::OperasiTambahSamaDenganContext(
     kumpulanOperator(std::move(kumpulanOperator)) {}
 
 OperasiTambahSamaDenganContext OperasiTambahSamaDenganContext::generate(
-    const nstd::daftar<std::unique_ptr<ParserTree>>& children
+    const std::vector<std::unique_ptr<ParserTree>>& children
 ) {
-  nstd::daftar<std::unique_ptr<Context>>
+  std::vector<std::unique_ptr<Context>>
       kumpulanOperasiSisaBagiSamaDenganContext;
-  nstd::daftar<Token> kumpulanOperator;
+  std::vector<Token> kumpulanOperator;
   for(const std::unique_ptr<ParserTree>& child : children) {
     if(auto* prt = dynamic_cast<ParserRuleTree*>(child.get())) {
       if(prt->getRule() == ParserRule::operasi_sisa_bagi_sama_dengan) {
@@ -39,13 +39,13 @@ OperasiTambahSamaDenganContext OperasiTambahSamaDenganContext::generate(
   );
 }
 
-const nstd::daftar<std::unique_ptr<Context>>&
+const std::vector<std::unique_ptr<Context>>&
 OperasiTambahSamaDenganContext::getKumpulanOperasiSisaBagiSamaDenganContext(
 ) const {
   return this->kumpulanOperasiSisaBagiSamaDenganContext;
 }
 
-const nstd::daftar<Token>& OperasiTambahSamaDenganContext::getKumpulanOperator(
+const std::vector<Token>& OperasiTambahSamaDenganContext::getKumpulanOperator(
 ) const {
   return this->kumpulanOperator;
 }

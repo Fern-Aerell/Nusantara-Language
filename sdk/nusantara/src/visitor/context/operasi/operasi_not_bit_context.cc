@@ -1,20 +1,21 @@
 #include "visitor/context/operasi/operasi_not_bit_context.h"
+#include <optional>
 
 #include "visitor/context/operasi/operasi_kurang_satu_context.h"
 
 OperasiNotBitContext::OperasiNotBitContext(
     const bool& isPre, std::unique_ptr<Context> operasiKurangSatuContext,
-    nstd::bisa_kosong<Token> satuOperator
+    std::optional<Token> satuOperator
 ):
     isPre(isPre),
     operasiKurangSatuContext(std::move(operasiKurangSatuContext)),
     satuOperator(std::move(satuOperator)) {}
 
 OperasiNotBitContext OperasiNotBitContext::generate(
-    const nstd::daftar<std::unique_ptr<ParserTree>>& children
+    const std::vector<std::unique_ptr<ParserTree>>& children
 ) {
   std::unique_ptr<Context> operasiKurangSatuContext;
-  nstd::bisa_kosong<Token> satuOperator;
+  std::optional<Token> satuOperator;
   bool isPre = false;
   for(const std::unique_ptr<ParserTree>& child : children) {
     if(auto* ptt = dynamic_cast<ParserTokenTree*>(child.get())) {
@@ -42,6 +43,6 @@ OperasiNotBitContext::getOperasiKurangSatuContext() const {
   return this->operasiKurangSatuContext;
 }
 
-const nstd::bisa_kosong<Token>& OperasiNotBitContext::getSatuOperator() const {
+const std::optional<Token>& OperasiNotBitContext::getSatuOperator() const {
   return this->satuOperator;
 }

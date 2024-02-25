@@ -1,34 +1,34 @@
 #pragma once
 
 #include <memory>
+#include <optional>
+#include <vector>
 
-#include "nstd/daftar.h"
-#include "nstd/kosong.h"
 #include "parser/parser_tree.h"
 #include "visitor/context/context.h"
 
 class NilaiContext: public Context {
   public:
     NilaiContext(
-        nstd::bisa_kosong<Token> nilai,
-        nstd::bisa_kosong<std::unique_ptr<Context>> ekspresiContext,
-        nstd::bisa_kosong<std::unique_ptr<Context>> nilaiKalimatContext
+        std::optional<Token> nilai,
+        std::optional<std::unique_ptr<Context>> ekspresiContext,
+        std::optional<std::unique_ptr<Context>> nilaiKalimatContext
     );
 
     static NilaiContext generate(
-        const nstd::daftar<std::unique_ptr<ParserTree>>& children
+        const std::vector<std::unique_ptr<ParserTree>>& children
     );
 
-    [[nodiscard]] const nstd::bisa_kosong<Token>& getNilai() const;
+    [[nodiscard]] const std::optional<Token>& getNilai() const;
 
-    [[nodiscard]] const nstd::bisa_kosong<std::unique_ptr<Context>>&
+    [[nodiscard]] const std::optional<std::unique_ptr<Context>>&
     getEkspresiContext() const;
 
-    [[nodiscard]] const nstd::bisa_kosong<std::unique_ptr<Context>>&
+    [[nodiscard]] const std::optional<std::unique_ptr<Context>>&
     getNilaiKalimatContext() const;
 
   private:
-    nstd::bisa_kosong<Token> nilai;
-    nstd::bisa_kosong<std::unique_ptr<Context>> ekspresiContext;
-    nstd::bisa_kosong<std::unique_ptr<Context>> nilaiKalimatContext;
+    std::optional<Token> nilai;
+    std::optional<std::unique_ptr<Context>> ekspresiContext;
+    std::optional<std::unique_ptr<Context>> nilaiKalimatContext;
 };

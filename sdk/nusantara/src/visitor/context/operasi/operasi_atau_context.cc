@@ -3,17 +3,17 @@
 #include "visitor/context/operasi/operasi_dan_context.h"
 
 OperasiAtauContext::OperasiAtauContext(
-    nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiDanContext,
-    nstd::daftar<Token> kumpulanOperator
+    std::vector<std::unique_ptr<Context>> kumpulanOperasiDanContext,
+    std::vector<Token> kumpulanOperator
 ):
     kumpulanOperasiDanContext(std::move(kumpulanOperasiDanContext)),
     kumpulanOperator(std::move(kumpulanOperator)) {}
 
 OperasiAtauContext OperasiAtauContext::generate(
-    const nstd::daftar<std::unique_ptr<ParserTree>>& children
+    const std::vector<std::unique_ptr<ParserTree>>& children
 ) {
-  nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiDanContext;
-  nstd::daftar<Token> kumpulanOperator;
+  std::vector<std::unique_ptr<Context>> kumpulanOperasiDanContext;
+  std::vector<Token> kumpulanOperator;
   for(const std::unique_ptr<ParserTree>& child : children) {
     if(auto* prt = dynamic_cast<ParserRuleTree*>(child.get())) {
       if(prt->getRule() == ParserRule::operasi_dan) {
@@ -32,11 +32,11 @@ OperasiAtauContext OperasiAtauContext::generate(
   );
 }
 
-const nstd::daftar<std::unique_ptr<Context>>&
+const std::vector<std::unique_ptr<Context>>&
 OperasiAtauContext::getKumpulanOperasiDanContext() const {
   return this->kumpulanOperasiDanContext;
 }
 
-const nstd::daftar<Token>& OperasiAtauContext::getKumpulanOperator() const {
+const std::vector<Token>& OperasiAtauContext::getKumpulanOperator() const {
   return this->kumpulanOperator;
 }

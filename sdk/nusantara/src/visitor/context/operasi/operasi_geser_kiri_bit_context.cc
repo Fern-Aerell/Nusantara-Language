@@ -3,17 +3,17 @@
 #include "visitor/context/operasi/operasi_kurang_context.h"
 
 OperasiGeserKiriBitContext::OperasiGeserKiriBitContext(
-    nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiKurangContext,
-    nstd::daftar<Token> kumpulanOperator
+    std::vector<std::unique_ptr<Context>> kumpulanOperasiKurangContext,
+    std::vector<Token> kumpulanOperator
 ):
     kumpulanOperasiKurangContext(std::move(kumpulanOperasiKurangContext)),
     kumpulanOperator(std::move(kumpulanOperator)) {}
 
 OperasiGeserKiriBitContext OperasiGeserKiriBitContext::generate(
-    const nstd::daftar<std::unique_ptr<ParserTree>>& children
+    const std::vector<std::unique_ptr<ParserTree>>& children
 ) {
-  nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiKurangContext;
-  nstd::daftar<Token> kumpulanOperator;
+  std::vector<std::unique_ptr<Context>> kumpulanOperasiKurangContext;
+  std::vector<Token> kumpulanOperator;
   for(const std::unique_ptr<ParserTree>& child : children) {
     if(auto* prt = dynamic_cast<ParserRuleTree*>(child.get())) {
       if(prt->getRule() == ParserRule::operasi_kurang) {
@@ -34,12 +34,12 @@ OperasiGeserKiriBitContext OperasiGeserKiriBitContext::generate(
   );
 }
 
-const nstd::daftar<std::unique_ptr<Context>>&
+const std::vector<std::unique_ptr<Context>>&
 OperasiGeserKiriBitContext::getKumpulanOperasiKurangContext() const {
   return this->kumpulanOperasiKurangContext;
 }
 
-const nstd::daftar<Token>& OperasiGeserKiriBitContext::getKumpulanOperator(
+const std::vector<Token>& OperasiGeserKiriBitContext::getKumpulanOperator(
 ) const {
   return this->kumpulanOperator;
 }

@@ -1,29 +1,25 @@
 #include "cli/cli.h"
-
-#include <cstddef>
-#include <format>
 #include <iostream>
 #include <string>
+#include <vector>
 
 #include "config/config.h"
+#include "lexer/lexer.h"
+#include "parser/parser.h"
 #include "error/error_info.h"
 #include "interpreter/interpreter.h"
-#include "lexer/lexer.h"
-#include "nstd/daftar.h"
-#include "nstd/konsol.h"
-#include "parser/parser.h"
 #include "utils/utils.h"
 
 void Cli::input(const int& argc, char* argv[]) {
-  nstd::daftar<std::string> kumpulanArgument;
+  std::vector<std::string> kumpulanArgument;
   if(argc > 1) {
     for(size_t index = 1; index < argc; ++index) {
       kumpulanArgument.emplace_back(argv[index]);
     }
   }
   size_t index = 0;
-  nstd::daftar<std::string> perintahInfo = {"-i", "--info"};
-  nstd::daftar<std::string> perintahVersi = {"-v", "--versi"};
+  std::vector<std::string> perintahInfo = {"-i", "--info"};
+  std::vector<std::string> perintahVersi = {"-v", "--versi"};
   bool interpreter = false;
   std::string source;
   bool onlyLexerDebug = false;
@@ -36,10 +32,10 @@ void Cli::input(const int& argc, char* argv[]) {
     } else if(argument.contains('.')) {
       source = argument;
       interpreter = true;
-    } else if(nstd::contains(perintahVersi, argument)) {
+    } else if(utils::contains(perintahVersi, argument)) {
       showVersi();
       return;
-    } else if(nstd::contains(perintahInfo, argument)) {
+    } else if(utils::contains(perintahInfo, argument)) {
       showInfo();
       return;
     } else {
@@ -71,25 +67,17 @@ void Cli::input(const int& argc, char* argv[]) {
   } else if(kumpulanArgument.empty()) {
     showInfo();
   } else {
-    nstd::cetak(std::format("Perintah '{}' tidak ada.", kumpulanArgument[0]));
+    std::cout << std::format("Perintah '{}' tidak ada.", kumpulanArgument[0]) << "\n";
     showInfo();
   }
 }
 
 void Cli::showInfo() {
-  nstd::cetak(
-      std::string("Sebuah alat command-line untuk Nusantara development.\n")
-  );
-  nstd::cetak(
-      std::string("Penggunaan: nusantara <perintah|nusantara-file> [argumen]\n")
-  );
-  nstd::cetak(std::string("Pilihan umum:"));
-  nstd::cetak(
-      std::string("   -v | --versi        Untuk melihat versi nusantara.")
-  );
-  nstd::cetak(std::string(
-      "   -i | --info         Untuk melihat informasi lebih lanjut."
-  ));
+  std::cout << "Sebuah alat command-line untuk Nusantara development.\n" << "\n";
+  std::cout << "Penggunaan: nusantara <perintah|nusantara-file> [argumen]\n" << "\n";
+  std::cout << "Pilihan umum:" << "\n";
+  std::cout << "   -v | --versi        Untuk melihat versi nusantara." << "\n";
+  std::cout << "   -i | --info         Untuk melihat informasi lebih lanjut." << "\n";
 }
 
-void Cli::showVersi() { nstd::cetak(std::format("{} {}", APP, VERSION)); }
+void Cli::showVersi() { std::cout << std::format("{} {}", APP, VERSION); }

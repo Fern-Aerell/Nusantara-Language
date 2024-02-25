@@ -1,25 +1,26 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
-#include "nstd/daftar.h"
+
 #include "parser/parser_tree.h"
 #include "visitor/context/context.h"
 
 class OperasiAtauContext: public Context {
   public:
     explicit OperasiAtauContext(
-        nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiDanContext,
-        nstd::daftar<Token> kumpulanOperator
+        std::vector<std::unique_ptr<Context>> kumpulanOperasiDanContext,
+        std::vector<Token> kumpulanOperator
     );
     static OperasiAtauContext generate(
-        const nstd::daftar<std::unique_ptr<ParserTree>>& children
+        const std::vector<std::unique_ptr<ParserTree>>& children
     );
-    [[nodiscard]] const nstd::daftar<std::unique_ptr<Context>>&
+    [[nodiscard]] const std::vector<std::unique_ptr<Context>>&
     getKumpulanOperasiDanContext() const;
-    [[nodiscard]] const nstd::daftar<Token>& getKumpulanOperator() const;
+    [[nodiscard]] const std::vector<Token>& getKumpulanOperator() const;
 
   private:
-    nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiDanContext;
-    nstd::daftar<Token> kumpulanOperator;
+    std::vector<std::unique_ptr<Context>> kumpulanOperasiDanContext;
+    std::vector<Token> kumpulanOperator;
 };

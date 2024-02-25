@@ -1,10 +1,8 @@
 #include <chrono>
 #include <exception>
-#include <format>
-#include <string>
+#include <iostream>
 
 #include "cli/cli.h"
-#include "nstd/konsol.h"
 
 #ifdef _WIN32
   #include <windows.h>
@@ -20,13 +18,10 @@ int main(int argc, char* argv[]) {
     Cli cli;
     cli.input(argc, argv);
   } catch(const std::exception& error) {
-    nstd::cetak(std::string(error.what()));
+    std::cout << error.what() << "\n";
   }
   auto end = std::chrono::steady_clock::now();
-  auto duration =
-      std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-  nstd::cetak(
-      std::format("Program berjalan selama: {} milidetik.", duration.count())
-  );
+  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+  std::cout << std::format("Program berjalan selama: {} milidetik.", duration.count()) << "\n";
   return 0;
 }

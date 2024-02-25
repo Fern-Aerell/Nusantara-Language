@@ -3,9 +3,9 @@
 #include "visitor/context/operasi/operasi_lebih_kecil_sama_dengan_context.h"
 
 OperasiLebihBesarContext::OperasiLebihBesarContext(
-    nstd::daftar<std::unique_ptr<Context>>
+    std::vector<std::unique_ptr<Context>>
         kumpulanOperasiLebihKecilSamaDenganContext,
-    nstd::daftar<Token> kumpulanOperator
+    std::vector<Token> kumpulanOperator
 ):
     kumpulanOperasiLebihKecilSamaDenganContext(
         std::move(kumpulanOperasiLebihKecilSamaDenganContext)
@@ -13,11 +13,11 @@ OperasiLebihBesarContext::OperasiLebihBesarContext(
     kumpulanOperator(std::move(kumpulanOperator)) {}
 
 OperasiLebihBesarContext OperasiLebihBesarContext::generate(
-    const nstd::daftar<std::unique_ptr<ParserTree>>& children
+    const std::vector<std::unique_ptr<ParserTree>>& children
 ) {
-  nstd::daftar<std::unique_ptr<Context>>
+  std::vector<std::unique_ptr<Context>>
       kumpulanOperasiLebihKecilSamaDenganContext;
-  nstd::daftar<Token> kumpulanOperator;
+  std::vector<Token> kumpulanOperator;
   for(const std::unique_ptr<ParserTree>& child : children) {
     if(auto* prt = dynamic_cast<ParserRuleTree*>(child.get())) {
       if(prt->getRule() == ParserRule::operasi_lebih_kecil_sama_dengan) {
@@ -39,13 +39,13 @@ OperasiLebihBesarContext OperasiLebihBesarContext::generate(
   );
 }
 
-const nstd::daftar<std::unique_ptr<Context>>&
+const std::vector<std::unique_ptr<Context>>&
 OperasiLebihBesarContext::getKumpulanOperasiLebihKecilSamaDenganContext(
 ) const {
   return this->kumpulanOperasiLebihKecilSamaDenganContext;
 }
 
-const nstd::daftar<Token>& OperasiLebihBesarContext::getKumpulanOperator(
+const std::vector<Token>& OperasiLebihBesarContext::getKumpulanOperator(
 ) const {
   return this->kumpulanOperator;
 }

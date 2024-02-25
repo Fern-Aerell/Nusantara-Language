@@ -422,7 +422,7 @@ std::unique_ptr<ParserTree> Parser::parseOperasiTambahSatu() {
 std::unique_ptr<ParserTree> Parser::parseNilai() {
   std::unique_ptr<ParserTree> ekspresi_nilai =
       std::make_unique<ParserRuleTree>(ParserRule::nilai);
-  const nstd::daftar<TokenType> types = {
+  const std::vector<TokenType> types = {
       TokenType::BILANGAN, TokenType::BENAR, TokenType::SALAH,
       TokenType::IDENTIFIKASI
   };

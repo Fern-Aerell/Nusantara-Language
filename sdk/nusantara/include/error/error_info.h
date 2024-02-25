@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "lexer/token.h"
-#include "nstd/daftar.h"
+
 
 class ErrorInfo {
   public:
@@ -13,7 +13,7 @@ class ErrorInfo {
     std::string inLine(const Token& token, const std::string& msg);
 
     std::string inLine(
-        const nstd::daftar<Token>& tokens, const std::string& msg
+        const std::vector<Token>& tokens, const std::string& msg
     );
 
   private:

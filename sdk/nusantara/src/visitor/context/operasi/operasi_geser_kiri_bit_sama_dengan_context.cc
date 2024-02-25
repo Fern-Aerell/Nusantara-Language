@@ -3,9 +3,9 @@
 #include "visitor/context/operasi/operasi_xor_bit_sama_dengan_context.h"
 
 OperasiGeserKiriBitSamaDenganContext::OperasiGeserKiriBitSamaDenganContext(
-    nstd::daftar<std::unique_ptr<Context>>
+    std::vector<std::unique_ptr<Context>>
         kumpulanOperasiXorBitSamaDenganContext,
-    nstd::daftar<Token> kumpulanOperator
+    std::vector<Token> kumpulanOperator
 ):
     kumpulanOperasiXorBitSamaDenganContext(
         std::move(kumpulanOperasiXorBitSamaDenganContext)
@@ -14,10 +14,10 @@ OperasiGeserKiriBitSamaDenganContext::OperasiGeserKiriBitSamaDenganContext(
 
 OperasiGeserKiriBitSamaDenganContext
 OperasiGeserKiriBitSamaDenganContext::generate(
-    const nstd::daftar<std::unique_ptr<ParserTree>>& children
+    const std::vector<std::unique_ptr<ParserTree>>& children
 ) {
-  nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiXorBitSamaDenganContext;
-  nstd::daftar<Token> kumpulanOperator;
+  std::vector<std::unique_ptr<Context>> kumpulanOperasiXorBitSamaDenganContext;
+  std::vector<Token> kumpulanOperator;
   for(const std::unique_ptr<ParserTree>& child : children) {
     if(auto* prt = dynamic_cast<ParserRuleTree*>(child.get())) {
       if(prt->getRule() == ParserRule::operasi_xor_bit_sama_dengan) {
@@ -39,13 +39,13 @@ OperasiGeserKiriBitSamaDenganContext::generate(
   );
 }
 
-const nstd::daftar<std::unique_ptr<Context>>&
+const std::vector<std::unique_ptr<Context>>&
 OperasiGeserKiriBitSamaDenganContext::getKumpulanOperasiXorBitSamaDenganContext(
 ) const {
   return this->kumpulanOperasiXorBitSamaDenganContext;
 }
 
-const nstd::daftar<Token>&
+const std::vector<Token>&
 OperasiGeserKiriBitSamaDenganContext::getKumpulanOperator() const {
   return this->kumpulanOperator;
 }

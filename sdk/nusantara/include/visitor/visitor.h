@@ -3,7 +3,6 @@
 #include <memory>
 #include <stdexcept>
 
-#include "nstd/dinamis.h"
 #include "parser/parser_rule.h"
 #include "parser/parser_tree.h"
 #include "visitor/context/context.h"

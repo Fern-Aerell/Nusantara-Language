@@ -1,21 +1,21 @@
-#include "nstd/kosong.h"
 #include "parser/parser_rule.h"
 #include "visitor/context/ekspresi/ekspresi_context.h"
 #include "visitor/context/pernyataan/pernyataan_context.h"
 #include "visitor/context/variable/variable_context.h"
 #include <memory>
+#include <optional>
 
 PernyataanContext::PernyataanContext(
-	nstd::bisa_kosong<std::unique_ptr<Context>> variableContext,
-	nstd::bisa_kosong<std::unique_ptr<Context>> ekspresiContext
+	std::optional<std::unique_ptr<Context>> variableContext,
+	std::optional<std::unique_ptr<Context>> ekspresiContext
 ):
 	variableContext(std::move(variableContext)),
 	ekspresiContext(std::move(ekspresiContext))
 {}
 
-PernyataanContext PernyataanContext::generate(const nstd::daftar<std::unique_ptr<ParserTree>>& children) {
-	nstd::bisa_kosong<std::unique_ptr<Context>> variableContext;
-	nstd::bisa_kosong<std::unique_ptr<Context>> ekspresiContext;
+PernyataanContext PernyataanContext::generate(const std::vector<std::unique_ptr<ParserTree>>& children) {
+	std::optional<std::unique_ptr<Context>> variableContext;
+	std::optional<std::unique_ptr<Context>> ekspresiContext;
 	for(const std::unique_ptr<ParserTree>& child : children) {
 		if(auto* prt = dynamic_cast<ParserRuleTree*>(child.get())) {
 			const ParserRule& rule = prt->getRule();
@@ -32,10 +32,10 @@ PernyataanContext PernyataanContext::generate(const nstd::daftar<std::unique_ptr
 	);
 }
 
-const nstd::bisa_kosong<std::unique_ptr<Context>>& PernyataanContext::getVariableContext() const {
+const std::optional<std::unique_ptr<Context>>& PernyataanContext::getVariableContext() const {
 	return this->variableContext;
 }
 
-const nstd::bisa_kosong<std::unique_ptr<Context>>& PernyataanContext::getEkspresiContext() const {
+const std::optional<std::unique_ptr<Context>>& PernyataanContext::getEkspresiContext() const {
 	return this->ekspresiContext;
 }

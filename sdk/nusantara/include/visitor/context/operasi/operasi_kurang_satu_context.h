@@ -1,9 +1,9 @@
 #pragma once
 
 #include <memory>
+#include <optional>
 
-#include "nstd/daftar.h"
-#include "nstd/kosong.h"
+
 #include "parser/parser_tree.h"
 #include "visitor/context/context.h"
 
@@ -12,20 +12,20 @@ class OperasiKurangSatuContext: public Context {
     explicit OperasiKurangSatuContext(
         const bool& isPre, const bool& isPost,
         std::unique_ptr<Context> operasiTambahSatuContext,
-        nstd::bisa_kosong<Token> satuOperator
+        std::optional<Token> satuOperator
     );
     static OperasiKurangSatuContext generate(
-        const nstd::daftar<std::unique_ptr<ParserTree>>& children
+        const std::vector<std::unique_ptr<ParserTree>>& children
     );
     [[nodiscard]] const bool& getIsPre() const;
     [[nodiscard]] const bool& getIsPost() const;
     [[nodiscard]] const std::unique_ptr<Context>& getOperasiTambahSatuContext(
     ) const;
-    [[nodiscard]] const nstd::bisa_kosong<Token>& getSatuOperator() const;
+    [[nodiscard]] const std::optional<Token>& getSatuOperator() const;
 
   private:
     bool isPre;
     bool isPost;
     std::unique_ptr<Context> operasiTambahSatuContext;
-    nstd::bisa_kosong<Token> satuOperator;
+    std::optional<Token> satuOperator;
 };

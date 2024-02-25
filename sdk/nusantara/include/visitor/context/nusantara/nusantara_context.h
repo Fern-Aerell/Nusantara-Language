@@ -1,22 +1,22 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
-#include "nstd/daftar.h"
 #include "parser/parser_tree.h"
 #include "visitor/context/context.h"
 
 class NusantaraContext: public Context {
   public:
     explicit NusantaraContext(
-        nstd::daftar<std::unique_ptr<Context>> kumpulanPernyataanContext
+        std::vector<std::unique_ptr<Context>> kumpulanPernyataanContext
     );
     static NusantaraContext generate(
-        const nstd::daftar<std::unique_ptr<ParserTree>>& children
+        const std::vector<std::unique_ptr<ParserTree>>& children
     );
-    [[nodiscard]] const nstd::daftar<std::unique_ptr<Context>>&
+    [[nodiscard]] const std::vector<std::unique_ptr<Context>>&
     getKumpulanPernyataan() const;
 
   private:
-    nstd::daftar<std::unique_ptr<Context>> kumpulanPernyataanContext;
+    std::vector<std::unique_ptr<Context>> kumpulanPernyataanContext;
 };

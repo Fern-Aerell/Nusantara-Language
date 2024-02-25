@@ -1,11 +1,12 @@
 #include "visitor/context/operasi/operasi_kurang_satu_context.h"
+#include <optional>
 
 #include "visitor/context/operasi/operasi_tambah_satu_context.h"
 
 OperasiKurangSatuContext::OperasiKurangSatuContext(
     const bool& isPre, const bool& isPost,
     std::unique_ptr<Context> operasiTambahSatuContext,
-    nstd::bisa_kosong<Token> satuOperator
+    std::optional<Token> satuOperator
 ):
     isPre(isPre),
     isPost(isPost),
@@ -13,10 +14,10 @@ OperasiKurangSatuContext::OperasiKurangSatuContext(
     satuOperator(std::move(satuOperator)) {}
 
 OperasiKurangSatuContext OperasiKurangSatuContext::generate(
-    const nstd::daftar<std::unique_ptr<ParserTree>>& children
+    const std::vector<std::unique_ptr<ParserTree>>& children
 ) {
   std::unique_ptr<Context> operasiTambahSatuContext;
-  nstd::bisa_kosong<Token> satuOperator;
+  std::optional<Token> satuOperator;
   bool isPre = false;
   bool isPost = false;
   size_t index = 0;
@@ -56,7 +57,7 @@ OperasiKurangSatuContext::getOperasiTambahSatuContext() const {
   return this->operasiTambahSatuContext;
 }
 
-const nstd::bisa_kosong<Token>& OperasiKurangSatuContext::getSatuOperator(
+const std::optional<Token>& OperasiKurangSatuContext::getSatuOperator(
 ) const {
   return this->satuOperator;
 }

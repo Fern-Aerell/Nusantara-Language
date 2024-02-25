@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <format>
 #include <stdexcept>
+#include <vector>
 
 #include "lexer/token_type.h"
 
@@ -57,7 +58,7 @@ Token combineToken(const Token& token1, const Token& token2) {
   return {source, type, value, line, startCharIndex, endCharIndex};
 }
 
-Token combineToken(const nstd::daftar<Token>& tokens) {
+Token combineToken(const std::vector<Token>& tokens) {
   if(tokens.size() < 2) {
     throw std::runtime_error("Daftar harus berisi token sebanyak 2 atau lebih."
     );

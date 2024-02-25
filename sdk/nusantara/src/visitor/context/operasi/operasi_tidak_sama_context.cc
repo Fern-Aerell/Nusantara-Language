@@ -3,17 +3,17 @@
 #include "visitor/context/operasi/operasi_sama_context.h"
 
 OperasiTidakSamaContext::OperasiTidakSamaContext(
-    nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiSamaContext,
-    nstd::daftar<Token> kumpulanOperator
+    std::vector<std::unique_ptr<Context>> kumpulanOperasiSamaContext,
+    std::vector<Token> kumpulanOperator
 ):
     kumpulanOperasiSamaContext(std::move(kumpulanOperasiSamaContext)),
     kumpulanOperator(std::move(kumpulanOperator)) {}
 
 OperasiTidakSamaContext OperasiTidakSamaContext::generate(
-    const nstd::daftar<std::unique_ptr<ParserTree>>& children
+    const std::vector<std::unique_ptr<ParserTree>>& children
 ) {
-  nstd::daftar<std::unique_ptr<Context>> kumpulanOperasiSamaContext;
-  nstd::daftar<Token> kumpulanOperator;
+  std::vector<std::unique_ptr<Context>> kumpulanOperasiSamaContext;
+  std::vector<Token> kumpulanOperator;
   for(const std::unique_ptr<ParserTree>& child : children) {
     if(auto* prt = dynamic_cast<ParserRuleTree*>(child.get())) {
       if(prt->getRule() == ParserRule::operasi_sama) {
@@ -34,12 +34,12 @@ OperasiTidakSamaContext OperasiTidakSamaContext::generate(
   );
 }
 
-const nstd::daftar<std::unique_ptr<Context>>&
+const std::vector<std::unique_ptr<Context>>&
 OperasiTidakSamaContext::getKumpulanOperasiSamaContext() const {
   return this->kumpulanOperasiSamaContext;
 }
 
-const nstd::daftar<Token>& OperasiTidakSamaContext::getKumpulanOperator(
+const std::vector<Token>& OperasiTidakSamaContext::getKumpulanOperator(
 ) const {
   return this->kumpulanOperator;
 }

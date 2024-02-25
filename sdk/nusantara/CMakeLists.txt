@@ -15,6 +15,7 @@ include_directories(include)
 file(
 	GLOB_RECURSE 
 	SRC_FILES 
+	"src/**/*.cc"
 	"src/*.cc"
 )
 

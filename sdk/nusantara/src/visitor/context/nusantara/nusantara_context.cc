@@ -2,14 +2,14 @@
 #include "visitor/context/pernyataan/pernyataan_context.h"
 
 NusantaraContext::NusantaraContext(
-    nstd::daftar<std::unique_ptr<Context>> kumpulanPernyataanContext
+    std::vector<std::unique_ptr<Context>> kumpulanPernyataanContext
 ):
     kumpulanPernyataanContext(std::move(kumpulanPernyataanContext)) {}
 
 NusantaraContext NusantaraContext::generate(
-    const nstd::daftar<std::unique_ptr<ParserTree>>& children
+    const std::vector<std::unique_ptr<ParserTree>>& children
 ) {
-  nstd::daftar<std::unique_ptr<Context>> kumpulanPernyataanContext;
+  std::vector<std::unique_ptr<Context>> kumpulanPernyataanContext;
   for(const std::unique_ptr<ParserTree>& child : children) {
     if(auto* prt = dynamic_cast<ParserRuleTree*>(child.get())) {
       if(prt->getRule() == ParserRule::pernyataan) {
@@ -22,7 +22,7 @@ NusantaraContext NusantaraContext::generate(
   return NusantaraContext(std::move(kumpulanPernyataanContext));
 }
 
-const nstd::daftar<std::unique_ptr<Context>>&
+const std::vector<std::unique_ptr<Context>>&
 NusantaraContext::getKumpulanPernyataan() const {
   return this->kumpulanPernyataanContext;
 }

@@ -10,7 +10,7 @@ EkspresiContext::EkspresiContext(
     ) {}
 
 EkspresiContext EkspresiContext::generate(
-    const nstd::daftar<std::unique_ptr<ParserTree>>& children
+    const std::vector<std::unique_ptr<ParserTree>>& children
 ) {
   std::unique_ptr<Context> operasiGeserKananBitSamaDenganContext =
       std::make_unique<OperasiGeserKananBitSamaDenganContext>(

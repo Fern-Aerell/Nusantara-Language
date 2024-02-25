@@ -1,20 +1,22 @@
 #pragma once
 
-#include "nstd/daftar.h"
-#include "nstd/kosong.h"
+
 #include "parser/parser_tree.h"
 #include "visitor/context/context.h"
 #include <memory>
+#include <optional>
+#include <vector>
+
 class PernyataanContext: public Context {
 	public:
 		PernyataanContext(
-			nstd::bisa_kosong<std::unique_ptr<Context>> variableContext,
-			nstd::bisa_kosong<std::unique_ptr<Context>> ekspresiContext
+			std::optional<std::unique_ptr<Context>> variableContext,
+			std::optional<std::unique_ptr<Context>> ekspresiContext
 		);
-		static PernyataanContext generate(const nstd::daftar<std::unique_ptr<ParserTree>>& children);
-		[[nodiscard]] const nstd::bisa_kosong<std::unique_ptr<Context>>& getVariableContext() const;
-		[[nodiscard]] const nstd::bisa_kosong<std::unique_ptr<Context>>& getEkspresiContext() const;
+		static PernyataanContext generate(const std::vector<std::unique_ptr<ParserTree>>& children);
+		[[nodiscard]] const std::optional<std::unique_ptr<Context>>& getVariableContext() const;
+		[[nodiscard]] const std::optional<std::unique_ptr<Context>>& getEkspresiContext() const;
 	private:
-		nstd::bisa_kosong<std::unique_ptr<Context>> variableContext;
-		nstd::bisa_kosong<std::unique_ptr<Context>> ekspresiContext;
+		std::optional<std::unique_ptr<Context>> variableContext;
+		std::optional<std::unique_ptr<Context>> ekspresiContext;
 };

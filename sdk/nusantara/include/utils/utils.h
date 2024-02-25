@@ -11,4 +11,9 @@ namespace utils {
 
   std::string readFile(const std::string &path);
 
+  template<typename T>
+  inline bool contains(const std::vector<T>& vec, const T& value) {
+      return std::find(vec.begin(), vec.end(), value) != vec.end();
+  }
+
 }  // namespace utils
