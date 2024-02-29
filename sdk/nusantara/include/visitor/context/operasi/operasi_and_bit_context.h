@@ -4,7 +4,6 @@
 #include <vector>
 
 #include "lexer/token.h"
-
 #include "parser/parser_tree.h"
 #include "visitor/context/context.h"
 

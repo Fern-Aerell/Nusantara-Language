@@ -2,7 +2,6 @@
 
 #include <memory>
 
-
 #include "parser/parser_tree.h"
 #include "visitor/context/context.h"
 
@@ -21,7 +20,6 @@ class OperasiXorBitSamaDenganContext: public Context {
     [[nodiscard]] const std::vector<Token>& getKumpulanOperator() const;
 
   private:
-    std::vector<std::unique_ptr<Context>>
-        kumpulanOperasiOrBitSamaDenganContext;
+    std::vector<std::unique_ptr<Context>> kumpulanOperasiOrBitSamaDenganContext;
     std::vector<Token> kumpulanOperator;
 };

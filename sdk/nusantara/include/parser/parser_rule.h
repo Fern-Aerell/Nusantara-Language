@@ -5,8 +5,8 @@
 enum class ParserRule : int {
   nusantara,
   ekspresi,
-	pernyataan,
-	variable,
+  pernyataan,
+  variable,
   operasi_geser_kanan_bit_sama_dengan,
   operasi_geser_kiri_bit_sama_dengan,
   operasi_xor_bit_sama_dengan,
@@ -51,10 +51,10 @@ inline std::string toString(const ParserRule &rule) {
       return "nusantara";
     case ParserRule::ekspresi:
       return "ekspresi";
-		case ParserRule::pernyataan:
-			return "pernyataan";
-		case ParserRule::variable:
-			return "variable";
+    case ParserRule::pernyataan:
+      return "pernyataan";
+    case ParserRule::variable:
+      return "variable";
     case ParserRule::operasi_geser_kanan_bit_sama_dengan:
       return "operasi_geser_kanan_bit_sama_dengan";
     case ParserRule::operasi_geser_kiri_bit_sama_dengan:

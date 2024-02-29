@@ -5,7 +5,6 @@
 
 #include "lexer/token.h"
 
-
 class ErrorInfo {
   public:
     explicit ErrorInfo(std::string source, const std::string& content);

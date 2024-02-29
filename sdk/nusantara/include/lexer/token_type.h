@@ -13,15 +13,15 @@ enum class TokenType : int {
   KOMENTAR_DOKUMENTASI,
   KOMENTAR_SATU_BARIS,
   KOMENTAR_BANYAK_BARIS,
-	// Tipe Data
-	TIPE_DATA_BILANGAN,
-	TIPE_DATA_KALIMAT,
-	TIPE_DATA_BENARSALAH,
+  // Tipe Data
+  TIPE_DATA_BILANGAN,
+  TIPE_DATA_KALIMAT,
+  TIPE_DATA_BENARSALAH,
   // Nilai Tipe Data
   BILANGAN,
   KARAKTER,
-  BENAR,
-  SALAH,
+  NILAI_BENAR,
+  NILAI_SALAH,
   // Operator Penugasan
   SAMA_DENGAN,
   TAMBAH_SAMA_DENGAN,
@@ -100,10 +100,10 @@ inline std::string toString(const TokenType &type) {
       return "KOMENTAR_BANYAK_BARIS";
     case TokenType::BILANGAN:
       return "BILANGAN";
-    case TokenType::BENAR:
-      return "BENAR";
-    case TokenType::SALAH:
-      return "SALAH";
+    case TokenType::NILAI_BENAR:
+      return "NILAI_BENAR";
+    case TokenType::NILAI_SALAH:
+      return "NILAI_SALAH";
     case TokenType::SAMA_DENGAN:
       return "SAMA_DENGAN";
     case TokenType::TAMBAH_SAMA_DENGAN:
@@ -196,11 +196,11 @@ inline std::string toString(const TokenType &type) {
       return "TITIK_DUA";
     case TokenType::IDENTIFIKASI:
       return "IDENTIFIKASI";
-		case TokenType::TIPE_DATA_BILANGAN:
-			return "TIPE_DATA_BILANGAN";
-		case TokenType::TIPE_DATA_KALIMAT:
-			return "TIPE_DATA_KALIMAT";
-		case TokenType::TIPE_DATA_BENARSALAH:
-			return "TIPE_DATA_BENARSALAH";
+    case TokenType::TIPE_DATA_BILANGAN:
+      return "TIPE_DATA_BILANGAN";
+    case TokenType::TIPE_DATA_KALIMAT:
+      return "TIPE_DATA_KALIMAT";
+    case TokenType::TIPE_DATA_BENARSALAH:
+      return "TIPE_DATA_BENARSALAH";
   }
 };

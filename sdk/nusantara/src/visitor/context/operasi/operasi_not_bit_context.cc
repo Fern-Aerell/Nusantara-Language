@@ -1,4 +1,5 @@
 #include "visitor/context/operasi/operasi_not_bit_context.h"
+
 #include <optional>
 
 #include "visitor/context/operasi/operasi_kurang_satu_context.h"

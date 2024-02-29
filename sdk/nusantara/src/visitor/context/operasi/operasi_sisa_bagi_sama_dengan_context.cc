@@ -43,7 +43,7 @@ OperasiSisaBagiSamaDenganContext::getKumpulanOperasiBagiSamaDenganContext(
   return this->kumpulanOperasiBagiSamaDenganContext;
 }
 
-const std::vector<Token>&
-OperasiSisaBagiSamaDenganContext::getKumpulanOperator() const {
+const std::vector<Token>& OperasiSisaBagiSamaDenganContext::getKumpulanOperator(
+) const {
   return this->kumpulanOperator;
 }

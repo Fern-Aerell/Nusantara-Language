@@ -1,49 +1,32 @@
 #pragma once
 
 #include <map>
-#include <sstream>
+
+#include "core/core.h"
+#include "core/pointer.h"
+#include "nstd/tipe_data/benarsalah.h"
 #include "nstd/tipe_data/bilangan.h"
 #include "nstd/tipe_data/kalimat.h"
 #include "nstd/tipe_data/tipe_data.h"
-#include "nstd/operasi/operasi.h"
 
 namespace nstd {
 
-    class peta: public tipe_data {
-        public:
-            explicit peta(std::map<std::unique_ptr<tipe_data>, std::unique_ptr<tipe_data>> nilai): nilai(std::move(nilai)) {}
-            [[nodiscard]] bool berisiKunci(const std::unique_ptr<tipe_data>& key) const {
-                auto value = this->nilai.find(key);
-                return static_cast<bool>(value != this->nilai.end());
-            }
-            [[nodiscard]] bool kosong() const {
-                return this->nilai.empty();
-            }
-            [[nodiscard]] bool tidakKosong() const {
-                return !this->kosong();
-            }
-            [[nodiscard]] bilangan jumlahIsi() const {
-                return bilangan(static_cast<TIPE_DATA_BILANGAN_BULAT>(this->nilai.size()));
-            }
-            [[nodiscard]] kalimat ubahKeKalimat() const {
-                std::ostringstream stream;
-                int index = 0;
-                for(const auto& pair : this->nilai) {
-                if(index == 0) {
-                    stream << "{";
-                }
-                stream << pair.first << ": " << pair.second;
-                if(index < (this->jumlahIsi() - 1)) {
-                    stream << ", ";
-                } else {
-                    stream << "]";
-                }
-                ++index;
-                }
-                return kalimat(stream.str());
-            }
-        private:
-            std::map<std::unique_ptr<tipe_data>, std::unique_ptr<tipe_data>> nilai;
-    };
-    
-}
+  class peta: public tipe_data {
+    public:
+      explicit peta(STD map<PTR(tipe_data), PTR(tipe_data)> nilai);
+
+      ND benarsalah berisiKunci(const PTR(tipe_data) & key) const;
+
+      ND benarsalah kosong() const;
+
+      ND benarsalah tidakKosong() const;
+
+      ND bilangan jumlahIsi() const;
+
+      ND kalimat ubahKeKalimat() const;
+
+    private:
+      STD map<PTR(tipe_data), PTR(tipe_data)> nilai;
+  };
+
+}  // namespace nstd

@@ -1,13 +1,14 @@
 #include "cli/cli.h"
+
 #include <iostream>
 #include <string>
 #include <vector>
 
 #include "config/config.h"
-#include "lexer/lexer.h"
-#include "parser/parser.h"
 #include "error/error_info.h"
 #include "interpreter/interpreter.h"
+#include "lexer/lexer.h"
+#include "parser/parser.h"
 #include "utils/utils.h"
 
 void Cli::input(const int& argc, char* argv[]) {
@@ -67,17 +68,23 @@ void Cli::input(const int& argc, char* argv[]) {
   } else if(kumpulanArgument.empty()) {
     showInfo();
   } else {
-    std::cout << std::format("Perintah '{}' tidak ada.", kumpulanArgument[0]) << "\n";
+    std::cout << std::format("Perintah '{}' tidak ada.", kumpulanArgument[0])
+              << "\n";
     showInfo();
   }
 }
 
 void Cli::showInfo() {
-  std::cout << "Sebuah alat command-line untuk Nusantara development.\n" << "\n";
-  std::cout << "Penggunaan: nusantara <perintah|nusantara-file> [argumen]\n" << "\n";
-  std::cout << "Pilihan umum:" << "\n";
-  std::cout << "   -v | --versi        Untuk melihat versi nusantara." << "\n";
-  std::cout << "   -i | --info         Untuk melihat informasi lebih lanjut." << "\n";
+  std::cout << "Sebuah alat command-line untuk Nusantara development.\n"
+            << "\n";
+  std::cout << "Penggunaan: nusantara <perintah|nusantara-file> [argumen]\n"
+            << "\n";
+  std::cout << "Pilihan umum:"
+            << "\n";
+  std::cout << "   -v | --versi        Untuk melihat versi nusantara."
+            << "\n";
+  std::cout << "   -i | --info         Untuk melihat informasi lebih lanjut."
+            << "\n";
 }
 
 void Cli::showVersi() { std::cout << std::format("{} {}", APP, VERSION); }

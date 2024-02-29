@@ -6,7 +6,6 @@
 
 #include "error/error_info.h"
 #include "lexer/token.h"
-
 #include "nstd/tipe_data/dinamis.h"
 #include "visitor/context/context.h"
 #include "visitor/context/operasi/operasi_kondisional_context.h"
@@ -104,10 +103,10 @@ class Interpreter: public Visitor<nstd::dinamis> {
         const std::vector<std::unique_ptr<Context>>& kumpulanContext,
         const std::vector<Token>& kumpulanOperator
     );
-		nstd::dinamis fragmentMultiOperasiRightLeft(
-				const std::vector<std::unique_ptr<Context>>& kumpulanContext,
+    nstd::dinamis fragmentMultiOperasiRightLeft(
+        const std::vector<std::unique_ptr<Context>>& kumpulanContext,
         const std::vector<Token>& kumpulanOperator
-		);
+    );
     nstd::dinamis fragmentOperasiPrePost(
         const std::unique_ptr<Context>& context,
         const std::optional<Token>& satuOperator, const bool& isPre,

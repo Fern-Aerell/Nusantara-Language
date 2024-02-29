@@ -39,7 +39,6 @@ OperasiPerkalianContext::getKumpulanOperasiTidakContext() const {
   return this->kumpulanOperasiTidakContext;
 }
 
-const std::vector<Token>& OperasiPerkalianContext::getKumpulanOperator(
-) const {
+const std::vector<Token>& OperasiPerkalianContext::getKumpulanOperator() const {
   return this->kumpulanOperator;
 }

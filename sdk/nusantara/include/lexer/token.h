@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+
 #include "lexer/token_type.h"
 
 class Token {

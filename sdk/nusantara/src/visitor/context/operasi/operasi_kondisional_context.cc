@@ -69,8 +69,7 @@ OperasiKondisionalContext::getKondisiOperasiAtauContext() const {
   return this->kondisiOperasiAtauContext;
 }
 
-const std::optional<Token>& OperasiKondisionalContext::getTandaTanya(
-) const {
+const std::optional<Token>& OperasiKondisionalContext::getTandaTanya() const {
   return this->tandaTanya;
 }
 

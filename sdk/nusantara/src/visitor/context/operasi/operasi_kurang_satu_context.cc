@@ -1,4 +1,5 @@
 #include "visitor/context/operasi/operasi_kurang_satu_context.h"
+
 #include <optional>
 
 #include "visitor/context/operasi/operasi_tambah_satu_context.h"
@@ -57,7 +58,6 @@ OperasiKurangSatuContext::getOperasiTambahSatuContext() const {
   return this->operasiTambahSatuContext;
 }
 
-const std::optional<Token>& OperasiKurangSatuContext::getSatuOperator(
-) const {
+const std::optional<Token>& OperasiKurangSatuContext::getSatuOperator() const {
   return this->satuOperator;
 }

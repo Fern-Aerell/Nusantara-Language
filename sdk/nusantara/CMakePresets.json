@@ -7,21 +7,21 @@
     },
     "configurePresets": [
         {
-            "name": "debug",
+            "name": "debug-windows",
             "generator": "Ninja",
-            "binaryDir": "build/debug",
+            "binaryDir": "build",
             "cacheVariables": {
-                "CMAKE_CXX_COMPILER": "/usr/bin/clang++-17",
+                "CMAKE_CXX_COMPILER": "clang++",
                 "CMAKE_BUILD_TYPE": "Debug",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "true"
             }
         },
         {
-            "name": "release",
+            "name": "release-windows",
             "generator": "Ninja",
-            "binaryDir": "build/release",
+            "binaryDir": "build",
             "cacheVariables": {
-                "CMAKE_CXX_COMPILER": "/usr/bin/clang++-17",
+                "CMAKE_CXX_COMPILER": "clang++",
                 "CMAKE_BUILD_TYPE": "Release",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "true"
             }
@@ -29,12 +29,12 @@
     ],
     "buildPresets": [
         {
-            "name": "debug",
-            "configurePreset": "debug"
+            "name": "debug-windows",
+            "configurePreset": "debug-windows"
         },
         {
-            "name": "release",
-            "configurePreset": "release"
+            "name": "release-windows",
+            "configurePreset": "release-windows"
         }
     ]
 }

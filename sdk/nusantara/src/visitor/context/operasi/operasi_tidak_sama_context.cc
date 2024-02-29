@@ -39,7 +39,6 @@ OperasiTidakSamaContext::getKumpulanOperasiSamaContext() const {
   return this->kumpulanOperasiSamaContext;
 }
 
-const std::vector<Token>& OperasiTidakSamaContext::getKumpulanOperator(
-) const {
+const std::vector<Token>& OperasiTidakSamaContext::getKumpulanOperator() const {
   return this->kumpulanOperator;
 }

@@ -2,15 +2,13 @@
 
 #include <memory>
 
-
 #include "parser/parser_tree.h"
 #include "visitor/context/context.h"
 
 class OperasiSamaDenganContext: public Context {
   public:
     explicit OperasiSamaDenganContext(
-        std::vector<std::unique_ptr<Context>>
-            kumpulanOperasiKondisionalContext,
+        std::vector<std::unique_ptr<Context>> kumpulanOperasiKondisionalContext,
         std::vector<Token> kumpulanOperator
     );
     static OperasiSamaDenganContext generate(

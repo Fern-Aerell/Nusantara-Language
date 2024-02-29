@@ -2,7 +2,6 @@
 
 #include <memory>
 
-
 #include "parser/parser_tree.h"
 #include "visitor/context/context.h"
 

@@ -3,8 +3,7 @@
 #include "visitor/context/operasi/operasi_or_bit_sama_dengan_context.h"
 
 OperasiXorBitSamaDenganContext::OperasiXorBitSamaDenganContext(
-    std::vector<std::unique_ptr<Context>>
-        kumpulanOperasiOrBitSamaDenganContext,
+    std::vector<std::unique_ptr<Context>> kumpulanOperasiOrBitSamaDenganContext,
     std::vector<Token> kumpulanOperator
 ):
     kumpulanOperasiOrBitSamaDenganContext(

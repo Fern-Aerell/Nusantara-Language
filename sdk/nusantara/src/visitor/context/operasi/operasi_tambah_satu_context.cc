@@ -1,4 +1,5 @@
 #include "visitor/context/operasi/operasi_tambah_satu_context.h"
+
 #include <optional>
 
 #include "visitor/context/nilai/nilai_context.h"
@@ -55,7 +56,6 @@ const std::unique_ptr<Context>& OperasiTambahSatuContext::getNilaiContext(
   return this->nilaiContext;
 }
 
-const std::optional<Token>& OperasiTambahSatuContext::getSatuOperator(
-) const {
+const std::optional<Token>& OperasiTambahSatuContext::getSatuOperator() const {
   return this->satuOperator;
 }

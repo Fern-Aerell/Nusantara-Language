@@ -1,5 +1,5 @@
 #!/bin/bash
-#
+
 # clang-format-all: a tool to run clang-format on an entire project
 # Copyright (C) 2016 Evan Klitzke <evan@eklitzke.org>
 #
@@ -16,14 +16,37 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# Modify by Fern Aerell with CHAT-GPT
+
 function usage {
-    echo "Usage: $0 DIR..."
+    echo "Usage: $0 [-v|--verbose] DIR..."
     exit 1
 }
+
+VERBOSE=false
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -v|--verbose)
+            VERBOSE=true
+            shift
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
 
 if [ $# -eq 0 ]; then
     usage
 fi
+
+# Function to log verbose messages
+log_verbose() {
+    if [ "$VERBOSE" = true ]; then
+        echo "$1"
+    fi
+}
 
 # Variable that will hold the name of the clang-format command
 FMT=""
@@ -70,8 +93,10 @@ for dir in "$@"; do
     pushd "${dir}" &>/dev/null
     if ! find-dominating-file . .clang-format; then
         echo "Failed to find dominating .clang-format starting at $PWD"
+        popd &>/dev/null
         continue
     fi
+    log_verbose "Running clang-format -i on files in directory: $PWD"
     find . \
          \( -name '*.c' \
          -o -name '*.cc' \
@@ -79,6 +104,6 @@ for dir in "$@"; do
          -o -name '*.h' \
          -o -name '*.hh' \
          -o -name '*.hpp' \) \
-         -exec "${FMT}" -i '{}' \;
+         -exec sh -c 'echo "Formatting: $1"; "$0" -i "$1"' "$FMT" {} \;
     popd &>/dev/null
 done

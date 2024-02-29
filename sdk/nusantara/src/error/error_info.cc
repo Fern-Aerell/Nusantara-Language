@@ -9,7 +9,6 @@
 
 #include "lexer/token.h"
 #include "lexer/token_type.h"
-
 #include "utils/utils.h"
 
 ErrorInfo::ErrorInfo(std::string source, const std::string& content):

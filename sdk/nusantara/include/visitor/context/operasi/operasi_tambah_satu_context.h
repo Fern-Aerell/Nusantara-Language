@@ -3,7 +3,6 @@
 #include <memory>
 #include <optional>
 
-
 #include "parser/parser_tree.h"
 #include "visitor/context/context.h"
 
@@ -11,8 +10,7 @@ class OperasiTambahSatuContext: public Context {
   public:
     explicit OperasiTambahSatuContext(
         const bool& isPre, const bool& isPost,
-        std::unique_ptr<Context> nilaiContext,
-        std::optional<Token> satuOperator
+        std::unique_ptr<Context> nilaiContext, std::optional<Token> satuOperator
     );
     static OperasiTambahSatuContext generate(
         const std::vector<std::unique_ptr<ParserTree>>& children

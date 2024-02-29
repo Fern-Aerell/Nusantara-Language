@@ -1,4 +1,5 @@
 #include "visitor/context/nilai/nilai_context.h"
+
 #include <optional>
 #include <stdexcept>
 
@@ -23,7 +24,7 @@ NilaiContext NilaiContext::generate(
     const Token token = ptchildToken->getToken();
     const TokenType type = token.getType();
     const std::vector<TokenType> nilaiTokenType = {
-        TokenType::BILANGAN, TokenType::BENAR, TokenType::SALAH,
+        TokenType::BILANGAN, TokenType::NILAI_BENAR, TokenType::NILAI_SALAH,
         TokenType::IDENTIFIKASI
     };
     if(utils::contains(nilaiTokenType, type)) {
@@ -55,8 +56,8 @@ const std::optional<Token>& NilaiContext::getNilai() const {
   return this->nilai;
 }
 
-const std::optional<std::unique_ptr<Context>>&
-NilaiContext::getEkspresiContext() const {
+const std::optional<std::unique_ptr<Context>>& NilaiContext::getEkspresiContext(
+) const {
   return this->ekspresiContext;
 }
 
