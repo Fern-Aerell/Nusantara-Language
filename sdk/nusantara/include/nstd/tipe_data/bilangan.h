@@ -14,7 +14,7 @@
 namespace nstd {
     class nilai_bilangan_tidak_valid_exception: public std::exception {
         public:
-            [[nodiscard]] const char * what() const override {
+            [[nodiscard]] const char * what() const noexcept override {
                 return "nilai bilangan tidak valid.";
             }
     };

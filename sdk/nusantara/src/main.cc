@@ -1,27 +1,43 @@
-#include <chrono>
-#include <exception>
-#include <iostream>
-
-#include "cli/cli.h"
+#include "config/config.h"
+#include "core/print.h"
 
 #ifdef _WIN32
   #include <windows.h>
   #include <winnls.h>
 #endif
 
-int main(int argc, char* argv[]) {
+#define EMPTY_PARAMETER ()
+#define ARG_PARAMETER (int argc, char* argv[])
+#define MAIN(parameter, code) int main parameter {code return 0;}
+
+#ifdef TEST_CODE
+
+MAIN(
+		EMPTY_PARAMETER,
+		PRINT("Test Code");
+)
+
+#else
+
+#include <chrono>
+#include <exception>
+#include "cli/cli.h"
+
+MAIN(
+	ARG_PARAMETER,
   auto start = std::chrono::steady_clock::now();
-#ifdef _WIN32
+	#ifdef _WIN32
   SetConsoleOutputCP(CP_UTF8);
-#endif
-  try {
+	#endif
+  try { 
     Cli cli;
     cli.input(argc, argv);
   } catch(const std::exception& error) {
-    std::cout << error.what() << "\n";
+    PRINT(error.what());
   }
   auto end = std::chrono::steady_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-  std::cout << std::format("Program berjalan selama: {} milidetik.", duration.count()) << "\n";
-  return 0;
-}
+  PRINTF("Program berjalan selama: {} milidetik.", duration.count());
+)
+
+#endif

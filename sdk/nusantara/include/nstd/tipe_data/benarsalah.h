@@ -11,7 +11,7 @@
 namespace nstd {
     class nilai_benarsalah_tidak_valid_exception: public std::exception {
         public:
-            [[nodiscard]] const char * what() const override {
+            [[nodiscard]] const char * what() const noexcept override {
                 return "nilai benar atau salah tidak valid.";
             }
     };

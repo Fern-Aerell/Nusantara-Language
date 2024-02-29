@@ -11,7 +11,7 @@
             "generator": "Ninja",
             "binaryDir": "build/debug",
             "cacheVariables": {
-                "CMAKE_CXX_COMPILER": "clang++",
+                "CMAKE_CXX_COMPILER": "/usr/bin/clang++-17",
                 "CMAKE_BUILD_TYPE": "Debug",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "true"
             }
@@ -21,7 +21,7 @@
             "generator": "Ninja",
             "binaryDir": "build/release",
             "cacheVariables": {
-                "CMAKE_CXX_COMPILER": "clang++",
+                "CMAKE_CXX_COMPILER": "/usr/bin/clang++-17",
                 "CMAKE_BUILD_TYPE": "Release",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "true"
             }

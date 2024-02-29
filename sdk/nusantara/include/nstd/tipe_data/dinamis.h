@@ -22,7 +22,7 @@
 namespace nstd {
   class nilai_dinamis_tidak_valid_exception: public std::exception {
     public:
-      [[nodiscard]] const char* what() const override {
+      [[nodiscard]] const char* what() const noexcept override {
         return "nilai dinamis tidak valid.";
       }
   };
@@ -35,7 +35,7 @@ namespace nstd {
             std::format("dinamis bukan sebuah '{}'.", typeid(T).name()).c_str();
       }
 
-      [[nodiscard]] const char* what() const override { return msg; }
+      [[nodiscard]] const char* what() const noexcept override { return msg; }
 
     private:
       const char* msg{};
