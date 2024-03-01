@@ -1,6 +1,6 @@
 # Nusantara Language
 
-<p align="center"><img src="design/logo/logo.png" width="200px"></p>
+<img src="design/logo/logo.png" width="200px">
 
 Nusantara language adalah bahasa pemrograman.
 
