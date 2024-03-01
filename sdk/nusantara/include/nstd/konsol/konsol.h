@@ -10,6 +10,8 @@ namespace nstd {
 
       static void cetak(const kalimat& nilai);
 
+      static void cetak(const dinamis& nilai);
+
     private:
   };
 }  // namespace nstd

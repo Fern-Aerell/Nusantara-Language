@@ -1,8 +1,7 @@
 #pragma once
 
-#include <memory>
-
 #include "core/core.h"
+#include "core/pointer.h"
 #include "nstd/tipe_data/benarsalah.h"
 #include "nstd/tipe_data/kalimat.h"
 #include "nstd/tipe_data/tipe_data.h"
@@ -22,10 +21,8 @@
 
 // BILANGAN MACRO
 #define __BILANGAN bilangan
-#define __BILANGAN_BILANGAN_BULAT_CONSTRUCTOR(type) \
-  explicit bilangan(const type& nilai)
-#define __BILANGAN_BILANGAN_DESIMAL_CONSTRUCTOR(type) \
-  explicit bilangan(const type& nilai)
+#define __BILANGAN_CONSTRUCTOR(type) bilangan(const type& nilai)
+#define __BILANGAN_CONSTRUCTOR_EXPLICIT(type) explicit __BILANGAN_CONSTRUCTOR(type)
 
 #define __DEFINE_BILANGAN_BILANGAN_ASSIGN_OPERATOR(tipe, nilai_bilangan) \
   __BILANGAN& operator=(const tipe& nilaiX);
@@ -36,6 +33,7 @@
   __DEFINE_BILANGAN_BILANGAN_ASSIGN_OPERATOR(tipe, __BILANGAN_DESIMAL)
 
 namespace nstd {
+
 
   class _nilai_bilangan {
     public:
@@ -48,14 +46,49 @@ namespace nstd {
       ND virtual kalimat ubahKeKalimat() const = 0;
   };
 
+  class _bilangan_desimal;
+
   class _bilangan_bulat: public _nilai_bilangan {
     public:
       __BILANGAN_BULAT_CONSTRUCTOR(int);
       __BILANGAN_BULAT_CONSTRUCTOR(TIPE_DATA_BILANGAN_BULAT);
       ND const TIPE_DATA_BILANGAN_BULAT& ambilNilai() const;
       ND kalimat ubahKeKalimat() const override;
+      ND benarsalah isNegatif() const;
       _bilangan_bulat operator-(const int& nilaiX) const;
-
+      _bilangan_bulat operator~() const;
+      _bilangan_bulat operator+(const _bilangan_bulat& nilaiX) const;
+      _bilangan_desimal operator+(const _bilangan_desimal& nilaiX) const;
+      _bilangan_bulat operator-(const _bilangan_bulat& nilaiX) const;
+      _bilangan_desimal operator-(const _bilangan_desimal& nilaiX) const;
+      _bilangan_bulat operator*(const _bilangan_bulat& nilaiX) const;
+      _bilangan_desimal operator*(const _bilangan_desimal& nilaiX) const;
+      _bilangan_bulat operator/(const _bilangan_bulat& nilaiX) const;
+      _bilangan_desimal operator/(const _bilangan_desimal& nilaiX) const;
+      _bilangan_bulat operator%(const _bilangan_bulat& nilaiX) const;
+      _bilangan_desimal operator%(const _bilangan_desimal& nilaiX) const;
+      _bilangan_bulat operator==(const _bilangan_bulat& nilaiX) const;
+      _bilangan_desimal operator==(const _bilangan_desimal& nilaiX) const;
+      _bilangan_bulat operator!=(const _bilangan_bulat& nilaiX) const;
+      _bilangan_desimal operator!=(const _bilangan_desimal& nilaiX) const;
+      _bilangan_bulat operator>(const _bilangan_bulat& nilaiX) const;
+      _bilangan_desimal operator>(const _bilangan_desimal& nilaiX) const;
+      _bilangan_bulat operator<(const _bilangan_bulat& nilaiX) const;
+      _bilangan_desimal operator<(const _bilangan_desimal& nilaiX) const;
+      _bilangan_bulat operator>=(const _bilangan_bulat& nilaiX) const;
+      _bilangan_desimal operator>=(const _bilangan_desimal& nilaiX) const;
+      _bilangan_bulat operator<=(const _bilangan_bulat& nilaiX) const;
+      _bilangan_desimal operator<=(const _bilangan_desimal& nilaiX) const;
+      _bilangan_bulat operator&(const _bilangan_bulat& nilaiX) const;
+      _bilangan_desimal operator&(const _bilangan_desimal& nilaiX) const;
+      _bilangan_bulat operator|(const _bilangan_bulat& nilaiX) const;
+      _bilangan_desimal operator|(const _bilangan_desimal& nilaiX) const;
+      _bilangan_bulat operator^(const _bilangan_bulat& nilaiX) const;
+      _bilangan_desimal operator^(const _bilangan_desimal& nilaiX) const;
+      _bilangan_bulat operator<<(const _bilangan_bulat& nilaiX) const;
+      _bilangan_desimal operator<<(const _bilangan_desimal& nilaiX) const;
+      _bilangan_bulat operator>>(const _bilangan_bulat& nilaiX) const;
+      _bilangan_desimal operator>>(const _bilangan_desimal& nilaiX) const;
     private:
       TIPE_DATA_BILANGAN_BULAT nilai;
 
@@ -73,8 +106,30 @@ namespace nstd {
       __BILANGAN_DESIMAL_CONSTRUCTOR(TIPE_DATA_BILANGAN_DESIMAL);
       ND const TIPE_DATA_BILANGAN_DESIMAL& ambilNilai() const;
       ND kalimat ubahKeKalimat() const override;
+      ND benarsalah isNegatif() const;
       _bilangan_desimal operator-(const int& nilaiX) const;
-
+      _bilangan_desimal operator+(const _bilangan_bulat& nilaiX) const;
+      _bilangan_desimal operator+(const _bilangan_desimal& nilaiX) const;
+      _bilangan_desimal operator-(const _bilangan_bulat& nilaiX) const;
+      _bilangan_desimal operator-(const _bilangan_desimal& nilaiX) const;
+      _bilangan_desimal operator*(const _bilangan_bulat& nilaiX) const;
+      _bilangan_desimal operator*(const _bilangan_desimal& nilaiX) const;
+      _bilangan_desimal operator/(const _bilangan_bulat& nilaiX) const;
+      _bilangan_desimal operator/(const _bilangan_desimal& nilaiX) const;
+      _bilangan_desimal operator%(const _bilangan_bulat& nilaiX) const;
+      _bilangan_desimal operator%(const _bilangan_desimal& nilaiX) const;
+      _bilangan_desimal operator==(const _bilangan_bulat& nilaiX) const;
+      _bilangan_desimal operator==(const _bilangan_desimal& nilaiX) const;
+      _bilangan_desimal operator!=(const _bilangan_bulat& nilaiX) const;
+      _bilangan_desimal operator!=(const _bilangan_desimal& nilaiX) const;
+      _bilangan_desimal operator>(const _bilangan_bulat& nilaiX) const;
+      _bilangan_desimal operator>(const _bilangan_desimal& nilaiX) const;
+      _bilangan_desimal operator<(const _bilangan_bulat& nilaiX) const;
+      _bilangan_desimal operator<(const _bilangan_desimal& nilaiX) const;
+      _bilangan_desimal operator>=(const _bilangan_bulat& nilaiX) const;
+      _bilangan_desimal operator>=(const _bilangan_desimal& nilaiX) const;
+      _bilangan_desimal operator<=(const _bilangan_bulat& nilaiX) const;
+      _bilangan_desimal operator<=(const _bilangan_desimal& nilaiX) const;
     private:
       TIPE_DATA_BILANGAN_DESIMAL nilai;
 
@@ -87,13 +142,18 @@ namespace nstd {
 
   class bilangan: public tipe_data {
     public:
-      __BILANGAN_BILANGAN_BULAT_CONSTRUCTOR(int);
-      __BILANGAN_BILANGAN_BULAT_CONSTRUCTOR(TIPE_DATA_BILANGAN_BULAT);
-      __BILANGAN_BILANGAN_BULAT_CONSTRUCTOR(_bilangan_bulat);
-      __BILANGAN_BILANGAN_DESIMAL_CONSTRUCTOR(float);
-      __BILANGAN_BILANGAN_DESIMAL_CONSTRUCTOR(double);
-      __BILANGAN_BILANGAN_DESIMAL_CONSTRUCTOR(TIPE_DATA_BILANGAN_DESIMAL);
-      __BILANGAN_BILANGAN_DESIMAL_CONSTRUCTOR(_bilangan_desimal);
+      // Constructors
+      __BILANGAN_CONSTRUCTOR_EXPLICIT(int);
+      __BILANGAN_CONSTRUCTOR_EXPLICIT(TIPE_DATA_BILANGAN_BULAT);
+      __BILANGAN_CONSTRUCTOR_EXPLICIT(_bilangan_bulat);
+      __BILANGAN_CONSTRUCTOR_EXPLICIT(float);
+      __BILANGAN_CONSTRUCTOR_EXPLICIT(double);
+      __BILANGAN_CONSTRUCTOR_EXPLICIT(TIPE_DATA_BILANGAN_DESIMAL);
+      __BILANGAN_CONSTRUCTOR_EXPLICIT(_bilangan_desimal);
+      // Copy constructors
+      __BILANGAN_CONSTRUCTOR(bilangan);
+      // Move constructor
+      bilangan(bilangan&& other) noexcept;
 
       ND const _bilangan_bulat& ambilNilaiBulat() const;
 
@@ -116,14 +176,46 @@ namespace nstd {
           TIPE_DATA_BILANGAN_DESIMAL
       );
 
+      ND benarsalah isNegatif() const; 
+
       bilangan operator-(const int& nilaiX) const;
 
+      bilangan operator~() const;
+
+      bilangan operator+(const bilangan& nilaiX) const;
+
+      bilangan operator-(const bilangan& nilaiX) const;
+
+      bilangan operator*(const bilangan& nilaiX) const;
+
+      bilangan operator/(const bilangan& nilaiX) const;
+
+      bilangan operator%(const bilangan& nilaiX) const;
+
+      bilangan operator==(const bilangan& nilaiX) const;
+
+      bilangan operator!=(const bilangan& nilaiX) const;
+
+      bilangan operator>(const bilangan& nilaiX) const;
+
+      bilangan operator<(const bilangan& nilaiX) const;
+
+      bilangan operator>=(const bilangan& nilaiX) const;
+
+      bilangan operator<=(const bilangan& nilaiX) const;
+
+      bilangan operator&(const bilangan& nilaiX) const;
+
+      bilangan operator|(const bilangan& nilaiX) const;
+
+      bilangan operator^(const bilangan& nilaiX) const;
+
+      bilangan operator<<(const bilangan& nilaiX) const;
+
+      bilangan operator>>(const bilangan& nilaiX) const;
+
     private:
-      STD unique_ptr<_nilai_bilangan> nilai;
-
-      void setBulat(const TIPE_DATA_BILANGAN_BULAT& nilai);
-
-      void setDesimal(const TIPE_DATA_BILANGAN_DESIMAL& nilai);
+      PTR(_nilai_bilangan) nilai;
 
       friend STD ostream& operator<<(STD ostream& ost, const bilangan& obj) {
         return ost << obj.ubahKeKalimat();

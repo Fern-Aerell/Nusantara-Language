@@ -9,6 +9,7 @@
 #include "error/error_info.h"
 #include "lexer/token.h"
 #include "lexer/token_type.h"
+#include "nstd/konsol/konsol.h"
 #include "nstd/tipe_data/benarsalah.h"
 #include "nstd/tipe_data/bilangan.h"
 #include "nstd/tipe_data/dinamis.h"
@@ -37,45 +38,45 @@ nstd::dinamis Interpreter::fragmentMultiOperasiLeftRight(
     const TokenType& type = optr.getType();
     using namespace nstd;
     try {
-      // if(type == TokenType::TAMBAH) {
-      //   left = left + right;
-      // } else if(type == TokenType::KURANG) {
-      //   left = left - right;
-      // } else if(type == TokenType::KALI) {
-      //   left = left * right;
-      // } else if(type == TokenType::BAGI) {
-      //   left = left / right;
-      // } else if(type == TokenType::SISA_BAGI) {
-      //   left = left % right;
-      // } else if(type == TokenType::SAMA) {
-      //   left = left == right;
-      // } else if(type == TokenType::TIDAK_SAMA) {
-      //   left = left != right;
-      // } else if(type == TokenType::LEBIH_BESAR) {
-      //   left = left > right;
-      // } else if(type == TokenType::LEBIH_KECIL) {
-      //   left = left < right;
-      // } else if(type == TokenType::LEBIH_BESAR_SAMA_DENGAN) {
-      //   left = left >= right;
-      // } else if(type == TokenType::LEBIH_KECIL_SAMA_DENGAN) {
-      //   left = left <= right;
-      // } else if(type == TokenType::DAN) {
-      //   left = left && right;
-      // } else if(type == TokenType::ATAU) {
-      //   left = left || right;
-      // } else if(type == TokenType::AND_BIT) {
-      //   left = left & right;
-      // } else if(type == TokenType::OR_BIT) {
-      //   left = left | right;
-      // } else if(type == TokenType::XOR_BIT) {
-      //   left = left ^ right;
-      // } else if(type == TokenType::GESER_KIRI_BIT) {
-      //   left = left << right;
-      // } else if(type == TokenType::GESER_KANAN_BIT) {
-      //   left = left >> right;
-      // } else {
-      //   throw this->error("Operator tidak valid.");
-      // }
+      if(type == TokenType::TAMBAH) {
+        left = left + right;
+      } else if(type == TokenType::KURANG) {
+       left = left - right;
+      } else if(type == TokenType::KALI) {
+        left = left * right;
+      } else if(type == TokenType::BAGI) {
+        left = left / right;
+      } else if(type == TokenType::SISA_BAGI) {
+        left = left % right;
+      } else if(type == TokenType::SAMA) {
+        left = left == right;
+      } else if(type == TokenType::TIDAK_SAMA) {
+        left = left != right;
+      } else if(type == TokenType::LEBIH_BESAR) {
+        left = left > right;
+      } else if(type == TokenType::LEBIH_KECIL) {
+        left = left < right;
+      } else if(type == TokenType::LEBIH_BESAR_SAMA_DENGAN) {
+        left = left >= right;
+      } else if(type == TokenType::LEBIH_KECIL_SAMA_DENGAN) {
+        left = left <= right;
+      } else if(type == TokenType::DAN) {
+        left = left && right;
+      } else if(type == TokenType::ATAU) {
+        left = left || right;
+      } else if(type == TokenType::AND_BIT) {
+        left = left & right;
+      } else if(type == TokenType::OR_BIT) {
+        left = left | right;
+      } else if(type == TokenType::XOR_BIT) {
+        left = left ^ right;
+      } else if(type == TokenType::GESER_KIRI_BIT) {
+        left = left << right;
+      } else if(type == TokenType::GESER_KANAN_BIT) {
+        left = left >> right;
+      } else {
+        throw this->error("Operator tidak valid.");
+      }
     } catch(const std::exception& error) { throw this->error(error.what()); }
     ++index;
   }
@@ -152,25 +153,25 @@ nstd::dinamis Interpreter::fragmentOperasiPrePost(
     this->tokens.push_back(token);
     using namespace nstd;
     try {
-      // if(type == TokenType::TAMBAH_SATU) {
-      //   if(isPre) {
-      //     left = 1 + left;
-      //   } else if(isPost) {
-      //     left = left + 1;
-      //   }
-      // } else if(type == TokenType::KURANG_SATU) {
-      //   if(isPre) {
-      //     left = 1 - left;
-      //   } else if(isPost) {
-      //     left = left - 1;
-      //   }
-      // } else if(type == TokenType::TIDAK) {
-      //   if(isPre) { left = !left; }
-      // } else if(type == TokenType::NOT_BIT) {
-      //   if(isPre) { left = ~left; }
-      // } else {
-      //   throw this->error("Operator tidak valid.");
-      // }
+      if(type == TokenType::TAMBAH_SATU) {
+        if(isPre) {
+          ++left;
+        } else if(isPost) {
+          left++;
+        }
+      } else if(type == TokenType::KURANG_SATU) {
+        if(isPre) {
+          --left;
+        } else if(isPost) {
+          left--;
+        }
+      } else if(type == TokenType::TIDAK) {
+        if(isPre) { !left; }
+      } else if(type == TokenType::NOT_BIT) {
+        if(isPre) { ~left; }
+      } else {
+        throw this->error("Operator tidak valid.");
+      }
     } catch(const std::exception& error) { throw this->error(error.what()); }
   }
   return left;
@@ -187,18 +188,20 @@ nstd::dinamis Interpreter::visitNusantara(const NusantaraContext& ctx) {
 nstd::dinamis Interpreter::visitPernyataan(const PernyataanContext& ctx) {
   const auto& variable = ctx.getVariableContext();
   const auto& ekspresi = ctx.getEkspresiContext();
-  // if(nstd::tidakKosong(variable)) {
-  //   this->visit(variable.value());
-  // }else if(nstd::tidakKosong(ekspresi)) {
-  //   nstd::dinamis hasil = this->visit(ekspresi.value());
-  //   if(nstd::is<Variable>(hasil)) {
-  //     nstd::cetak(nstd::as<Variable>(hasil).getNilai());
-  //   } else {
-  //     nstd::cetak(hasil);
-  //   }
-  // }else {
-  //   throw std::runtime_error("Pernyataan tidak boleh kosong.");
-  // }
+  if(variable.has_value()) {
+    this->visit(variable.value());
+    throw std::runtime_error("Interpreter belum mendukung variable.");
+  }else if(ekspresi.has_value()) {
+    nstd::dinamis hasil = this->visit(ekspresi.value());
+    // if(nstd::is<Variable>()) {
+    //   nstd::cetak(nstd::as<Variable>(hasil).getNilai());
+    // } else {
+    //   nstd::konsol::cetak(hasil);
+    // }
+    nstd::konsol::cetak(hasil);
+  }else {
+    throw std::runtime_error("Pernyataan tidak boleh kosong.");
+  }
   return {};
 }
 
@@ -332,26 +335,26 @@ nstd::dinamis Interpreter::visitOperasiKondisional(
   nstd::dinamis kondisi = this->visit(kondisiPtr);
   if(tandaTanya.has_value()) {
     this->tokens.push_back(tandaTanya.value());
-    // if(nstd::is<bool>(kondisi)) {
-    //   if(nstd::as<bool>(kondisi)) {
-    //     if(nstd::kosong(nilaiBenarPtr)) {
-    //       throw std::runtime_error("Nilai benar tidak boleh kosong.");
-    //     }
-    //     nstd::dinamis nilaiBenar = this->visit(nilaiBenarPtr.value());
-    //     return nilaiBenar;
-    //   } else {
-    //     if(nstd::kosong(nilaiSalahPtr)) {
-    //       throw std::runtime_error("Nilai salah tidak boleh kosong.");
-    //     }
-    //     if(nstd::tidakKosong(titikDua)) {
-    //       this->tokens.push_back(titikDua.value());
-    //     }
-    //     nstd::dinamis nilaiSalah = this->visit(nilaiSalahPtr.value());
-    //     return nilaiSalah;
-    //   }
-    // } else {
-    //   throw this->error("Kondisi harus bernilai benar atau salah.");
-    // }
+    if(kondisi.is_benarsalah()) {
+      if(kondisi.get_benarsalah()) {
+        if(!nilaiBenarPtr.has_value()) {
+          throw std::runtime_error("Nilai benar tidak boleh kosong.");
+        }
+        nstd::dinamis nilaiBenar = this->visit(nilaiBenarPtr.value());
+        return nilaiBenar;
+      } else {
+        if(!nilaiSalahPtr.has_value()) {
+          throw std::runtime_error("Nilai salah tidak boleh kosong.");
+        }
+        if(titikDua.has_value()) {
+          this->tokens.push_back(titikDua.value());
+        }
+        nstd::dinamis nilaiSalah = this->visit(nilaiSalahPtr.value());
+        return nilaiSalah;
+      }
+    } else {
+      throw this->error("Kondisi harus bernilai benar atau salah.");
+    }
   }
   return kondisi;
 }

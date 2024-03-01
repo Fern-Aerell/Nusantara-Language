@@ -21,6 +21,8 @@ namespace nstd {
 
       explicit operator bool() const;
 
+      benarsalah operator!() const;
+
     private:
       bool nilai;
 

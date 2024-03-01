@@ -23,3 +23,7 @@ NSTD benarsalah NSTD benarsalah::ubah(const NSTD kalimat& nilai) {
 }
 
 NSTD benarsalah::operator bool() const { return this->nilai; }
+
+NSTD benarsalah NSTD benarsalah::operator!() const {
+  return benarsalah(!this->nilai);
+}

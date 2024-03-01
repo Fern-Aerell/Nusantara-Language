@@ -1,9 +1,5 @@
-#include "config/config.h"
-#include "core/pointer.h"
 #include "core/print.h"
-#include "nstd/tipe_data/benarsalah.h"
-#include "nstd/tipe_data/bilangan.h"
-#include "nstd/tipe_data/dinamis.h"
+#include "config/config.h"
 
 #ifdef _WIN32
   #include <windows.h>
@@ -19,7 +15,6 @@
 
 MAIN(
     EMPTY_PARAMETER, PRINT("Test Code"); try {
-
     } catch(const std::exception& error) { PRINT(error.what()); }
 )
 

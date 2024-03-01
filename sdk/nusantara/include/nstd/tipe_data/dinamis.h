@@ -10,33 +10,35 @@
 #include "nstd/tipe_data/peta.h"
 #include "nstd/tipe_data/tipe_data.h"
 
-#define __DINAMIS_CONSTRUCTOR(tipe, tipe_data) \
+#define __DINAMIS_CONSTRUCTOR(tipe) \
   explicit dinamis(const tipe& nilai)
-#define __DINAMIS_CONSTRUCTOR_NILAI_MOVE(tipe, tipe_data) \
+
+#define __DINAMIS_CONSTRUCTOR_NILAI_MOVE(tipe) \
   explicit dinamis(tipe nilai)
 
 #define __DEFINE_DINAMIS_IS_FUNCTION(tipe_data) \
-  ND benarsalah is_##tipe_data() const
+   benarsalah is_##tipe_data() const
 
-#define __DEFINE_DINAMIS_AS_FUNCTION(tipe_data) ND tipe_data& as_##tipe_data();
+#define __DEFINE_DINAMIS_GET_FUNCTION(tipe_data) const tipe_data& get_##tipe_data() const;
 
 namespace nstd {
 
-  class dinamis {
+  class dinamis: tipe_data {
     public:
       // Constructor
       dinamis();
-      __DINAMIS_CONSTRUCTOR(int, bilangan);
-      __DINAMIS_CONSTRUCTOR(float, bilangan);
-      __DINAMIS_CONSTRUCTOR(double, bilangan);
-      __DINAMIS_CONSTRUCTOR(TIPE_DATA_BILANGAN_BULAT, bilangan);
-      __DINAMIS_CONSTRUCTOR(TIPE_DATA_BILANGAN_DESIMAL, bilangan);
-      __DINAMIS_CONSTRUCTOR(bool, benarsalah);
-      __DINAMIS_CONSTRUCTOR_NILAI_MOVE(STR, kalimat);
-      __DINAMIS_CONSTRUCTOR_NILAI_MOVE(kalimat, kalimat);
-      __DINAMIS_CONSTRUCTOR_NILAI_MOVE(bilangan, bilangan);
-      __DINAMIS_CONSTRUCTOR_NILAI_MOVE(benarsalah, benarsalah);
-      explicit dinamis(PTR(tipe_data) nilai);
+      __DINAMIS_CONSTRUCTOR(int);
+      __DINAMIS_CONSTRUCTOR(float);
+      __DINAMIS_CONSTRUCTOR(double);
+      __DINAMIS_CONSTRUCTOR(TIPE_DATA_BILANGAN_BULAT);
+      __DINAMIS_CONSTRUCTOR(TIPE_DATA_BILANGAN_DESIMAL);
+      __DINAMIS_CONSTRUCTOR(bool);
+      __DINAMIS_CONSTRUCTOR_NILAI_MOVE(bilangan);
+      __DINAMIS_CONSTRUCTOR_NILAI_MOVE(STR);
+      __DINAMIS_CONSTRUCTOR_NILAI_MOVE(kalimat);
+      __DINAMIS_CONSTRUCTOR_NILAI_MOVE(benarsalah);
+      // Copy Constructor
+      dinamis(const dinamis& other);
 
       ND bool kosong() const;
 
@@ -50,18 +52,68 @@ namespace nstd {
       __DEFINE_DINAMIS_IS_FUNCTION(daftar);
       __DEFINE_DINAMIS_IS_FUNCTION(peta);
 
-      __DEFINE_DINAMIS_AS_FUNCTION(bilangan);
-      __DEFINE_DINAMIS_AS_FUNCTION(kalimat);
-      __DEFINE_DINAMIS_AS_FUNCTION(benarsalah);
-      __DEFINE_DINAMIS_AS_FUNCTION(daftar);
-      __DEFINE_DINAMIS_AS_FUNCTION(peta);
+      __DEFINE_DINAMIS_GET_FUNCTION(bilangan);
+      __DEFINE_DINAMIS_GET_FUNCTION(kalimat);
+      __DEFINE_DINAMIS_GET_FUNCTION(benarsalah);
+      __DEFINE_DINAMIS_GET_FUNCTION(daftar);
+      __DEFINE_DINAMIS_GET_FUNCTION(peta);
 
       dinamis& operator=(const int& nilaiX);
 
       dinamis& operator=(const STR& nilaiX);
 
+      dinamis& operator=(const dinamis& nilaiX);
+
+      dinamis& operator++();
+
+      dinamis const operator++(int);
+
+      dinamis& operator--();
+
+      dinamis const operator--(int);
+
+      benarsalah operator!() const;
+
+      dinamis operator~();
+
+      dinamis operator+(const dinamis& nilaiX) const;
+
+      dinamis operator-(const dinamis& nilaiX) const;
+
+      dinamis operator*(const dinamis& nilaiX) const;
+
+      dinamis operator/(const dinamis& nilaiX) const;
+
+      dinamis operator%(const dinamis& nilaiX) const;
+
+      dinamis operator==(const dinamis& nilaiX) const;
+
+      dinamis operator!=(const dinamis& nilaiX) const;
+
+      dinamis operator>(const dinamis& nilaiX) const;
+
+      dinamis operator<(const dinamis& nilaiX) const;
+
+      dinamis operator>=(const dinamis& nilaiX) const;
+
+      dinamis operator<=(const dinamis& nilaiX) const;
+
+      dinamis operator&&(const dinamis& nilaiX) const;
+
+      dinamis operator||(const dinamis& nilaiX) const;
+
+      dinamis operator&(const dinamis& nilaiX) const;
+
+      dinamis operator|(const dinamis& nilaiX) const;
+
+      dinamis operator^(const dinamis& nilaiX) const;
+
+      dinamis operator<<(const dinamis& nilaiX) const;
+
+      dinamis operator>>(const dinamis& nilaiX) const;
+
     private:
-      SPTR(tipe_data) nilai;
+      PTR(tipe_data) nilai;
 
       friend std::ostream& operator<<(std::ostream& ost, const dinamis& obj) {
         return ost << obj.ubahKeKalimat();
