@@ -2,21 +2,15 @@
 
 <img src="design/logo/logo.png" width="200px">
 
-Nusantara language adalah bahasa pemrograman.
+Nusantara language adalah bahasa pemrograman yang dibuat dengan sintaks berbahasa indonesia, bahasa ini dibuat untuk tujuan umum dan dapat digunakan untuk berbagai macam hal.
 
-| Contents |
-| ---------- |
-| [Nusantara dibuat oleh](#kenapa-bahasa-ini-dibuat) |
-| [Sejarah](#sejarah) |
-| [Kenapa bahasa ini dibuat](#kenapa-bahasa-ini-dibuat) |
-
-## Nusantara dibuat oleh
-- Nusantara di desain oleh Fern Aerell.
-- Dan dikembangkan oleh Fern Aerell.
+## Pembuat
+- Di desain oleh Fern Aerell.
+- Di kembangkan oleh Fern Aerell.
 
 ## Sejarah
-- Nusantara pertamakali di kembang kan pada 30 januari 2024.
+- Pertamakali di kembangkan pada 30 januari 2024.
 
-## Kenapa bahasa ini dibuat
-- Nusantara di buat sebagai bagaian dari pembelajaran.
-- Mencoba membuat bahasa pemrograman dengan bahasa Indonesia.
+## Kenapa saya membuat bahasa ini?
+- Bahasa ini dibuat sebagai bagaian dari pembelajaran.
+- Mencoba membuat bahasa pemrograman dengan sintaks bahasa Indonesia.
