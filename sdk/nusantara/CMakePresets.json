@@ -25,6 +25,26 @@
                 "CMAKE_BUILD_TYPE": "Release",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "true"
             }
+        },
+				{
+            "name": "debug-termux",
+            "generator": "Ninja",
+            "binaryDir": "build",
+            "cacheVariables": {
+                "CMAKE_CXX_COMPILER": "clang++-17",
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "true"
+            }
+        },
+        {
+            "name": "release-termux",
+            "generator": "Ninja",
+            "binaryDir": "build",
+            "cacheVariables": {
+                "CMAKE_CXX_COMPILER": "clang++-17",
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "true"
+            }
         }
     ],
     "buildPresets": [
@@ -35,6 +55,14 @@
         {
             "name": "release-windows",
             "configurePreset": "release-windows"
+        },
+				{
+            "name": "debug-termux",
+            "configurePreset": "debug-termux"
+        },
+        {
+            "name": "release-termux",
+            "configurePreset": "release-termux"
         }
     ]
 }

@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include <format>
 #include "config/config.h"
 #include "error/error_info.h"
 #include "interpreter/interpreter.h"

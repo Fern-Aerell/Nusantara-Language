@@ -2,6 +2,7 @@
 
 #include <sstream>
 #include <vector>
+#include <algorithm>
 
 #include "core/core.h"
 #include "core/error.h"
