@@ -1,32 +1,34 @@
 #include "cli/cli.h"
 
 #include <iostream>
-#include <string>
 #include <vector>
 
 #include <format>
 #include "config/config.h"
+#include "core/core.h"
+#include "core/string.h"
 #include "error/error_info.h"
 #include "interpreter/interpreter.h"
 #include "lexer/lexer.h"
 #include "parser/parser.h"
 #include "utils/utils.h"
+#include "core/print.h"
 
 void Cli::input(const int& argc, char* argv[]) {
-  std::vector<std::string> kumpulanArgument;
+  std::vector<STR> kumpulanArgument;
   if(argc > 1) {
     for(size_t index = 1; index < argc; ++index) {
       kumpulanArgument.emplace_back(argv[index]);
     }
   }
   size_t index = 0;
-  std::vector<std::string> perintahInfo = {"-i", "--info"};
-  std::vector<std::string> perintahVersi = {"-v", "--versi"};
+  std::vector<STR> perintahInfo = {"-i", "--info"};
+  std::vector<STR> perintahVersi = {"-v", "--versi"};
   bool interpreter = false;
-  std::string source;
+  STR source;
   bool onlyLexerDebug = false;
   bool onlyLexerParserDebug = false;
-  for(const std::string& argument : kumpulanArgument) {
+  for(const STR& argument : kumpulanArgument) {
     if(argument == "-ld" && interpreter && !onlyLexerParserDebug) {
       onlyLexerDebug = true;
     } else if(argument == "-pd" && interpreter && !onlyLexerDebug) {
@@ -48,7 +50,7 @@ void Cli::input(const int& argc, char* argv[]) {
     ++index;
   }
   if(interpreter) {
-    std::string input = utils::readFile(source);
+    STR input = utils::readFile(source);
     ErrorInfo errorInfo(source, input);
     Lexer lexer(source, input);
     Parser parser(errorInfo, lexer);
@@ -76,16 +78,11 @@ void Cli::input(const int& argc, char* argv[]) {
 }
 
 void Cli::showInfo() {
-  std::cout << "Sebuah alat command-line untuk Nusantara development.\n"
-            << "\n";
-  std::cout << "Penggunaan: nusantara <perintah|nusantara-file> [argumen]\n"
-            << "\n";
-  std::cout << "Pilihan umum:"
-            << "\n";
-  std::cout << "   -v | --versi        Untuk melihat versi nusantara."
-            << "\n";
-  std::cout << "   -i | --info         Untuk melihat informasi lebih lanjut."
-            << "\n";
+  PRINT("Sebuah alat command-line untuk Nusantara development.\n");
+  PRINT("Penggunaan: nusantara <perintah|nusantara-file> [argumen]\n");
+  PRINT("Pilihan umum:");
+  PRINT("   -v | --versi        Untuk melihat versi nusantara.");
+  PRINT("   -i | --info         Untuk melihat informasi lebih lanjut.");
 }
 
-void Cli::showVersi() { std::cout << std::format("{} {}", APP, VERSION); }
+void Cli::showVersi() { PRINT(STD format("{} {}", APP, VERSION)); }

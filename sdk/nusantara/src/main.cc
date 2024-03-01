@@ -1,5 +1,7 @@
 #include "core/print.h"
 #include "config/config.h"
+#include "nstd/tipe_data/bilangan.h"
+#include "nstd/tipe_data/dinamis.h"
 
 #ifdef _WIN32
   #include <windows.h>
@@ -10,6 +12,8 @@
 #define ARG_PARAMETER (int argc, char* argv[])
 #define MAIN(parameter, code) \
   int main parameter { code return 0; }
+
+//#define TEST_CODE
 
 #ifdef TEST_CODE
 

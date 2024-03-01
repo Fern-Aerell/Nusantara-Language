@@ -55,6 +55,9 @@
 
 #define _DINAMIS_ERROR_OPERASI_TIDAK_VALID(operasi_name) RTERROR(FMT("Operasi {} tidak valid.", operasi_name))
 
+#define _DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(result, op, with_type, op_name, code) \
+  CLASS_DEFINE_OPERATION_LEFT_RIGHT(NSTD dinamis, result, op, with_type, code throw _DINAMIS_ERROR_OPERASI_TIDAK_VALID(op_name);)
+
 // Constructor
 NSTD dinamis::dinamis(): nilai(nullptr) {}
 _DINAMIS_CONSTRUCTOR(int, bilangan)
@@ -147,9 +150,22 @@ NSTD dinamis& NSTD dinamis::operator=(const dinamis& nilaiX) {
   return *this;
 }
 
+NSTD dinamis& NSTD dinamis::operator=(const benarsalah& nilaiX) {
+  this->nilai = MPTR(benarsalah, nilaiX);
+  return *this;
+}
+
 NSTD dinamis& NSTD dinamis::operator++() {
   if(this->is_bilangan()) {
     this->nilai = MPTR(bilangan, 1 + this->get_bilangan());
+    return *this;
+  }
+  throw _DINAMIS_AS_ERROR("bilangan");
+}
+
+NSTD dinamis& NSTD dinamis::operator--() {
+  if(this->is_bilangan()) {
+    this->nilai = MPTR(bilangan, 1 - this->get_bilangan());
     return *this;
   }
   throw _DINAMIS_AS_ERROR("bilangan");
@@ -160,14 +176,6 @@ NSTD dinamis const NSTD dinamis::operator++(int) {
     dinamis temp = *this;
     this->nilai = MPTR(bilangan, 1 + this->get_bilangan());
     return temp;
-  }
-  throw _DINAMIS_AS_ERROR("bilangan");
-}
-
-NSTD dinamis& NSTD dinamis::operator--() {
-  if(this->is_bilangan()) {
-    this->nilai = MPTR(bilangan, 1 - this->get_bilangan());
-    return *this;
   }
   throw _DINAMIS_AS_ERROR("bilangan");
 }
@@ -197,122 +205,116 @@ NSTD dinamis NSTD dinamis::operator~() {
   throw _DINAMIS_AS_ERROR("bilangan bulat");
 }
 
-NSTD dinamis NSTD dinamis::operator+(const dinamis& nilaiX) const {
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, +, dinamis, "penjumlahan",
   if(this->is_bilangan() && nilaiX.is_bilangan()) {
     return dinamis(this->get_bilangan() + nilaiX.get_bilangan());
   }
-  throw _DINAMIS_ERROR_OPERASI_TIDAK_VALID("penjumlahan");
-}
+  if(this->is_kalimat() && nilaiX.is_kalimat()) {
+    return dinamis(this->get_kalimat() + nilaiX.get_kalimat());
+  }
+)
 
-NSTD dinamis NSTD dinamis::operator-(const dinamis& nilaiX) const {
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, -, dinamis, "pengurangan",
   if(this->is_bilangan() && nilaiX.is_bilangan()) {
     return dinamis(this->get_bilangan() - nilaiX.get_bilangan());
   }
-  throw _DINAMIS_ERROR_OPERASI_TIDAK_VALID("pengurangan");
-}
+)
 
-NSTD dinamis NSTD dinamis::operator*(const dinamis& nilaiX) const {
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, *, dinamis, "perkalian",
   if(this->is_bilangan() && nilaiX.is_bilangan()) {
     return dinamis(this->get_bilangan() * nilaiX.get_bilangan());
   }
-  throw _DINAMIS_ERROR_OPERASI_TIDAK_VALID("perkalian");
-}
+  if(this->is_kalimat() && nilaiX.is_bilangan()) {
+    return dinamis(this->get_kalimat() * nilaiX.get_bilangan());
+  }
+)
 
-NSTD dinamis NSTD dinamis::operator/(const dinamis& nilaiX) const {
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, /, dinamis, "pembagian",
   if(this->is_bilangan() && nilaiX.is_bilangan()) {
     return dinamis(this->get_bilangan() / nilaiX.get_bilangan());
   }
-  throw _DINAMIS_ERROR_OPERASI_TIDAK_VALID("pembagian");
-}
+)
 
-NSTD dinamis NSTD dinamis::operator%(const dinamis& nilaiX) const {
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, %, dinamis, "sisa pembagian",
   if(this->is_bilangan() && nilaiX.is_bilangan()) {
     return dinamis(this->get_bilangan() % nilaiX.get_bilangan());
   }
-  throw _DINAMIS_ERROR_OPERASI_TIDAK_VALID("sisa pembagian");
-}
+)
 
-NSTD dinamis NSTD dinamis::operator==(const dinamis& nilaiX) const {
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, ==, dinamis, "persamaan",
   if(this->is_bilangan() && nilaiX.is_bilangan()) {
     return dinamis(this->get_bilangan() == nilaiX.get_bilangan());
   }
-  throw _DINAMIS_ERROR_OPERASI_TIDAK_VALID("persamaan");
-}
+)
 
-NSTD dinamis NSTD dinamis::operator!=(const dinamis& nilaiX) const {
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, !=, dinamis, "pertidaksamaan",
   if(this->is_bilangan() && nilaiX.is_bilangan()) {
     return dinamis(this->get_bilangan() != nilaiX.get_bilangan());
   }
-  throw _DINAMIS_ERROR_OPERASI_TIDAK_VALID("pertidaksamaan");
-}
+)
 
-NSTD dinamis NSTD dinamis::operator>(const dinamis& nilaiX) const {
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, >, dinamis, "lebih besar dari",
   if(this->is_bilangan() && nilaiX.is_bilangan()) {
     return dinamis(this->get_bilangan() > nilaiX.get_bilangan());
   }
-  throw _DINAMIS_ERROR_OPERASI_TIDAK_VALID("lebih besar dari");
-}
+)
 
-NSTD dinamis NSTD dinamis::operator<(const dinamis& nilaiX) const {
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, <, dinamis, "lebih kecil dari",
   if(this->is_bilangan() && nilaiX.is_bilangan()) {
     return dinamis(this->get_bilangan() < nilaiX.get_bilangan());
   }
-  throw _DINAMIS_ERROR_OPERASI_TIDAK_VALID("lebih kecil dari");
-}
+)
 
-NSTD dinamis NSTD dinamis::operator>=(const dinamis& nilaiX) const {
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, >=, dinamis, "lebih besar dari sama dengan",
   if(this->is_bilangan() && nilaiX.is_bilangan()) {
     return dinamis(this->get_bilangan() >= nilaiX.get_bilangan());
   }
-  throw _DINAMIS_ERROR_OPERASI_TIDAK_VALID("lebih besar dari sama dengan");
-}
+)
 
-NSTD dinamis NSTD dinamis::operator<=(const dinamis& nilaiX) const {
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, <=, dinamis, "lebih kecil dari sama dengan",
   if(this->is_bilangan() && nilaiX.is_bilangan()) {
     return dinamis(this->get_bilangan() <= nilaiX.get_bilangan());
   }
-  throw _DINAMIS_ERROR_OPERASI_TIDAK_VALID("lebih kecil dari sama dengan");
-}
+)
 
-NSTD dinamis NSTD dinamis::operator&&(const dinamis& nilaiX) const {
-  throw _DINAMIS_ERROR_OPERASI_TIDAK_VALID("dan");
-}
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, &&, dinamis, "dan",
+  if(this->is_benarsalah() && nilaiX.is_benarsalah()) {
+    return dinamis(this->get_benarsalah() && nilaiX.get_benarsalah());
+  }
+)
 
-NSTD dinamis NSTD dinamis::operator||(const dinamis& nilaiX) const {
-  throw _DINAMIS_ERROR_OPERASI_TIDAK_VALID("atau");
-}
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, ||, dinamis, "atau",
+  if(this->is_benarsalah() && nilaiX.is_benarsalah()) {
+    return dinamis(this->get_benarsalah() || nilaiX.get_benarsalah());
+  }
+)
 
-NSTD dinamis NSTD dinamis::operator&(const dinamis& nilaiX) const {
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, &, dinamis, "and bit",
   if(this->is_bilangan() && nilaiX.is_bilangan()) {
     return dinamis(this->get_bilangan() & nilaiX.get_bilangan());
   }
-  throw _DINAMIS_ERROR_OPERASI_TIDAK_VALID("and bit");
-}
+)
 
-NSTD dinamis NSTD dinamis::operator|(const dinamis& nilaiX) const {
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, |, dinamis, "or bit",
   if(this->is_bilangan() && nilaiX.is_bilangan()) {
     return dinamis(this->get_bilangan() | nilaiX.get_bilangan());
   }
-  throw _DINAMIS_ERROR_OPERASI_TIDAK_VALID("or bit");
-}
+)
 
-NSTD dinamis NSTD dinamis::operator^(const dinamis& nilaiX) const {
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, ^, dinamis, "xor bit",
   if(this->is_bilangan() && nilaiX.is_bilangan()) {
     return dinamis(this->get_bilangan() ^ nilaiX.get_bilangan());
   }
-  throw _DINAMIS_ERROR_OPERASI_TIDAK_VALID("xor bit");
-}
+)
 
-NSTD dinamis NSTD dinamis::operator<<(const dinamis& nilaiX) const {
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, <<, dinamis, "geser kiri bit",
   if(this->is_bilangan() && nilaiX.is_bilangan()) {
     return dinamis(this->get_bilangan() << nilaiX.get_bilangan());
   }
-  throw _DINAMIS_ERROR_OPERASI_TIDAK_VALID("geser kiri bit");
-}
+)
 
-NSTD dinamis NSTD dinamis::operator>>(const dinamis& nilaiX) const {
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, >>, dinamis, "geser kanan bit",
   if(this->is_bilangan() && nilaiX.is_bilangan()) {
     return dinamis(this->get_bilangan() >> nilaiX.get_bilangan());
   }
-  throw _DINAMIS_ERROR_OPERASI_TIDAK_VALID("geser kanan bit");
-}
+)

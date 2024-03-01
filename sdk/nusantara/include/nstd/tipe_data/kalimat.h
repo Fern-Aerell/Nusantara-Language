@@ -12,19 +12,25 @@ namespace nstd {
 
   class benarsalah;
 
+  class bilangan;
+
   class kalimat: public tipe_data {
     public:
       explicit kalimat(STR nilai);
 
       void replaceAll(const STR& from, const STR& too);
 
-      [[nodiscard]] STR ubahKeString() const;
+      ND STR ubahKeString() const;
 
       kalimat& operator+=(const STR& nilaiX);
 
       kalimat& operator+=(const kalimat& nilaiX);
 
       kalimat& operator+=(const dinamis& nilaiX);
+
+      kalimat operator*(const bilangan& nilaiX) const;
+
+      kalimat operator+(const kalimat& nilaiX) const;
 
       ND benarsalah diAwali(const char& karakter) const;
 

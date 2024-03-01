@@ -1,5 +1,6 @@
 #include "nstd/tipe_data/bilangan.h"
 
+#include <cmath>
 #include <memory>
 #include <regex>
 #include <string>
@@ -8,21 +9,46 @@
 #include "core/error.h"
 #include "core/format.h"
 #include "core/pointer.h"
+#include "core/print.h"
 #include "nstd/tipe_data/benarsalah.h"
 #include "nstd/tipe_data/kalimat.h"
 
 #define TIPE_DATA_BILANGAN_BULAT long long int
 #define TIPE_DATA_BILANGAN_DESIMAL long double
 
+// NILAI BILANGAN MACRO
+#define _NILAI_BILANGAN_OPERATION_LEFT_RIGHT_RETURN_CODE(result, op) return result(this->ambilNilai() op nilaiX.ambilNilai())
+
+#define _NILAI_BILANGAN_DEFINE_OPERATION_LEFT_RIGHT(nilai_bilangan, result, op, with_type) \
+  CLASS_DEFINE_OPERATION_LEFT_RIGHT(nilai_bilangan, result, op, with_type, \
+    _NILAI_BILANGAN_OPERATION_LEFT_RIGHT_RETURN_CODE(result, op);\
+  )
+
 // BILANGAN BULAT MACRO
 #define _BILANGAN_BULAT_PATTERN "^-?[0-9]+$"
 #define _BILANGAN_BULAT_CONSTRUCTOR(type) \
   NSTD _bilangan_bulat::_bilangan_bulat(const type& nilai): nilai(nilai) {}
 
+#define _BILANGAN_BULAT_NEGATIF_ERROR_OPERATION(op) RTERROR(FMT("Tidak dapat melakukan operasi '{}' pada bilangan bulat negatif.", op))
+
+#define _BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT(result, op, with_type) \
+  _NILAI_BILANGAN_DEFINE_OPERATION_LEFT_RIGHT(NSTD _bilangan_bulat, result, op, with_type)
+
+#define _BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT_ERROR_IF_NEGATIF(result, op, with_type, op_str)\
+  CLASS_DEFINE_OPERATION_LEFT_RIGHT(NSTD _bilangan_bulat, result, op, with_type, \
+    if(this->isNegatif()) {throw _BILANGAN_BULAT_NEGATIF_ERROR_OPERATION(op_str);}\
+    _NILAI_BILANGAN_OPERATION_LEFT_RIGHT_RETURN_CODE(result, op);\
+  )
+
 // BILANGAN DESIMAL MACRO
 #define _BILANGAN_DESIMAL_PATTERN "^-?[0-9]+,[0-9]+$"
 #define _BILANGAN_DESIMAL_CONSTRUCTOR(type) \
   NSTD _bilangan_desimal::_bilangan_desimal(const type& nilai): nilai(nilai) {}
+
+#define _BILANGAN_DESIMAL_DEFINE_OPERATION_LEFT_RIGHT(result, op, with_type) \
+  _NILAI_BILANGAN_DEFINE_OPERATION_LEFT_RIGHT(NSTD _bilangan_desimal, result, op, with_type)
+
+#define _BILANGAN_ERROR_OPERATION_WITH_BILANGAN_DESIMAL(op) RTERROR(FMT("Tidak dapat melakukan operasi '{}' pada bilangan desimal.", op))
 
 // BILANGAN MACRO
 #define _BILANGAN_VALUE this->nilai
@@ -55,6 +81,36 @@
 
 #define _BILANGAN_ERROR_OPERASI_TIDAK_VALID(operasi_name) RTERROR(FMT("Operasi {} tidak valid.", operasi_name))
 
+#define _BILANGAN_DEFINE_OPERATION_LEFT_RIGHT(result, op, with_type, code) \
+  CLASS_DEFINE_OPERATION_LEFT_RIGHT(NSTD bilangan, result, op, with_type, code)
+
+#define _BILANGAN_DEFINE_OPERATION_LEFT_RIGHT_WITH_RETURN_CODE_AND_THROW_ERROR(result, op, with_type, op_name) \
+  _BILANGAN_DEFINE_OPERATION_LEFT_RIGHT(result, op, with_type, \
+    if(this->isBulat() && nilaiX.isBulat()) {\
+      return result(this->ambilNilaiBulat() op nilaiX.ambilNilaiBulat());\
+    }\
+    if(this->isDesimal() && nilaiX.isDesimal()) {\
+      return result(this->ambilNilaiDesimal() op nilaiX.ambilNilaiDesimal());\
+    }\
+    if(this->isBulat() && nilaiX.isDesimal()) {\
+      return result(this->ambilNilaiBulat() op nilaiX.ambilNilaiDesimal());\
+    }\
+    if(this->isDesimal() && nilaiX.isBulat()) {\
+      return result(this->ambilNilaiDesimal() op nilaiX.ambilNilaiBulat());\
+    }\
+    throw _BILANGAN_ERROR_OPERASI_TIDAK_VALID(op_name);\
+  )
+
+#define _BILANGAN_DEFINE_OPERATION_LEFT_RIGHT_WITH_RETURN_CODE_AND_THROW_ERROR_WITHOUT_BILANGAN_DESIMAL(result, op, with_type, op_name) \
+  _BILANGAN_DEFINE_OPERATION_LEFT_RIGHT(result, op, with_type, \
+    if(this->isBulat() && nilaiX.isBulat()) {\
+      return result(this->ambilNilaiBulat() op nilaiX.ambilNilaiBulat());\
+    }\
+    throw _BILANGAN_ERROR_OPERASI_TIDAK_VALID(op_name);\
+  )
+
+// BILANGAN BULAT
+
 _BILANGAN_BULAT_CONSTRUCTOR(int)
 _BILANGAN_BULAT_CONSTRUCTOR(TIPE_DATA_BILANGAN_BULAT)
 
@@ -66,31 +122,56 @@ NSTD kalimat NSTD _bilangan_bulat::ubahKeKalimat() const {
   return kalimat(STD to_string(this->nilai));
 }
 
-NSTD _bilangan_bulat NSTD _bilangan_bulat::operator-(const int& nilaiX) const {
-  return _bilangan_bulat(this->nilai - nilaiX);
-}
-
 NSTD _bilangan_bulat NSTD _bilangan_bulat::operator~() const {
   _bilangan_bulat temp = *this;
   if(temp.isNegatif()) {
-    throw RTERROR("Tidak dapat melakukan operasi '~' pada bilangan bulat negatif.");
+    throw _BILANGAN_BULAT_NEGATIF_ERROR_OPERATION("~");
   }
+  PRINT("NSTD _bilangan_bulat NSTD _bilangan_bulat::operator~() const {");
   temp.nilai = ~temp.nilai;
   return temp;
-}
-
-NSTD _bilangan_bulat NSTD _bilangan_bulat::operator+(const _bilangan_bulat& nilaiX) const {
-  return _bilangan_bulat(this->ambilNilai() + nilaiX.ambilNilai());
-}
-
-NSTD _bilangan_desimal NSTD _bilangan_bulat::operator+(const _bilangan_desimal& nilaiX) const {
-  return _bilangan_desimal((long double)this->ambilNilai() + nilaiX.ambilNilai());
 }
 
 ND NSTD benarsalah NSTD _bilangan_bulat::isNegatif() const {
   kalimat tempStr = this->ubahKeKalimat();
   return tempStr.diAwali('-');
 }
+
+_BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT(NSTD _bilangan_bulat, +, NSTD _bilangan_bulat)
+_BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT(NSTD _bilangan_desimal, +, NSTD _bilangan_desimal)
+NSTD _bilangan_bulat NSTD _bilangan_bulat::operator-(const int& nilaiX) const {
+  return _bilangan_bulat(this->ambilNilai() - nilaiX);
+}
+_BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT(NSTD _bilangan_bulat, -, NSTD _bilangan_bulat)
+_BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT(NSTD _bilangan_desimal, -, NSTD _bilangan_desimal)
+_BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT(NSTD _bilangan_bulat, *, NSTD _bilangan_bulat)
+_BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT(NSTD _bilangan_desimal, *, NSTD _bilangan_desimal)
+_BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT(NSTD _bilangan_bulat, /, NSTD _bilangan_bulat)
+_BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT(NSTD _bilangan_desimal, /, NSTD _bilangan_desimal)
+_BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT(NSTD _bilangan_bulat, %, NSTD _bilangan_bulat)
+NSTD _bilangan_desimal NSTD _bilangan_bulat::operator%(const NSTD _bilangan_desimal& nilaiX) const {
+  return _bilangan_desimal(STD fmodl((long double)this->ambilNilai(), nilaiX.ambilNilai()));
+}
+_BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT(NSTD benarsalah, ==, NSTD _bilangan_bulat)
+_BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT(NSTD benarsalah, ==, NSTD _bilangan_desimal)
+_BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT(NSTD benarsalah, !=, NSTD _bilangan_bulat)
+_BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT(NSTD benarsalah, !=, NSTD _bilangan_desimal)
+_BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT(NSTD benarsalah, >,NSTD  _bilangan_bulat)
+_BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT(NSTD benarsalah, >, NSTD _bilangan_desimal)
+_BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT(NSTD benarsalah, <, NSTD _bilangan_bulat)
+_BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT(NSTD benarsalah, <, NSTD _bilangan_desimal)
+_BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT(NSTD benarsalah, >=, NSTD _bilangan_bulat)
+_BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT(NSTD benarsalah, >=, NSTD _bilangan_desimal)
+_BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT(NSTD benarsalah, <=, NSTD _bilangan_bulat)
+_BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT(NSTD benarsalah, <=, NSTD _bilangan_desimal)
+_BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT_ERROR_IF_NEGATIF(NSTD _bilangan_bulat, &, NSTD _bilangan_bulat, "&")
+_BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT_ERROR_IF_NEGATIF(NSTD _bilangan_bulat, |, NSTD _bilangan_bulat, "|")
+_BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT_ERROR_IF_NEGATIF(NSTD _bilangan_bulat, ^, NSTD _bilangan_bulat, "^")
+_BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT_ERROR_IF_NEGATIF(NSTD _bilangan_bulat, <<, NSTD _bilangan_bulat, "<<")
+_BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT_ERROR_IF_NEGATIF(NSTD _bilangan_bulat, >>, NSTD _bilangan_bulat, ">>")
+
+
+// BILANGAN DESIMAL
 
 _BILANGAN_DESIMAL_CONSTRUCTOR(float)
 _BILANGAN_DESIMAL_CONSTRUCTOR(double)
@@ -115,23 +196,42 @@ NSTD kalimat NSTD _bilangan_desimal::ubahKeKalimat() const {
   return kalimat(str);
 }
 
-NSTD _bilangan_desimal NSTD _bilangan_desimal::operator-(const int& nilaiX
-) const {
-  return _bilangan_desimal(this->nilai - nilaiX);
-}
-
-NSTD _bilangan_desimal NSTD _bilangan_desimal::operator+(const _bilangan_bulat& nilaiX) const {
-  return _bilangan_desimal(this->ambilNilai() + (long double)nilaiX.ambilNilai());
-}
-
-NSTD _bilangan_desimal NSTD _bilangan_desimal::operator+(const _bilangan_desimal& nilaiX) const {
-  return _bilangan_desimal(this->ambilNilai() + nilaiX.ambilNilai());
-}
-
 ND NSTD benarsalah NSTD _bilangan_desimal::isNegatif() const {
   kalimat tempStr = this->ubahKeKalimat();
   return tempStr.diAwali('-');
 }
+
+_BILANGAN_DESIMAL_DEFINE_OPERATION_LEFT_RIGHT(NSTD _bilangan_desimal, +, NSTD _bilangan_bulat);
+_BILANGAN_DESIMAL_DEFINE_OPERATION_LEFT_RIGHT(NSTD _bilangan_desimal, +, NSTD _bilangan_desimal);
+NSTD _bilangan_desimal NSTD _bilangan_desimal::operator-(const int& nilaiX) const {
+  return _bilangan_desimal(this->ambilNilai() - nilaiX);
+};
+_BILANGAN_DESIMAL_DEFINE_OPERATION_LEFT_RIGHT(NSTD _bilangan_desimal, -, NSTD _bilangan_bulat);
+_BILANGAN_DESIMAL_DEFINE_OPERATION_LEFT_RIGHT(NSTD _bilangan_desimal, -, NSTD _bilangan_desimal);
+_BILANGAN_DESIMAL_DEFINE_OPERATION_LEFT_RIGHT(NSTD _bilangan_desimal, *, NSTD _bilangan_bulat);
+_BILANGAN_DESIMAL_DEFINE_OPERATION_LEFT_RIGHT(NSTD _bilangan_desimal, *, NSTD _bilangan_desimal);
+_BILANGAN_DESIMAL_DEFINE_OPERATION_LEFT_RIGHT(NSTD _bilangan_desimal, /, NSTD _bilangan_bulat);
+_BILANGAN_DESIMAL_DEFINE_OPERATION_LEFT_RIGHT(NSTD _bilangan_desimal, /, NSTD _bilangan_desimal);
+NSTD _bilangan_desimal NSTD _bilangan_desimal ::operator%(const _bilangan_bulat& nilaiX) const {
+  return _bilangan_desimal(STD fmodl(this->ambilNilai(), (long double)nilaiX.ambilNilai()));
+};
+NSTD _bilangan_desimal NSTD _bilangan_desimal ::operator%(const _bilangan_desimal& nilaiX) const {
+  return _bilangan_desimal(STD fmodl(this->ambilNilai(),nilaiX.ambilNilai()));
+};
+_BILANGAN_DESIMAL_DEFINE_OPERATION_LEFT_RIGHT(NSTD benarsalah, ==, NSTD _bilangan_bulat);
+_BILANGAN_DESIMAL_DEFINE_OPERATION_LEFT_RIGHT(NSTD benarsalah, ==, NSTD _bilangan_desimal);
+_BILANGAN_DESIMAL_DEFINE_OPERATION_LEFT_RIGHT(NSTD benarsalah, !=, NSTD _bilangan_bulat);
+_BILANGAN_DESIMAL_DEFINE_OPERATION_LEFT_RIGHT(NSTD benarsalah, !=, NSTD _bilangan_desimal);
+_BILANGAN_DESIMAL_DEFINE_OPERATION_LEFT_RIGHT(NSTD benarsalah, >, NSTD _bilangan_bulat);
+_BILANGAN_DESIMAL_DEFINE_OPERATION_LEFT_RIGHT(NSTD benarsalah, >, NSTD _bilangan_desimal);
+_BILANGAN_DESIMAL_DEFINE_OPERATION_LEFT_RIGHT(NSTD benarsalah, <, NSTD _bilangan_bulat);
+_BILANGAN_DESIMAL_DEFINE_OPERATION_LEFT_RIGHT(NSTD benarsalah, <, NSTD _bilangan_desimal);
+_BILANGAN_DESIMAL_DEFINE_OPERATION_LEFT_RIGHT(NSTD benarsalah, >=,NSTD  _bilangan_bulat);
+_BILANGAN_DESIMAL_DEFINE_OPERATION_LEFT_RIGHT(NSTD benarsalah, >=, NSTD _bilangan_desimal);
+_BILANGAN_DESIMAL_DEFINE_OPERATION_LEFT_RIGHT(NSTD benarsalah, <=, NSTD _bilangan_bulat);
+_BILANGAN_DESIMAL_DEFINE_OPERATION_LEFT_RIGHT(NSTD benarsalah, <=, NSTD _bilangan_desimal);
+
+// BILANGAN
 
 // Constructors
 _BILANGAN_BILANGAN_BULAT_CONSTRUCTOR(int)
@@ -145,7 +245,7 @@ _BILANGAN_BILANGAN_DESIMAL_CONSTRUCTOR(_bilangan_desimal)
 NSTD bilangan::bilangan(const bilangan& nilai) {
   if(nilai.isBulat()) {
     this->nilai = MPTR(_bilangan_bulat, nilai.ambilNilaiBulat());
-  }else if(nilai.isBulat()) {
+  }else if(nilai.isDesimal()) {
     this->nilai = MPTR(_bilangan_desimal, nilai.ambilNilaiDesimal());
   }else{
     throw _BILANGAN_ERROR_INVALID_VALUE;
@@ -212,129 +312,33 @@ ND NSTD benarsalah NSTD bilangan::isNegatif() const {
   throw _BILANGAN_ERROR_INVALID_VALUE;
 }
 
-NSTD bilangan NSTD bilangan::operator-(const int& nilaiX) const {
-  if(isBulat()) { return bilangan(this->ambilNilaiBulat() - nilaiX); }
-  if(isDesimal()) { return bilangan(this->ambilNilaiDesimal() - nilaiX); }
-  throw _BILANGAN_ERROR_INVALID_VALUE;
-}
-
 NSTD bilangan NSTD bilangan::operator~() const {
   bilangan temp = *this;
   if(temp.isBulat()) {
     temp.nilai = MPTR(_bilangan_bulat, ~temp.ambilNilaiBulat());
     return temp;
   }
-  throw RTERROR("Tidak dapat melakukan operasi '~' pada bilangan desimal.");
+  throw _BILANGAN_ERROR_OPERATION_WITH_BILANGAN_DESIMAL("~");
 }
 
-NSTD bilangan NSTD bilangan::operator+(const bilangan& nilaiX) const {
-  if(this->isBulat() && nilaiX.isBulat()) {
-    return bilangan(this->ambilNilaiBulat() + nilaiX.ambilNilaiBulat());
-  }
-  throw RTERROR("Operasi penjumlahan tidak valid.");
-}
-
-NSTD bilangan NSTD bilangan::operator-(const bilangan& nilaiX) const {
-  if(this->isBulat() && nilaiX.isBulat()) {
-    return bilangan(this->ambilNilaiBulat() - nilaiX.ambilNilaiBulat());
-  }
-  throw _BILANGAN_ERROR_OPERASI_TIDAK_VALID("pengurangan");
-}
-
-NSTD bilangan NSTD bilangan::operator*(const bilangan& nilaiX) const {
-  if(this->isBulat() && nilaiX.isBulat()) {
-    return bilangan(this->ambilNilaiBulat() * nilaiX.ambilNilaiBulat());
-  }
-  throw _BILANGAN_ERROR_OPERASI_TIDAK_VALID("perkalian");
-}
-
-NSTD bilangan NSTD bilangan::operator/(const bilangan& nilaiX) const {
-  if(this->isBulat() && nilaiX.isBulat()) {
-    return bilangan(this->ambilNilaiBulat() / nilaiX.ambilNilaiBulat());
-  }
-  throw _BILANGAN_ERROR_OPERASI_TIDAK_VALID("pembagian");
-}
-
-NSTD bilangan NSTD bilangan::operator%(const bilangan& nilaiX) const {
-  if(this->isBulat() && nilaiX.isBulat()) {
-    return bilangan(this->ambilNilaiBulat() % nilaiX.ambilNilaiBulat());
-  }
-  throw _BILANGAN_ERROR_OPERASI_TIDAK_VALID("sisa pembagian");
-}
-
-NSTD bilangan NSTD bilangan::operator==(const bilangan& nilaiX) const {
-  if(this->isBulat() && nilaiX.isBulat()) {
-    return bilangan(this->ambilNilaiBulat() == nilaiX.ambilNilaiBulat());
-  }
-  throw _BILANGAN_ERROR_OPERASI_TIDAK_VALID("persamaan");
-}
-
-NSTD bilangan NSTD bilangan::operator!=(const bilangan& nilaiX) const {
-  if(this->isBulat() && nilaiX.isBulat()) {
-    return bilangan(this->ambilNilaiBulat() != nilaiX.ambilNilaiBulat());
-  }
-  throw _BILANGAN_ERROR_OPERASI_TIDAK_VALID("pertidaksamaan");
-}
-
-NSTD bilangan NSTD bilangan::operator>(const bilangan& nilaiX) const {
-  if(this->isBulat() && nilaiX.isBulat()) {
-    return bilangan(this->ambilNilaiBulat() > nilaiX.ambilNilaiBulat());
-  }
-  throw _BILANGAN_ERROR_OPERASI_TIDAK_VALID("lebih besar dari");
-}
-
-NSTD bilangan NSTD bilangan::operator<(const bilangan& nilaiX) const {
-  if(this->isBulat() && nilaiX.isBulat()) {
-    return bilangan(this->ambilNilaiBulat() < nilaiX.ambilNilaiBulat());
-  }
-  throw _BILANGAN_ERROR_OPERASI_TIDAK_VALID("lebih kecil dari");
-}
-
-NSTD bilangan NSTD bilangan::operator>=(const bilangan& nilaiX) const {
-  if(this->isBulat() && nilaiX.isBulat()) {
-    return bilangan(this->ambilNilaiBulat() >= nilaiX.ambilNilaiBulat());
-  }
-  throw _BILANGAN_ERROR_OPERASI_TIDAK_VALID("lebih besar dari sama dengan");
-}
-
-NSTD bilangan NSTD bilangan::operator<=(const bilangan& nilaiX) const {
-  if(this->isBulat() && nilaiX.isBulat()) {
-    return bilangan(this->ambilNilaiBulat() <= nilaiX.ambilNilaiBulat());
-  }
-  throw _BILANGAN_ERROR_OPERASI_TIDAK_VALID("lebih kecil dari sama dengan");
-}
-
-NSTD bilangan NSTD bilangan::operator&(const bilangan& nilaiX) const {
-  if(this->isBulat() && nilaiX.isBulat()) {
-    return bilangan(this->ambilNilaiBulat() & nilaiX.ambilNilaiBulat());
-  }
-  throw _BILANGAN_ERROR_OPERASI_TIDAK_VALID("and bit");
-}
-
-NSTD bilangan NSTD bilangan::operator|(const bilangan& nilaiX) const {
-  if(this->isBulat() && nilaiX.isBulat()) {
-    return bilangan(this->ambilNilaiBulat() | nilaiX.ambilNilaiBulat());
-  }
-  throw _BILANGAN_ERROR_OPERASI_TIDAK_VALID("or bit");
-}
-
-NSTD bilangan NSTD bilangan::operator^(const bilangan& nilaiX) const {
-  if(this->isBulat() && nilaiX.isBulat()) {
-    return bilangan(this->ambilNilaiBulat() ^ nilaiX.ambilNilaiBulat());
-  }
-  throw _BILANGAN_ERROR_OPERASI_TIDAK_VALID("xor bit");
-}
-
-NSTD bilangan NSTD bilangan::operator<<(const bilangan& nilaiX) const {
-  if(this->isBulat() && nilaiX.isBulat()) {
-    return bilangan(this->ambilNilaiBulat() << nilaiX.ambilNilaiBulat());
-  }
-  throw _BILANGAN_ERROR_OPERASI_TIDAK_VALID("geser kiri bit");
-}
-
-NSTD bilangan NSTD bilangan::operator>>(const bilangan& nilaiX) const {
-  if(this->isBulat() && nilaiX.isBulat()) {
-    return bilangan(this->ambilNilaiBulat() >> nilaiX.ambilNilaiBulat());
-  }
-  throw _BILANGAN_ERROR_OPERASI_TIDAK_VALID("geser kanan bit");
-}
+_BILANGAN_DEFINE_OPERATION_LEFT_RIGHT_WITH_RETURN_CODE_AND_THROW_ERROR(NSTD bilangan, +, NSTD bilangan, "penjumlahan")
+_BILANGAN_DEFINE_OPERATION_LEFT_RIGHT_WITH_RETURN_CODE_AND_THROW_ERROR(NSTD bilangan, -, NSTD bilangan, "pengurangan")
+_BILANGAN_DEFINE_OPERATION_LEFT_RIGHT(NSTD bilangan, -, int,
+  if(this->isBulat()) { return bilangan(this->ambilNilaiBulat() - nilaiX); }
+  if(this->isDesimal()) { return bilangan(this->ambilNilaiDesimal() - nilaiX); }
+  throw _BILANGAN_ERROR_INVALID_VALUE;
+)
+_BILANGAN_DEFINE_OPERATION_LEFT_RIGHT_WITH_RETURN_CODE_AND_THROW_ERROR(NSTD bilangan, *, NSTD bilangan, "perkalian")
+_BILANGAN_DEFINE_OPERATION_LEFT_RIGHT_WITH_RETURN_CODE_AND_THROW_ERROR(NSTD bilangan, /, NSTD bilangan, "pembagian")
+_BILANGAN_DEFINE_OPERATION_LEFT_RIGHT_WITH_RETURN_CODE_AND_THROW_ERROR(NSTD bilangan, %, NSTD bilangan, "sisa pembagian")
+_BILANGAN_DEFINE_OPERATION_LEFT_RIGHT_WITH_RETURN_CODE_AND_THROW_ERROR(NSTD benarsalah, ==, NSTD bilangan, "persamaan")
+_BILANGAN_DEFINE_OPERATION_LEFT_RIGHT_WITH_RETURN_CODE_AND_THROW_ERROR(NSTD benarsalah, !=, NSTD bilangan, "pertidaksamaan")
+_BILANGAN_DEFINE_OPERATION_LEFT_RIGHT_WITH_RETURN_CODE_AND_THROW_ERROR(NSTD benarsalah, >, NSTD bilangan, "lebih besar dari")
+_BILANGAN_DEFINE_OPERATION_LEFT_RIGHT_WITH_RETURN_CODE_AND_THROW_ERROR(NSTD benarsalah, <, NSTD bilangan, "lebih kecil dari")
+_BILANGAN_DEFINE_OPERATION_LEFT_RIGHT_WITH_RETURN_CODE_AND_THROW_ERROR(NSTD benarsalah, >=, NSTD bilangan, "lebih besar dari sama dengan")
+_BILANGAN_DEFINE_OPERATION_LEFT_RIGHT_WITH_RETURN_CODE_AND_THROW_ERROR(NSTD benarsalah, <=, NSTD bilangan, "lebih kecil dari sama dengan")
+_BILANGAN_DEFINE_OPERATION_LEFT_RIGHT_WITH_RETURN_CODE_AND_THROW_ERROR_WITHOUT_BILANGAN_DESIMAL(NSTD bilangan, &, NSTD bilangan, "and bit")
+_BILANGAN_DEFINE_OPERATION_LEFT_RIGHT_WITH_RETURN_CODE_AND_THROW_ERROR_WITHOUT_BILANGAN_DESIMAL(NSTD bilangan, |, NSTD bilangan, "or bit")
+_BILANGAN_DEFINE_OPERATION_LEFT_RIGHT_WITH_RETURN_CODE_AND_THROW_ERROR_WITHOUT_BILANGAN_DESIMAL(NSTD bilangan, ^, NSTD bilangan, "xor bit")
+_BILANGAN_DEFINE_OPERATION_LEFT_RIGHT_WITH_RETURN_CODE_AND_THROW_ERROR_WITHOUT_BILANGAN_DESIMAL(NSTD bilangan, <<, NSTD bilangan, "geser kiri bit")
+_BILANGAN_DEFINE_OPERATION_LEFT_RIGHT_WITH_RETURN_CODE_AND_THROW_ERROR_WITHOUT_BILANGAN_DESIMAL(NSTD bilangan, >>, NSTD bilangan, "geser kanan bit")

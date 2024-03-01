@@ -67,28 +67,24 @@ namespace nstd {
     	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_desimal, /, _bilangan_desimal);
     	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_bulat, %, _bilangan_bulat);
     	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_desimal, %, _bilangan_desimal);
-    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_bulat, ==, _bilangan_bulat);
-    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_desimal, ==, _bilangan_desimal);
-    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_bulat, !=, _bilangan_bulat);
-    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_desimal, !=, _bilangan_desimal);
-    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_bulat, >, _bilangan_bulat);
-    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_desimal, >, _bilangan_desimal);
-    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_bulat, <, _bilangan_bulat);
-    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_desimal, <, _bilangan_desimal);
-    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_bulat, >=, _bilangan_bulat);
-    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_desimal, >=, _bilangan_desimal);
-    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_bulat, <=, _bilangan_bulat);
-    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_desimal, <=, _bilangan_desimal);
+    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(benarsalah, ==, _bilangan_bulat);
+    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(benarsalah, ==, _bilangan_desimal);
+    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(benarsalah, !=, _bilangan_bulat);
+    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(benarsalah, !=, _bilangan_desimal);
+    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(benarsalah, >, _bilangan_bulat);
+    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(benarsalah, >, _bilangan_desimal);
+    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(benarsalah, <, _bilangan_bulat);
+    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(benarsalah, <, _bilangan_desimal);
+    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(benarsalah, >=, _bilangan_bulat);
+    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(benarsalah, >=, _bilangan_desimal);
+    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(benarsalah, <=, _bilangan_bulat);
+    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(benarsalah, <=, _bilangan_desimal);
     	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_bulat, &, _bilangan_bulat);
-    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_desimal, &, _bilangan_desimal);
     	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_bulat, |, _bilangan_bulat);
-    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_desimal, |, _bilangan_desimal);
     	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_bulat, ^, _bilangan_bulat);
-    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_desimal, ^, _bilangan_desimal);
     	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_bulat, <<, _bilangan_bulat);
-    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_desimal, <<, _bilangan_desimal);
     	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_bulat, >>, _bilangan_bulat);
-    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_desimal, >>, _bilangan_desimal);
+
     private:
       TIPE_DATA_BILANGAN_BULAT nilai;
 
@@ -118,18 +114,18 @@ namespace nstd {
     	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_desimal, /, _bilangan_desimal);
     	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_desimal, %, _bilangan_bulat);
     	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_desimal, %, _bilangan_desimal);
-    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_desimal, ==, _bilangan_bulat);
-    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_desimal, ==, _bilangan_desimal);
-    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_desimal, !=, _bilangan_bulat);
-    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_desimal, !=, _bilangan_desimal);
-    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_desimal, >, _bilangan_bulat);
-    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_desimal, >, _bilangan_desimal);
-    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_desimal, <, _bilangan_bulat);
-    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_desimal, <, _bilangan_desimal);
-    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_desimal, >=, _bilangan_bulat);
-    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_desimal, >=, _bilangan_desimal);
-    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_desimal, <=, _bilangan_bulat);
-    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(_bilangan_desimal, <=, _bilangan_desimal);
+    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(benarsalah, ==, _bilangan_bulat);
+    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(benarsalah, ==, _bilangan_desimal);
+    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(benarsalah, !=, _bilangan_bulat);
+    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(benarsalah, !=, _bilangan_desimal);
+    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(benarsalah, >, _bilangan_bulat);
+    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(benarsalah, >, _bilangan_desimal);
+    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(benarsalah, <, _bilangan_bulat);
+    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(benarsalah, <, _bilangan_desimal);
+    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(benarsalah, >=, _bilangan_bulat);
+    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(benarsalah, >=, _bilangan_desimal);
+    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(benarsalah, <=, _bilangan_bulat);
+    	CLASS_DECLARE_OPERATION_LEFT_RIGHT(benarsalah, <=, _bilangan_desimal);
     private:
       TIPE_DATA_BILANGAN_DESIMAL nilai;
 
@@ -175,44 +171,27 @@ namespace nstd {
       __DEFINE_BILANGAN_BILANGAN_DESIMAL_ASSIGN_OPERATOR(
           TIPE_DATA_BILANGAN_DESIMAL
       );
-
       ND benarsalah isNegatif() const; 
-
-      bilangan operator-(const int& nilaiX) const;
-
+      
       bilangan operator~() const;
 
-      bilangan operator+(const bilangan& nilaiX) const;
-
-      bilangan operator-(const bilangan& nilaiX) const;
-
-      bilangan operator*(const bilangan& nilaiX) const;
-
-      bilangan operator/(const bilangan& nilaiX) const;
-
-      bilangan operator%(const bilangan& nilaiX) const;
-
-      bilangan operator==(const bilangan& nilaiX) const;
-
-      bilangan operator!=(const bilangan& nilaiX) const;
-
-      bilangan operator>(const bilangan& nilaiX) const;
-
-      bilangan operator<(const bilangan& nilaiX) const;
-
-      bilangan operator>=(const bilangan& nilaiX) const;
-
-      bilangan operator<=(const bilangan& nilaiX) const;
-
-      bilangan operator&(const bilangan& nilaiX) const;
-
-      bilangan operator|(const bilangan& nilaiX) const;
-
-      bilangan operator^(const bilangan& nilaiX) const;
-
-      bilangan operator<<(const bilangan& nilaiX) const;
-
-      bilangan operator>>(const bilangan& nilaiX) const;
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT(bilangan, -, int);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT(bilangan, +, bilangan);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT(bilangan, -, bilangan);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT(bilangan, *, bilangan);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT(bilangan, /, bilangan);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT(bilangan, %, bilangan);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT(benarsalah, ==, bilangan);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT(benarsalah, !=, bilangan);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT(benarsalah, >, bilangan);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT(benarsalah, <, bilangan);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT(benarsalah, >=, bilangan);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT(benarsalah, <=, bilangan);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT(bilangan, &, bilangan);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT(bilangan, |, bilangan);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT(bilangan, ^, bilangan);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT(bilangan, <<, bilangan);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT(bilangan, >>, bilangan);
 
     private:
       PTR(_nilai_bilangan) nilai;

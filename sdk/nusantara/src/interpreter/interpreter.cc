@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "core/core.h"
+#include "core/print.h"
 #include "error/error_info.h"
 #include "lexer/token.h"
 #include "lexer/token_type.h"
@@ -166,9 +167,11 @@ nstd::dinamis Interpreter::fragmentOperasiPrePost(
           left--;
         }
       } else if(type == TokenType::TIDAK) {
-        if(isPre) { !left; }
+        if(isPre) { left = !left; }
       } else if(type == TokenType::NOT_BIT) {
-        if(isPre) { ~left; }
+        if(isPre) {
+          left = ~left;
+        }
       } else {
         throw this->error("Operator tidak valid.");
       }
