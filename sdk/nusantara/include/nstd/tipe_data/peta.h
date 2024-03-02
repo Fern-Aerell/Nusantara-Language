@@ -23,6 +23,8 @@ namespace nstd {
       explicit peta(STD map<PTR(tipe_data), PTR(tipe_data)> nilai);
       // Copy constructor
       peta(const peta& nilai);
+      // Move constructor
+      peta(peta&& other) noexcept;
 
       __DECLARE_PETA_TAMBAH_FUNCTION(bilangan, bilangan);
       __DECLARE_PETA_TAMBAH_FUNCTION(bilangan, kalimat);

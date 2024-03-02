@@ -13,6 +13,7 @@
 #include "nstd/tipe_data/kalimat.h"
 #include "nstd/tipe_data/peta.h"
 #include "nstd/tipe_data/bilangan.h"
+#include "nstd/tipe_data/identifikasi.h"
 
 #define _DINAMIS_CONSTRUCTOR(tipe, tipe_data) \
   NSTD dinamis::dinamis(const tipe& nilai): nilai(MPTR(tipe_data, nilai)) {}
@@ -26,8 +27,6 @@
     if(PTR_CAST(_DINAMIS_VALUE, tipe_data)) { return BENAR; } \
     return SALAH;                                             \
   }
-
-#define _DINAMIS_ERROR_INVALID_VALUE RTERROR("Nilai dinamis tidak valid.")
 
 #define _DINAMIS_AS_ERROR(as) \
   RTERROR(FMT("Nilai dinamis bukanlah sebuah {}.", as))
@@ -50,7 +49,7 @@
     )                                                                         \
     _DINAMIS_AS_ERROR_TIPE_CHECK(tipe_name, "class nstd::daftar", "daftar")   \
     _DINAMIS_AS_ERROR_TIPE_CHECK(tipe_name, "class nstd::peta", "peta")       \
-    throw _DINAMIS_ERROR_INVALID_VALUE;                                       \
+    throw RTERROR("Nilai dinamis tidak valid.");                                       \
   }
 
 #define _DINAMIS_ERROR_OPERASI_TIDAK_VALID(operasi_name) RTERROR(FMT("Operasi {} tidak valid.", operasi_name))
@@ -70,6 +69,9 @@ _DINAMIS_CONSTRUCTOR_NILAI_MOVE(bilangan, bilangan)
 _DINAMIS_CONSTRUCTOR_NILAI_MOVE(STR, kalimat)
 _DINAMIS_CONSTRUCTOR_NILAI_MOVE(kalimat, kalimat)
 _DINAMIS_CONSTRUCTOR_NILAI_MOVE(benarsalah, benarsalah)
+_DINAMIS_CONSTRUCTOR_NILAI_MOVE(daftar, daftar)
+_DINAMIS_CONSTRUCTOR_NILAI_MOVE(peta, peta)
+_DINAMIS_CONSTRUCTOR_NILAI_MOVE(identifikasi, identifikasi)
 // Copy constructors
 NSTD dinamis::dinamis(const dinamis& other) {
   if(other.is_bilangan()) {
@@ -83,7 +85,7 @@ NSTD dinamis::dinamis(const dinamis& other) {
   }else if(other.is_peta()) {
     this->nilai = MPTR(peta, other.get_peta());
   }else{
-    throw _DINAMIS_ERROR_INVALID_VALUE;
+    this->nilai = nullptr;
   }
 }
 
@@ -107,7 +109,7 @@ ND NSTD kalimat NSTD dinamis::ubahKeKalimat() const {
   if(PTR_CAST(_DINAMIS_VALUE, peta)) {
     return cast_result_ptr->ubahKeKalimat();
   }
-  throw _DINAMIS_ERROR_INVALID_VALUE;
+  return kalimat("kosong");
 }
 
 _DEFINE_DINAMIS_IS_FUNCTION(bilangan);
@@ -145,7 +147,7 @@ NSTD dinamis& NSTD dinamis::operator=(const dinamis& nilaiX) {
   }else if(nilaiX.is_peta()) {
     this->nilai = MPTR(peta, nilaiX.get_peta());
   }else{
-    throw _DINAMIS_ERROR_INVALID_VALUE;
+    this->nilai = nullptr;
   }
   return *this;
 }

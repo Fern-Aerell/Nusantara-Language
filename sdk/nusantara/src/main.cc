@@ -1,7 +1,9 @@
+
 #include "core/print.h"
-#include "config/config.h"
-#include "nstd/tipe_data/bilangan.h"
-#include "nstd/tipe_data/dinamis.h"
+#include "nstd/manager/variable_manager.h"
+#include "nstd/tipe_data/identifikasi.h"
+#include "nstd/tipe_data/kalimat.h"
+#include "nstd/variable/variable.h"
 
 #ifdef _WIN32
   #include <windows.h>
@@ -13,12 +15,20 @@
 #define MAIN(parameter, code) \
   int main parameter { code return 0; }
 
-//#define TEST_CODE
+#define TEST_CODE
 
 #ifdef TEST_CODE
 
 MAIN(
-    EMPTY_PARAMETER, PRINT("Test Code"); try {
+    EMPTY_PARAMETER, 
+    PRINT("Test Code");
+    nstd::variable_manager vars;
+    vars.declare("umur");
+    vars.define("umur", nstd::variable(nstd::dinamis(10)));
+    nstd::identifikasi test("umur", vars);
+    test = 15;
+    PRINT(test);
+    try {
     } catch(const std::exception& error) { PRINT(error.what()); }
 )
 

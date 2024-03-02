@@ -20,6 +20,8 @@ namespace nstd {
       explicit daftar(STD vector<PTR(tipe_data)> nilai);
       // Copy constructor
       daftar(const daftar& nilai);
+      // Move constructor
+      daftar(daftar&& other) noexcept;
 
       ND bool berisi(const PTR(tipe_data)& nilai) const;
 

@@ -14,6 +14,7 @@
 #include "nstd/tipe_data/benarsalah.h"
 #include "nstd/tipe_data/bilangan.h"
 #include "nstd/tipe_data/dinamis.h"
+#include "nstd/tipe_data/identifikasi.h"
 #include "nstd/tipe_data/kalimat.h"
 #include "visitor/context/ekspresi/ekspresi_context.h"
 
@@ -538,7 +539,7 @@ nstd::dinamis Interpreter::visitNilai(const NilaiContext& ctx) {
     } else if(type == TokenType::NILAI_BENAR || type == TokenType::NILAI_SALAH) {
       return nstd::dinamis(nstd::benarsalah::ubah(klmt));
     } else if(type == TokenType::IDENTIFIKASI) {
-      throw this->error("Interpreter belum mendukung identifikasi.");
+      return nstd::dinamis(nstd::identifikasi(klmt, this->variables));
     }
   } else if(nilaiKalimat.has_value()) {
     return this->visit(nilaiKalimat.value());

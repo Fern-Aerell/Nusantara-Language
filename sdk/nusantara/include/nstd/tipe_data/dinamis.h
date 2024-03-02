@@ -23,7 +23,9 @@
 
 namespace nstd {
 
-  class dinamis: tipe_data {
+  class identifikasi;
+
+  class dinamis: public tipe_data {
     public:
       // Constructor
       dinamis();
@@ -37,6 +39,9 @@ namespace nstd {
       __DINAMIS_CONSTRUCTOR_NILAI_MOVE(STR);
       __DINAMIS_CONSTRUCTOR_NILAI_MOVE(kalimat);
       __DINAMIS_CONSTRUCTOR_NILAI_MOVE(benarsalah);
+      __DINAMIS_CONSTRUCTOR_NILAI_MOVE(daftar);
+      __DINAMIS_CONSTRUCTOR_NILAI_MOVE(peta);
+      __DINAMIS_CONSTRUCTOR_NILAI_MOVE(identifikasi);
       // Copy Constructor
       dinamis(const dinamis& other);
 

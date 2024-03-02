@@ -6,6 +6,7 @@
 
 #include "error/error_info.h"
 #include "lexer/token.h"
+#include "nstd/manager/variable_manager.h"
 #include "nstd/tipe_data/dinamis.h"
 #include "visitor/context/context.h"
 #include "visitor/context/operasi/operasi_kondisional_context.h"
@@ -98,6 +99,7 @@ class Interpreter: public Visitor<nstd::dinamis> {
   private:
     ErrorInfo errorInfo;
     std::vector<Token> tokens;
+    nstd::variable_manager variables;
     std::runtime_error error(const std::string& msg);
     nstd::dinamis fragmentMultiOperasiLeftRight(
         const std::vector<std::unique_ptr<Context>>& kumpulanContext,

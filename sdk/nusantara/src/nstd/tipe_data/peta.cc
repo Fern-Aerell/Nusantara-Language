@@ -2,6 +2,7 @@
 
 #include <sstream>
 
+#include "core/core.h"
 #include "core/error.h"
 #include "core/pointer.h"
 #include "nstd/operasi/operasi.h"
@@ -125,6 +126,9 @@ NSTD peta::peta(const peta& nilai) {
     else {throw _PETA_ERROR_INVALID_KEY_OR_VALUE;}
   }
 }
+
+// Move constructor
+NSTD peta::peta(peta&& other) noexcept: nilai(STD move(other.nilai)) {}
 
 NSTD benarsalah NSTD peta::berisiKunci(const PTR(tipe_data) & key) const {
   auto value = this->nilai.find(key);

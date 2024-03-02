@@ -45,6 +45,9 @@ NSTD daftar::daftar(const daftar& nilai) {
   }
 }
 
+// Move constructor
+NSTD daftar::daftar(daftar&& other) noexcept: nilai(STD move(other.nilai)) {}
+
 _DEFINE_DAFTAR_TAMBAH_FUNCTION(bilangan)
 _DEFINE_DAFTAR_TAMBAH_FUNCTION(kalimat)
 _DEFINE_DAFTAR_TAMBAH_FUNCTION(benarsalah)
