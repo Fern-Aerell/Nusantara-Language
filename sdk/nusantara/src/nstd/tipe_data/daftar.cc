@@ -53,21 +53,7 @@ _DEFINE_DAFTAR_TAMBAH_FUNCTION(kalimat)
 _DEFINE_DAFTAR_TAMBAH_FUNCTION(benarsalah)
 _DEFINE_DAFTAR_TAMBAH_FUNCTION(daftar)
 _DEFINE_DAFTAR_TAMBAH_FUNCTION(peta)
-
-void NSTD daftar::tambah(const dinamis& nilai) {
-  if(nilai.is_bilangan()) {
-    this->tambah(nilai.get_bilangan());
-  }else if(nilai.is_kalimat()) {
-    this->tambah(nilai.get_kalimat());
-  }else if(nilai.is_benarsalah()) {
-    this->tambah(nilai.get_benarsalah());
-  }else if(nilai.is_daftar()) {
-    this->tambah(nilai.get_daftar());
-  }else if(nilai.is_peta()) {
-    this->tambah(nilai.get_peta());
-  }
-  throw _DAFTAR_ERROR_TIPE_DATA;
-}
+_DEFINE_DAFTAR_TAMBAH_FUNCTION(dinamis)
 
 ND bool NSTD daftar::berisi(const PTR(tipe_data)& nilai) const {
   return STD find(this->nilai.begin(), this->nilai.end(), nilai) !=
@@ -96,6 +82,8 @@ ND NSTD kalimat NSTD daftar::ubahKeKalimat() const {
     }else if(PTR_CAST(child, daftar)) {
       stream << *cast_result_ptr;
     }else if(PTR_CAST(child, peta)) {
+      stream << *cast_result_ptr;
+    }else if(PTR_CAST(child, dinamis)) {
       stream << *cast_result_ptr;
     }
     if(index < (this->jumlahIsi() - 1)) {

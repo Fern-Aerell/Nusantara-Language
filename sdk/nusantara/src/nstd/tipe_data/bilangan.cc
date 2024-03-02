@@ -150,7 +150,7 @@ _BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT(NSTD _bilangan_bulat, /, NSTD _bilan
 _BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT(NSTD _bilangan_desimal, /, NSTD _bilangan_desimal)
 _BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT(NSTD _bilangan_bulat, %, NSTD _bilangan_bulat)
 NSTD _bilangan_desimal NSTD _bilangan_bulat::operator%(const NSTD _bilangan_desimal& nilaiX) const {
-  return _bilangan_desimal(STD fmodl((long double)this->ambilNilai(), nilaiX.ambilNilai()));
+  return _bilangan_desimal(fmodl((long double)this->ambilNilai(), nilaiX.ambilNilai()));
 }
 _BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT(NSTD benarsalah, ==, NSTD _bilangan_bulat)
 _BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT(NSTD benarsalah, ==, NSTD _bilangan_desimal)
@@ -213,10 +213,10 @@ _BILANGAN_DESIMAL_DEFINE_OPERATION_LEFT_RIGHT(NSTD _bilangan_desimal, *, NSTD _b
 _BILANGAN_DESIMAL_DEFINE_OPERATION_LEFT_RIGHT(NSTD _bilangan_desimal, /, NSTD _bilangan_bulat);
 _BILANGAN_DESIMAL_DEFINE_OPERATION_LEFT_RIGHT(NSTD _bilangan_desimal, /, NSTD _bilangan_desimal);
 NSTD _bilangan_desimal NSTD _bilangan_desimal ::operator%(const _bilangan_bulat& nilaiX) const {
-  return _bilangan_desimal(STD fmodl(this->ambilNilai(), (long double)nilaiX.ambilNilai()));
+  return _bilangan_desimal(fmodl(this->ambilNilai(), (long double)nilaiX.ambilNilai()));
 };
 NSTD _bilangan_desimal NSTD _bilangan_desimal ::operator%(const _bilangan_desimal& nilaiX) const {
-  return _bilangan_desimal(STD fmodl(this->ambilNilai(),nilaiX.ambilNilai()));
+  return _bilangan_desimal(fmodl(this->ambilNilai(),nilaiX.ambilNilai()));
 };
 _BILANGAN_DESIMAL_DEFINE_OPERATION_LEFT_RIGHT(NSTD benarsalah, ==, NSTD _bilangan_bulat);
 _BILANGAN_DESIMAL_DEFINE_OPERATION_LEFT_RIGHT(NSTD benarsalah, ==, NSTD _bilangan_desimal);

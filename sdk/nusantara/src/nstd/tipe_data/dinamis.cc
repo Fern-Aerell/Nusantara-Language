@@ -13,7 +13,6 @@
 #include "nstd/tipe_data/kalimat.h"
 #include "nstd/tipe_data/peta.h"
 #include "nstd/tipe_data/bilangan.h"
-#include "nstd/tipe_data/identifikasi.h"
 
 #define _DINAMIS_CONSTRUCTOR(tipe, tipe_data) \
   NSTD dinamis::dinamis(const tipe& nilai): nilai(MPTR(tipe_data, nilai)) {}
@@ -71,7 +70,6 @@ _DINAMIS_CONSTRUCTOR_NILAI_MOVE(kalimat, kalimat)
 _DINAMIS_CONSTRUCTOR_NILAI_MOVE(benarsalah, benarsalah)
 _DINAMIS_CONSTRUCTOR_NILAI_MOVE(daftar, daftar)
 _DINAMIS_CONSTRUCTOR_NILAI_MOVE(peta, peta)
-_DINAMIS_CONSTRUCTOR_NILAI_MOVE(identifikasi, identifikasi)
 // Copy constructors
 NSTD dinamis::dinamis(const dinamis& other) {
   if(other.is_bilangan()) {
