@@ -8,6 +8,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+#include "core/print.h"
 
 namespace utils {
   std::vector<std::string> split(
@@ -23,36 +24,29 @@ namespace utils {
   std::string readFile(const std::string &path) {
     // Buka file untuk dibaca dalam mode binary
     std::ifstream file(path, std::ios::binary);
-
     // Pastikan file terbuka dengan sukses
     if(!file.is_open()) {
-      throw std::runtime_error("Gagal membuka file '" + path + "'.");
+      throw std::runtime_error(std::format("Gagal membuka file '{}'.", path));
     }
-
-    // Dapatkan ukuran file
-    file.seekg(0, std::ios::end);
-    std::streampos fileSize = file.tellg();
-    file.seekg(0, std::ios::beg);
-
-    // Jika file size 0 atau lebih kecil dari 0, maka return string kosong
-    if(fileSize <= 0) { return ""; }
-
-    // Alokasikan buffer string
-    std::string buffer;
-		buffer.reserve(fileSize);
-
-    // Baca file dan masukkan ke dalam buffer string
-    std::streamsize bytesRead = file.readsome(
-        buffer.data(), static_cast<std::streamsize>(buffer.size())
-    );
-
-    // Jika terjadi error saat membaca file
-    if(bytesRead < 0) {
-      throw std::runtime_error("Gagal membaca file '" + path + "'.");
+    // Tentukan ukuran buffer berdasarkan ukuran file
+    file.seekg(0, std::ios::end);            // Pindahkan posisi ke akhir file
+    std::streampos fileSize = file.tellg();  // Dapatkan ukuran file
+    file.seekg(0, std::ios::beg);            // Kembalikan posisi ke awal file
+    // Jika file size 1 atau lebih kecil dari 0, maka return string kosong
+    if(fileSize <= 1) { return ""; }
+    // Menggunakan vector untuk buffer
+    std::vector<char> buffer(fileSize);
+    // String untuk menyimpan isi file
+    std::ostringstream content;
+    // Loop membaca file hingga EOF
+    while(file.read(buffer.data(), static_cast<long long>(buffer.size()))) {
+      if(file.gcount() > 0) {
+        // Tambahkan data dari buffer ke dalam string
+        content.write(buffer.data(), file.gcount());
+      }
     }
-
     // Kembalikan string yang berisi isi file
-    return buffer.substr(0, bytesRead);
+    return content.str();
   }
 
 }  // namespace utils
