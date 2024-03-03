@@ -8,7 +8,6 @@
 #include <vector>
 
 #include "lexer/token.h"
-#include "lexer/token_type.h"
 #include "utils/utils.h"
 
 ErrorInfo::ErrorInfo(std::string source, const std::string& content):
@@ -17,7 +16,6 @@ ErrorInfo::ErrorInfo(std::string source, const std::string& content):
 std::string ErrorInfo::inLine(const Token& token, const std::string& msg) {
   std::ostringstream stream;
   std::string realSource = token.getSource();
-  TokenType realType = token.getType();
   std::string realValue = token.getValue();
   int realLine = token.getLine();
   int realStartCharIndex = token.getStartCharIndex();

@@ -36,10 +36,10 @@ void Cli::input(const int& argc, char* argv[]) {
     } else if(argument.contains('.')) {
       source = argument;
       interpreter = true;
-    } else if(utils::contains(perintahVersi, argument)) {
+    } else if(utils::contains(perintahVersi, argument) && index == 0) {
       showVersi();
       return;
-    } else if(utils::contains(perintahInfo, argument)) {
+    } else if(utils::contains(perintahInfo, argument) && index == 0) {
       showInfo();
       return;
     } else {

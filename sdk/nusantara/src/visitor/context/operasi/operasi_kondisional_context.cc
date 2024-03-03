@@ -28,7 +28,6 @@ OperasiKondisionalContext OperasiKondisionalContext::generate(
   std::optional<std::unique_ptr<Context>> nilaiBenarEkspresiContext;
   std::optional<Token> titikDua;
   std::optional<std::unique_ptr<Context>> nilaiSalahEkspresiContext;
-  size_t index = 0;
   for(const std::unique_ptr<ParserTree>& child : children) {
     if(auto* prt = dynamic_cast<ParserRuleTree*>(child.get())) {
       if(prt->getRule() == ParserRule::operasi_atau) {
@@ -55,7 +54,6 @@ OperasiKondisionalContext OperasiKondisionalContext::generate(
         titikDua = token;
       }
     }
-    ++index;
   }
   return OperasiKondisionalContext(
       std::move(kondisiOperasiAtauContext), std::move(tandaTanya),

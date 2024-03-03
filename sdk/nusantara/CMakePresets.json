@@ -24,7 +24,8 @@
                 "CMAKE_CXX_COMPILER": "clang++",
                 "CMAKE_BUILD_TYPE": "Release",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "true",
-                "CMAKE_CXX_FLAGS": "-O3 -ffast-math -flto -march=native -mtune=native -msse2 -mavx -fstack-protector"
+                "CMAKE_LINKER": "lld",
+                "CMAKE_CXX_FLAGS": "-Ofast -ffast-math -flto -march=native -mtune=native -msse2 -mavx -fstack-protector -g -Wall"
             }
         },
 				{
@@ -34,6 +35,7 @@
             "cacheVariables": {
                 "CMAKE_CXX_COMPILER": "clang++-17",
                 "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_LINKER": "lld",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "true"
             }
         },
@@ -45,7 +47,7 @@
                 "CMAKE_CXX_COMPILER": "clang++-17",
                 "CMAKE_BUILD_TYPE": "Release",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "true",
-								"CMAKE_CXX_FLAGS": "-Ofast -ffast-math -flto -march=native -mtune=native -fstack-protector -g -fsanitize=undefined -fPIE"
+				"CMAKE_CXX_FLAGS": "-Ofast -ffast-math -flto -march=native -mtune=native -fstack-protector -g -fPIE -Wall"
             }
         }
     ],

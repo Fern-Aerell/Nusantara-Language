@@ -39,7 +39,6 @@ Token Lexer::getNextToken() {
     return this->createToken(TokenType::AKHIR_DARI_FILE, match);
   }
   for(const TokenTypeData &tokenType : this->tokenTypesBawaan) {
-    TokenType type = tokenType.getType();
     if(this->match(tokenType.getPattern(), match)) {
       return this->createToken(tokenType.getType(), match);
     }
