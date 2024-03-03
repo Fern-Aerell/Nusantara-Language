@@ -44,7 +44,8 @@
             "cacheVariables": {
                 "CMAKE_CXX_COMPILER": "clang++-17",
                 "CMAKE_BUILD_TYPE": "Release",
-                "CMAKE_EXPORT_COMPILE_COMMANDS": "true"
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "true",
+								"CMAKE_CXX_FLAGS": "-Ofast -ffast-math -flto -march=native -mtune=native -fstack-protector -g -fsanitize=undefined -fPIE"
             }
         }
     ],

@@ -138,33 +138,6 @@ _DEFINE_DINAMIS_GET_FUNCTION(daftar);
 _DEFINE_DINAMIS_GET_FUNCTION(peta);
 _DEFINE_DINAMIS_GET_FUNCTION(identifikasi);
 
-NSTD dinamis& NSTD dinamis::operator=(const int& nilaiX) {
-  if(this->is_identifikasi()) {
-    this->get_identifikasi().set(bilangan(nilaiX));
-    return *this;
-  }
-  this->nilai = MPTR(bilangan, nilaiX);
-  return *this;
-}
-
-NSTD dinamis& NSTD dinamis::operator=(const STR& nilaiX) {
-  if(this->is_identifikasi()) {
-    this->get_identifikasi().set(kalimat(nilaiX));
-    return *this;
-  }
-  this->nilai = MPTR(kalimat, nilaiX);
-  return *this;
-}
-
-NSTD dinamis& NSTD dinamis::operator=(const benarsalah& nilaiX) {
-  if(this->is_identifikasi()) {
-    this->get_identifikasi().set(nilaiX);
-    return *this;
-  }
-  this->nilai = MPTR(benarsalah, nilaiX);
-  return *this;
-}
-
 NSTD dinamis& NSTD dinamis::operator++() {
   if(this->is_bilangan()) {
     this->nilai = MPTR(bilangan, 1 + this->get_bilangan());
@@ -328,6 +301,33 @@ _DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_CONST_WITH_THROW_ERROR(NSTD dinamis, >>, di
     return dinamis(this->get_bilangan() >> nilaiX.get_bilangan());
   }
 )
+
+NSTD dinamis& NSTD dinamis::operator=(const int& nilaiX) {
+  if(this->is_identifikasi()) {
+    this->get_identifikasi().set(bilangan(nilaiX));
+    return *this;
+  }
+  this->nilai = MPTR(bilangan, nilaiX);
+  return *this;
+}
+
+NSTD dinamis& NSTD dinamis::operator=(const STR& nilaiX) {
+  if(this->is_identifikasi()) {
+    this->get_identifikasi().set(kalimat(nilaiX));
+    return *this;
+  }
+  this->nilai = MPTR(kalimat, nilaiX);
+  return *this;
+}
+
+NSTD dinamis& NSTD dinamis::operator=(const benarsalah& nilaiX) {
+  if(this->is_identifikasi()) {
+    this->get_identifikasi().set(nilaiX);
+    return *this;
+  }
+  this->nilai = MPTR(benarsalah, nilaiX);
+  return *this;
+}
 
 _DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis&, =, NSTD dinamis, "sama dengan",
   if(this == &nilaiX) {return *this;}
