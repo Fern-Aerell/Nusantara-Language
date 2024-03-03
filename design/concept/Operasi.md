@@ -42,3 +42,52 @@ Contoh : x + y
 
 - ```-``` (Subtraction)  
 Contoh : x - y
+
+### Operasi Bitwise (dari kiri ke kanan)
+
+- ```~``` (Bitwise NOT)  
+Contoh : ~x
+
+- ```&``` (Bitwise AND)  
+Contoh : x & y
+
+- ```^``` (Bitwise XOR)  
+Contoh : x ^ y
+
+- ```|``` (Bitwise OR)  
+Contoh : x | y
+
+- ```<<``` (Bitwise Left Shift)  
+Contoh : x << y
+
+- ```>>``` (Bitwise Right Shift)  
+Contoh : x >> y
+
+### Operasi Perbandingan (dari kiri ke kanan)
+
+- ```<``` (Less Than)  
+Contoh : x << y
+
+- ```<=``` (Less Than or Equal To)  
+Contoh : x <= y
+
+- ```>``` (Greater Than)  
+Contoh : x > y
+
+- ```>=``` (Greater Than or Equal To)  
+Contoh : x >= y
+
+- ```==``` (Equal To)  
+Contoh : x == y
+
+- ```!=``` (Not Equal To)  
+Contoh : x != y
+
+
+### Operasi Logika (dari kiri ke kanan)
+
+- ```&&``` (Logical AND)  
+Contoh : x && y
+
+- ```||``` (Logical OR)  
+Contoh : x || y
