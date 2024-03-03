@@ -8,6 +8,7 @@ Operator di nusantara di bagi menjadi beberapa jenis :
 | [Perbandingan Operator](#perbandingan-operator) |
 | [Logika Operator](#logika-operator) |
 | [Bitwise Operator](#bitwise-operator) |
+| [Kondisional Operator](#kondisional-operator) |
 
 ## Aritmatika Operator
 
@@ -69,7 +70,6 @@ Operator di nusantara di bagi menjadi beberapa jenis :
 
 ## Kondisional Operator
 
-Sintaks :
-```
-(kondisi) ? benar : salah;
-```
+| Operator | Nama | Contoh |
+| -------- | ---- | ------ |
+| ?: | kondisional | x ? y : z |
