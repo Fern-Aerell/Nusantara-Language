@@ -91,3 +91,45 @@ Contoh : x && y
 
 - ```||``` (Logical OR)  
 Contoh : x || y
+
+
+### Operasi Ternary (dari kanan ke kiri)
+
+- ```?:``` (Conditional/Ternary Operator)  
+Contoh : x ? y : z
+
+
+### Operasi Assignment (dari kanan ke kiri)
+
+- ```=``` (Assignment)  
+Contoh : x = y
+
+- ```*=``` (Multiplication Assignment)  
+Contoh : x *= y
+
+- ```/=``` (Division Assignment)  
+Contoh : x /= y
+
+- ```%=``` (Modulus Assignment)  
+Contoh : x %= y
+
+- ```+=``` (Addition Assignment)  
+Contoh : x += y
+
+- ```-=``` (Subtraction Assignment)  
+Contoh : x -= y
+
+- ```&=``` (Bitwise AND Assignment)  
+Contoh : x &= y
+
+- ```|=``` (Bitwise OR Assignment)  
+Contoh : x |= y
+
+- ```^=``` (Bitwise XOR Assignment)  
+Contoh : x ^= y
+
+- ```<<=``` (Bitwise Left Shift Assignment)  
+Contoh : x <<= y
+
+- ```>>=``` (Bitwise Right Shift Assignment)  
+Contoh : x >>= y
