@@ -2,16 +2,16 @@
 
 Berikut adalah operasi yang bisa dilakukan beserta arah dan urutan eksekusi nya.
 
-## Operasi Notasi Unary (dari kanan ke kiri)
+### Operasi Notasi Unary (dari kanan ke kiri)
 
-- ```++``` (Increment)
+- ```++``` (Increment)  
 Contoh : ++x
 
-- ```--``` (Decrement)
+- ```--``` (Decrement)  
 Contoh : --x
 
-- ```~``` (Bitwise NOT)
+- ```~``` (Bitwise NOT)  
 Contoh : ~x
 
-- ```!``` (Logical NOT)
+- ```!``` (Logical NOT)  
 Contoh : !x
