@@ -23,3 +23,22 @@ Contoh : x++
 
 - ```--``` (Post Decrement)  
 Contoh : x--
+
+### Operasi Matematika (dari kiri ke kanan)
+
+Perkalian dan Pembagian  
+- ```*``` (Multiplication)  
+Contoh : x * y
+
+- ```/``` (Division)  
+Contoh : x / y
+
+- ```%``` (Modulus)  
+Contoh : x % y
+
+Penjumlahan dan Pengurangan
+- ```+``` (Addition)  
+Contoh : x + y
+
+- ```-``` (Subtraction)  
+Contoh : x - y
