@@ -3,6 +3,7 @@
 #include <regex>
 #include <string>
 
+#include "core/print.h"
 #include "lexer/token.h"
 #include "lexer/token_type.h"
 #include "lexer/token_type_data.h"

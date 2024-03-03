@@ -17,7 +17,7 @@ class Lexer {
     std::string content;
     std::vector<TokenTypeData> tokenTypesBawaan = {
         {"SPASI",                       TokenType::SPASI,                       "[ ]+"                   },
-        {"BARIS_BARU",                  TokenType::BARIS_BARU,                  "[\n]+"                  },
+      	{"BARIS_BARU",                  TokenType::BARIS_BARU,                  "[\n]+"                  },
         {"TAB",                         TokenType::TAB,                         "[\t]+"                  },
         {"OTHER_WHITESPACE",            TokenType::OTHER_WHITESPACE,            "[\r\f]+"                },
         {"KOMENTAR_DOKUMENTASI",        TokenType::KOMENTAR_DOKUMENTASI,        "///[^\n]*"              },

@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include <vector>
 
+#include "core/print.h"
 #include "error/error_info.h"
 #include "lexer/lexer.h"
 #include "lexer/token_type.h"
@@ -107,8 +108,7 @@ std::unique_ptr<ParserTree> Parser::fragmentOperasiPrePost(
 std::unique_ptr<ParserTree> Parser::parse() { return this->parseNusantara(); }
 
 std::unique_ptr<ParserTree> Parser::parseNusantara() {
-  std::unique_ptr<ParserTree> nusantara =
-      std::make_unique<ParserRuleTree>(ParserRule::nusantara);
+  std::unique_ptr<ParserTree> nusantara = std::make_unique<ParserRuleTree>(ParserRule::nusantara);
   while(!match(TokenType::AKHIR_DARI_FILE)) {
     nusantara->addChild(this->parsePernyataan());
   }
