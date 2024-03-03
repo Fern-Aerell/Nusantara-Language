@@ -1,24 +1,29 @@
 #include "interpreter/interpreter.h"
 
 #include <optional>
+#include <ranges>
 #include <stdexcept>
 #include <string>
 #include <vector>
 
 #include "core/core.h"
+#include "core/pointer.h"
 #include "core/print.h"
 #include "error/error_info.h"
 #include "lexer/token.h"
 #include "lexer/token_type.h"
 #include "nstd/konsol/konsol.h"
+#include "nstd/manager/variable_manager.h"
 #include "nstd/tipe_data/benarsalah.h"
 #include "nstd/tipe_data/bilangan.h"
 #include "nstd/tipe_data/dinamis.h"
+#include "nstd/tipe_data/identifikasi.h"
 #include "nstd/tipe_data/kalimat.h"
+#include "nstd/variable/variable.h"
 #include "visitor/context/ekspresi/ekspresi_context.h"
 
 Interpreter::Interpreter(ErrorInfo errorInfo):
-    errorInfo(std::move(errorInfo)) {}
+    errorInfo(std::move(errorInfo)), variables(MSPTR(NSTD variable_manager, )) {}
 
 std::runtime_error Interpreter::error(const std::string& msg) {
   return std::runtime_error(this->errorInfo.inLine(this->tokens, msg));
@@ -37,12 +42,11 @@ nstd::dinamis Interpreter::fragmentMultiOperasiLeftRight(
     this->tokens.push_back(optr);
     nstd::dinamis right = this->visit(kumpulanContext[index]);
     const TokenType& type = optr.getType();
-    using namespace nstd;
     try {
       if(type == TokenType::TAMBAH) {
         left = left + right;
       } else if(type == TokenType::KURANG) {
-       left = left - right;
+        left = left - right;
       } else if(type == TokenType::KALI) {
         left = left * right;
       } else if(type == TokenType::BAGI) {
@@ -88,58 +92,45 @@ nstd::dinamis Interpreter::fragmentMultiOperasiRightLeft(
     const std::vector<std::unique_ptr<Context>>& kumpulanContext,
     const std::vector<Token>& kumpulanOperator
 ) {
-  nstd::dinamis right =
-      this->visit(kumpulanContext[(kumpulanContext.size() - 1)]);
-  if(kumpulanOperator.empty()) { return right; }
-  for(size_t index = (kumpulanOperator.size() - 1); index > 0; --index) {
-    const Token& token = kumpulanOperator[index];
-    const TokenType& type = token.getType();
-    this->tokens.push_back(token);
-    nstd::dinamis left = this->visit(kumpulanContext[(index - 1)]);
-    // try {
-    //   if(nstd::is<Variable>(left)) {
-    //     auto& leftVar = nstd::as<Variable>(left);
-    //     nstd::dinamis leftVarNilai = leftVar.getNilai();
-    //     nstd::dinamis rightVarNilai;
-    //     if(nstd::is<Variable>(right)) {
-    //       auto& rightVar = nstd::as<Variable>(right);
-    //       rightVarNilai = rightVar.getNilai();
-    //     }else{
-    //       rightVarNilai = right;
-    //     }
-    //     using namespace nstd;
-    //     if(type == TokenType::SAMA_DENGAN) {
-    //       leftVar.setNilai(rightVarNilai);
-    //     } else if(type == TokenType::KALI_SAMA_DENGAN) {
-    //       leftVar.setNilai(leftVarNilai * rightVarNilai);
-    //     } else if(type == TokenType::BAGI_SAMA_DENGAN) {
-    //       leftVar.setNilai(leftVarNilai / rightVarNilai);
-    //     } else if(type == TokenType::SISA_BAGI_SAMA_DENGAN) {
-    //       leftVar.setNilai(leftVarNilai % rightVarNilai);
-    //     } else if(type == TokenType::TAMBAH_SAMA_DENGAN) {
-    //       leftVar.setNilai(leftVarNilai + rightVarNilai);
-    //     } else if(type == TokenType::KURANG_SAMA_DENGAN) {
-    //       leftVar.setNilai(leftVarNilai - rightVarNilai);
-    //     } else if(type == TokenType::AND_BIT_SAMA_DENGAN) {
-    //       leftVar.setNilai(leftVarNilai & rightVarNilai);
-    //     } else if(type == TokenType::OR_BIT_SAMA_DENGAN) {
-    //       leftVar.setNilai(leftVarNilai | rightVarNilai);
-    //     } else if(type == TokenType::XOR_BIT_SAMA_DENGAN) {
-    //       leftVar.setNilai(leftVarNilai ^ rightVarNilai);
-    //     } else if(type == TokenType::GESER_KIRI_BIT_SAMA_DENGAN) {
-    //       leftVar.setNilai(leftVarNilai << rightVarNilai);
-    //     } else if(type == TokenType::GESER_KANAN_BIT_SAMA_DENGAN) {
-    //       leftVar.setNilai(leftVarNilai >> rightVarNilai);
-    //     } else{
-    //       throw std::runtime_error("Operator tidak valid.");
-    //     }
-    //     right = leftVar;
-    //   }
-    // } catch(const std::exception& error) {
-    //   throw this->error(error.what());
-    // }
+  if(kumpulanContext.empty()) {
+    throw std::runtime_error("Nilai tidak boleh kosong.");
   }
-  return right;
+  nstd::dinamis left = this->visit(kumpulanContext[0]);
+  size_t index = 1;
+  for(const Token& optr : kumpulanOperator) {
+    this->tokens.push_back(optr);
+    nstd::dinamis right = this->visit(kumpulanContext[index]);
+    const TokenType& type = optr.getType();
+    try {
+      if(type == TokenType::SAMA_DENGAN) {
+        left = right;
+      } else if(type == TokenType::KALI_SAMA_DENGAN) {
+        left *= right;
+      } else if(type == TokenType::BAGI_SAMA_DENGAN) {
+        left /= right;
+      } else if(type == TokenType::SISA_BAGI_SAMA_DENGAN) {
+        left %= right;
+      } else if(type == TokenType::TAMBAH_SAMA_DENGAN) {
+        left += right;
+      } else if(type == TokenType::KURANG_SAMA_DENGAN) {
+        left -= right;
+      } else if(type == TokenType::AND_BIT_SAMA_DENGAN) {
+        left &= right;
+      } else if(type == TokenType::OR_BIT_SAMA_DENGAN) {
+        left |= right;
+      } else if(type == TokenType::XOR_BIT_SAMA_DENGAN) {
+        left ^= right;
+      } else if(type == TokenType::GESER_KIRI_BIT_SAMA_DENGAN) {
+        left <<= right;
+      } else if(type == TokenType::GESER_KANAN_BIT_SAMA_DENGAN) {
+        left >>= right;
+      } else {
+        throw this->error("Operator tidak valid.");
+      }
+    } catch(const std::exception& error) { throw this->error(error.what()); }
+    ++index;
+  }
+  return left;
 }
 
 nstd::dinamis Interpreter::fragmentOperasiPrePost(
@@ -193,14 +184,8 @@ nstd::dinamis Interpreter::visitPernyataan(const PernyataanContext& ctx) {
   const auto& ekspresi = ctx.getEkspresiContext();
   if(variable.has_value()) {
     this->visit(variable.value());
-    throw std::runtime_error("Interpreter belum mendukung variable.");
   }else if(ekspresi.has_value()) {
     nstd::dinamis hasil = this->visit(ekspresi.value());
-    // if(nstd::is<Variable>()) {
-    //   nstd::cetak(nstd::as<Variable>(hasil).getNilai());
-    // } else {
-    //   nstd::konsol::cetak(hasil);
-    // }
     nstd::konsol::cetak(hasil);
   }else {
     throw std::runtime_error("Pernyataan tidak boleh kosong.");
@@ -217,19 +202,23 @@ nstd::dinamis Interpreter::visitVariable(const VariableContext& ctx) {
   tokens.push_back(namaTkn);
   const TokenType& tipeType = tipeTkn.getType();
   const std::string& namaVariable = namaTkn.getValue();
-  // this->variables.create(tipeType, namaVariable);
-  // if(nstd::tidakKosong(samaDenganTkn)) {
-  //   tokens.push_back(samaDenganTkn.value());
-  //   if(nstd::tidakKosong(ekspresiCtx)) {
-  //     const auto* ekspresiCtxPtr =
-  //     dynamic_cast<EkspresiContext*>(ekspresiCtx->get()); nstd::dinamis
-  //     hasilEkspresi = this->visitEkspresi(*ekspresiCtxPtr);
-  //     if(nstd::is<Variable>(hasilEkspresi)) {
-  //       hasilEkspresi = nstd::as<Variable>(hasilEkspresi).getNilai();
-  //     }
-  //     this->variables.set(namaVariable, hasilEkspresi);
-  //   }
-  // }
+  if(tipeType == TokenType::TIPE_DATA_BILANGAN) {
+    this->variables->declare(nstd::variable_data_type::bilangan, namaVariable);
+  }else if(tipeType == TokenType::TIPE_DATA_KALIMAT) {
+    this->variables->declare(nstd::variable_data_type::kalimat, namaVariable);
+  }else if(tipeType == TokenType::TIPE_DATA_BENARSALAH) {
+    this->variables->declare(nstd::variable_data_type::benarsalah, namaVariable);
+  }else{
+    throw this->error("Tipe data tidak valid.");
+  }
+  if(samaDenganTkn.has_value()) {
+    tokens.push_back(samaDenganTkn.value());
+    if(ekspresiCtx.has_value()) {
+      const auto* ekspresiCtxPtr = dynamic_cast<EkspresiContext*>(ekspresiCtx->get()); 
+      nstd::dinamis hasilEkspresi = this->visitEkspresi(*ekspresiCtxPtr);
+      this->variables->define(namaVariable, hasilEkspresi);
+    }
+  }
   return {};
 }
 
@@ -538,7 +527,7 @@ nstd::dinamis Interpreter::visitNilai(const NilaiContext& ctx) {
     } else if(type == TokenType::NILAI_BENAR || type == TokenType::NILAI_SALAH) {
       return nstd::dinamis(nstd::benarsalah::ubah(klmt));
     } else if(type == TokenType::IDENTIFIKASI) {
-      throw this->error("Interpreter belum mendukung identifikasi.");
+      return nstd::dinamis(nstd::identifikasi(this->variables, klmt));
 		}
   } else if(nilaiKalimat.has_value()) {
     return this->visit(nilaiKalimat.value());
@@ -579,8 +568,7 @@ nstd::dinamis Interpreter::visitNilaiKalimat(const NilaiKalimatContext& ctx) {
           ++ekspresiIndex;
         }
       } else if(type == TokenType::IDENTIFIKASI) {
-        throw this->error("Interpreter belum mendukung identifikasi.");
-        // klmt += nstd::toString(this->variables.getNilai(token.getValue()));
+        klmt += this->variables->get(token.getValue()).ubahKeKalimat();
       }
       ++index;
     } else {

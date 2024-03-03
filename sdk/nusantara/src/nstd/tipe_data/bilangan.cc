@@ -20,7 +20,7 @@
 #define _NILAI_BILANGAN_OPERATION_LEFT_RIGHT_RETURN_CODE(result, op) return result(this->ambilNilai() op nilaiX.ambilNilai())
 
 #define _NILAI_BILANGAN_DEFINE_OPERATION_LEFT_RIGHT(nilai_bilangan, result, op, with_type) \
-  CLASS_DEFINE_OPERATION_LEFT_RIGHT(nilai_bilangan, result, op, with_type, \
+  CLASS_DEFINE_OPERATION_LEFT_RIGHT_CONST(nilai_bilangan, result, op, with_type, \
     _NILAI_BILANGAN_OPERATION_LEFT_RIGHT_RETURN_CODE(result, op);\
   )
 
@@ -35,7 +35,7 @@
   _NILAI_BILANGAN_DEFINE_OPERATION_LEFT_RIGHT(NSTD _bilangan_bulat, result, op, with_type)
 
 #define _BILANGAN_BULAT_DEFINE_OPERATION_LEFT_RIGHT_ERROR_IF_NEGATIF(result, op, with_type, op_str)\
-  CLASS_DEFINE_OPERATION_LEFT_RIGHT(NSTD _bilangan_bulat, result, op, with_type, \
+  CLASS_DEFINE_OPERATION_LEFT_RIGHT_CONST(NSTD _bilangan_bulat, result, op, with_type, \
     if(this->isNegatif()) {throw _BILANGAN_BULAT_NEGATIF_ERROR_OPERATION(op_str);}\
     _NILAI_BILANGAN_OPERATION_LEFT_RIGHT_RETURN_CODE(result, op);\
   )
@@ -82,7 +82,7 @@
 #define _BILANGAN_ERROR_OPERASI_TIDAK_VALID(operasi_name) RTERROR(FMT("Operasi {} tidak valid.", operasi_name))
 
 #define _BILANGAN_DEFINE_OPERATION_LEFT_RIGHT(result, op, with_type, code) \
-  CLASS_DEFINE_OPERATION_LEFT_RIGHT(NSTD bilangan, result, op, with_type, code)
+  CLASS_DEFINE_OPERATION_LEFT_RIGHT_CONST(NSTD bilangan, result, op, with_type, code)
 
 #define _BILANGAN_DEFINE_OPERATION_LEFT_RIGHT_WITH_RETURN_CODE_AND_THROW_ERROR(result, op, with_type, op_name) \
   _BILANGAN_DEFINE_OPERATION_LEFT_RIGHT(result, op, with_type, \

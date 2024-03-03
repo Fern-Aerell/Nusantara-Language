@@ -4,8 +4,11 @@
 #include <optional>
 #include <vector>
 
+#include "core/core.h"
+#include "core/pointer.h"
 #include "error/error_info.h"
 #include "lexer/token.h"
+#include "nstd/manager/variable_manager.h"
 #include "nstd/tipe_data/dinamis.h"
 #include "visitor/context/context.h"
 #include "visitor/context/operasi/operasi_kondisional_context.h"
@@ -13,103 +16,104 @@
 #include "visitor/context/variable/variable_context.h"
 #include "visitor/visitor.h"
 
-class Interpreter: public Visitor<nstd::dinamis> {
+class Interpreter: public Visitor<NSTD dinamis> {
   public:
     explicit Interpreter(ErrorInfo errorInfo);
-    nstd::dinamis visitNusantara(const NusantaraContext& ctx) override;
-    nstd::dinamis visitEkspresi(const EkspresiContext& ctx) override;
-    nstd::dinamis visitPernyataan(const PernyataanContext& ctx) override;
-    nstd::dinamis visitVariable(const VariableContext& ctx) override;
-    nstd::dinamis visitOperasiGeserKananBitSamaDengan(
+    NSTD dinamis visitNusantara(const NusantaraContext& ctx) override;
+    NSTD dinamis visitEkspresi(const EkspresiContext& ctx) override;
+    NSTD dinamis visitPernyataan(const PernyataanContext& ctx) override;
+    NSTD dinamis visitVariable(const VariableContext& ctx) override;
+    NSTD dinamis visitOperasiGeserKananBitSamaDengan(
         const OperasiGeserKananBitSamaDenganContext& ctx
     ) override;
-    nstd::dinamis visitOperasiGeserKiriBitSamaDengan(
+    NSTD dinamis visitOperasiGeserKiriBitSamaDengan(
         const OperasiGeserKiriBitSamaDenganContext& ctx
     ) override;
-    nstd::dinamis visitOperasiXorBitSamaDengan(
+    NSTD dinamis visitOperasiXorBitSamaDengan(
         const OperasiXorBitSamaDenganContext& ctx
     ) override;
-    nstd::dinamis visitOperasiOrBitSamaDengan(
+    NSTD dinamis visitOperasiOrBitSamaDengan(
         const OperasiOrBitSamaDenganContext& ctx
     ) override;
-    nstd::dinamis visitOperasiAndBitSamaDengan(
+    NSTD dinamis visitOperasiAndBitSamaDengan(
         const OperasiAndBitSamaDenganContext& ctx
     ) override;
-    nstd::dinamis visitOperasiKurangSamaDengan(
+    NSTD dinamis visitOperasiKurangSamaDengan(
         const OperasiKurangSamaDenganContext& ctx
     ) override;
-    nstd::dinamis visitOperasiTambahSamaDengan(
+    NSTD dinamis visitOperasiTambahSamaDengan(
         const OperasiTambahSamaDenganContext& ctx
     ) override;
-    nstd::dinamis visitOperasiSisaBagiSamaDengan(
+    NSTD dinamis visitOperasiSisaBagiSamaDengan(
         const OperasiSisaBagiSamaDenganContext& ctx
     ) override;
-    nstd::dinamis visitOperasiBagiSamaDengan(
+    NSTD dinamis visitOperasiBagiSamaDengan(
         const OperasiBagiSamaDenganContext& ctx
     ) override;
-    nstd::dinamis visitOperasiKaliSamaDengan(
+    NSTD dinamis visitOperasiKaliSamaDengan(
         const OperasiKaliSamaDenganContext& ctx
     ) override;
-    nstd::dinamis visitOperasiSamaDengan(const OperasiSamaDenganContext& ctx
+    NSTD dinamis visitOperasiSamaDengan(const OperasiSamaDenganContext& ctx
     ) override;
-    nstd::dinamis visitOperasiKondisional(const OperasiKondisionalContext& ctx
+    NSTD dinamis visitOperasiKondisional(const OperasiKondisionalContext& ctx
     ) override;
-    nstd::dinamis visitOperasiAtau(const OperasiAtauContext& ctx) override;
-    nstd::dinamis visitOperasiDan(const OperasiDanContext& ctx) override;
-    nstd::dinamis visitOperasiOrBit(const OperasiOrBitContext& ctx) override;
-    nstd::dinamis visitOperasiXorBit(const OperasiXorBitContext& ctx) override;
-    nstd::dinamis visitOperasiAndBit(const OperasiAndBitContext& ctx) override;
-    nstd::dinamis visitOperasiTidakSama(const OperasiTidakSamaContext& ctx
+    NSTD dinamis visitOperasiAtau(const OperasiAtauContext& ctx) override;
+    NSTD dinamis visitOperasiDan(const OperasiDanContext& ctx) override;
+    NSTD dinamis visitOperasiOrBit(const OperasiOrBitContext& ctx) override;
+    NSTD dinamis visitOperasiXorBit(const OperasiXorBitContext& ctx) override;
+    NSTD dinamis visitOperasiAndBit(const OperasiAndBitContext& ctx) override;
+    NSTD dinamis visitOperasiTidakSama(const OperasiTidakSamaContext& ctx
     ) override;
-    nstd::dinamis visitOperasiSama(const OperasiSamaContext& ctx) override;
-    nstd::dinamis visitOperasiLebihBesarSamaDengan(
+    NSTD dinamis visitOperasiSama(const OperasiSamaContext& ctx) override;
+    NSTD dinamis visitOperasiLebihBesarSamaDengan(
         const OperasiLebihBesarSamaDenganContext& ctx
     ) override;
-    nstd::dinamis visitOperasiLebihBesar(const OperasiLebihBesarContext& ctx
+    NSTD dinamis visitOperasiLebihBesar(const OperasiLebihBesarContext& ctx
     ) override;
-    nstd::dinamis visitOperasiLebihKecilSamaDengan(
+    NSTD dinamis visitOperasiLebihKecilSamaDengan(
         const OperasiLebihKecilSamaDenganContext& ctx
     ) override;
-    nstd::dinamis visitOperasiLebihKecil(const OperasiLebihKecilContext& ctx
+    NSTD dinamis visitOperasiLebihKecil(const OperasiLebihKecilContext& ctx
     ) override;
-    nstd::dinamis visitOperasiGeserKananBit(
+    NSTD dinamis visitOperasiGeserKananBit(
         const OperasiGeserKananBitContext& ctx
     ) override;
-    nstd::dinamis visitOperasiGeserKiriBit(const OperasiGeserKiriBitContext& ctx
+    NSTD dinamis visitOperasiGeserKiriBit(const OperasiGeserKiriBitContext& ctx
     ) override;
-    nstd::dinamis visitOperasiKurang(const OperasiKurangContext& ctx) override;
-    nstd::dinamis visitOperasiTambah(const OperasiTambahContext& ctx) override;
-    nstd::dinamis visitOperasiSisaPembagian(
+    NSTD dinamis visitOperasiKurang(const OperasiKurangContext& ctx) override;
+    NSTD dinamis visitOperasiTambah(const OperasiTambahContext& ctx) override;
+    NSTD dinamis visitOperasiSisaPembagian(
         const OperasiSisaPembagianContext& ctx
     ) override;
-    nstd::dinamis visitOperasiPembagian(const OperasiPembagianContext& ctx
+    NSTD dinamis visitOperasiPembagian(const OperasiPembagianContext& ctx
     ) override;
-    nstd::dinamis visitOperasiPerkalian(const OperasiPerkalianContext& ctx
+    NSTD dinamis visitOperasiPerkalian(const OperasiPerkalianContext& ctx
     ) override;
-    nstd::dinamis visitOperasiTidak(const OperasiTidakContext& ctx) override;
-    nstd::dinamis visitOperasiNotBit(const OperasiNotBitContext& ctx) override;
-    nstd::dinamis visitOperasiKurangSatu(const OperasiKurangSatuContext& ctx
+    NSTD dinamis visitOperasiTidak(const OperasiTidakContext& ctx) override;
+    NSTD dinamis visitOperasiNotBit(const OperasiNotBitContext& ctx) override;
+    NSTD dinamis visitOperasiKurangSatu(const OperasiKurangSatuContext& ctx
     ) override;
-    nstd::dinamis visitOperasiTambahSatu(const OperasiTambahSatuContext& ctx
+    NSTD dinamis visitOperasiTambahSatu(const OperasiTambahSatuContext& ctx
     ) override;
-    nstd::dinamis visitNilai(const NilaiContext& ctx) override;
-    nstd::dinamis visitNilaiKalimat(const NilaiKalimatContext& ctx) override;
+    NSTD dinamis visitNilai(const NilaiContext& ctx) override;
+    NSTD dinamis visitNilaiKalimat(const NilaiKalimatContext& ctx) override;
 
   private:
     ErrorInfo errorInfo;
-    std::vector<Token> tokens;
-    std::runtime_error error(const std::string& msg);
-    nstd::dinamis fragmentMultiOperasiLeftRight(
-        const std::vector<std::unique_ptr<Context>>& kumpulanContext,
-        const std::vector<Token>& kumpulanOperator
+    STD vector<Token> tokens;
+    SPTR(NSTD variable_manager) variables;
+    STD runtime_error error(const STD string& msg);
+    NSTD dinamis fragmentMultiOperasiLeftRight(
+        const STD vector<STD unique_ptr<Context>>& kumpulanContext,
+        const STD vector<Token>& kumpulanOperator
     );
-    nstd::dinamis fragmentMultiOperasiRightLeft(
-        const std::vector<std::unique_ptr<Context>>& kumpulanContext,
-        const std::vector<Token>& kumpulanOperator
+    NSTD dinamis fragmentMultiOperasiRightLeft(
+        const STD vector<STD unique_ptr<Context>>& kumpulanContext,
+        const STD vector<Token>& kumpulanOperator
     );
-    nstd::dinamis fragmentOperasiPrePost(
-        const std::unique_ptr<Context>& context,
-        const std::optional<Token>& satuOperator, const bool& isPre,
+    NSTD dinamis fragmentOperasiPrePost(
+        const STD unique_ptr<Context>& context,
+        const STD optional<Token>& satuOperator, const bool& isPre,
         const bool& isPost
     );
 };

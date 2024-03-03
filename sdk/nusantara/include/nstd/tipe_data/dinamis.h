@@ -23,6 +23,8 @@
 
 namespace nstd {
 
+  class identifikasi;
+
   class dinamis: public tipe_data {
     public:
       // Constructor
@@ -39,8 +41,11 @@ namespace nstd {
       __DINAMIS_CONSTRUCTOR_NILAI_MOVE(benarsalah);
       __DINAMIS_CONSTRUCTOR_NILAI_MOVE(daftar);
       __DINAMIS_CONSTRUCTOR_NILAI_MOVE(peta);
+      __DINAMIS_CONSTRUCTOR_NILAI_MOVE(identifikasi);
       // Copy Constructor
       dinamis(const dinamis& other);
+      // Move constructor
+      dinamis(dinamis&& other) noexcept;
 
       ND bool kosong() const;
 
@@ -53,41 +58,55 @@ namespace nstd {
       __DEFINE_DINAMIS_IS_FUNCTION(benarsalah);
       __DEFINE_DINAMIS_IS_FUNCTION(daftar);
       __DEFINE_DINAMIS_IS_FUNCTION(peta);
+      __DEFINE_DINAMIS_IS_FUNCTION(identifikasi);
 
       __DEFINE_DINAMIS_GET_FUNCTION(bilangan);
       __DEFINE_DINAMIS_GET_FUNCTION(kalimat);
       __DEFINE_DINAMIS_GET_FUNCTION(benarsalah);
       __DEFINE_DINAMIS_GET_FUNCTION(daftar);
       __DEFINE_DINAMIS_GET_FUNCTION(peta);
+      __DEFINE_DINAMIS_GET_FUNCTION(identifikasi);
 
-      dinamis& operator=(const int& nilaiX);
-      dinamis& operator=(const STR& nilaiX);
-      dinamis& operator=(const dinamis& nilaiX);
-      dinamis& operator=(const benarsalah& nilaiX);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT(dinamis&, =, int);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT(dinamis&, =, STR);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT(dinamis&, =, dinamis);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT(dinamis&, =, benarsalah);
+
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT(dinamis&, +=, dinamis);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT(dinamis&, -=, dinamis);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT(dinamis&, *=, dinamis);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT(dinamis&, /=, dinamis);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT(dinamis&, %=, dinamis);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT(dinamis&, &=, dinamis);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT(dinamis&, |=, dinamis);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT(dinamis&, ^=, dinamis);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT(dinamis&, <<=, dinamis);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT(dinamis&, >>=, dinamis);
+
       dinamis& operator++();
       dinamis& operator--();
       dinamis const operator++(int);
       dinamis const operator--(int);
       benarsalah operator!() const;
       dinamis operator~();
-      CLASS_DECLARE_OPERATION_LEFT_RIGHT(dinamis, +, dinamis);
-      CLASS_DECLARE_OPERATION_LEFT_RIGHT(dinamis, -, dinamis);
-      CLASS_DECLARE_OPERATION_LEFT_RIGHT(dinamis, *, dinamis);
-      CLASS_DECLARE_OPERATION_LEFT_RIGHT(dinamis, /, dinamis);
-      CLASS_DECLARE_OPERATION_LEFT_RIGHT(dinamis, %, dinamis);
-      CLASS_DECLARE_OPERATION_LEFT_RIGHT(dinamis, ==, dinamis);
-      CLASS_DECLARE_OPERATION_LEFT_RIGHT(dinamis, !=, dinamis);
-      CLASS_DECLARE_OPERATION_LEFT_RIGHT(dinamis, >, dinamis);
-      CLASS_DECLARE_OPERATION_LEFT_RIGHT(dinamis, <, dinamis);
-      CLASS_DECLARE_OPERATION_LEFT_RIGHT(dinamis, >=, dinamis);
-      CLASS_DECLARE_OPERATION_LEFT_RIGHT(dinamis, <=, dinamis);
-      CLASS_DECLARE_OPERATION_LEFT_RIGHT(dinamis, &&, dinamis);
-      CLASS_DECLARE_OPERATION_LEFT_RIGHT(dinamis, ||, dinamis);
-      CLASS_DECLARE_OPERATION_LEFT_RIGHT(dinamis, &, dinamis);
-      CLASS_DECLARE_OPERATION_LEFT_RIGHT(dinamis, |, dinamis);
-      CLASS_DECLARE_OPERATION_LEFT_RIGHT(dinamis, ^, dinamis);
-      CLASS_DECLARE_OPERATION_LEFT_RIGHT(dinamis, <<, dinamis);
-      CLASS_DECLARE_OPERATION_LEFT_RIGHT(dinamis, >>, dinamis);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT_CONST(dinamis, +, dinamis);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT_CONST(dinamis, -, dinamis);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT_CONST(dinamis, *, dinamis);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT_CONST(dinamis, /, dinamis);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT_CONST(dinamis, %, dinamis);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT_CONST(dinamis, ==, dinamis);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT_CONST(dinamis, !=, dinamis);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT_CONST(dinamis, >, dinamis);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT_CONST(dinamis, <, dinamis);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT_CONST(dinamis, >=, dinamis);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT_CONST(dinamis, <=, dinamis);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT_CONST(dinamis, &&, dinamis);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT_CONST(dinamis, ||, dinamis);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT_CONST(dinamis, &, dinamis);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT_CONST(dinamis, |, dinamis);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT_CONST(dinamis, ^, dinamis);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT_CONST(dinamis, <<, dinamis);
+      CLASS_DECLARE_OPERATION_LEFT_RIGHT_CONST(dinamis, >>, dinamis);
 
     private:
       PTR(tipe_data) nilai;

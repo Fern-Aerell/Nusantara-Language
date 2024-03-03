@@ -1,5 +1,10 @@
 
+#include "core/pointer.h"
 #include "core/print.h"
+#include "nstd/manager/variable_manager.h"
+#include "nstd/tipe_data/bilangan.h"
+#include "nstd/tipe_data/identifikasi.h"
+#include "nstd/variable/variable.h"
 
 #ifdef _WIN32
   #include <windows.h>
@@ -19,6 +24,16 @@ MAIN(
     EMPTY_PARAMETER, 
     PRINT("Test Code");
     try {
+      SPTR(nstd::variable_manager) vars = MSPTR(nstd::variable_manager, );
+      vars->declare(nstd::variable_data_type::bilangan, "umur");
+      vars->declare(nstd::variable_data_type::bilangan, "umur_adek");
+      vars->define("umur", nstd::bilangan(15));
+      vars->define("umur_adek", nstd::bilangan(25));
+      nstd::identifikasi idumur(vars, "umur");
+      nstd::identifikasi idumur_adek(vars, "umur_adek");
+      PRINT(idumur);
+      idumur.set(idumur_adek);
+      PRINT(vars->get("umur"));
     } catch(const std::exception& error) { PRINT(error.what()); }
 )
 

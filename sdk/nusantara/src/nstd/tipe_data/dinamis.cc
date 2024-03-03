@@ -6,6 +6,7 @@
 #include "core/error.h"
 #include "core/format.h"
 #include "core/pointer.h"
+#include "core/print.h"
 #include "core/string.h"
 #include "nstd/operasi/operasi.h"
 #include "nstd/tipe_data/benarsalah.h"
@@ -13,6 +14,7 @@
 #include "nstd/tipe_data/kalimat.h"
 #include "nstd/tipe_data/peta.h"
 #include "nstd/tipe_data/bilangan.h"
+#include "nstd/tipe_data/identifikasi.h"
 
 #define _DINAMIS_CONSTRUCTOR(tipe, tipe_data) \
   NSTD dinamis::dinamis(const tipe& nilai): nilai(MPTR(tipe_data, nilai)) {}
@@ -48,10 +50,14 @@
     )                                                                         \
     _DINAMIS_AS_ERROR_TIPE_CHECK(tipe_name, "class nstd::daftar", "daftar")   \
     _DINAMIS_AS_ERROR_TIPE_CHECK(tipe_name, "class nstd::peta", "peta")       \
+    _DINAMIS_AS_ERROR_TIPE_CHECK(tipe_name, "class nstd::identifikasi", "identifikasi")       \
     throw RTERROR("Nilai dinamis tidak valid.");                                       \
   }
 
 #define _DINAMIS_ERROR_OPERASI_TIDAK_VALID(operasi_name) RTERROR(FMT("Operasi {} tidak valid.", operasi_name))
+
+#define _DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_CONST_WITH_THROW_ERROR(result, op, with_type, op_name, code) \
+  CLASS_DEFINE_OPERATION_LEFT_RIGHT_CONST(NSTD dinamis, result, op, with_type, code throw _DINAMIS_ERROR_OPERASI_TIDAK_VALID(op_name);)
 
 #define _DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(result, op, with_type, op_name, code) \
   CLASS_DEFINE_OPERATION_LEFT_RIGHT(NSTD dinamis, result, op, with_type, code throw _DINAMIS_ERROR_OPERASI_TIDAK_VALID(op_name);)
@@ -70,6 +76,7 @@ _DINAMIS_CONSTRUCTOR_NILAI_MOVE(kalimat, kalimat)
 _DINAMIS_CONSTRUCTOR_NILAI_MOVE(benarsalah, benarsalah)
 _DINAMIS_CONSTRUCTOR_NILAI_MOVE(daftar, daftar)
 _DINAMIS_CONSTRUCTOR_NILAI_MOVE(peta, peta)
+_DINAMIS_CONSTRUCTOR_NILAI_MOVE(identifikasi, identifikasi)
 // Copy constructors
 NSTD dinamis::dinamis(const dinamis& other) {
   if(other.is_bilangan()) {
@@ -82,10 +89,14 @@ NSTD dinamis::dinamis(const dinamis& other) {
     this->nilai = MPTR(daftar, other.get_daftar());
   }else if(other.is_peta()) {
     this->nilai = MPTR(peta, other.get_peta());
-  }else{
+  }else if(other.is_identifikasi()) {
+    this->nilai = MPTR(identifikasi, other.get_identifikasi());
+  }else {
     this->nilai = nullptr;
   }
 }
+// Move constructor
+NSTD dinamis::dinamis(dinamis&& other) noexcept: nilai(STD move(other.nilai)) {}
 
 ND bool NSTD dinamis::kosong() const { return _DINAMIS_VALUE == nullptr; }
 
@@ -107,6 +118,9 @@ ND NSTD kalimat NSTD dinamis::ubahKeKalimat() const {
   if(PTR_CAST(_DINAMIS_VALUE, peta)) {
     return cast_result_ptr->ubahKeKalimat();
   }
+  if(PTR_CAST(_DINAMIS_VALUE, identifikasi)) {
+    return cast_result_ptr->ubahKeKalimat();
+  }
   return kalimat("kosong");
 }
 
@@ -115,42 +129,38 @@ _DEFINE_DINAMIS_IS_FUNCTION(kalimat);
 _DEFINE_DINAMIS_IS_FUNCTION(benarsalah);
 _DEFINE_DINAMIS_IS_FUNCTION(daftar);
 _DEFINE_DINAMIS_IS_FUNCTION(peta);
+_DEFINE_DINAMIS_IS_FUNCTION(identifikasi);
 
 _DEFINE_DINAMIS_GET_FUNCTION(bilangan);
 _DEFINE_DINAMIS_GET_FUNCTION(kalimat);
 _DEFINE_DINAMIS_GET_FUNCTION(benarsalah);
 _DEFINE_DINAMIS_GET_FUNCTION(daftar);
 _DEFINE_DINAMIS_GET_FUNCTION(peta);
+_DEFINE_DINAMIS_GET_FUNCTION(identifikasi);
 
 NSTD dinamis& NSTD dinamis::operator=(const int& nilaiX) {
+  if(this->is_identifikasi()) {
+    this->get_identifikasi().set(bilangan(nilaiX));
+    return *this;
+  }
   this->nilai = MPTR(bilangan, nilaiX);
   return *this;
 }
 
 NSTD dinamis& NSTD dinamis::operator=(const STR& nilaiX) {
+  if(this->is_identifikasi()) {
+    this->get_identifikasi().set(kalimat(nilaiX));
+    return *this;
+  }
   this->nilai = MPTR(kalimat, nilaiX);
   return *this;
 }
 
-NSTD dinamis& NSTD dinamis::operator=(const dinamis& nilaiX) {
-  if(this == &nilaiX) {return *this;}
-  if(nilaiX.is_bilangan()) {
-    this->nilai = MPTR(bilangan, nilaiX.get_bilangan());
-  }else if(nilaiX.is_kalimat()) {
-    this->nilai = MPTR(kalimat, nilaiX.get_kalimat());
-  }else if(nilaiX.is_benarsalah()) {
-    this->nilai = MPTR(benarsalah, nilaiX.get_benarsalah());
-  }else if(nilaiX.is_daftar()) {
-    this->nilai = MPTR(daftar, nilaiX.get_daftar());
-  }else if(nilaiX.is_peta()) {
-    this->nilai = MPTR(peta, nilaiX.get_peta());
-  }else{
-    this->nilai = nullptr;
-  }
-  return *this;
-}
-
 NSTD dinamis& NSTD dinamis::operator=(const benarsalah& nilaiX) {
+  if(this->is_identifikasi()) {
+    this->get_identifikasi().set(nilaiX);
+    return *this;
+  }
   this->nilai = MPTR(benarsalah, nilaiX);
   return *this;
 }
@@ -205,7 +215,7 @@ NSTD dinamis NSTD dinamis::operator~() {
   throw _DINAMIS_AS_ERROR("bilangan bulat");
 }
 
-_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, +, dinamis, "penjumlahan",
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_CONST_WITH_THROW_ERROR(NSTD dinamis, +, dinamis, "penjumlahan",
   if(this->is_bilangan() && nilaiX.is_bilangan()) {
     return dinamis(this->get_bilangan() + nilaiX.get_bilangan());
   }
@@ -214,13 +224,13 @@ _DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, +, dinamis, 
   }
 )
 
-_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, -, dinamis, "pengurangan",
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_CONST_WITH_THROW_ERROR(NSTD dinamis, -, dinamis, "pengurangan",
   if(this->is_bilangan() && nilaiX.is_bilangan()) {
     return dinamis(this->get_bilangan() - nilaiX.get_bilangan());
   }
 )
 
-_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, *, dinamis, "perkalian",
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_CONST_WITH_THROW_ERROR(NSTD dinamis, *, dinamis, "perkalian",
   if(this->is_bilangan() && nilaiX.is_bilangan()) {
     return dinamis(this->get_bilangan() * nilaiX.get_bilangan());
   }
@@ -229,92 +239,147 @@ _DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, *, dinamis, 
   }
 )
 
-_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, /, dinamis, "pembagian",
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_CONST_WITH_THROW_ERROR(NSTD dinamis, /, dinamis, "pembagian",
   if(this->is_bilangan() && nilaiX.is_bilangan()) {
     return dinamis(this->get_bilangan() / nilaiX.get_bilangan());
   }
 )
 
-_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, %, dinamis, "sisa pembagian",
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_CONST_WITH_THROW_ERROR(NSTD dinamis, %, dinamis, "sisa pembagian",
   if(this->is_bilangan() && nilaiX.is_bilangan()) {
     return dinamis(this->get_bilangan() % nilaiX.get_bilangan());
   }
 )
 
-_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, ==, dinamis, "persamaan",
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_CONST_WITH_THROW_ERROR(NSTD dinamis, ==, dinamis, "persamaan",
   if(this->is_bilangan() && nilaiX.is_bilangan()) {
     return dinamis(this->get_bilangan() == nilaiX.get_bilangan());
   }
 )
 
-_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, !=, dinamis, "pertidaksamaan",
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_CONST_WITH_THROW_ERROR(NSTD dinamis, !=, dinamis, "pertidaksamaan",
   if(this->is_bilangan() && nilaiX.is_bilangan()) {
     return dinamis(this->get_bilangan() != nilaiX.get_bilangan());
   }
 )
 
-_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, >, dinamis, "lebih besar dari",
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_CONST_WITH_THROW_ERROR(NSTD dinamis, >, dinamis, "lebih besar dari",
   if(this->is_bilangan() && nilaiX.is_bilangan()) {
     return dinamis(this->get_bilangan() > nilaiX.get_bilangan());
   }
 )
 
-_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, <, dinamis, "lebih kecil dari",
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_CONST_WITH_THROW_ERROR(NSTD dinamis, <, dinamis, "lebih kecil dari",
   if(this->is_bilangan() && nilaiX.is_bilangan()) {
     return dinamis(this->get_bilangan() < nilaiX.get_bilangan());
   }
 )
 
-_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, >=, dinamis, "lebih besar dari sama dengan",
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_CONST_WITH_THROW_ERROR(NSTD dinamis, >=, dinamis, "lebih besar dari sama dengan",
   if(this->is_bilangan() && nilaiX.is_bilangan()) {
     return dinamis(this->get_bilangan() >= nilaiX.get_bilangan());
   }
 )
 
-_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, <=, dinamis, "lebih kecil dari sama dengan",
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_CONST_WITH_THROW_ERROR(NSTD dinamis, <=, dinamis, "lebih kecil dari sama dengan",
   if(this->is_bilangan() && nilaiX.is_bilangan()) {
     return dinamis(this->get_bilangan() <= nilaiX.get_bilangan());
   }
 )
 
-_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, &&, dinamis, "dan",
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_CONST_WITH_THROW_ERROR(NSTD dinamis, &&, dinamis, "dan",
   if(this->is_benarsalah() && nilaiX.is_benarsalah()) {
     return dinamis(this->get_benarsalah() && nilaiX.get_benarsalah());
   }
 )
 
-_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, ||, dinamis, "atau",
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_CONST_WITH_THROW_ERROR(NSTD dinamis, ||, dinamis, "atau",
   if(this->is_benarsalah() && nilaiX.is_benarsalah()) {
     return dinamis(this->get_benarsalah() || nilaiX.get_benarsalah());
   }
 )
 
-_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, &, dinamis, "and bit",
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_CONST_WITH_THROW_ERROR(NSTD dinamis, &, dinamis, "and bit",
   if(this->is_bilangan() && nilaiX.is_bilangan()) {
     return dinamis(this->get_bilangan() & nilaiX.get_bilangan());
   }
 )
 
-_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, |, dinamis, "or bit",
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_CONST_WITH_THROW_ERROR(NSTD dinamis, |, dinamis, "or bit",
   if(this->is_bilangan() && nilaiX.is_bilangan()) {
     return dinamis(this->get_bilangan() | nilaiX.get_bilangan());
   }
 )
 
-_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, ^, dinamis, "xor bit",
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_CONST_WITH_THROW_ERROR(NSTD dinamis, ^, dinamis, "xor bit",
   if(this->is_bilangan() && nilaiX.is_bilangan()) {
     return dinamis(this->get_bilangan() ^ nilaiX.get_bilangan());
   }
 )
 
-_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, <<, dinamis, "geser kiri bit",
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_CONST_WITH_THROW_ERROR(NSTD dinamis, <<, dinamis, "geser kiri bit",
   if(this->is_bilangan() && nilaiX.is_bilangan()) {
     return dinamis(this->get_bilangan() << nilaiX.get_bilangan());
   }
 )
 
-_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis, >>, dinamis, "geser kanan bit",
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_CONST_WITH_THROW_ERROR(NSTD dinamis, >>, dinamis, "geser kanan bit",
   if(this->is_bilangan() && nilaiX.is_bilangan()) {
     return dinamis(this->get_bilangan() >> nilaiX.get_bilangan());
   }
 )
+
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis&, =, NSTD dinamis, "sama dengan",
+  if(this == &nilaiX) {return *this;}
+  if(this->is_identifikasi() && nilaiX.is_bilangan()) {
+    this->get_identifikasi().set(nilaiX.get_bilangan());
+    return *this;
+  }
+  if(this->is_identifikasi() && nilaiX.is_identifikasi()) {
+    this->get_identifikasi().set(nilaiX.get_identifikasi());
+    return *this;
+  }
+  if(!this->is_identifikasi()) {
+    if(nilaiX.is_bilangan()) {
+      this->nilai = MPTR(bilangan, nilaiX.get_bilangan());
+    }else if(nilaiX.is_kalimat()) {
+      this->nilai = MPTR(kalimat, nilaiX.get_kalimat());
+    }else if(nilaiX.is_benarsalah()) {
+      this->nilai = MPTR(benarsalah, nilaiX.get_benarsalah());
+    }else if(nilaiX.is_daftar()) {
+      this->nilai = MPTR(daftar, nilaiX.get_daftar());
+    }else if(nilaiX.is_peta()) {
+      this->nilai = MPTR(peta, nilaiX.get_peta());
+    }else if(nilaiX.is_identifikasi()) {
+      this->nilai = MPTR(identifikasi, nilaiX.get_identifikasi());
+    }else{
+      this->nilai = nullptr;
+    }
+    return *this;
+  }
+)
+
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis&, +=, NSTD dinamis, "tambah sama dengan",
+  if(this->is_identifikasi() && nilaiX.is_bilangan()) {
+    this->get_identifikasi().set(this->get_identifikasi() + nilaiX.get_bilangan());
+    return *this;
+  }
+)
+
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis&, -=, NSTD dinamis, "kurang sama dengan",)
+
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis&, *=, NSTD dinamis, "kali sama dengan", )
+
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis&, /=, NSTD dinamis, "bagi sama dengan", )
+
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis&, %=, NSTD dinamis, "sisa bagi sama dengan", )
+
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis&, &=, NSTD dinamis, "and bit sama dengan", )
+
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis&, |=, NSTD dinamis, "or bit sama dengan", )
+
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis&, ^=, NSTD dinamis, "xor sama dengan", )
+
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis&, <<=, NSTD dinamis, "geser kiri bit sama dengan", )
+
+_DINAMIS_DEFINE_OPERATION_LEFT_RIGHT_WITH_THROW_ERROR(NSTD dinamis&, >>=, NSTD dinamis, "geser kanan bit sama dengan", )
