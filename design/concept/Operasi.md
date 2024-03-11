@@ -66,7 +66,7 @@ Contoh : x >> y
 ### Operasi Perbandingan (dari kiri ke kanan)
 
 - ```<``` (Less Than)  
-Contoh : x << y
+Contoh : x < y
 
 - ```<=``` (Less Than or Equal To)  
 Contoh : x <= y
