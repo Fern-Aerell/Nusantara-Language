@@ -5,11 +5,13 @@ Tipe data di nusantara di bagi menjadi 1 jenis
 
 ## Bilangan
 
-Tipe data ini akan menyimpan nilai bilangan bulat dan desimal.
+Tipe data ini akan menyimpan nilai bilangan bulat atau desimal, bisa juga lebih spesifik dengan menambahkan kata kunci ```bulat``` atapun ```desimal```.
 
 Contoh :
 ```nusantara
 bilangan nilai = 10;
+bilangan bulat umur = 18;
+bilangan desimal btc = 0,5;
 ```
 
 ## Teks
