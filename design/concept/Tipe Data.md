@@ -1,7 +1,7 @@
 # Tipe Data Nusantara
 
 Tipe data di nusantara di bagi menjadi 1 jenis
-- bawaan (bilangan, kalimat, benarsalah, kumpulan, dinamis)
+- bawaan (bilangan, teks, benarsalah, kumpulan, dinamis)
 
 ## Bilangan
 
@@ -12,13 +12,13 @@ Contoh :
 bilangan nilai = 10;
 ```
 
-## Kalimat
+## Teks
 
-Tipe data ini akan menyimpan nilai kalimat yang biasa nya di bungkus dengan kutip 1 atau 2.
+Tipe data ini akan menyimpan nilai teks yang biasa nya di bungkus dengan kutip 1 atau 2.
 
 Contoh :
 ```nusantara
-kalimat nama = "Fern Aerell";
+teks nama = "Fern Aerell";
 ```
 
 ## Benarsalah
@@ -49,7 +49,7 @@ Contoh :
 bilangan[] kumpulanBilangan = [1, 2, 3, 4, 5];
 
 // kumpulan asosiatif
-{kalimat: dinamis} dataSiswa = {'nama': 'Fern', 'umur': 18};
+{teks: dinamis} dataSiswa = {'nama': 'Fern', 'umur': 18};
 ```
 
 ## Dinamis
