@@ -1,7 +1,7 @@
 # Tipe Data Nusantara
 
 Tipe data di nusantara di bagi menjadi 1 jenis
-- bawaan (bilangan, teks, benarsalah, kumpulan, dinamis)
+- bawaan (bilangan, teks, benarsalah, kumpulan, daftar, peta, dinamis)
 
 ## Bilangan
 
@@ -34,29 +34,49 @@ benarsalah lulus = benar;
 
 ## Kumpulan
 
-Tipe data ini akan menyimpan kumpulan data, seperti array dan map, kumpulan dibagi menjadi 2 yaitu kumpulan dan kumpulan asosiatif.
+Tipe data ini dapat menyimpan banyak data tetapi tidak berurutan dan tidai dapat menyimpan data dengan nilai yang sama.
 
 Sintaks :
 ```nusantara
-// kumpulan
-tipe[] namaKumpulan = [];
-
-// kumpulan asosiatif
-{key: value} namaKumpulanAsosiatif = {};
+kumpulan<tipe>[jumlah] namaKumpulan = [];
 ```
 
 Contoh :
 ```nusantara
-// kumpulan
-bilangan[] kumpulanBilangan = [1, 2, 3, 4, 5];
+kumpulan<bilangan> nomor = [1, 2, 4, 5]
+```
 
-// kumpulan asosiatif
-{teks: dinamis} dataSiswa = {'nama': 'Fern', 'umur': 18};
+## Daftar
+
+Tipe data ini dapat menyimpan banyak data secara berurutan dan dapat menyimpan data dengan nilai yang sama.
+
+Sintaks :
+```nusantara
+daftar<tipe>[jumlah] namaDaftar = [];
+```
+
+Contoh :
+```nusantara
+daftar<bilangan> nomor = [1, 2, 2, 4, 5]
+```
+
+## Peta
+
+Tipe data ini dapat menyimpan banyak data secara berurutan dengan kata kunci dan dapat menyimpan data dengan nilai yang sama asalkan kata kunci nya berbeda.
+
+Sintaks :
+```nusantara
+peta<tipe, tipe>[jumlah] namaPeta = {};
+```
+
+Contoh :
+```nusantara
+peta<teks, teks> biodata = ['nama': 'aerell']
 ```
 
 ## Dinamis
 
-Tipe data ini akan menyimpan nilai dinamis.
+Tipe data ini dapat menyimpan nilai apa saja dan otomatis akan menyesuaikan tipe data nya dengan nilai yang di berikan.
 
 Contoh :
 ```nusantara
