@@ -38,7 +38,7 @@ Tipe data ini dapat menyimpan banyak data tetapi tidak berurutan dan tidai dapat
 
 Sintaks :
 ```nusantara
-kumpulan<tipe>[jumlah] namaKumpulan = [];
+kumpulan<tipe> namaKumpulan = [];
 ```
 
 Contoh :
@@ -52,7 +52,7 @@ Tipe data ini dapat menyimpan banyak data secara berurutan dan dapat menyimpan d
 
 Sintaks :
 ```nusantara
-daftar<tipe>[jumlah] namaDaftar = [];
+daftar<tipe> namaDaftar = [];
 ```
 
 Contoh :
@@ -66,7 +66,7 @@ Tipe data ini dapat menyimpan banyak data secara berurutan dengan kata kunci dan
 
 Sintaks :
 ```nusantara
-peta<tipe, tipe>[jumlah] namaPeta = {};
+peta<tipe, tipe> namaPeta = {};
 ```
 
 Contoh :
