@@ -1,0 +1,47 @@
+{
+	"version": 8,
+	"cmakeMinimumRequired": {
+		"major": 3,
+		"minor": 28,
+		"patch": 0
+	},
+	"configurePresets": [
+		{
+			"name": "windows-release",
+			"displayName": "Windows Release Config",
+			"generator": "Ninja",
+			"binaryDir": "${sourceDir}/build",
+			"cacheVariables": {
+				"CMAKE_CXX_COMPILER": "clang++",
+				"CMAKE_BUILD_TYPE": "Release",
+				"CMAKE_EXPORT_COMPILE_COMMANDS": "true",
+				"CMAKE_CXX_FLAGS": "-Ofast -ffast-math -flto -march=native -mtune=native -fstack-protector -msse2 -mavx -g -Wall -Wextra",
+				"CMAKE_LINKER": "lld",
+				"CMAKE_INSTALL_PREFIX": "C:/Aerell/App/ncpp"
+			}
+		},
+		{
+			"name": "linux-release",
+			"displayName": "Linux Release Config",
+			"generator": "Ninja",
+			"binaryDir": "${sourceDir}/build",
+			"cacheVariables": {
+				"CMAKE_CXX_COMPILER": "clang++-17",
+				"CMAKE_BUILD_TYPE": "Release",
+				"CMAKE_EXPORT_COMPILE_COMMANDS": "true",
+				"CMAKE_CXX_FLAGS": "-Ofast -ffast-math -flto -march=native -mtune=native -fstack-protector -g -fPIE -Wall -Wextra",
+				"CMAKE_LINKER": "lld-17"
+			}
+		}
+	],
+	"buildPresets": [
+		{
+			"name": "windows-release",
+			"configurePreset": "windows-release"
+		},
+		{
+			"name": "linux-release",
+			"configurePreset": "linux-release"
+		}
+	]
+}
