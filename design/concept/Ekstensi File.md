@@ -7,4 +7,8 @@ Saya sebenarnya masih bingung untuk nama file extension dari bahasa pemrograman 
 | .NST            | NuSanTara          |
 | .NS             | NuSantara          |
 | .NT             | NusanTara          |
-| .NL (saat ini)  | Nusantara Language |
+| .NL												  | Nusantara Language |
+| .NUSANTARA							| Nusantara											|
+|	.NSA													|	NuSantarA											|
+|	.NSL													|	NuSantara Language		|
+| .NUSA												|	NUSAntara											|
