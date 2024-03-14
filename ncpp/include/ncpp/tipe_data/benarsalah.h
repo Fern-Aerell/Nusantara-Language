@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include "ncpp/tipe_data/teks.h"
 
 namespace ncpp {
     class benarsalah {
@@ -19,7 +18,7 @@ namespace ncpp {
             benarsalah(benarsalah&& other) noexcept;
             // Move assignment operator
             benarsalah& operator=(benarsalah&& other) noexcept;
-            [[nodiscard]] teks ubah_ke_teks() const;
+            [[nodiscard]] std::string ubah_ke_string() const;
             explicit operator bool() const;
             static benarsalah benar();
             static benarsalah salah();
@@ -31,7 +30,7 @@ namespace ncpp {
         private:
             bool nilai;
             friend std::ostream& operator<<(std::ostream& ost, const benarsalah& data) { 
-                ost << data.ubah_ke_teks();
+                ost << data.ubah_ke_string();
                 return ost;
             }
     };

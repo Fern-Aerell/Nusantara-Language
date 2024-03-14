@@ -47,28 +47,28 @@ ncpp::bilangan_desimal& ncpp::bilangan_desimal::operator=(bilangan_desimal&& oth
 }
 
 const int ncpp::bilangan_desimal::basis = 10;
-const int ncpp::bilangan_desimal::presisi_teks_bawaan = 15;
+const int ncpp::bilangan_desimal::presisi_string_bawaan = 15;
 const mpfr_rnd_t ncpp::bilangan_desimal::pembulatan = MPFR_RNDN;
 const double ncpp::bilangan_desimal::toleransi = 1e-9;
 
 std::regex ncpp::bilangan_desimal::pattern() {
     return std::regex("^-?[0-9]+([,.][0-9]+|([,.][0-9]*)?[eE][+-]?[0-9]+)$");
 }
-ncpp::teks ncpp::bilangan_desimal::ubah_ke_teks() const {
-	return teks(ubah_ke_string_presisi(this->nilai, bilangan_desimal::presisi_teks_bawaan, true));
+std::string ncpp::bilangan_desimal::ubah_ke_string() const {
+	return ncpp::ubah_ke_string_presisi(this->nilai, bilangan_desimal::presisi_string_bawaan, true);
 }
-ncpp::teks ncpp::bilangan_desimal::ubah_ke_teks_tetap(const int& presisi) const {
-	return teks(ubah_ke_string_tetap(this->nilai, presisi, true));
+std::string ncpp::bilangan_desimal::ubah_ke_string_tetap(const int& presisi) const {
+	return ncpp::ubah_ke_string_tetap(this->nilai, presisi, true);
 }
-ncpp::teks ncpp::bilangan_desimal::ubah_ke_teks_presisi(const int& presisi) const {
-	return teks(ubah_ke_string_presisi(this->nilai, presisi, true));
+std::string ncpp::bilangan_desimal::ubah_ke_string_presisi(const int& presisi) const {
+	return ncpp::ubah_ke_string_presisi(this->nilai, presisi, true);
 }
 const mpfr_t& ncpp::bilangan_desimal::ambil() const {
     return this->nilai;
 }
 
 ncpp::bilangan_desimal ncpp::bilangan_desimal::ubah(const bilangan_bulat& nilai) {
-  return bilangan_desimal(teks("{},0", nilai.ubah_ke_teks()).ubah_ke_string());
+  return bilangan_desimal(teks("{},0", nilai).ubah_ke_string());
 }
 ncpp::bilangan_desimal ncpp::bilangan_desimal::operator+(const bilangan_bulat& nilai) const {
 	return *this + bilangan_desimal::ubah(nilai);
@@ -77,7 +77,7 @@ ncpp::bilangan_desimal ncpp::bilangan_desimal::operator+(const bilangan_desimal&
 	mpfr_t hasil;
 	mpfr_init(hasil);
 	mpfr_add(hasil, this->nilai, nilai.nilai, bilangan_desimal::pembulatan);
-	std::string hasil_str = ubah_ke_string_presisi(hasil, mpfr_get_prec(hasil), true);
+	std::string hasil_str = ncpp::ubah_ke_string_presisi(hasil, mpfr_get_prec(hasil), true);
 	mpfr_clear(hasil);
 	return bilangan_desimal(hasil_str);
 }
@@ -88,7 +88,7 @@ ncpp::bilangan_desimal ncpp::bilangan_desimal::operator-(const bilangan_desimal&
 	mpfr_t hasil;
 	mpfr_init(hasil);
 	mpfr_sub(hasil, this->nilai, nilai.nilai, bilangan_desimal::pembulatan);
-	std::string hasil_str = ubah_ke_string_presisi(hasil, mpfr_get_prec(hasil), true);
+	std::string hasil_str = ncpp::ubah_ke_string_presisi(hasil, mpfr_get_prec(hasil), true);
 	mpfr_clear(hasil);
 	return bilangan_desimal(hasil_str);
 }
@@ -99,7 +99,7 @@ ncpp::bilangan_desimal ncpp::bilangan_desimal::operator*(const bilangan_desimal&
 	mpfr_t hasil;
 	mpfr_init(hasil);
 	mpfr_mul(hasil, this->nilai, nilai.nilai, bilangan_desimal::pembulatan);
-	std::string hasil_str = ubah_ke_string_presisi(hasil, mpfr_get_prec(hasil), true);
+	std::string hasil_str = ncpp::ubah_ke_string_presisi(hasil, mpfr_get_prec(hasil), true);
 	mpfr_clear(hasil);
 	return bilangan_desimal(hasil_str);
 }
@@ -110,7 +110,7 @@ ncpp::bilangan_desimal ncpp::bilangan_desimal::operator/(const bilangan_desimal&
 	mpfr_t hasil;
 	mpfr_init(hasil);
 	mpfr_div(hasil, this->nilai, nilai.nilai, bilangan_desimal::pembulatan);
-	std::string hasil_str = ubah_ke_string_presisi(hasil, mpfr_get_prec(hasil), true);
+	std::string hasil_str = ncpp::ubah_ke_string_presisi(hasil, mpfr_get_prec(hasil), true);
 	mpfr_clear(hasil);
 	return bilangan_desimal(hasil_str);
 }
@@ -121,7 +121,7 @@ ncpp::bilangan_desimal ncpp::bilangan_desimal::operator%(const bilangan_desimal&
 	mpfr_t hasil;
 	mpfr_init(hasil);
 	mpfr_fmod(hasil, this->nilai, nilai.nilai, bilangan_desimal::pembulatan);
-	std::string hasil_str = ubah_ke_string_presisi(hasil, mpfr_get_prec(hasil));
+	std::string hasil_str = ncpp::ubah_ke_string_presisi(hasil, mpfr_get_prec(hasil));
 	mpfr_clear(hasil);
 	return bilangan_desimal(hasil_str);
 }

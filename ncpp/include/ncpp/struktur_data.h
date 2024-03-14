@@ -2,7 +2,6 @@
 
 #include <string>
 #include "ncpp/batas_jumlah.h"
-#include "ncpp/tipe_data/teks.h"
 
 namespace ncpp {
     template<typename Tipe_Struktur>
@@ -120,7 +119,7 @@ namespace ncpp {
             Tipe_Struktur::const_iterator end() const {
                 return this->nilai.end();
             }
-            [[nodiscard]] virtual teks ubah_ke_teks() const = 0;
+            [[nodiscard]] virtual std::string ubah_ke_string() const = 0;
             bool operator==(const struktur_data& other) {
                 return this->nama_struktur_data == other.nama_struktur_data &&
                     this->batas_jumlah == other.batas_jumlah &&
@@ -168,7 +167,7 @@ namespace ncpp {
                 }
             }
             friend std::ostream& operator<<(std::ostream& ost, const struktur_data& data) { 
-                ost << data.ubah_ke_teks();
+                ost << data.ubah_ke_string();
                 return ost;
             }
         protected:

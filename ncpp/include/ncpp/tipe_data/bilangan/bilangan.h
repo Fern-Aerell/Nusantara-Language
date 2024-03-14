@@ -5,7 +5,6 @@
 #include "ncpp/nilai/nilai_bilangan.h"
 #include "ncpp/tipe_data/bilangan/bilangan_bulat.h"
 #include "ncpp/tipe_data/bilangan/bilangan_desimal.h"
-#include "ncpp/tipe_data/teks.h"
 
 namespace ncpp {
     class bilangan {
@@ -25,7 +24,7 @@ namespace ncpp {
             bilangan& operator=(bilangan&& other) noexcept;
             [[nodiscard]] bool ini_bulat() const;
             [[nodiscard]] bool ini_desimal() const;
-            [[nodiscard]] teks ubah_ke_teks() const;
+            [[nodiscard]] std::string ubah_ke_string() const;
             bilangan operator+(const bilangan& nilai) const;
             bilangan operator-(const bilangan& nilai) const;
             bilangan operator*(const bilangan& nilai) const;
@@ -62,7 +61,7 @@ namespace ncpp {
             [[nodiscard]] bilangan_bulat& ambil_nilai_bulat() const;
             [[nodiscard]] bilangan_desimal& ambil_nilai_desimal() const;
             friend std::ostream& operator<<(std::ostream& ost, const bilangan& data) { 
-                ost << data.ubah_ke_teks();
+                ost << data.ubah_ke_string();
                 return ost;
             }
     };

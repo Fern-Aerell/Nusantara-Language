@@ -60,8 +60,8 @@ bool ncpp::bilangan::ini_desimal() const {
     }
     return false;
 }
-ncpp::teks ncpp::bilangan::ubah_ke_teks() const {
-    return this->nilai->ubah_ke_teks();
+std::string ncpp::bilangan::ubah_ke_string() const {
+    return this->nilai->ubah_ke_string();
 }
 ncpp::bilangan_bulat& ncpp::bilangan::ambil_nilai_bulat() const {
     if(auto* ptr = dynamic_cast<bilangan_bulat*>(this->nilai.get())) {
@@ -77,97 +77,97 @@ ncpp::bilangan_desimal& ncpp::bilangan::ambil_nilai_desimal() const {
 }
 ncpp::bilangan ncpp::bilangan::operator+(const bilangan& nilai) const {
     if(this->ini_bulat() && nilai.ini_bulat()) {
-        return bilangan((this->ambil_nilai_bulat() + nilai.ambil_nilai_bulat()).ubah_ke_teks().ubah_ke_string());
+        return bilangan((this->ambil_nilai_bulat() + nilai.ambil_nilai_bulat()).ubah_ke_string());
     }
     if(this->ini_desimal() && nilai.ini_desimal()) {
         bilangan_desimal hasil = this->ambil_nilai_desimal() + nilai.ambil_nilai_desimal();
-        return bilangan(hasil.ubah_ke_teks_presisi(hasil.presisi()).ubah_ke_string());
+        return bilangan(hasil.ubah_ke_string_presisi(hasil.presisi()));
     }
     if(this->ini_bulat() && nilai.ini_desimal()) {
         bilangan_desimal hasil = this->ambil_nilai_bulat() + nilai.ambil_nilai_desimal();
-        return bilangan(hasil.ubah_ke_teks_presisi(hasil.presisi()).ubah_ke_string());
+        return bilangan(hasil.ubah_ke_string_presisi(hasil.presisi()));
     }
     if(this->ini_desimal() && nilai.ini_bulat()) {
         bilangan_desimal hasil = this->ambil_nilai_desimal() + nilai.ambil_nilai_bulat();
-        return bilangan(hasil.ubah_ke_teks_presisi(hasil.presisi()).ubah_ke_string());
+        return bilangan(hasil.ubah_ke_string_presisi(hasil.presisi()));
     }
     throw std::runtime_error("Operasi penjumlahan '+' bilangan tidak dapat dilakukan.");
 }
 ncpp::bilangan ncpp::bilangan::operator-(const bilangan& nilai) const {
     if(this->ini_bulat() && nilai.ini_bulat()) {
-        return bilangan((this->ambil_nilai_bulat() - nilai.ambil_nilai_bulat()).ubah_ke_teks().ubah_ke_string());
+        return bilangan((this->ambil_nilai_bulat() - nilai.ambil_nilai_bulat()).ubah_ke_string());
     }
     if(this->ini_desimal() && nilai.ini_desimal()) {
         bilangan_desimal hasil = this->ambil_nilai_desimal() - nilai.ambil_nilai_desimal();
-        return bilangan(hasil.ubah_ke_teks_presisi(hasil.presisi()).ubah_ke_string());
+        return bilangan(hasil.ubah_ke_string_presisi(hasil.presisi()));
     }
     if(this->ini_bulat() && nilai.ini_desimal()) {
         bilangan_desimal hasil = this->ambil_nilai_bulat() - nilai.ambil_nilai_desimal();
-        return bilangan(hasil.ubah_ke_teks_presisi(hasil.presisi()).ubah_ke_string());
+        return bilangan(hasil.ubah_ke_string_presisi(hasil.presisi()));
     }
     if(this->ini_desimal() && nilai.ini_bulat()) {
         bilangan_desimal hasil = this->ambil_nilai_desimal() - nilai.ambil_nilai_bulat();
-        return bilangan(hasil.ubah_ke_teks_presisi(hasil.presisi()).ubah_ke_string());
+        return bilangan(hasil.ubah_ke_string_presisi(hasil.presisi()));
     }
     throw std::runtime_error("Operasi pengurangan '-' bilangan tidak dapat dilakukan.");
 }
 ncpp::bilangan ncpp::bilangan::operator*(const bilangan& nilai) const {
     if(this->ini_bulat() && nilai.ini_bulat()) {
-        return bilangan((this->ambil_nilai_bulat() * nilai.ambil_nilai_bulat()).ubah_ke_teks().ubah_ke_string());
+        return bilangan((this->ambil_nilai_bulat() * nilai.ambil_nilai_bulat()).ubah_ke_string());
     }
     if(this->ini_desimal() && nilai.ini_desimal()) {
         bilangan_desimal hasil = this->ambil_nilai_desimal() * nilai.ambil_nilai_desimal();
-        return bilangan(hasil.ubah_ke_teks_presisi(hasil.presisi()).ubah_ke_string());
+        return bilangan(hasil.ubah_ke_string_presisi(hasil.presisi()));
     }
     if(this->ini_bulat() && nilai.ini_desimal()) {
         bilangan_desimal hasil = this->ambil_nilai_bulat() * nilai.ambil_nilai_desimal();
-        return bilangan(hasil.ubah_ke_teks_presisi(hasil.presisi()).ubah_ke_string());
+        return bilangan(hasil.ubah_ke_string_presisi(hasil.presisi()));
     }
     if(this->ini_desimal() && nilai.ini_bulat()) {
         bilangan_desimal hasil = this->ambil_nilai_desimal() * nilai.ambil_nilai_bulat();
-        return bilangan(hasil.ubah_ke_teks_presisi(hasil.presisi()).ubah_ke_string());
+        return bilangan(hasil.ubah_ke_string_presisi(hasil.presisi()));
     }
     throw std::runtime_error("Operasi perkalian '*' bilangan tidak dapat dilakukan.");
 }
 ncpp::bilangan ncpp::bilangan::operator/(const bilangan& nilai) const {
     if(this->ini_bulat() && nilai.ini_bulat()) {
-        return bilangan((this->ambil_nilai_bulat() / nilai.ambil_nilai_bulat()).ubah_ke_teks().ubah_ke_string());
+        return bilangan((this->ambil_nilai_bulat() / nilai.ambil_nilai_bulat()).ubah_ke_string());
     }
     if(this->ini_desimal() && nilai.ini_desimal()) {
         bilangan_desimal hasil = this->ambil_nilai_desimal() / nilai.ambil_nilai_desimal();
-        return bilangan(hasil.ubah_ke_teks_presisi(hasil.presisi()).ubah_ke_string());
+        return bilangan(hasil.ubah_ke_string_presisi(hasil.presisi()));
     }
     if(this->ini_bulat() && nilai.ini_desimal()) {
         bilangan_desimal hasil = this->ambil_nilai_bulat() / nilai.ambil_nilai_desimal();
-        return bilangan(hasil.ubah_ke_teks_presisi(hasil.presisi()).ubah_ke_string());
+        return bilangan(hasil.ubah_ke_string_presisi(hasil.presisi()));
     }
     if(this->ini_desimal() && nilai.ini_bulat()) {
         bilangan_desimal hasil = this->ambil_nilai_desimal() / nilai.ambil_nilai_bulat();
-        return bilangan(hasil.ubah_ke_teks_presisi(hasil.presisi()).ubah_ke_string());
+        return bilangan(hasil.ubah_ke_string_presisi(hasil.presisi()));
     }
     throw std::runtime_error("Operasi pembagian '/' bilangan tidak dapat dilakukan.");
 }
 ncpp::bilangan ncpp::bilangan::operator%(const bilangan& nilai) const {
     if(this->ini_bulat() && nilai.ini_bulat()) {
-        return bilangan((this->ambil_nilai_bulat() % nilai.ambil_nilai_bulat()).ubah_ke_teks().ubah_ke_string());
+        return bilangan((this->ambil_nilai_bulat() % nilai.ambil_nilai_bulat()).ubah_ke_string());
     }
     if(this->ini_desimal() && nilai.ini_desimal()) {
         bilangan_desimal hasil = this->ambil_nilai_desimal() % nilai.ambil_nilai_desimal();
-        return bilangan(hasil.ubah_ke_teks_presisi(hasil.presisi()).ubah_ke_string());
+        return bilangan(hasil.ubah_ke_string_presisi(hasil.presisi()));
     }
     if(this->ini_bulat() && nilai.ini_desimal()) {
         bilangan_desimal hasil = this->ambil_nilai_bulat() % nilai.ambil_nilai_desimal();
-        return bilangan(hasil.ubah_ke_teks_presisi(hasil.presisi()).ubah_ke_string());
+        return bilangan(hasil.ubah_ke_string_presisi(hasil.presisi()));
     }
     if(this->ini_desimal() && nilai.ini_bulat()) {
         bilangan_desimal hasil = this->ambil_nilai_desimal() % nilai.ambil_nilai_bulat();
-        return bilangan(hasil.ubah_ke_teks_presisi(hasil.presisi()).ubah_ke_string());
+        return bilangan(hasil.ubah_ke_string_presisi(hasil.presisi()));
     }
     throw std::runtime_error("Operasi sisa pembagian '%' bilangan tidak dapat dilakukan.");
 }
 ncpp::bilangan ncpp::bilangan::operator~() const {
     if(this->ini_bulat()) {
-        return bilangan((~this->ambil_nilai_bulat()).ubah_ke_teks().ubah_ke_string());
+        return bilangan((~this->ambil_nilai_bulat()).ubah_ke_string());
     }else if(this->ini_desimal()) {
         throw std::runtime_error("Operasi bitwise not '~' pada bilangan desimal tidak dapat dilakukan.");
     }
@@ -193,7 +193,7 @@ ncpp::bilangan ncpp::bilangan::operator--(int) {
 }
 ncpp::bilangan ncpp::bilangan::operator&(const bilangan& nilai) const {
     if(this->ini_bulat() && nilai.ini_bulat()) {
-        return bilangan((this->ambil_nilai_bulat() & nilai.ambil_nilai_bulat()).ubah_ke_teks().ubah_ke_string());
+        return bilangan((this->ambil_nilai_bulat() & nilai.ambil_nilai_bulat()).ubah_ke_string());
     }
     if(this->ini_desimal() && nilai.ini_desimal()) {
         throw std::runtime_error("Operasi bitwise and '&' pada bilangan desimal tidak dapat dilakukan.");
@@ -208,7 +208,7 @@ ncpp::bilangan ncpp::bilangan::operator&(const bilangan& nilai) const {
 }
 ncpp::bilangan ncpp::bilangan::operator^(const bilangan& nilai) const {
     if(this->ini_bulat() && nilai.ini_bulat()) {
-        return bilangan((this->ambil_nilai_bulat() ^ nilai.ambil_nilai_bulat()).ubah_ke_teks().ubah_ke_string());
+        return bilangan((this->ambil_nilai_bulat() ^ nilai.ambil_nilai_bulat()).ubah_ke_string());
     }
     if(this->ini_desimal() && nilai.ini_desimal()) {
         throw std::runtime_error("Operasi bitwise xor '^' pada bilangan desimal tidak dapat dilakukan.");
@@ -223,7 +223,7 @@ ncpp::bilangan ncpp::bilangan::operator^(const bilangan& nilai) const {
 }
 ncpp::bilangan ncpp::bilangan::operator|(const bilangan& nilai) const {
     if(this->ini_bulat() && nilai.ini_bulat()) {
-        return bilangan((this->ambil_nilai_bulat() | nilai.ambil_nilai_bulat()).ubah_ke_teks().ubah_ke_string());
+        return bilangan((this->ambil_nilai_bulat() | nilai.ambil_nilai_bulat()).ubah_ke_string());
     }
     if(this->ini_desimal() && nilai.ini_desimal()) {
         throw std::runtime_error("Operasi bitwise or '|' pada bilangan desimal tidak dapat dilakukan.");
@@ -238,7 +238,7 @@ ncpp::bilangan ncpp::bilangan::operator|(const bilangan& nilai) const {
 }
 ncpp::bilangan ncpp::bilangan::operator<<(const bilangan& nilai) const {
     if(this->ini_bulat() && nilai.ini_bulat()) {
-        return bilangan((this->ambil_nilai_bulat() << nilai.ambil_nilai_bulat()).ubah_ke_teks().ubah_ke_string());
+        return bilangan((this->ambil_nilai_bulat() << nilai.ambil_nilai_bulat()).ubah_ke_string());
     }
     if(this->ini_desimal() && nilai.ini_desimal()) {
         throw std::runtime_error("Operasi bitwise left shift '<<' pada bilangan desimal tidak dapat dilakukan.");
@@ -253,7 +253,7 @@ ncpp::bilangan ncpp::bilangan::operator<<(const bilangan& nilai) const {
 }
 ncpp::bilangan ncpp::bilangan::operator>>(const bilangan& nilai) const {
     if(this->ini_bulat() && nilai.ini_bulat()) {
-        return bilangan((this->ambil_nilai_bulat() >> nilai.ambil_nilai_bulat()).ubah_ke_teks().ubah_ke_string());
+        return bilangan((this->ambil_nilai_bulat() >> nilai.ambil_nilai_bulat()).ubah_ke_string());
     }
     if(this->ini_desimal() && nilai.ini_desimal()) {
         throw std::runtime_error("Operasi bitwise right shift '>>' pada bilangan desimal tidak dapat dilakukan.");

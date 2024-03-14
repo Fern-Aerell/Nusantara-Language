@@ -5,7 +5,6 @@
 #include "ncpp/konsol/konsol.h"
 #include "ncpp/tipe_data/bilangan/bilangan_bulat.h"
 #include "ncpp/tipe_data/bilangan/bilangan_desimal.h"
-#include "ncpp/tipe_data/teks.h"
 
 TEST(BILANGAN_BULAT_TEST, Constructors) {
     ncpp::konsol myKonsol;
@@ -71,9 +70,9 @@ TEST(BILANGAN_BULAT_TEST, Static_Fungsi_Pattern) {
     EXPECT_FALSE(std::regex_match("10,0", ncpp::bilangan_bulat::pattern()));
 }
 
-TEST(BILANGAN_BULAT_TEST, Fungsi_Ubah_Ke_Teks) {
+TEST(BILANGAN_BULAT_TEST, Fungsi_Ubah_Ke_String) {
     ncpp::bilangan_bulat var1("54");
-    EXPECT_EQ(var1.ubah_ke_teks(), ncpp::teks("54"));
+    EXPECT_EQ(var1.ubah_ke_string(), "54");
 }
 
 TEST(BILANGAN_BULAT_TEST, Fungsi_Ambil) {

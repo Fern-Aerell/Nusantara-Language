@@ -3,7 +3,6 @@
 #include <ncpp/ncpp.h>
 #include <format>
 #include <string>
-#include "ncpp/tipe_data/teks.h"
 
 TEST(BENARSALAH_TEST, Constructor) {
 	ncpp::konsol myKonsol;
@@ -66,11 +65,11 @@ TEST(BENARSALAH_TEST, Move_Assigment_Operator) {
 	EXPECT_EQ(myKonsol.isi(), "salah\n");
 }
 
-TEST(BENARSALAH_TEST, Fungsi_Ubah_Ke_Teks) {
+TEST(BENARSALAH_TEST, Fungsi_Ubah_Ke_String) {
 	ncpp::benarsalah var1("benar");
 	ncpp::benarsalah var2("salah");
-	EXPECT_EQ(var1.ubah_ke_teks(), ncpp::teks("benar"));
-	EXPECT_EQ(var2.ubah_ke_teks(), ncpp::teks("salah"));
+	EXPECT_EQ(var1.ubah_ke_string(), "benar");
+	EXPECT_EQ(var2.ubah_ke_string(), "salah");
 }
 
 TEST(BENARSALAH_TEST, Operasi_Bool) {

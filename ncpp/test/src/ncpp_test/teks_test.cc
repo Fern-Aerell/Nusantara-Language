@@ -1,6 +1,5 @@
 #include "ncpp/tipe_data/teks.h"
 #include <gtest/gtest.h>
-#include <format>
 #include <iostream>
 #include <string>
 #include "ncpp/konsol/konsol.h"
@@ -80,7 +79,6 @@ TEST(TEKS_TEST, Operasi_Penjumlahan_Assigment) {
 TEST(TEKS_TEST, Operasi_Perkalian) {
 	ncpp::teks var("A");
 	ncpp::bilangan nilaix("2");
-	std::cout << nilaix.ini_desimal();
 	ncpp::bilangan_bulat nilaiy("3");
 	EXPECT_EQ(var * nilaix * nilaiy, ncpp::teks("AAAAAA"));
 }

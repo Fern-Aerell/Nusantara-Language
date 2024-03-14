@@ -5,7 +5,6 @@
 #include <regex>
 #include <string>
 #include "ncpp/nilai/nilai_bilangan.h"
-#include "ncpp/tipe_data/teks.h"
 
 namespace ncpp {
     class bilangan_bulat;
@@ -25,13 +24,13 @@ namespace ncpp {
 				    // Move assignment operator
     				bilangan_desimal& operator=(bilangan_desimal&& other) noexcept;
             static std::regex pattern();
-            [[nodiscard]] teks ubah_ke_teks() const override;
-						[[nodiscard]] teks ubah_ke_teks_tetap(const int& presisi) const;
-						[[nodiscard]] teks ubah_ke_teks_presisi(const int& presisi) const;
+            [[nodiscard]] std::string ubah_ke_string() const override;
+						[[nodiscard]] std::string ubah_ke_string_tetap(const int& presisi) const;
+						[[nodiscard]] std::string ubah_ke_string_presisi(const int& presisi) const;
             [[nodiscard]] const mpfr_t& ambil() const;
 						static bilangan_desimal ubah(const bilangan_bulat& nilai);
             static const int basis;
-            static const int presisi_teks_bawaan;
+            static const int presisi_string_bawaan;
             static const double toleransi;
             static const mpfr_rnd_t pembulatan;
             bilangan_desimal operator+(const bilangan_bulat& nilai) const;
@@ -74,7 +73,7 @@ namespace ncpp {
         private:
              mpfr_t nilai;
              friend std::ostream& operator<<(std::ostream& ost, const bilangan_desimal& data) { 
-                ost << data.ubah_ke_teks();
+                ost << data.ubah_ke_string();
                 return ost;
             }
     };

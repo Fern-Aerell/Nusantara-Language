@@ -1,7 +1,8 @@
 #pragma once
 
+#include <string>
+
 namespace ncpp {
-    class teks;
     class nilai_bilangan {
         public:
             // Constructors
@@ -17,7 +18,7 @@ namespace ncpp {
             // Move assignment operator
             nilai_bilangan& operator=(nilai_bilangan&& other) noexcept = default;
 
-            [[nodiscard]] virtual teks ubah_ke_teks() const = 0;
+            [[nodiscard]] virtual std::string ubah_ke_string() const = 0;
         private:
     };
 

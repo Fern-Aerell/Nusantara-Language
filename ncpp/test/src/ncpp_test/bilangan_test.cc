@@ -3,7 +3,6 @@
 #include <ncpp/ncpp.h>
 #include <format>
 #include <string>
-#include "ncpp/tipe_data/teks.h"
 
 TEST(BILANGAN_TEST, Constructor) {
 	ncpp::konsol myKonsol;
@@ -80,11 +79,11 @@ TEST(BILANGAN_TEST, Fungsi_Ini_Desimal) {
 	EXPECT_FALSE(var2.ini_desimal());
 }
 
-TEST(BILANGAN_TEST, Fungsi_Ubah_Ke_Teks) {
+TEST(BILANGAN_TEST, Fungsi_Ubah_Ke_String) {
 	ncpp::bilangan var1("16");
 	ncpp::bilangan var2("17,5");
-	EXPECT_EQ(var1.ubah_ke_teks(), ncpp::teks("16"));
-	EXPECT_EQ(var2.ubah_ke_teks(), ncpp::teks("17,5"));
+	EXPECT_EQ(var1.ubah_ke_string(), "16");
+	EXPECT_EQ(var2.ubah_ke_string(), "17,5");
 }
 
 TEST(BILANGAN_TEST, Operasi_Penjumlahan) {

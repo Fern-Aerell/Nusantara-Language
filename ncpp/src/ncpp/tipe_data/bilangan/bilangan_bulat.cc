@@ -4,7 +4,6 @@
 #include "ncpp/tipe_data/bilangan/bilangan_bulat.h"
 #include "ncpp/tipe_data/bilangan/bilangan_desimal.h"
 #include "ncpp/alat/alat_string.h"
-#include "ncpp/tipe_data/teks.h"
 
 // Constructors
 ncpp::bilangan_bulat::bilangan_bulat() {
@@ -47,8 +46,8 @@ std::regex ncpp::bilangan_bulat::pattern() {
     return std::regex("^-?[0-9]+$");
 }
 
-ncpp::teks ncpp::bilangan_bulat::ubah_ke_teks() const {
-	return teks(ncpp::ubah_ke_string(this->nilai, bilangan_bulat::basis));
+std::string ncpp::bilangan_bulat::ubah_ke_string() const {
+	return ncpp::ubah_ke_string(this->nilai, bilangan_bulat::basis);
 }
 
 const mpz_t& ncpp::bilangan_bulat::ambil() const {
@@ -67,7 +66,7 @@ ncpp::bilangan_bulat ncpp::bilangan_bulat::operator+(const bilangan_bulat& nilai
 	mpz_t hasil;
 	mpz_init(hasil);
 	mpz_add(hasil, this->nilai, nilai.nilai);
-	std::string hasil_str = ubah_ke_string(hasil, bilangan_bulat::basis);
+	std::string hasil_str = ncpp::ubah_ke_string(hasil, bilangan_bulat::basis);
 	mpz_clear(hasil);
 	return bilangan_bulat(hasil_str);
 }
@@ -78,7 +77,7 @@ ncpp::bilangan_bulat ncpp::bilangan_bulat::operator-(const bilangan_bulat& nilai
 	mpz_t hasil;
 	mpz_init(hasil);
 	mpz_sub(hasil, this->nilai, nilai.nilai);
-	std::string hasil_str = ubah_ke_string(hasil, bilangan_bulat::basis);
+	std::string hasil_str = ncpp::ubah_ke_string(hasil, bilangan_bulat::basis);
 	mpz_clear(hasil);
 	return bilangan_bulat(hasil_str);
 }
@@ -89,7 +88,7 @@ ncpp::bilangan_bulat ncpp::bilangan_bulat::operator*(const bilangan_bulat& nilai
 	mpz_t hasil;
 	mpz_init(hasil);
 	mpz_mul(hasil, this->nilai, nilai.nilai);
-	std::string hasil_str = ubah_ke_string(hasil, bilangan_bulat::basis);
+	std::string hasil_str = ncpp::ubah_ke_string(hasil, bilangan_bulat::basis);
 	mpz_clear(hasil);
 	return bilangan_bulat(hasil_str);
 }
@@ -106,7 +105,7 @@ ncpp::bilangan_bulat ncpp::bilangan_bulat::operator%(const bilangan_bulat& nilai
 	mpz_t hasil;
 	mpz_init(hasil);
 	mpz_mod(hasil, this->nilai, nilai.nilai);
-	std::string hasil_str = ubah_ke_string(hasil, bilangan_bulat::basis);
+	std::string hasil_str = ncpp::ubah_ke_string(hasil, bilangan_bulat::basis);
 	mpz_clear(hasil);
 	return bilangan_bulat(hasil_str);
 }
@@ -117,7 +116,7 @@ ncpp::bilangan_bulat ncpp::bilangan_bulat::operator~() const {
 	mpz_t hasil;
 	mpz_init(hasil);
 	mpz_com(hasil, this->nilai);
-	std::string hasil_str = ubah_ke_string(hasil, bilangan_bulat::basis);
+	std::string hasil_str = ncpp::ubah_ke_string(hasil, bilangan_bulat::basis);
 	mpz_clear(hasil);
 	return bilangan_bulat(hasil_str);
 }
@@ -143,7 +142,7 @@ ncpp::bilangan_bulat ncpp::bilangan_bulat::operator&(const bilangan_bulat& nilai
 	mpz_t hasil;
 	mpz_init(hasil);
 	mpz_and(hasil, this->nilai, nilai.nilai);
-	std::string hasil_str = ubah_ke_string(hasil, bilangan_bulat::basis);
+	std::string hasil_str = ncpp::ubah_ke_string(hasil, bilangan_bulat::basis);
 	mpz_clear(hasil);
 	return bilangan_bulat(hasil_str);
 }
@@ -151,7 +150,7 @@ ncpp::bilangan_bulat ncpp::bilangan_bulat::operator^(const bilangan_bulat& nilai
 	mpz_t hasil;
 	mpz_init(hasil);
 	mpz_xor(hasil, this->nilai, nilai.nilai);
-	std::string hasil_str = ubah_ke_string(hasil, bilangan_bulat::basis);
+	std::string hasil_str = ncpp::ubah_ke_string(hasil, bilangan_bulat::basis);
 	mpz_clear(hasil);
 	return bilangan_bulat(hasil_str);
 }
@@ -159,7 +158,7 @@ ncpp::bilangan_bulat ncpp::bilangan_bulat::operator|(const bilangan_bulat& nilai
 	mpz_t hasil;
 	mpz_init(hasil);
 	mpz_ior(hasil, this->nilai, nilai.nilai);
-	std::string hasil_str = ubah_ke_string(hasil, bilangan_bulat::basis);
+	std::string hasil_str = ncpp::ubah_ke_string(hasil, bilangan_bulat::basis);
 	mpz_clear(hasil);
 	return bilangan_bulat(hasil_str);
 }
@@ -167,7 +166,7 @@ ncpp::bilangan_bulat ncpp::bilangan_bulat::operator<<(const bilangan_bulat& nila
 	mpz_t hasil;
 	mpz_init(hasil);
 	mpz_mul_2exp(hasil, this->nilai, mpz_get_ui(nilai.nilai));
-	std::string hasil_str = ubah_ke_string(hasil, bilangan_bulat::basis);
+	std::string hasil_str = ncpp::ubah_ke_string(hasil, bilangan_bulat::basis);
 	mpz_clear(hasil);
 	return bilangan_bulat(hasil_str);
 }
@@ -175,7 +174,7 @@ ncpp::bilangan_bulat ncpp::bilangan_bulat::operator>>(const bilangan_bulat& nila
 	mpz_t hasil;
 	mpz_init(hasil);
 	mpz_tdiv_q_2exp(hasil, this->nilai, mpz_get_ui(nilai.nilai));
-	std::string hasil_str = ubah_ke_string(hasil, bilangan_bulat::basis);
+	std::string hasil_str = ncpp::ubah_ke_string(hasil, bilangan_bulat::basis);
 	mpz_clear(hasil);
 	return bilangan_bulat(hasil_str);
 }

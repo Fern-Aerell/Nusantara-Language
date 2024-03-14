@@ -1,7 +1,7 @@
 #include "ncpp/tipe_data/benarsalah.h"
 #include <format>
 #include <stdexcept>
-#include "ncpp/tipe_data/teks.h"
+#include <string>
 
 // Constructors
 ncpp::benarsalah::benarsalah(): nilai(false) {}
@@ -29,11 +29,11 @@ ncpp::benarsalah& ncpp::benarsalah::operator=(benarsalah&& other) noexcept {
     this->nilai = other.nilai;
     return *this;
 }
-ncpp::teks ncpp::benarsalah::ubah_ke_teks() const {
+std::string ncpp::benarsalah::ubah_ke_string() const {
     if(this->nilai) {
-        return teks("benar");
+        return "benar";
     }
-    return teks("salah");
+    return "salah";
 }
 ncpp::benarsalah::operator bool() const {
     return this->nilai;

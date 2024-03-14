@@ -5,7 +5,6 @@
 #include <regex>
 #include "ncpp/konsol/konsol.h"
 #include "ncpp/tipe_data/bilangan/bilangan_bulat.h"
-#include "ncpp/tipe_data/teks.h"
 #include "ncpp/tipe_data/bilangan/bilangan_desimal.h"
 
 TEST(BILANGAN_DESIMAL_TEST, Constructors) {
@@ -66,8 +65,8 @@ TEST(BILANGAN_DESIMAL_TEST, Static_Variable_Basis) {
     EXPECT_EQ(ncpp::bilangan_desimal::basis, 10);
 }
 
-TEST(BILANGAN_DESIMAL_TEST, Static_Variable_Presisi_Teks_Bawaan) {
-    EXPECT_EQ(ncpp::bilangan_desimal::presisi_teks_bawaan, 15);
+TEST(BILANGAN_DESIMAL_TEST, Static_Variable_Presisi_String_Bawaan) {
+    EXPECT_EQ(ncpp::bilangan_desimal::presisi_string_bawaan, 15);
 }
 
 TEST(BILANGAN_DESIMAL_TEST, Static_Fungsi_Pattern) {
@@ -76,19 +75,19 @@ TEST(BILANGAN_DESIMAL_TEST, Static_Fungsi_Pattern) {
     EXPECT_FALSE(std::regex_match("10", ncpp::bilangan_desimal::pattern()));
 }
 
-TEST(BILANGAN_DESIMAL_TEST, Fungsi_Ubah_Ke_Teks) {
+TEST(BILANGAN_DESIMAL_TEST, Fungsi_Ubah_Ke_String) {
     ncpp::bilangan_desimal var1("54,2");
-    EXPECT_EQ(var1.ubah_ke_teks(), ncpp::teks("54,2"));
+    EXPECT_EQ(var1.ubah_ke_string(), "54,2");
 }
 
-TEST(BILANGAN_DESIMAL_TEST, Fungsi_Ubah_Ke_Teks_Tetap) {
+TEST(BILANGAN_DESIMAL_TEST, Fungsi_Ubah_Ke_String_Tetap) {
     ncpp::bilangan_desimal var1("54,22");
-    EXPECT_EQ(var1.ubah_ke_teks_tetap(1), ncpp::teks("54,2"));
+    EXPECT_EQ(var1.ubah_ke_string_tetap(1), "54,2");
 }
 
-TEST(BILANGAN_DESIMAL_TEST, Fungsi_Ubah_Ke_Teks_Presisi) {
+TEST(BILANGAN_DESIMAL_TEST, Fungsi_Ubah_Ke_String_Presisi) {
     ncpp::bilangan_desimal var1("10,5");
-    EXPECT_EQ(var1.ubah_ke_teks_presisi(2), ncpp::teks("10"));
+    EXPECT_EQ(var1.ubah_ke_string_presisi(2), "10");
 }
 
 TEST(BILANGAN_DESIMAL_TEST, Fungsi_Ambil) {
