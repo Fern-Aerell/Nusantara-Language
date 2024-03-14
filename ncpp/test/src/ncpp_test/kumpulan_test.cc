@@ -1,4 +1,4 @@
-#include "ncpp/tipe_data/kumpulan.h"
+#include "ncpp/tipe_data/kumpulan_old.h"
 #include <gtest/gtest.h>
 #include "ncpp/batas_jumlah.h"
 #include "ncpp/konsol/konsol.h"

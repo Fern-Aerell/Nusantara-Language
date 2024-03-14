@@ -15,7 +15,6 @@ namespace ncpp {
       // Constructors
       teks();
       explicit teks(std::string nilai);
-      teks(const size_t& jumlah, const char& nilai);
 
       template<typename... Args>
       explicit teks(const std::string& format, Args&&... args) {

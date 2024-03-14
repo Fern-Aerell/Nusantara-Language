@@ -7,7 +7,6 @@
 // Constructors
 ncpp::teks::teks() = default;
 ncpp::teks::teks(std::string nilai): nilai(std::move(nilai)) {}
-ncpp::teks::teks(const size_t& jumlah, const char& nilai): nilai(jumlah, nilai) {}
 // Copy constructor
 ncpp::teks::teks(const teks& other)  = default;
 // Copy assignment operator
