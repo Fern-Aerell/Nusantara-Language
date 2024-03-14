@@ -1,7 +1,7 @@
 # Tipe Data Nusantara
 
 Tipe data di nusantara di bagi menjadi 1 jenis
-- bawaan (bilangan, teks, benarsalah, kumpulan, daftar, peta, dinamis)
+- bawaan (bilangan, teks, benarsalah, kumpulan, dinamis)
 
 ## Bilangan
 
@@ -34,44 +34,18 @@ benarsalah lulus = benar;
 
 ## Kumpulan
 
-Tipe data ini dapat menyimpan banyak data tetapi tidak berurutan dan tidai dapat menyimpan data dengan nilai yang sama.
+Tipe data ini dapat menyimpan banyak tipe data dengan configurasi tertentu.
 
 Sintaks :
 ```nusantara
-kumpulan<tipe> namaKumpulan = [];
+tipe[](configurasi) namaKumpulan1 = [];
+{tipe, tipe}(configurasi) namaKumpulan2 = {};
 ```
 
 Contoh :
 ```nusantara
-kumpulan<bilangan> nomor = [1, 2, 4, 5]
-```
-
-## Daftar
-
-Tipe data ini dapat menyimpan banyak data secara berurutan dan dapat menyimpan data dengan nilai yang sama.
-
-Sintaks :
-```nusantara
-daftar<tipe> namaDaftar = [];
-```
-
-Contoh :
-```nusantara
-daftar<bilangan> nomor = [1, 2, 2, 4, 5]
-```
-
-## Peta
-
-Tipe data ini dapat menyimpan banyak data secara berurutan dengan kata kunci dan dapat menyimpan data dengan nilai yang sama asalkan kata kunci nya berbeda.
-
-Sintaks :
-```nusantara
-peta<tipe, tipe> namaPeta = {};
-```
-
-Contoh :
-```nusantara
-peta<teks, teks> biodata = ['nama': 'aerell']
+bilangan[] nomor = [1, 2, 2, 4, 5];
+{teks, teks} biodata = {'nama': 'aerell'}
 ```
 
 ## Dinamis
