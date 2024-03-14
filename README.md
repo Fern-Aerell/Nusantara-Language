@@ -1,4 +1,4 @@
-# Nusantara Language (Masih dikembangkan)
+# Nusantara Language
 
 <img src="design/logo/logo.png" width="200px">
 
