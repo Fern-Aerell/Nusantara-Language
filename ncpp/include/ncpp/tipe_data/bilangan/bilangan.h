@@ -2,9 +2,9 @@
 
 #include <memory>
 #include <string>
-#include "ncpp/nilai/nilai_bilangan.h"
-#include "ncpp/tipe_data/bilangan/bilangan_bulat.h"
-#include "ncpp/tipe_data/bilangan/bilangan_desimal.h"
+#include "ncpp/tipe_data/bilangan/_nilai_bilangan_.h"
+#include "ncpp/tipe_data/bilangan/_bilangan_bulat_.h"
+#include "ncpp/tipe_data/bilangan/_bilangan_desimal_.h"
 
 namespace ncpp {
     class bilangan {
@@ -57,12 +57,13 @@ namespace ncpp {
             bilangan& operator<<=(const bilangan& nilai);
             bilangan& operator>>=(const bilangan& nilai);
         private:
-            std::unique_ptr<nilai_bilangan> nilai;
-            [[nodiscard]] bilangan_bulat& ambil_nilai_bulat() const;
-            [[nodiscard]] bilangan_desimal& ambil_nilai_desimal() const;
+            std::unique_ptr<_nilai_bilangan_> nilai;
             friend std::ostream& operator<<(std::ostream& ost, const bilangan& data) { 
                 ost << data.ubah_ke_string();
                 return ost;
             }
+        protected:
+            [[nodiscard]] _bilangan_bulat_& ambil_nilai_bulat() const;
+            [[nodiscard]] _bilangan_desimal_& ambil_nilai_desimal() const;
     };
 }

@@ -1,10 +1,9 @@
 #include "ncpp/tipe_data/teks.h"
 #include <gtest/gtest.h>
-#include <iostream>
 #include <string>
 #include "ncpp/konsol/konsol.h"
 #include "ncpp/tipe_data/bilangan/bilangan.h"
-#include "ncpp/tipe_data/bilangan/bilangan_bulat.h"
+#include "ncpp/tipe_data/bilangan/_bilangan_bulat_.h"
 
 TEST(TEKS_TEST, Constructor) {
 	ncpp::konsol myKonsol;
@@ -79,14 +78,14 @@ TEST(TEKS_TEST, Operasi_Penjumlahan_Assigment) {
 TEST(TEKS_TEST, Operasi_Perkalian) {
 	ncpp::teks var("A");
 	ncpp::bilangan nilaix("2");
-	ncpp::bilangan_bulat nilaiy("3");
+	ncpp::_bilangan_bulat_ nilaiy("3");
 	EXPECT_EQ(var * nilaix * nilaiy, ncpp::teks("AAAAAA"));
 }
 
 TEST(TEKS_TEST, Operasi_Perkalian_Assigment) {
 	ncpp::teks var("A");
 	ncpp::bilangan nilaix("2");
-	ncpp::bilangan_bulat nilaiy("3");
+	ncpp::_bilangan_bulat_ nilaiy("3");
 	var *= nilaix;
 	var *= nilaiy;
 	EXPECT_EQ(var, ncpp::teks("AAAAAA"));

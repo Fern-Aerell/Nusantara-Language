@@ -1,10 +1,7 @@
 #include "ncpp/tipe_data/dinamis.h"
 #include <gtest/gtest.h>
-#include <memory>
 #include <string>
 #include "ncpp/konsol/konsol.h"
-
-template <typename T> std::string type_name();
 
 TEST(DINAMIS_TEST, Constructor) {
 	ncpp::konsol myKonsol;

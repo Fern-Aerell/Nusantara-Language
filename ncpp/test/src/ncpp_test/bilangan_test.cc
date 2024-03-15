@@ -22,7 +22,7 @@ TEST(BILANGAN_TEST, Constructor) {
 		ncpp::bilangan var3(nilai_var3);
 	} catch (const std::exception& error) {
 		std::string error_str(error.what());
-		EXPECT_TRUE(error_str.contains(std::format("'{}' bukanlah nilai bilangan.", nilai_var3)));
+		EXPECT_TRUE(error_str.contains(std::format("'{}' bukanlah sebuah bilangan.", nilai_var3)));
 	}
 }
 
