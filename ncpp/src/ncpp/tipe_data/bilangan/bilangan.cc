@@ -3,17 +3,17 @@
 #include <stdexcept>
 #include <string>
 #include "ncpp/tipe_data/bilangan/bilangan.h"
-#include "ncpp/tipe_data/bilangan/_bilangan_bulat_.h"
-#include "ncpp/tipe_data/bilangan/_bilangan_desimal_.h"
+#include "ncpp/tipe_data/bilangan/bilangan_bulat.h"
+#include "ncpp/tipe_data/bilangan/bilangan_desimal.h"
 #include "ncpp/tipe_data/teks.h"
 
 // Constructors
-ncpp::bilangan::bilangan(): nilai(std::make_unique<_bilangan_bulat_>()) {}
+ncpp::bilangan::bilangan(): nilai(std::make_unique<bilangan_bulat>()) {}
 ncpp::bilangan::bilangan(const std::string& nilai) {
-	if(std::regex_match(nilai, _bilangan_desimal_::pattern())) {
-		this->nilai = std::make_unique<_bilangan_desimal_>(nilai);
-	}else if(std::regex_match(nilai, _bilangan_bulat_::pattern())) {
-		this->nilai = std::make_unique<_bilangan_bulat_>(nilai);
+	if(std::regex_match(nilai, bilangan_desimal::pattern())) {
+		this->nilai = std::make_unique<bilangan_desimal>(nilai);
+	}else if(std::regex_match(nilai, bilangan_bulat::pattern())) {
+		this->nilai = std::make_unique<bilangan_bulat>(nilai);
 	}else{
 		throw std::runtime_error(teks("'{}' bukanlah sebuah bilangan.", nilai).ubah_ke_string());
 	}
@@ -21,9 +21,9 @@ ncpp::bilangan::bilangan(const std::string& nilai) {
 // Copy constructor
 ncpp::bilangan::bilangan(const bilangan& other) {
     if(other.ini_bulat()) {
-        this->nilai = std::make_unique<_bilangan_bulat_>(other.ambil_nilai_bulat());
+        this->nilai = std::make_unique<bilangan_bulat>(other.ambil_nilai_bulat());
     }else if(other.ini_desimal()) {
-        this->nilai = std::make_unique<_bilangan_desimal_>(other.ambil_nilai_desimal());
+        this->nilai = std::make_unique<bilangan_desimal>(other.ambil_nilai_desimal());
     }else{
         throw std::runtime_error("Bilangan bukanlah bilangan bulat ataupun desimal.");
     }
@@ -32,9 +32,9 @@ ncpp::bilangan::bilangan(const bilangan& other) {
 ncpp::bilangan& ncpp::bilangan::operator=(const bilangan& other) {
     if(this == &other) {return *this;}
     if(other.ini_bulat()) {
-        this->nilai = std::make_unique<_bilangan_bulat_>(other.ambil_nilai_bulat());
+        this->nilai = std::make_unique<bilangan_bulat>(other.ambil_nilai_bulat());
     }else if(other.ini_desimal()) {
-        this->nilai = std::make_unique<_bilangan_desimal_>(other.ambil_nilai_desimal());
+        this->nilai = std::make_unique<bilangan_desimal>(other.ambil_nilai_desimal());
     }else{
         throw std::runtime_error("Bilangan bukanlah bilangan bulat ataupun desimal.");
     }
@@ -48,13 +48,13 @@ ncpp::bilangan& ncpp::bilangan::operator=(bilangan&& other) noexcept {
     return *this;
 }
 bool ncpp::bilangan::ini_bulat() const {
-    if(const auto* ptr = dynamic_cast<_bilangan_bulat_*>(this->nilai.get())) {
+    if(const auto* ptr = dynamic_cast<bilangan_bulat*>(this->nilai.get())) {
         return true;
     }
     return false;
 }
 bool ncpp::bilangan::ini_desimal() const {
-    if(const auto* ptr = dynamic_cast<_bilangan_desimal_*>(this->nilai.get())) {
+    if(const auto* ptr = dynamic_cast<bilangan_desimal*>(this->nilai.get())) {
         return true;
     }
     return false;
@@ -62,14 +62,14 @@ bool ncpp::bilangan::ini_desimal() const {
 std::string ncpp::bilangan::ubah_ke_string() const {
     return this->nilai->ubah_ke_string();
 }
-ncpp::_bilangan_bulat_& ncpp::bilangan::ambil_nilai_bulat() const {
-    if(auto* ptr = dynamic_cast<_bilangan_bulat_*>(this->nilai.get())) {
+ncpp::bilangan_bulat& ncpp::bilangan::ambil_nilai_bulat() const {
+    if(auto* ptr = dynamic_cast<bilangan_bulat*>(this->nilai.get())) {
         return *ptr;
     }
     throw std::runtime_error("Mengambil bilangan bulat pada bilangan desimal.");
 }
-ncpp::_bilangan_desimal_& ncpp::bilangan::ambil_nilai_desimal() const {
-    if(auto* ptr = dynamic_cast<_bilangan_desimal_*>(this->nilai.get())) {
+ncpp::bilangan_desimal& ncpp::bilangan::ambil_nilai_desimal() const {
+    if(auto* ptr = dynamic_cast<bilangan_desimal*>(this->nilai.get())) {
         return *ptr;
     }
     throw std::runtime_error("Mengambil bilangan desimal pada bilangan bulat.");
@@ -79,15 +79,15 @@ ncpp::bilangan ncpp::bilangan::operator+(const bilangan& nilai) const {
         return bilangan((this->ambil_nilai_bulat() + nilai.ambil_nilai_bulat()).ubah_ke_string());
     }
     if(this->ini_desimal() && nilai.ini_desimal()) {
-        _bilangan_desimal_ hasil = this->ambil_nilai_desimal() + nilai.ambil_nilai_desimal();
+        bilangan_desimal hasil = this->ambil_nilai_desimal() + nilai.ambil_nilai_desimal();
         return bilangan(hasil.ubah_ke_string_presisi(hasil.presisi()));
     }
     if(this->ini_bulat() && nilai.ini_desimal()) {
-        _bilangan_desimal_ hasil = this->ambil_nilai_bulat() + nilai.ambil_nilai_desimal();
+        bilangan_desimal hasil = this->ambil_nilai_bulat() + nilai.ambil_nilai_desimal();
         return bilangan(hasil.ubah_ke_string_presisi(hasil.presisi()));
     }
     if(this->ini_desimal() && nilai.ini_bulat()) {
-        _bilangan_desimal_ hasil = this->ambil_nilai_desimal() + nilai.ambil_nilai_bulat();
+        bilangan_desimal hasil = this->ambil_nilai_desimal() + nilai.ambil_nilai_bulat();
         return bilangan(hasil.ubah_ke_string_presisi(hasil.presisi()));
     }
     throw std::runtime_error("Operasi penjumlahan '+' bilangan tidak dapat dilakukan.");
@@ -97,15 +97,15 @@ ncpp::bilangan ncpp::bilangan::operator-(const bilangan& nilai) const {
         return bilangan((this->ambil_nilai_bulat() - nilai.ambil_nilai_bulat()).ubah_ke_string());
     }
     if(this->ini_desimal() && nilai.ini_desimal()) {
-        _bilangan_desimal_ hasil = this->ambil_nilai_desimal() - nilai.ambil_nilai_desimal();
+        bilangan_desimal hasil = this->ambil_nilai_desimal() - nilai.ambil_nilai_desimal();
         return bilangan(hasil.ubah_ke_string_presisi(hasil.presisi()));
     }
     if(this->ini_bulat() && nilai.ini_desimal()) {
-        _bilangan_desimal_ hasil = this->ambil_nilai_bulat() - nilai.ambil_nilai_desimal();
+        bilangan_desimal hasil = this->ambil_nilai_bulat() - nilai.ambil_nilai_desimal();
         return bilangan(hasil.ubah_ke_string_presisi(hasil.presisi()));
     }
     if(this->ini_desimal() && nilai.ini_bulat()) {
-        _bilangan_desimal_ hasil = this->ambil_nilai_desimal() - nilai.ambil_nilai_bulat();
+        bilangan_desimal hasil = this->ambil_nilai_desimal() - nilai.ambil_nilai_bulat();
         return bilangan(hasil.ubah_ke_string_presisi(hasil.presisi()));
     }
     throw std::runtime_error("Operasi pengurangan '-' bilangan tidak dapat dilakukan.");
@@ -115,15 +115,15 @@ ncpp::bilangan ncpp::bilangan::operator*(const bilangan& nilai) const {
         return bilangan((this->ambil_nilai_bulat() * nilai.ambil_nilai_bulat()).ubah_ke_string());
     }
     if(this->ini_desimal() && nilai.ini_desimal()) {
-        _bilangan_desimal_ hasil = this->ambil_nilai_desimal() * nilai.ambil_nilai_desimal();
+        bilangan_desimal hasil = this->ambil_nilai_desimal() * nilai.ambil_nilai_desimal();
         return bilangan(hasil.ubah_ke_string_presisi(hasil.presisi()));
     }
     if(this->ini_bulat() && nilai.ini_desimal()) {
-        _bilangan_desimal_ hasil = this->ambil_nilai_bulat() * nilai.ambil_nilai_desimal();
+        bilangan_desimal hasil = this->ambil_nilai_bulat() * nilai.ambil_nilai_desimal();
         return bilangan(hasil.ubah_ke_string_presisi(hasil.presisi()));
     }
     if(this->ini_desimal() && nilai.ini_bulat()) {
-        _bilangan_desimal_ hasil = this->ambil_nilai_desimal() * nilai.ambil_nilai_bulat();
+        bilangan_desimal hasil = this->ambil_nilai_desimal() * nilai.ambil_nilai_bulat();
         return bilangan(hasil.ubah_ke_string_presisi(hasil.presisi()));
     }
     throw std::runtime_error("Operasi perkalian '*' bilangan tidak dapat dilakukan.");
@@ -133,15 +133,15 @@ ncpp::bilangan ncpp::bilangan::operator/(const bilangan& nilai) const {
         return bilangan((this->ambil_nilai_bulat() / nilai.ambil_nilai_bulat()).ubah_ke_string());
     }
     if(this->ini_desimal() && nilai.ini_desimal()) {
-        _bilangan_desimal_ hasil = this->ambil_nilai_desimal() / nilai.ambil_nilai_desimal();
+        bilangan_desimal hasil = this->ambil_nilai_desimal() / nilai.ambil_nilai_desimal();
         return bilangan(hasil.ubah_ke_string_presisi(hasil.presisi()));
     }
     if(this->ini_bulat() && nilai.ini_desimal()) {
-        _bilangan_desimal_ hasil = this->ambil_nilai_bulat() / nilai.ambil_nilai_desimal();
+        bilangan_desimal hasil = this->ambil_nilai_bulat() / nilai.ambil_nilai_desimal();
         return bilangan(hasil.ubah_ke_string_presisi(hasil.presisi()));
     }
     if(this->ini_desimal() && nilai.ini_bulat()) {
-        _bilangan_desimal_ hasil = this->ambil_nilai_desimal() / nilai.ambil_nilai_bulat();
+        bilangan_desimal hasil = this->ambil_nilai_desimal() / nilai.ambil_nilai_bulat();
         return bilangan(hasil.ubah_ke_string_presisi(hasil.presisi()));
     }
     throw std::runtime_error("Operasi pembagian '/' bilangan tidak dapat dilakukan.");
@@ -151,15 +151,15 @@ ncpp::bilangan ncpp::bilangan::operator%(const bilangan& nilai) const {
         return bilangan((this->ambil_nilai_bulat() % nilai.ambil_nilai_bulat()).ubah_ke_string());
     }
     if(this->ini_desimal() && nilai.ini_desimal()) {
-        _bilangan_desimal_ hasil = this->ambil_nilai_desimal() % nilai.ambil_nilai_desimal();
+        bilangan_desimal hasil = this->ambil_nilai_desimal() % nilai.ambil_nilai_desimal();
         return bilangan(hasil.ubah_ke_string_presisi(hasil.presisi()));
     }
     if(this->ini_bulat() && nilai.ini_desimal()) {
-        _bilangan_desimal_ hasil = this->ambil_nilai_bulat() % nilai.ambil_nilai_desimal();
+        bilangan_desimal hasil = this->ambil_nilai_bulat() % nilai.ambil_nilai_desimal();
         return bilangan(hasil.ubah_ke_string_presisi(hasil.presisi()));
     }
     if(this->ini_desimal() && nilai.ini_bulat()) {
-        _bilangan_desimal_ hasil = this->ambil_nilai_desimal() % nilai.ambil_nilai_bulat();
+        bilangan_desimal hasil = this->ambil_nilai_desimal() % nilai.ambil_nilai_bulat();
         return bilangan(hasil.ubah_ke_string_presisi(hasil.presisi()));
     }
     throw std::runtime_error("Operasi sisa pembagian '%' bilangan tidak dapat dilakukan.");

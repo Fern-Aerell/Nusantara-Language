@@ -1,8 +1,8 @@
-#include "ncpp/alat/alat_mpfr.h"
+#include "ncpp/alat/mpfr.h"
 #include <gtest/gtest.h>
 #include <mpfr.h>
 
-TEST(ALAT_MPFR_TEST, Fungsi_Mpfr_Cmp_Dengan_Toleransi) {
+TEST(MPFR_TEST, Fungsi_Mpfr_Cmp_Dengan_Toleransi) {
 	{
 		mpfr_t val1, val2;
 		mpfr_init_set_d(val1, 1.23456789012345, MPFR_RNDN);

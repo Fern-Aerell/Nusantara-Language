@@ -7,7 +7,7 @@
 
 namespace ncpp {
   class bilangan;
-  class _bilangan_bulat_;
+  class bilangan_bulat;
   class benarsalah;
 
   class teks {
@@ -37,8 +37,8 @@ namespace ncpp {
       teks& operator+=(const teks& other);
       teks operator*(const bilangan& other) const;
       teks& operator*=(const bilangan& other);
-      teks operator*(const _bilangan_bulat_& other) const;
-      teks& operator*=(const _bilangan_bulat_& other);
+      teks operator*(const bilangan_bulat& other) const;
+      teks& operator*=(const bilangan_bulat& other);
       bool operator==(const teks& other) const;
       bool operator!=(const teks& other) const;
       bool operator<(const teks& other) const;

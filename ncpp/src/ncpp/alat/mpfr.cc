@@ -1,4 +1,4 @@
-#include "ncpp/alat/alat_mpfr.h"
+#include "ncpp/alat/mpfr.h"
 
 int ncpp::mpfr_cmp_with_tolerance(const mpfr_t& nilai1, const mpfr_t& nilai2, const double& tolerance) {
     mpfr_t diff;

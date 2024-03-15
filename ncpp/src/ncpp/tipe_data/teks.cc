@@ -2,7 +2,7 @@
 #include <stdexcept>
 #include <string>
 #include "ncpp/tipe_data/bilangan/bilangan.h"
-#include "ncpp/tipe_data/bilangan/_bilangan_bulat_.h"
+#include "ncpp/tipe_data/bilangan/bilangan_bulat.h"
 
 // Constructors
 ncpp::teks::teks() = default;
@@ -46,14 +46,14 @@ ncpp::teks& ncpp::teks::operator*=(const bilangan& other) {
 	*this = *this * other;
 	return *this;
 }
-ncpp::teks ncpp::teks::operator*(const _bilangan_bulat_& other) const {
+ncpp::teks ncpp::teks::operator*(const bilangan_bulat& other) const {
 	teks result;
-	for(_bilangan_bulat_ index; index < other; ++index) {
+	for(bilangan_bulat index; index < other; ++index) {
 		result += *this;
 	}
 	return result;
 }
-ncpp::teks& ncpp::teks::operator*=(const _bilangan_bulat_& other) {
+ncpp::teks& ncpp::teks::operator*=(const bilangan_bulat& other) {
 	*this = *this * other;
 	return *this;
 }

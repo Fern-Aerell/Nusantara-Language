@@ -1,4 +1,4 @@
-#include "ncpp/alat/alat_string.h"
+#include "ncpp/alat/string.h"
 #include <mpfr.h>
 #include <format>
 #include <string>
@@ -11,6 +11,7 @@ std::string ncpp::ubah_ke_string(const mpz_t& nilai, const int& basis) {
 	delete[] buffer;
 	return result;
 }
+
 std::string ncpp::ubah_ke_string(const mpfr_t& nilai, const std::string& pattern, const bool& pemisah_koma) {
 	int buffer_size = mpfr_snprintf(nullptr, 0, pattern.c_str(), nilai);
 	std::string result(buffer_size, '\0');
@@ -23,9 +24,11 @@ std::string ncpp::ubah_ke_string(const mpfr_t& nilai, const std::string& pattern
 	}
 	return result;
 }
+
 std::string ncpp::ubah_ke_string_tetap(const mpfr_t& nilai, const int& presisi, const bool& pemisah_koma) {
 	return ubah_ke_string(nilai, std::format("%.{}Rf", presisi), pemisah_koma);
 }
+
 std::string ncpp::ubah_ke_string_presisi(const mpfr_t& nilai, const int& presisi, const bool& pemisah_koma) {
 	return ubah_ke_string(nilai, std::format("%.{}Rg", presisi), pemisah_koma);
 }
