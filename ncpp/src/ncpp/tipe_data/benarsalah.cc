@@ -1,19 +1,9 @@
 #include "ncpp/tipe_data/benarsalah.h"
-#include <format>
-#include <stdexcept>
 #include <string>
 
 // Constructors
 ncpp::benarsalah::benarsalah(): nilai(false) {}
-ncpp::benarsalah::benarsalah(const std::string& nilai) {
-    if(nilai == "benar") {
-        this->nilai = true;
-    }else if(nilai == "salah") {
-        this->nilai = false;
-    }else {
-        throw std::runtime_error(std::format("'{}' bukanlah nilai benar atau salah.", nilai));
-    }
-}
+ncpp::benarsalah::benarsalah(const bool& nilai): nilai(nilai) {}
 // Copy constructor
 ncpp::benarsalah::benarsalah(const benarsalah& other)  = default;
 // Copy assignment operator
@@ -21,6 +11,11 @@ ncpp::benarsalah& ncpp::benarsalah::operator=(const benarsalah& other) {
     if(this == &other) {return *this;}
     this->nilai = other.nilai;
     return *this;
+}
+ncpp::benarsalah& ncpp::benarsalah::operator=(const bool& other) {
+	if(this->nilai == other) {return *this;}
+	this->nilai = other;
+	return *this;
 }
 // Move constructor
 ncpp::benarsalah::benarsalah(benarsalah&& other) noexcept : nilai(other.nilai) {}
@@ -35,42 +30,48 @@ std::string ncpp::benarsalah::ubah_ke_string() const {
     }
     return "salah";
 }
+bool ncpp::benarsalah::ubah_ke_bool() const {
+	return this->nilai;
+}
 ncpp::benarsalah::operator bool() const {
     return this->nilai;
 }
-ncpp::benarsalah ncpp::benarsalah::benar() {
-    return benarsalah("benar");
+bool ncpp::benarsalah::operator==(const benarsalah& nilai) const {
+    return this->nilai == nilai.nilai;
 }
-ncpp::benarsalah ncpp::benarsalah::salah() {
-    return benarsalah("salah");
+bool ncpp::benarsalah::operator==(const bool& nilai) const {
+    return this->nilai == nilai;
 }
-ncpp::benarsalah ncpp::benarsalah::operator==(const benarsalah& nilai) const {
-    if(this->nilai == nilai.nilai) {
-        return benarsalah::benar();
-    }
-    return benarsalah::salah();
+bool ncpp::benarsalah::operator!=(const benarsalah& nilai) const {
+    return this->nilai != nilai.nilai;
 }
-ncpp::benarsalah ncpp::benarsalah::operator!=(const benarsalah& nilai) const {
-    if(this->nilai != nilai.nilai) {
-        return benarsalah::benar();
-    }
-    return benarsalah::salah();
+bool ncpp::benarsalah::operator!=(const bool& nilai) const {
+    return this->nilai != nilai;
 }
-ncpp::benarsalah ncpp::benarsalah::operator!() const {
-    if(this->nilai) {
-        return benarsalah::salah();
-    }
-    return benarsalah::benar();
+bool ncpp::benarsalah::operator!() const { 
+    return !this->nilai;
 }
-ncpp::benarsalah ncpp::benarsalah::operator&&(const benarsalah& nilai) const {
-    if(this->nilai && nilai.nilai) {
-        return benarsalah::benar();
-    }
-    return benarsalah::salah();
+bool ncpp::benarsalah::operator&&(const benarsalah& nilai) const {
+    return this->nilai && nilai.nilai;
 }
-ncpp::benarsalah ncpp::benarsalah::operator||(const benarsalah& nilai) const {
-    if(this->nilai || nilai.nilai) {
-        return benarsalah::benar();
-    }
-    return benarsalah::salah();
+bool ncpp::benarsalah::operator&&(const bool& nilai) const {
+    return this->nilai && nilai;
+}
+bool ncpp::benarsalah::operator||(const benarsalah& nilai) const {
+    return this->nilai || nilai.nilai;
+}
+bool ncpp::benarsalah::operator||(const bool& nilai) const {
+    return this->nilai || nilai;
+}
+bool operator==(const bool& nilai_x, const ncpp::benarsalah& nilai_y) {
+	return nilai_x == nilai_y.ubah_ke_bool();
+}
+bool operator!=(const bool& nilai_x, const ncpp::benarsalah& nilai_y) {
+	return nilai_x != nilai_y.ubah_ke_bool();
+}
+bool operator&&(const bool& nilai_x, const ncpp::benarsalah& nilai_y) {
+	return nilai_x && nilai_y.ubah_ke_bool();
+}
+bool operator||(const bool& nilai_x, const ncpp::benarsalah& nilai_y) {
+	return nilai_x || nilai_y.ubah_ke_bool();
 }
