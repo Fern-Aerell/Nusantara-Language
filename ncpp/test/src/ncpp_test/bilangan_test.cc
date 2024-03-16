@@ -436,3 +436,7 @@ TEST(BILANGAN_TEST, Bitwise_Right_Shift_Assignment_Operator) {
     var >>= ncpp::bilangan("2");
     EXPECT_EQ(var, ncpp::bilangan("1"));
 }
+
+TEST(BILANGAN_TEST, Is_Arithmetic_True) {
+	EXPECT_TRUE(std::is_arithmetic_v<ncpp::bilangan>);
+}

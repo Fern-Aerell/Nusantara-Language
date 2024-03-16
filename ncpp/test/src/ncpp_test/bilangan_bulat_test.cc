@@ -1,6 +1,7 @@
 #include <gmp.h>
 #include <gtest/gtest.h>
 #include <regex>
+#include <type_traits>
 #include "ncpp/konsol/konsol.h"
 #include "ncpp/tipe_data/bilangan/bilangan_bulat.h"
 #include "ncpp/tipe_data/bilangan/bilangan_desimal.h"
@@ -19,6 +20,7 @@ TEST(BILANGAN_BULAT_TEST, Constructors) {
         EXPECT_EQ(myKonsol.isi(), "-50");
         myKonsol.bersihkan();
     }
+
 }
 
 TEST(BILANGAN_BULAT_TEST, Copy_constructor) {
@@ -72,14 +74,6 @@ TEST(BILANGAN_BULAT_TEST, Static_Fungsi_Pattern) {
 TEST(BILANGAN_BULAT_TEST, Fungsi_Ubah_Ke_String) {
     ncpp::bilangan_bulat var1("54");
     EXPECT_EQ(var1.ubah_ke_string(), "54");
-}
-
-TEST(BILANGAN_BULAT_TEST, Fungsi_Ambil) {
-    ncpp::bilangan_bulat var1("32");
-    mpz_t var2;
-    mpz_init_set_str(var2, "32", 10);
-    EXPECT_TRUE(mpz_cmp(var1.ambil(), var2) == 0);
-    mpz_clear(var2);
 }
 
 TEST(BILANGAN_BULAT_TEST, Static_Fungsi_Ubah) {
@@ -346,4 +340,8 @@ TEST(BILANGAN_BULAT_TEST, Bitwise_Right_Shift_Assignment_Operator) {
     ncpp::bilangan_bulat var("5");
     var >>= ncpp::bilangan_bulat("2");
     EXPECT_EQ(var, ncpp::bilangan_bulat("1"));
+}
+
+TEST(BILANGAN_BULAT_TEST, Is_Arithmetic_True) {
+	EXPECT_TRUE(std::is_arithmetic_v<ncpp::bilangan_bulat>);
 }

@@ -78,3 +78,6 @@ namespace ncpp {
             }
     };
 }
+
+template<>
+struct std::is_arithmetic<ncpp::bilangan_desimal> : true_type {};

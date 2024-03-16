@@ -1,5 +1,6 @@
 #include <gmp.h>
 #include <mpfr.h>
+#include <regex>
 #include <string>
 #include "ncpp/tipe_data/bilangan/bilangan_bulat.h"
 #include "ncpp/tipe_data/bilangan/bilangan_desimal.h"
@@ -9,9 +10,10 @@
 ncpp::bilangan_bulat::bilangan_bulat() {
 	mpz_init(this->nilai);
 }
-ncpp::bilangan_bulat::bilangan_bulat(const std::string& nilai) {
+ncpp::bilangan_bulat::bilangan_bulat(const std::string& nilai) {	
 	mpz_init_set_str(this->nilai, nilai.c_str(), bilangan_bulat::basis);
 }
+
 // Destructor
 ncpp::bilangan_bulat::~bilangan_bulat() {
  mpz_clear(this->nilai);
@@ -23,7 +25,7 @@ ncpp::bilangan_bulat::bilangan_bulat(const bilangan_bulat& other) {
 // Copy assignment operator
 ncpp::bilangan_bulat& ncpp::bilangan_bulat::operator=(const bilangan_bulat& other) {
 	if(this != &other) {
-		mpz_set(this->nilai, other.nilai);
+		mpz_set(this->nilai, other.nilai);	
 	}
 	return *this;
 }
@@ -35,7 +37,7 @@ ncpp::bilangan_bulat::bilangan_bulat(bilangan_bulat&& other) noexcept {
 // Move assignment operator
 ncpp::bilangan_bulat& ncpp::bilangan_bulat::operator=(bilangan_bulat&& other) noexcept {
 	if(this != &other) {
-		mpz_swap(this->nilai, other.nilai);
+		mpz_swap(this->nilai, other.nilai);	
 	}
 	return *this;
 }

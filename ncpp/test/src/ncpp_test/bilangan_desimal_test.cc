@@ -290,3 +290,7 @@ TEST(BILANGAN_DESIMAL_TEST, Modulus_Assignment_Operator) {
     var %= ncpp::bilangan_desimal("2,6");
     EXPECT_EQ(var, ncpp::bilangan_desimal("2.4999999999999996"));
 }
+
+TEST(BILANGAN_DESIMAL_TEST, Is_Arithmetic_True) {
+	EXPECT_TRUE(std::is_arithmetic_v<ncpp::bilangan_desimal>);
+}

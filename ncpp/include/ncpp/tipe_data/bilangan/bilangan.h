@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <type_traits>
 #include "ncpp/tipe_data/bilangan/nilai_bilangan.h"
 #include "ncpp/tipe_data/bilangan/bilangan_bulat.h"
 #include "ncpp/tipe_data/bilangan/bilangan_desimal.h"
@@ -11,7 +12,7 @@ namespace ncpp {
 						enum class tipe {
 							bulat,
 							desimal
-						};
+						};	
             // Constructors
             bilangan();
             explicit bilangan(const std::string& nilai);
@@ -70,3 +71,6 @@ namespace ncpp {
             [[nodiscard]] bilangan_desimal& ambil_nilai_desimal() const;
     };
 }
+
+template<>
+struct std::is_arithmetic<ncpp::bilangan> : true_type {};

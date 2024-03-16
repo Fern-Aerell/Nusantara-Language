@@ -12,7 +12,7 @@ namespace ncpp {
         public:
             // Constructors
 						bilangan_bulat();
-            explicit bilangan_bulat(const std::string& nilai);
+						explicit bilangan_bulat(const std::string& nilai);
 						// Destructor
 						~bilangan_bulat() override;
 						// Copy constructor
@@ -25,7 +25,6 @@ namespace ncpp {
 				    bilangan_bulat& operator=(bilangan_bulat&& other) noexcept;
             static std::regex pattern();
             [[nodiscard]] std::string ubah_ke_string() const override;
-            [[nodiscard]] const mpz_t& ambil() const;
 						static bilangan_bulat ubah(const bilangan_desimal& nilai);
             static const int basis;
             bilangan_bulat operator+(const bilangan_bulat& nilai) const;
@@ -76,5 +75,10 @@ namespace ncpp {
                 ost << data.ubah_ke_string();
                 return ost;
             }
+				protected:
+            [[nodiscard]] const mpz_t& ambil() const;
     };
 }
+
+template<>
+struct std::is_arithmetic<ncpp::bilangan_bulat> : true_type {};
