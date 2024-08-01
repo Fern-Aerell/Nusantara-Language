@@ -1,0 +1,13 @@
+{
+    "recommendations": [
+        "christian-kohler.path-intellisense",
+        "pkief.material-icon-theme",
+        "usernamehw.errorlens",
+        "ms-vscode.cmake-tools",
+        "josetr.cmake-language-support-vscode",
+        "twxs.cmake",
+        "llvm-vs-code-extensions.vscode-clangd",
+        "aaron-bond.better-comments",
+        "ms-dotnettools.vscode-dotnet-runtime"
+    ]
+}
