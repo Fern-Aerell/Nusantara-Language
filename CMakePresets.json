@@ -1,0 +1,43 @@
+{
+    "version": 9,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 30,
+        "patch": 1
+    },
+    "configurePresets": [
+        {
+            "name": "debug-windows",
+            "generator": "Ninja",
+            "binaryDir": "build",
+            "cacheVariables": {
+                "CMAKE_CXX_COMPILER": "clang++",
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "true",
+                "CMAKE_LINKER": "lld"
+            }
+        },
+        {
+            "name": "release-windows",
+            "generator": "Ninja",
+            "binaryDir": "build",
+            "cacheVariables": {
+                "CMAKE_CXX_COMPILER": "clang++",
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "true",
+                "CMAKE_LINKER": "lld",
+                "CMAKE_CXX_FLAGS": "-Ofast -ffast-math -flto -march=native -mtune=native -msse2 -mavx -fstack-protector -g -Wall"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "debug-windows",
+            "configurePreset": "debug-windows"
+        },
+        {
+            "name": "release-windows",
+            "configurePreset": "release-windows"
+        }
+    ]
+}
