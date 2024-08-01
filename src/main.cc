@@ -1,6 +1,6 @@
-#include <iostream>
+#include "ncli/ncli.hh"
 
-int main() {
-    std::cout << "Nusantara Language" << "\n";
+int main(int argc, const char** argv) {
+    NCli cli(argc, argv);
     return 0;
 }
